@@ -1,0 +1,75 @@
+<!-- src/app/demo/components/home/home.component.html -->
+<div class="layout-wrapper">
+    <!-- Header / Navbar -->
+<div class="layout-topbar">
+    <div class="topbar-left">
+        <button pButton type="button" icon="pi pi-bars" class="p-button-text p-button-rounded" 
+                (click)="toggleMenu()"></button>
+        <span class="topbar-logo" (click)="navegarAHome()" style="cursor: pointer;">💼</span>
+        <span class="topbar-title" (click)="navegarAHome()" style="cursor: pointer;">PLANILLA</span>
+    </div>
+    <div class="topbar-right">
+        <span class="user-name">{{ nombreUsuario }}</span>
+        <button pButton type="button" icon="pi pi-user" 
+                class="p-button-rounded p-button-text"></button>
+        <button pButton type="button" icon="pi pi-sign-out" 
+                class="p-button-rounded p-button-text" 
+                (click)="cerrarSesion()" 
+                pTooltip="Cerrar Sesión"
+                tooltipPosition="bottom"></button>
+    </div>
+</div>
+
+    <!-- Contenedor principal -->
+    <div class="layout-main-container">
+        <!-- Sidebar -->
+        <div class="layout-sidebar" [class.sidebar-hidden]="!menuVisible">
+            <div class="sidebar-content">
+                <!-- Selector de fecha -->
+                <div class="date-selector">
+                    <div class="date-display">
+                        <i class="pi pi-calendar"></i>
+                        <span>{{ fechaSeleccionada }}</span>
+                    </div>
+                </div>
+
+                <!-- Menú lateral usando PanelMenu -->
+                <p-panelMenu [model]="menuItems" [style]="{'width':'100%'}"></p-panelMenu>
+            </div>
+
+            <!-- Footer del sidebar -->
+            <div class="sidebar-footer">
+                <p>PLANILLA 2.0.0</p>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="layout-main-content">
+            <!-- Cards de estadísticas -->
+            <div class="stats-grid">
+                
+            </div>
+
+            <!-- Área de bienvenida (solo se muestra cuando no hay ruta activa) -->
+            <div class="content-area" *ngIf="mostrarBienvenida">
+                <div class="welcome-card">
+                    <h2>Sistema Planilla</h2>
+                    <p class="welcome-subtitle">Sistema de Gestión de Planilla</p>
+                    
+                    <div class="user-info">
+                        <div class="info-item">
+                            <span class="info-label">Usuario:</span>
+                            <span class="info-value">{{ nombreUsuario }}</span>
+                        </div>
+                        
+                    </div>
+                    
+                    
+                </div>
+            </div>
+
+            <!-- Router outlet para las rutas hijas -->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

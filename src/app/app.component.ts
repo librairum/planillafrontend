@@ -1,3 +1,4 @@
+// app.component.ts - Versión NO standalone
 import { Component } from '@angular/core';
 
 @Component({
