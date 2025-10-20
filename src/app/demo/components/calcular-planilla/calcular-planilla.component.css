@@ -1,0 +1,375 @@
+/* Contenedor principal del asistente */
+.asistente-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Header */
+.asistente-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+}
+
+.asistente-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Steps */
+.steps-container {
+  padding: 2rem 2rem 1rem 2rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+::ng-deep .custom-steps .p-steps-item {
+  flex: 1;
+}
+
+::ng-deep .custom-steps .p-steps-item .p-menuitem-link {
+  background-color: transparent !important;
+  padding: 1rem !important;
+}
+
+::ng-deep .custom-steps .p-steps-item.p-highlight .p-steps-number {
+  background-color: #667eea !important;
+  color: white !important;
+  border-color: #667eea !important;
+}
+
+::ng-deep .custom-steps .p-steps-item.p-highlight .p-steps-title {
+  color: #667eea !important;
+  font-weight: 600 !important;
+}
+
+/* Contenido */
+.asistente-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+::ng-deep .asistente-content .p-card {
+  box-shadow: none;
+  border: 1px solid #e5e7eb;
+}
+
+::ng-deep .asistente-content .p-card .p-card-body {
+  padding: 2rem;
+}
+
+/* Form Steps */
+.form-step {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-title {
+  margin: 0 0 2rem 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+  font-weight: 600;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.required {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* Input styles */
+::ng-deep .p-inputtext,
+::ng-deep .p-calendar .p-inputtext {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s;
+}
+
+::ng-deep .p-inputtext:enabled:hover,
+::ng-deep .p-calendar .p-inputtext:enabled:hover {
+  border-color: #667eea;
+}
+
+::ng-deep .p-inputtext:enabled:focus,
+::ng-deep .p-calendar .p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+}
+
+::ng-deep .p-calendar {
+  width: 100%;
+}
+
+/* Checkbox field */
+.checkbox-field {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.checkbox-label {
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  margin: 0;
+}
+
+::ng-deep .checkbox-field .p-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+::ng-deep .checkbox-field .p-checkbox .p-checkbox-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+::ng-deep .checkbox-field .p-checkbox .p-checkbox-box.p-highlight {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+/* Confirmation step */
+.confirmation-step {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.confirmation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+::ng-deep .confirmation-card {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .confirmation-card .p-panel-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #667eea;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.confirmation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.confirmation-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.confirmation-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.confirmation-value {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confirmation-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background-color: #eff6ff;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+}
+
+.confirmation-message i {
+  color: #3b82f6;
+  font-size: 1.5rem;
+  margin-top: 0.125rem;
+}
+
+.confirmation-message p {
+  margin: 0;
+  color: #1e40af;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Footer */
+.asistente-footer {
+  padding: 1.5rem 2rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+::ng-deep .asistente-footer .p-button {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+::ng-deep .asistente-footer .p-button:not(.p-button-outlined):not(.p-button-secondary) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+}
+
+::ng-deep .asistente-footer .p-button:not(.p-button-outlined):not(.p-button-secondary):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+::ng-deep .asistente-footer .p-button-outlined {
+  border-width: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .asistente-header {
+    padding: 1rem;
+  }
+
+  .asistente-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .steps-container {
+    padding: 1rem;
+  }
+
+  .asistente-content {
+    padding: 1rem;
+  }
+
+  ::ng-deep .asistente-content .p-card .p-card-body {
+    padding: 1rem;
+  }
+
+  .form-grid,
+  .confirmation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field.full-width {
+    grid-column: 1;
+  }
+
+  .footer-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navigation-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .step-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Scrollbar personalizado */
+.asistente-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.asistente-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.asistente-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.asistente-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

@@ -1,1 +1,217 @@
-<p>calcular-planilla works!</p>
+<div class="asistente-container">
+  <!-- Encabezado -->
+  <div class="asistente-header">
+    <div class="header-content">
+      <i class="pi pi-calculator header-icon"></i>
+      <h2>Asistente Calcular Planilla</h2>
+    </div>
+    <button pButton type="button" icon="pi pi-times" 
+            class="p-button-text p-button-rounded p-button-danger"
+            (click)="cancelar()"
+            pTooltip="Cerrar"
+            tooltipPosition="bottom"></button>
+  </div>
+
+  <!-- Steps indicator -->
+  <div class="steps-container">
+    <p-steps [model]="items" 
+             [(activeIndex)]="activeIndex" 
+             [readonly]="true"
+             styleClass="custom-steps"></p-steps>
+  </div>
+
+  <!-- Contenido del asistente -->
+  <div class="asistente-content">
+    <p-card>
+      <!-- PASO 1: Datos Generales -->
+      <div *ngIf="activeIndex === 0" class="form-step">
+        <h3 class="step-title">Información de la Planilla</h3>
+        
+        <div class="form-grid">
+          <!-- Planilla -->
+          <div class="form-field">
+            <label for="planilla" class="form-label">
+              Planilla:
+            </label>
+            <input id="planilla" type="text" pInputText 
+                   [(ngModel)]="planilla" 
+                   class="w-full"
+                   placeholder="Ingrese nombre de planilla"/>
+          </div>
+
+          <!-- Código -->
+          <div class="form-field">
+            <label for="codigo" class="form-label">
+              Código: <span class="required">*</span>
+            </label>
+            <input id="codigo" type="text" pInputText 
+                   [(ngModel)]="codigo" 
+                   class="w-full"
+                   [disabled]="true"
+                   placeholder="Código"/>
+          </div>
+
+          <!-- Descripción -->
+          <div class="form-field full-width">
+            <label for="descripcion" class="form-label">
+              Descripción:
+            </label>
+            <input id="descripcion" type="text" pInputText 
+                   [(ngModel)]="descripcion" 
+                   class="w-full"
+                   placeholder="Ingrese descripción"/>
+          </div>
+
+          <!-- Fecha Inicio -->
+          <div class="form-field">
+            <label for="fecInicio" class="form-label">
+              Fec.Inicio: <span class="required">*</span>
+            </label>
+            <p-calendar id="fecInicio" 
+                        [(ngModel)]="fecInicio" 
+                        dateFormat="dd/mm/yy"
+                        [showIcon]="true"
+                        inputStyleClass="w-full"
+                        styleClass="w-full"></p-calendar>
+          </div>
+
+          <!-- Fecha Fin -->
+          <div class="form-field">
+            <label for="fecFin" class="form-label">
+              Fec.Fin: <span class="required">*</span>
+            </label>
+            <p-calendar id="fecFin" 
+                        [(ngModel)]="fecFin" 
+                        dateFormat="dd/mm/yy"
+                        [showIcon]="true"
+                        inputStyleClass="w-full"
+                        styleClass="w-full"></p-calendar>
+          </div>
+
+          <!-- Fecha Boleta -->
+          <div class="form-field">
+            <label for="fecBoleta" class="form-label">
+              Fec.Boleta: <span class="required">*</span>
+            </label>
+            <p-calendar id="fecBoleta" 
+                        [(ngModel)]="fecBoleta" 
+                        dateFormat="dd/mm/yy"
+                        [showIcon]="true"
+                        inputStyleClass="w-full"
+                        styleClass="w-full"></p-calendar>
+          </div>
+
+          <!-- Tipo de Cambio -->
+          <div class="form-field">
+            <label for="tCambio" class="form-label">
+              T.Cambio:
+            </label>
+            <input id="tCambio" type="text" pInputText 
+                   [(ngModel)]="tCambio" 
+                   class="w-full"
+                   placeholder="0.00"/>
+          </div>
+
+          <!-- Checkbox Última Planilla del Mes -->
+          <div class="form-field checkbox-field full-width">
+            <p-checkbox id="ultimaPlanilla" 
+                        [(ngModel)]="ultimaPlanillaMes" 
+                        [binary]="true"
+                        inputId="ultimaPlanilla"></p-checkbox>
+            <label for="ultimaPlanilla" class="checkbox-label">
+              Última planilla del mes
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 2: Confirmación -->
+      <div *ngIf="activeIndex === 1" class="form-step confirmation-step">
+        <h3 class="step-title">Confirmar Datos</h3>
+        
+        <div class="confirmation-panel">
+          <p-panel header="Resumen de la Planilla" styleClass="confirmation-card">
+            <div class="confirmation-grid">
+              <div class="confirmation-item">
+                <span class="confirmation-label">Planilla:</span>
+                <span class="confirmation-value">{{ planilla || 'No especificado' }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Código:</span>
+                <span class="confirmation-value">{{ codigo }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Descripción:</span>
+                <span class="confirmation-value">{{ descripcion || 'No especificado' }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Fecha Inicio:</span>
+                <span class="confirmation-value">{{ fecInicio | date:'dd/MM/yyyy' }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Fecha Fin:</span>
+                <span class="confirmation-value">{{ fecFin | date:'dd/MM/yyyy' }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Fecha Boleta:</span>
+                <span class="confirmation-value">{{ fecBoleta | date:'dd/MM/yyyy' }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Tipo de Cambio:</span>
+                <span class="confirmation-value">{{ tCambio || 'No especificado' }}</span>
+              </div>
+              
+              <div class="confirmation-item">
+                <span class="confirmation-label">Última planilla del mes:</span>
+                <span class="confirmation-value">
+                  <i [class]="ultimaPlanillaMes ? 'pi pi-check-circle text-green-500' : 'pi pi-times-circle text-red-500'"></i>
+                  {{ ultimaPlanillaMes ? 'Sí' : 'No' }}
+                </span>
+              </div>
+            </div>
+          </p-panel>
+
+          <div class="confirmation-message">
+            <i class="pi pi-info-circle"></i>
+            <p>Revise cuidadosamente los datos antes de continuar. Al hacer clic en "Finalizar" se procesará el cálculo de la planilla.</p>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Footer con botones de navegación -->
+  <div class="asistente-footer">
+    <div class="footer-buttons">
+      <button pButton 
+              type="button" 
+              label="Cancelar" 
+              icon="pi pi-times"
+              class="p-button-secondary p-button-outlined"
+              (click)="cancelar()"></button>
+      
+      <div class="navigation-buttons">
+        <button pButton 
+                type="button" 
+                label="Anterior" 
+                icon="pi pi-chevron-left"
+                class="p-button-outlined"
+                (click)="anterior()"
+                *ngIf="mostrarBotonAnterior"></button>
+        
+        <button pButton 
+                type="button" 
+                [label]="botonSiguienteTexto" 
+                [icon]="activeIndex === items.length - 1 ? 'pi pi-check' : 'pi pi-chevron-right'"
+                iconPos="right"
+                (click)="siguiente()"></button>
+      </div>
+    </div>
+  </div>
+</div>
