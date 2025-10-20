@@ -1,1 +1,192 @@
-<p>plantilla-asistencia works!</p>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="container">
+  <p-panel header ="Mantenimiento de plantilla" class="mb-3"></p-panel>
+  <br>
+
+  <div class="card">
+
+    <div class="flex justify-content-between align-items-center mb-3">
+            <button type="button" pButton icon="pi pi-plus" label="Nueva Plantilla"
+                    (click)="showAddRow()" [disabled]="isEditingAnyRow"
+                    class="p-button-sm"></button>
+            <div class="flex align-items-center">
+                <label for="rowsPerPage" class="mr-2">Filas por página:</label>
+                <p-dropdown
+                id="rowsPerPage"
+                [options]="[{label: '10', value: 10}, {label: '20', value: 20}, {label: '40', value: 40}]"
+                placeholder="Seleccionar"
+                [(ngModel)]="rowsPerPage"
+                class="p-button-sm"></p-dropdown>
+            </div>
+        </div>
+
+    <p-table
+      [value]="plantillaAsistenciaList"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      dataKey="pla20plantillacod"
+      editMode="row"
+      [paginator]="true"
+      styleClass="p-datatable-gridlines"
+      [rows]="rowsPerPage"
+      >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Descripción</th>
+                <th>Mod.Usuario</th>
+                <th>Reg.Inasistencia</th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-plantilla let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="plantilla">
+
+              <td>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input type="text" pInputText [(ngModel)]="plantilla.pla20descripcion" required />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ plantilla.pla20descripcion }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+
+                <td>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input  type="text" pInputText [(ngModel)]="plantilla.pla20flagmodifxusuario" required />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ plantilla.pla20flagmodifxusuario }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+
+                <td>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input type="text" pInputText [(ngModel)]="plantilla.pla20flagregistrainasis" required />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ plantilla.pla20flagregistrainasis }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+
+                <td>
+                    <div class="flex justify-content-center gap-2">
+                            <!-- Ver Detalle
+                             Falta agregar onClick-->
+
+                            <button
+                                    pButton
+                                    type="button"
+                                    icon="pi pi-eye"
+                                    pTooltip="Ver Detalle"
+                                    class="p-button-rounded p-button-text p-button-sm"
+
+                                    [disabled]="isNew || isEditingAnyRow"
+                                    ></button>
+
+                            <!-- Botón Editar -->
+                            <button
+                                    pButton
+                                    pInitEditableRow
+                                    (click)="onRowEditInit(plantilla, ri)"
+                                    icon="pi pi-pencil"
+                                    pTooltip="Editar Plantilla"
+                                    [disabled]="isNew || isEditingAnyRow"
+                                    class="p-button-rounded p-button-text p-button-sm"
+                                    [disabled]="editingRowIndex !== null && editingRowIndex !== ri"
+                                    ></button>
+
+                            <!-- Botón Guardar -->
+                            <button
+                                    *ngIf="editingRowIndex === ri"
+                                    pButton
+                                    pSaveEditableRow
+                                    (click)="onRowEditSave(plantilla, ri)"
+                                    icon="pi pi-check"
+                                    pTooltip="Guardar"
+                                    class="p-button-rounded p-button-text p-button-sm p-button-success"
+                                    ></button>
+
+                            <!-- Botón Cancelar -->
+                            <button
+                                    *ngIf="editingRowIndex === ri"
+                                    pButton
+                                    pCancelEditableRow
+                                    (click)="onRowEditCancel(plantilla, ri)"
+                                    icon="pi pi-times"
+                                    pTooltip="Cancelar"
+                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"
+                                    ></button>
+
+                            <!-- Botón Eliminar -->
+                            <button
+                                    pButton
+                                    type="button"
+                                    (click)="onDelete(plantilla, ri)"
+                                    icon="pi pi-trash"
+                                    pTooltip="Borrar Plantilla"
+                                    [disabled]="isNew || isEditingAnyRow"
+                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"
+                                    [disabled]="editingRowIndex !== null && editingRowIndex !== ri"
+                                    ></button>
+                      </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <!-- Footer para Nueva Plantilla-->
+        <ng-template pTemplate="footer">
+          <tr *ngIf="isEditing">
+              <td colspan="4">
+                  <form [formGroup]="plantillaAsistenciaForm" class="grid p-fluid">
+                      <!-- Código Plantilla -->
+                      <div class="col-3" style="width: 25%">
+                          <input pInputText
+                              formControlName="pla20plantillacod"
+                              placeholder="Código"
+                              class="p-inputtext-sm w-full"/>
+                      </div>
+
+                      <!-- Descripción -->
+                      <div class="col-3" style="width: 25%">
+                          <input pInputText
+                              formControlName="pla20descripcion"
+                              placeholder="Descripción"
+                              class="p-inputtext-sm w-full"/>
+                      </div>
+                      <!-- Mod.Usuario -->
+                      <div class="col-2" style="width: 25%">
+                          <input pInputText
+                              formControlName="pla20flagmodifxusuario"
+                              placeholder="Mod.Usuario"
+                              class="p-inputtext-sm w-full"/>
+                      </div>
+                      <!-- Reg.Inasistencia -->
+                      <div class="col-2" style="width: 25%">
+                          <input pInputText
+                              formControlName="pla20flagregistrainasis"
+                              placeholder="Reg.Inasistencia"
+                              class="p-inputtext-sm w-full"/>
+                      </div>
+                      <!-- Botones de Acción -->
+                      <div class="col-2" style="width: 100%">
+                          <div class="flex gap-2 justify-content-center">
+                              <button pButton type="button" icon="pi pi-check" class="p-button-success p-button-sm"
+                                      (click)="onSave()" pTooltip="Guardar"></button>
+                              <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm"
+                                      (click)="onCancel()" pTooltip="Cancelar"></button>
+                          </div>
+                      </div>
+                  </form>
+              </td>
+          </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
