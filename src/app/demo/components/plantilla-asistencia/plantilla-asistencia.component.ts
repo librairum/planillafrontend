@@ -33,7 +33,7 @@ import { PlantillaAsistencia } from '../../model/PlantillaAsistencia';
 })
 export class PlantillaAsistenciaComponent implements OnInit {
 
-  plantillaAsistenciaForm: FormGroup = this.fb.group({}); //Quitar el = luego
+    plantillaAsistenciaForm: FormGroup = this.fb.group({}); //Quitar el = luego
 
     plantillaAsistenciaList: PlantillaAsistencia[] = []; //Quitar el = luego
 

@@ -1,1 +1,279 @@
-<p>regimen-pensionario works!</p>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="container">
+    <p-panel header="Régimen Pensionario" class="mb-3">
+        <p-breadcrumb [model]="items" class="max-w-full"></p-breadcrumb>
+    </p-panel>
+    <br />
+    <div class="card">
+        <!-- Botón Nuevo y Dropdown Filas por Página -->
+        <div class="flex justify-content-between align-items-center mb-3">
+            <button type="button" pButton icon="pi pi-plus" label="Nuevo Régimen"
+                    (click)="showAddRow()" [disabled]="isEditingAnyRow"
+                    class="p-button-sm"></button>
+            <div class="flex align-items-center">
+                <label for="rowsPerPage" class="mr-2">Filas por página:</label>
+                <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
+            </div>
+        </div>
+
+        <!-- Tabla Principal -->
+        <p-table [value]="regimenPensionarioList"
+                 dataKey="pla61codigo"
+                 editMode="row"
+                 [paginator]="true"
+                 [rows]="rowsPerPage"
+                 responsiveLayout="scroll"
+                 styleClass="p-datatable-sm">
+            <!-- Cabecera de Tabla -->
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Régimen Pensionario</th>
+                    <th>AFPNet</th>
+                    <th>Plame Descripción</th>
+                    <th>Sector Privado</th>
+                    <th>Sector Público</th>
+                    <th>Activo</th>
+                </tr>
+            </ng-template>
+
+            <!-- Cuerpo de Tabla -->
+            <ng-template pTemplate="body" let-regimen let-ri="rowIndex" let-editing="editing">
+                <tr [pEditableRow]="regimen">
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61codigo"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61codigo}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61descripcion"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61descripcion}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61tiporegpensionariocod"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61tiporegpensionariocod}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61afpnetcod"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61afpnetcod}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61plamecod"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61plamecod}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61flagsectorprivado"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61flagsectorprivado}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61flagsectorpublico"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61flagsectorpublico}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="regimen.pla61flagactivo"
+                                       class="p-inputtext-sm w-full" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{regimen.pla61flagactivo}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <!-- Acciones -->
+                    <td>
+                        <div class="flex justify-content-center gap-2">
+                            <!-- Botón Editar -->
+                            <button *ngIf="!editing" pButton
+                                    pInitEditableRow
+                                    (click)="onRowEditInit(regimen)"
+                                    icon="pi pi-pencil"
+                                    pTooltip="Editar Régimen Pensionario"
+                                    [disabled]="isNew || isEditingAnyRow"
+                                    class="p-button-rounded p-button-text p-button-sm"
+                                    ></button>
+
+                            <!-- Botón Guardar -->
+                            <button *ngIf="editing" pButton
+                                    pSaveEditableRow
+                                    (click)="onRowEditSave(regimen)"
+                                    icon="pi pi-check"
+                                    pTooltip="Guardar"
+                                    class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+
+                            <!-- Botón Cancelar -->
+                            <button *ngIf="editing" pButton
+                                    pCancelEditableRow
+                                    (click)="onRowEditCancel(regimen, ri)"
+                                    icon="pi pi-times"
+                                    pTooltip="Cancelar"
+                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+                            <!-- Botón Eliminar -->
+                            <button *ngIf="!editing" pButton
+                                    type="button"
+                                    (click)="onDelete(regimen, ri)"
+                                    icon="pi pi-trash"
+                                    pTooltip="Borrar Régimen Pensionario"
+                                    [disabled]="isNew || isEditingAnyRow"
+                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <!-- Footer para Nuevo Registro -->
+            <ng-template pTemplate="footer">
+                <tr *ngIf="isEditing">
+                    <td colspan="4">
+                        <form [formGroup]="regimenPensionarioForm" class="grid p-fluid">
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61codigo"
+                                           placeholder="Código"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-4" style="width: 40%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61descripcion"
+                                           placeholder="Descripción del Régimen"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-4" style="width: 40%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61tiporegpensionariocod"
+                                           placeholder="Tipo de regimen pensionario"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61afpnetcod"
+                                           placeholder="AFPNet"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61plamecod"
+                                           placeholder="Plame Des"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61flagsectorprivado"
+                                           placeholder="Sector Privado"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61flagsectorpublico"
+                                           placeholder="Sector Público"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla61flagactivo"
+                                           placeholder="Activo"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="col-2" style="width: 20%">
+                                <div class="flex gap-2 justify-content-center">
+
+                                    <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"
+                                            (onClick)="onSave()" pTooltip="Guardar"></p-button>
+                                    <p-button icon="pi pi-times" styleClass="p-button-danger p-button-sm" [text]="true"
+                                            (onClick)="onCancel()" pTooltip="Cancelar"></p-button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
