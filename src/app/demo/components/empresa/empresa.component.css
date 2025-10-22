@@ -1,0 +1,70 @@
+.p-card-body {
+    padding: 0 !important;
+}
+
+.p-panel-content {
+    padding-left: 5 !important;
+    padding-right: 5 !important;
+}
+
+.grid {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* ===================================================== */
+/* AJUSTE DE TAMAÑO Y RELLENO (Campos de texto e inputs) */
+/* ===================================================== */
+
+.p-inputtext {
+    padding: 0.35rem 0.5rem; 
+    font-size: 0.8rem;     
+}
+
+/* ----------------------------------------------------- */
+/* Ajuste de Dropdowns para igualar la altura de los inputs */
+/* ----------------------------------------------------- */
+
+.p-dropdown {
+    min-height: 0.1rem;
+}
+
+.p-dropdown .p-dropdown-label {
+    padding: 0.35rem 0.5rem; 
+    font-size: 0.8rem;      
+}
+
+.p-float-label .p-dropdown.p-filled ~ label,
+.p-float-label .p-dropdown.p-focus ~ label {
+    top: -2.0rem !important;   
+    font-size: 0.2rem !important;
+}
+
+
+.p-float-label .p-dropdown .p-dropdown-label:not(.p-placeholder) ~ label {
+    top: -0.8rem !important;
+    font-size: 0.7rem !important;
+}
+
+
+:host ::ng-deep .p-toolbar-group-end {
+    padding-right: 0.25rem !important; 
+    
+}
+
+:host ::ng-deep .p-button {
+    padding: 0.35rem 0.7rem !important;
+    font-size: 0.8rem !important;
+}
+
+:host ::ng-deep .p-button .p-button-icon {
+    font-size: 0.8rem !important;
+}
+
+:host ::ng-deep .p-button-icon-only .p-button-icon {
+    padding: 0.4rem 0 !important;
+}
+
+.p-datatable .p-paginator.p-paginator-bottom {
+    justify-content: flex-end; 
+}
