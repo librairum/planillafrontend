@@ -37,6 +37,7 @@
                     <th>Sector Privado</th>
                     <th>Sector Público</th>
                     <th>Activo</th>
+                    <th style="text-align: center;">Acciones</th>
                 </tr>
             </ng-template>
 
@@ -105,39 +106,30 @@
                     </td>
 
                     <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="regimen.pla61flagsectorprivado"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{regimen.pla61flagsectorprivado}}
-                            </ng-template>
-                        </p-cellEditor>
+                        <p-checkbox
+                        [binary]="true"
+                        [ngModel]="regimen.pla61flagsectorprivado === 'S'"
+                        (onChange)="onToggleFlag(regimen, 'pla61flagsectorprivado', $event.checked)"
+                        [disabled]="!editing">
+                      </p-checkbox>
                     </td>
 
                     <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="regimen.pla61flagsectorpublico"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{regimen.pla61flagsectorpublico}}
-                            </ng-template>
-                        </p-cellEditor>
+                        <p-checkbox
+                          [binary]="true"
+                          [ngModel]="regimen.pla61flagsectorpublico === 'S'"
+                          (onChange)="onToggleFlag(regimen, 'pla61flagsectorpublico', $event.checked)"
+                          [disabled]="!editing">
+                        </p-checkbox>
                     </td>
 
                     <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="regimen.pla61flagactivo"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{regimen.pla61flagactivo}}
-                            </ng-template>
-                        </p-cellEditor>
+                        <p-checkbox
+                          [binary]="true"
+                          [ngModel]="regimen.pla61flagactivo === 'S'"
+                          (onChange)="onToggleFlag(regimen, 'pla61flagactivo', $event.checked)"
+                          [disabled]="!editing">
+                        </p-checkbox>
                     </td>
 
                     <!-- Acciones -->
@@ -234,30 +226,41 @@
                             </div>
 
                             <div class="col-2" style="width: 20%">
+                              <p-checkbox formControlName="pla61flagsectorprivado" [binary]="true"></p-checkbox>
+                              <!--
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla61flagsectorprivado"
                                            placeholder="Sector Privado"
                                            class="p-inputtext-sm w-full"/>
                                 </span>
+                              -->
                             </div>
 
                             <div class="col-2" style="width: 20%">
+
+                              <p-checkbox formControlName="pla61flagsectorpublico" [binary]="true"></p-checkbox>
+                              <!--
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla61flagsectorpublico"
                                            placeholder="Sector Público"
                                            class="p-inputtext-sm w-full"/>
                                 </span>
+                              -->
                             </div>
 
                             <div class="col-2" style="width: 20%">
+
+                              <p-checkbox formControlName="pla61flagsectorpublico" [binary]="true"></p-checkbox>
+                              <!--
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla61flagactivo"
                                            placeholder="Activo"
                                            class="p-inputtext-sm w-full"/>
                                 </span>
+                              -->
                             </div>
 
                             <!-- Botones de Acción -->

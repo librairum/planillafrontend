@@ -13,6 +13,8 @@ import { PanelModule } from 'primeng/panel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -21,7 +23,7 @@ import { RegimenPensionario } from '../../model/RegimenPensionario';
 @Component({
   selector: 'app-regimen-pensionario',
   standalone: true,
-  imports: [ToastModule, TableModule, ReactiveFormsModule, CommonModule, ButtonModule,
+  imports: [ToastModule, TableModule, ReactiveFormsModule, CommonModule, ButtonModule, CheckboxModule, DialogModule,
         CardModule, InputTextModule, PanelModule, BreadcrumbModule, ConfirmDialogModule, FormsModule, DropdownModule],
   templateUrl: './regimen-pensionario.component.html',
   styleUrls: ['./regimen-pensionario.component.css'],
@@ -67,7 +69,7 @@ export class RegimenPensionarioComponent implements OnInit {
                 this.items = bc;
             })*/
             this.initForm()
-            this.cargarParametrosGenerales()
+            this.cargarRegimenesPensionarios()
         }
 
 
@@ -77,18 +79,18 @@ export class RegimenPensionarioComponent implements OnInit {
                 pla61codigo: ['', Validators.required],
                 pla61descripcion: ['', Validators.required],
                 pla61tiporegpensionariocod: ['', Validators.required],
-                pla61flagsectorprivado: ['', Validators.required],
-                pla61flagsectorpublico: ['', Validators.required],
+                pla61flagsectorprivado: [false],
+                pla61flagsectorpublico: [false],
                 pla61afpnetcod: ['', Validators.required],
                 pla61plamecod: ['', Validators.required],
-                pla61flagactivo: ['', Validators.required]
+                pla61flagactivo: [false]
             })
         }
 
 
 
         // cargar data
-        cargarParametrosGenerales(): void {
+        cargarRegimenesPensionarios(): void {
           this.regimenPensionarioList = [
             {
                 pla61codigo: '01',
@@ -191,6 +193,10 @@ export class RegimenPensionarioComponent implements OnInit {
             this.isNew = true;
             this.regimenPensionarioForm.reset({
 
+              pla61flagsectorprivado: false,
+              pla61flagsectorpublico: false,
+              pla61flagactivo: false
+
               /*
                 pla41empresacod: this.globalService.getCodigoEmpresa(),
                 */
@@ -200,7 +206,16 @@ export class RegimenPensionarioComponent implements OnInit {
 
         onSave() {
             if (this.regimenPensionarioForm.valid) {
-                const newRegimenPensionario: RegimenPensionario = this.regimenPensionarioForm.value;
+
+                const raw = this.regimenPensionarioForm.value;
+                //mapear booleanos a S/N
+                const newRegimenPensionario: RegimenPensionario = {
+                    ...raw,
+                    pla61flagsectorprivado: raw.pla61flagsectorprivado ? 'S' : 'N',
+                    pla61flagsectorpublico: raw.pla61flagsectorpublico ? 'S' : 'N',
+                    pla61flagactivo: raw.pla61flagactivo ? 'S' : 'N'
+                };
+
                 // Verifica si ya existe el registro
                 const existe = this.regimenPensionarioList.some(r =>
                     r.pla61codigo === newRegimenPensionario.pla61codigo
@@ -287,5 +302,10 @@ export class RegimenPensionarioComponent implements OnInit {
                         */
                 }
             })
+        }
+
+        // helper para togglear flags en la fila y mantener 'S'/'N'
+        onToggleFlag(regimen: RegimenPensionario, field: 'pla61flagsectorprivado' | 'pla61flagsectorpublico' | 'pla61flagactivo', checked: boolean): void {
+          regimen[field] = checked ? 'S' : 'N';
         }
 }
