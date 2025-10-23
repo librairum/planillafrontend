@@ -12,7 +12,7 @@
                     <button pButton pRipple type="button" label="Modificar" icon="pi pi-pencil" class="p-button-warning" (click)="editarEmpresa()" [disabled]="mode !== 'view' || !selectedEmpresa"></button>
                     <button pButton pRipple type="button" label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="eliminarEmpresa()" [disabled]="mode !== 'view' || !selectedEmpresa"></button>
                     
-                    <button pButton pRipple type="button" label="Buscar" icon="pi pi-search" class="p-button-info" (click)="buscarEmpresa()" [disabled]="true"></button>
+                    <button pButton pRipple type="button" label="Ver" icon="pi pi-search" class="p-button-info" (click)="verEmpresa()" [disabled]="true"></button>
                     <button pButton pRipple type="button" label="Refrescar la lista" icon="pi pi-refresh" class="p-button-secondary" (click)="refrescarEmpresa()"></button>
                 </div>
 
@@ -30,7 +30,9 @@
                     <div *ngIf="loading" 
                          class="absolute inset-0 z-5 flex align-items-end justify-content-center border-round" 
                          >
-                        <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="5" animationDuration=".5s"></p-progressSpinner>
+                        <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="5" animationDuration=".5s">
+                            
+                        </p-progressSpinner>
                     </div>
 
                     <div class="flex justify-content-end mb-3">
@@ -45,7 +47,7 @@
                         </div>
                     </div>
 
-                    <p-table [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa" dataKey="EmpresaCod"
+                    <p-table [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa" dataKey="empresacod"
                             [tableStyle]="{'min-width': '50rem'}" styleClass="p-datatable-sm" 
                             [paginator]="true" [rows]="rowsPerPage"  
                             paginatorPosition="bottom">
@@ -64,10 +66,10 @@
                         
                         <ng-template pTemplate="body" let-empresa>
                             <tr [pSelectableRow]="empresa">
-                                <td style="text-align: center;">{{ empresa.EmpresaCod }}</td>
-                                <td style="text-align: center;">{{ empresa.RUC }}</td>
-                                <td style="text-align: center;">{{ empresa.RazonSocial }}</td>
-                                <td style="text-align: center;">{{ empresa.Direccion }}</td>
+                                <td style="text-align: center;">{{ empresa.empresacod }}</td>
+                                <td style="text-align: center;">{{ empresa.ruc }}</td>
+                                <td style="text-align: center;">{{ empresa.razonsocial }}</td>
+                                <td style="text-align: center;">{{ empresa.direccion }}</td>
                             </tr>
                         </ng-template>
                         
@@ -88,7 +90,7 @@
                             <div class="col-12"> 
                                 <div class="field">
                                     <span class="p-float-label">
-                                        <input pInputText id="codigo" [(ngModel)]="empresa.EmpresaCod" 
+                                        <input pInputText id="codigo" [(ngModel)]="empresa.empresacod" 
                                         [disabled]="isDisabled() || mode === 'edit'" 
                                         class="w-full" />
                                         <label for="codigo">Código</label>
@@ -99,7 +101,7 @@
                             <div class="col-12">
                                 <div class="field">
                                     <span class="p-float-label">
-                                        <input pInputText id="ruc" [(ngModel)]="empresa.RUC" 
+                                        <input pInputText id="ruc" [(ngModel)]="empresa.ruc" 
                                         [disabled]="isDisabled()" 
                                         class="w-full" />
                                         <label for="ruc">RUC</label>
@@ -111,7 +113,7 @@
                                 <div class="field">
                                     <span class="p-float-label">
                                         <input pInputText id="razonSocial" 
-                                        [(ngModel)]="empresa.RazonSocial" 
+                                        [(ngModel)]="empresa.razonsocial" 
                                         [disabled]="isDisabled()" 
                                         class="w-full" />
                                         <label for="razonSocial">Razón Social</label>
@@ -123,7 +125,7 @@
                                 <div class="field">
                                     <span class="p-float-label">
                                         <input pInputText id="direccion" 
-                                        [(ngModel)]="empresa.Direccion" 
+                                        [(ngModel)]="empresa.direccion" 
                                         [disabled]="isDisabled()" 
                                         class="w-full" />
                                         <label for="direccion">Dirección</label>
@@ -144,9 +146,9 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <p-dropdown [options]="docTipos" optionLabel="label" optionValue="value" 
-                                                        [(ngModel)]="empresa.representanteLegal.RepLegalDocTip" placeholder="Seleccione Tipo Doc" 
+                                                        [(ngModel)]="empresa.representanteLegal.replegaldoctip" placeholder="Seleccione Tipo Doc" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.representanteLegal.RepLegalDocTip" 
+                                                        [class.p-filled]="empresa.representanteLegal.replegaldoctip" 
                                                         id="docTipoRL"></p-dropdown>
                                             <label for="docTipoRL">Tipo Documento</label>
                                         </span>
@@ -156,7 +158,7 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <input pInputText id="docNroRL"
-                                             [(ngModel)]="empresa.representanteLegal.RepLegalDocNro" 
+                                             [(ngModel)]="empresa.representanteLegal.replegaldocnro" 
                                              class="w-full" />
                                             <label for="docNroRL">Doc. Nro</label>
                                         </span>
@@ -166,7 +168,7 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <input pInputText id="apPaternoRL" 
-                                            [(ngModel)]="empresa.representanteLegal.RepLegalApePaterno" 
+                                            [(ngModel)]="empresa.representanteLegal.replegalapepaterno" 
                                             class="w-full" />
                                             <label for="apPaternoRL">Apellido Paterno</label>
                                         </span>
@@ -175,7 +177,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="apMaternoRL" [(ngModel)]="empresa.representanteLegal.RepLegalApeMaterno" class="w-full" />
+                                            <input pInputText id="apMaternoRL" [(ngModel)]="empresa.representanteLegal.replegalapematerno" class="w-full" />
                                             <label for="apMaternoRL">Apellido Materno</label>
                                         </span>
                                     </div>
@@ -183,7 +185,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="nombresRL" [(ngModel)]="empresa.representanteLegal.RepLegalNombres" class="w-full" />
+                                            <input pInputText id="nombresRL" [(ngModel)]="empresa.representanteLegal.replegalnombres" class="w-full" />
                                             <label for="nombresRL">Nombres</label>
                                         </span>
                                     </div>
@@ -199,9 +201,9 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <p-dropdown [options]="docTipos" optionLabel="label" optionValue="value" 
-                                                        [(ngModel)]="empresa.responsablePlanilla.EncargadoPlanillaDocTip" placeholder="Seleccione Tipo Doc" 
+                                                        [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladoctip" placeholder="Seleccione Tipo Doc" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.responsablePlanilla.EncargadoPlanillaDocTip" id="docTipoRP"></p-dropdown>
+                                                        [class.p-filled]="empresa.responsablePlanilla.encargadoplanilladoctip" id="docTipoRP"></p-dropdown>
                                             <label for="docTipoRP">Doc. Tipo</label>
                                         </span>
                                     </div>
@@ -209,7 +211,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="docNroRP" [(ngModel)]="empresa.responsablePlanilla.EncargadoPlanillaDocNro" class="w-full" />
+                                            <input pInputText id="docNroRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladocnro" class="w-full" />
                                             <label for="docNroRP">Doc. Nro</label>
                                         </span>
                                     </div>
@@ -217,7 +219,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="apPaternoRP" [(ngModel)]="empresa.responsablePlanilla.EncargadoPlanillaApePaterno" class="w-full" />
+                                            <input pInputText id="apPaternoRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanillaapepaterno" class="w-full" />
                                             <label for="apPaternoRP">Ap. Paterno</label>
                                         </span>
                                     </div>
@@ -225,7 +227,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="apMaternoRP" [(ngModel)]="empresa.responsablePlanilla.EncargadoPlanillaApeMaterno" class="w-full" />
+                                            <input pInputText id="apMaternoRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanillaapematerno" class="w-full" />
                                             <label for="apMaternoRP">Ap. Materno</label>
                                         </span>
                                     </div>
@@ -233,7 +235,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="nombresRP" [(ngModel)]="empresa.responsablePlanilla.EncargadoPlanillaNombres" class="w-full" />
+                                            <input pInputText id="nombresRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanillanombres" class="w-full" />
                                             <label for="nombresRP">Nombres</label>
                                         </span>
                                     </div>
@@ -249,9 +251,9 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <p-dropdown [options]="bancosOptions" optionLabel="label" optionValue="value" 
-                                                        [(ngModel)]="empresa.bancos.CtaSolesPagoBancoCod" placeholder="Seleccione Banco" 
+                                                        [(ngModel)]="empresa.bancos.ctasolespagobancocod" placeholder="Seleccione Banco" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.bancos.CtaSolesPagoBancoCod" id="bancoSoles"></p-dropdown>
+                                                        [class.p-filled]="empresa.bancos.ctasolespagobancocod" id="bancoSoles"></p-dropdown>
                                             <label for="bancoSoles">Banco Soles</label>
                                         </span>
                                     </div>
@@ -259,7 +261,7 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="ctaSoles" [(ngModel)]="empresa.bancos.CtaSolesPagoNumero" class="w-full" />
+                                            <input pInputText id="ctaSoles" [(ngModel)]="empresa.bancos.ctasolespagonumero" class="w-full" />
                                             <label for="ctaSoles">Nro. Cuenta Soles</label>
                                         </span>
                                     </div>
@@ -268,9 +270,9 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <p-dropdown [options]="bancosOptions" optionLabel="label" optionValue="value" 
-                                                        [(ngModel)]="empresa.bancos.CtaDolaresPagoBancoCod" placeholder="Seleccione Banco" 
+                                                        [(ngModel)]="empresa.bancos.ctadolarespagobancocod" placeholder="Seleccione Banco" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.bancos.CtaDolaresPagoBancoCod" id="bancoDolares"></p-dropdown>
+                                                        [class.p-filled]="empresa.bancos.ctadolarespagobancocod" id="bancoDolares"></p-dropdown>
                                             <label for="bancoDolares">Banco Dólares</label>
                                         </span>
                                     </div>
@@ -278,8 +280,8 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="ctaDolares" [(ngModel)]="empresa.bancos.CtaDolaresPagoNumero" class="w-full" />
-                                            <label for="ctaDolares">Nro. Cuenta Dólares</label>
+                                            <input pInputText id="ctaDolares" [(ngModel)]="empresa.bancos.ctadolarespagonumero" class="w-full" />
+                                            <label for="ctadolares">Nro. Cuenta Dólares</label>
                                         </span>
                                     </div>
                                 </div>

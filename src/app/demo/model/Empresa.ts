@@ -1,33 +1,33 @@
 
 export interface ResponsablePlanilla {
-  EncargadoPlanillaDocTip: string;
-  EncargadoPlanillaDocNro: string;
-  EncargadoPlanillaApePaterno: string;
-  EncargadoPlanillaApeMaterno: string;
-  EncargadoPlanillaNombres: string;
+  encargadoplanilladoctip: string;
+  encargadoplanilladocnro: string;
+  encargadoplanillaapepaterno: string;
+  encargadoplanillaapematerno: string;
+  encargadoplanillanombres: string;
 }
 
 export interface RepresentanteLegal {
-  RepLegalDocTip: string;
-  RepLegalDocNro: string;
-  RepLegalApePaterno: string;
-  RepLegalApeMaterno: string;
-  RepLegalNombres: string;
+  replegaldoctip: string;
+  replegaldocnro: string;
+  replegalapepaterno: string;
+  replegalapematerno: string;
+  replegalnombres: string;
 }
 
 export interface Banco {
-  CtaSolesPagoBancoCod: string;
-  CtaSolesPagoNumero: string;
-  CtaDolaresPagoBancoCod: string;
-  CtaDolaresPagoNumero: string;
+  ctasolespagobancocod: string;
+  ctasolespagonumero: string;
+  ctadolarespagobancocod: string;
+  ctadolarespagonumero: string;
 }
 
 // Entidad Principal Empresa
 export interface Empresa {
-  EmpresaCod: string;
-  RUC: string;
-  RazonSocial: string;
-  Direccion: string;
+  empresacod: string;
+  ruc: string;
+  razonsocial: string;
+  direccion: string;
 
   representanteLegal: RepresentanteLegal;
   responsablePlanilla: ResponsablePlanilla;

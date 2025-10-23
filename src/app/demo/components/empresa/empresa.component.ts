@@ -74,55 +74,55 @@ export class EmpresaComponent implements OnInit {
   // Empresas simuladas para la carga inicial 
   currentEmpresas: Empresa[] = [ 
     {
-        EmpresaCod: '00004',
-        RUC: '20602193676',
-        RazonSocial: 'GM INGENIEROS Y CONSULTORES SAC',
-        Direccion: 'Av. Aviación 170 San Miguel, Lima',
+        empresacod: '00004',
+        ruc: '20602193676',
+        razonsocial: 'GM INGENIEROS Y CONSULTORES SAC',
+        direccion: 'Av. Aviación 170 San Miguel, Lima',
         representanteLegal: {
-            RepLegalDocTip: '02', 
-            RepLegalDocNro: '10808128', 
-            RepLegalApePaterno: 'REPRESENTANTE', 
-            RepLegalApeMaterno: 'LEGAL', 
-            RepLegalNombres: 'MASTERPLA'
+            replegaldoctip: '02', 
+            replegaldocnro: '10808128', 
+            replegalapepaterno: 'REPRESENTANTE', 
+            replegalapematerno: 'LEGAL', 
+            replegalnombres: 'MASTERPLA'
         },
         responsablePlanilla: {
-            EncargadoPlanillaDocTip: '01', 
-            EncargadoPlanillaDocNro: '10808128', 
-            EncargadoPlanillaApePaterno: 'RESPONSABLE', 
-            EncargadoPlanillaApeMaterno: 'PLANILLA', 
-            EncargadoPlanillaNombres: 'MASTERPLA'
+            encargadoplanilladoctip: '01', 
+            encargadoplanilladocnro: '10808128', 
+            encargadoplanillaapepaterno: 'RESPONSABLE', 
+            encargadoplanillaapematerno: 'PLANILLA', 
+            encargadoplanillanombres: 'MASTERPLA'
         },
         bancos: {
-            CtaSolesPagoBancoCod: '08', 
-            CtaSolesPagoNumero: 'CUENTASOLESINTERBANK', 
-            CtaDolaresPagoBancoCod: '08', 
-            CtaDolaresPagoNumero: 'CUENTADOLARESINTERBANK'
+            ctasolespagobancocod: '08', 
+            ctasolespagonumero: 'CUENTASOLESINTERBANK', 
+            ctadolarespagobancocod: '08', 
+            ctadolarespagonumero: 'CUENTADOLARESINTERBANK'
         }
     },
     {
-      EmpresaCod: '00005',
-      RUC: '20602199999',
-      RazonSocial: 'EMPRESA ALICORP S.A.C.',
-      Direccion: 'CALLE PRINCIPAL 123',
+      empresacod: '00005',
+      ruc: '20602199999',
+      razonsocial: 'EMPRESA ALICORP S.A.C.',
+      direccion: 'CALLE PRINCIPAL 123',
       representanteLegal: {
-          RepLegalDocTip: '01', 
-          RepLegalDocNro: '98765432', 
-          RepLegalApePaterno: 'PEREZ', 
-          RepLegalApeMaterno: 'GOMEZ', 
-          RepLegalNombres: 'JUAN'
+          replegaldoctip: '01', 
+          replegaldocnro: '98765432', 
+          replegalapepaterno: 'PEREZ', 
+          replegalapematerno: 'GOMEZ', 
+          replegalnombres: 'JUAN'
       },
       responsablePlanilla: {
-          EncargadoPlanillaDocTip: '01', 
-          EncargadoPlanillaDocNro: '12345678', 
-          EncargadoPlanillaApePaterno: 'LOPEZ', 
-          EncargadoPlanillaApeMaterno: 'DIAZ', 
-          EncargadoPlanillaNombres: 'ANA'
+          encargadoplanilladoctip: '01', 
+          encargadoplanilladocnro: '12345678', 
+          encargadoplanillaapepaterno: 'LOPEZ', 
+          encargadoplanillaapematerno: 'DIAZ', 
+          encargadoplanillanombres: 'ANA'
       },
       bancos: {
-          CtaSolesPagoBancoCod: '02', 
-          CtaSolesPagoNumero: 'CUENTASOLESDELBCP', 
-          CtaDolaresPagoBancoCod: '03', 
-          CtaDolaresPagoNumero: 'CUENTADOLARESDELCONTINENTAL'
+          ctasolespagobancocod: '02', 
+          ctasolespagonumero: 'CUENTASOLESDELBCP', 
+          ctadolarespagobancocod: '03', 
+          ctadolarespagonumero: 'CUENTADOLARESDELCONTINENTAL'
       }
   }
   ];
@@ -141,29 +141,29 @@ export class EmpresaComponent implements OnInit {
 
   private initializeEmpresa(): Empresa {
     return {
-      EmpresaCod: '', 
-      RUC: '', 
-      RazonSocial: '', 
-      Direccion: '',
+      empresacod: '', 
+      ruc: '', 
+      razonsocial: '', 
+      direccion: '',
       representanteLegal: { 
-        RepLegalDocTip: '', 
-        RepLegalDocNro: '', 
-        RepLegalApePaterno: '',
-         RepLegalApeMaterno: '', 
-         RepLegalNombres: '' 
+        replegaldoctip: '', 
+        replegaldocnro: '', 
+        replegalapepaterno: '',
+        replegalapematerno: '', 
+        replegalnombres: '' 
       },
       responsablePlanilla: { 
-        EncargadoPlanillaDocTip: '', 
-        EncargadoPlanillaDocNro: '', 
-        EncargadoPlanillaApePaterno: '', 
-        EncargadoPlanillaApeMaterno: '', 
-        EncargadoPlanillaNombres: '' 
+        encargadoplanilladoctip: '', 
+        encargadoplanilladocnro: '', 
+        encargadoplanillaapepaterno: '', 
+        encargadoplanillaapematerno: '', 
+        encargadoplanillanombres: '' 
       },
       bancos: { 
-        CtaSolesPagoBancoCod: '', 
-        CtaSolesPagoNumero: '', 
-        CtaDolaresPagoBancoCod: '', 
-        CtaDolaresPagoNumero: '' 
+        ctasolespagobancocod: '', 
+        ctasolespagonumero: '', 
+        ctadolarespagobancocod: '', 
+        ctadolarespagonumero: '' 
       }
     };
   }
@@ -183,13 +183,13 @@ export class EmpresaComponent implements OnInit {
   }, 1000); 
   }
 
-  buscarEmpresa(): void {
+  verEmpresa(): void {
 
   }
 
   agregarEmpresa(): void {
     // Validación de código repetido al intentar agregar
-    if (this.mode === 'add' && this.empresa.EmpresaCod && this.currentEmpresas.some(e => e.EmpresaCod === this.empresa.EmpresaCod)) {
+    if (this.mode === 'add' && this.empresa.empresacod && this.currentEmpresas.some(e => e.empresacod === this.empresa.empresacod)) {
         this.messageService.add({severity:'error', summary:'Error', detail:'El Código de Empresa ya existe.'});
         return; 
     }
@@ -210,7 +210,7 @@ export class EmpresaComponent implements OnInit {
     }
 
     this.confirmationService.confirm({
-        message: `¿Está seguro de que desea eliminar a la empresa ${this.selectedEmpresa.RazonSocial}?`,
+        message: `¿Está seguro de que desea eliminar a la empresa ${this.selectedEmpresa.razonsocial}?`,
         header: 'Confirmar Eliminación',
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sí',
@@ -222,10 +222,10 @@ export class EmpresaComponent implements OnInit {
             const empresaAeliminar = this.selectedEmpresa!; 
             
             // Lógica de eliminación (simulación)
-            this.currentEmpresas = this.currentEmpresas.filter(e => e.EmpresaCod !== empresaAeliminar.EmpresaCod);
-            this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); 
-            
-            this.messageService.add({severity:'success', summary:'Éxito', detail:`Empresa ${empresaAeliminar.EmpresaCod} eliminada.`});
+            this.currentEmpresas = this.currentEmpresas.filter(e => e.empresacod !== empresaAeliminar.empresacod);
+            this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas));
+
+            this.messageService.add({severity:'success', summary:'Éxito', detail:`Empresa ${empresaAeliminar.empresacod} eliminada.`});
 
             this.selectedEmpresa = null; 
         }
@@ -233,10 +233,10 @@ export class EmpresaComponent implements OnInit {
   }
 
   validarCampos(): boolean {
-    if (!this.empresa.EmpresaCod || !this.empresa.RUC || !this.empresa.RazonSocial) {
+    if (!this.empresa.empresacod || !this.empresa.ruc || !this.empresa.razonsocial) {
       return false;
     }
-    if (!this.empresa.representanteLegal.RepLegalNombres || !this.empresa.bancos.CtaSolesPagoNumero) {      
+    if (!this.empresa.representanteLegal.replegalnombres || !this.empresa.bancos.ctasolespagonumero) {      
     }
     return true; 
   }
@@ -249,8 +249,8 @@ export class EmpresaComponent implements OnInit {
 
     if (this.mode === 'add') {
       // 1. Verificar si el código ya existe (solo al agregar)
-      if (this.currentEmpresas.some(e => e.EmpresaCod === this.empresa.EmpresaCod)) {
-          this.messageService.add({severity:'error', summary:'Error', detail:`El Código ${this.empresa.EmpresaCod} ya existe.`});
+      if (this.currentEmpresas.some(e => e.empresacod === this.empresa.empresacod)) {
+          this.messageService.add({severity:'error', summary:'Error', detail:`El Código ${this.empresa.empresacod} ya existe.`});
           return;
       }
 
@@ -260,7 +260,7 @@ export class EmpresaComponent implements OnInit {
 
     } else if (this.mode === 'edit') {
       // Simulación: Encontrar y reemplazar la empresa editada
-      const index = this.currentEmpresas.findIndex(e => e.EmpresaCod === this.empresa.EmpresaCod);
+      const index = this.currentEmpresas.findIndex(e => e.empresacod === this.empresa.empresacod);
       if (index > -1) {
           this.currentEmpresas[index] = this.empresa;
           this.messageService.add({severity:'success', summary:'Éxito', detail:'Cambios guardados exitosamente.'});
