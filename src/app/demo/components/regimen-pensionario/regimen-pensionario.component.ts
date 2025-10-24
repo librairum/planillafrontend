@@ -20,6 +20,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { RegimenPensionario } from '../../model/RegimenPensionario';
 
+import { RegimenPensionarioService } from '../../service/regimen-pensionario.service'
+
+import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
+
 @Component({
   selector: 'app-regimen-pensionario',
   standalone: true,
@@ -48,7 +52,7 @@ export class RegimenPensionarioComponent implements OnInit {
         rowsPerPage: number = 10; // Numero de filas por página
 
         constructor(
-            //private bancoService: BancoService,
+            private regimenPensionarioService: RegimenPensionarioService,
             private fb: FormBuilder,
             private confirmationService: ConfirmationService,
             //private bS: BreadcrumbService,
@@ -113,12 +117,12 @@ export class RegimenPensionarioComponent implements OnInit {
                 pla61flagactivo: 'S'
             }
           ]
-          /*this.bancoService.GetBancos().subscribe({
-                next: (data) => this.bancoList = data,
+          this.regimenPensionarioService.GetRegimenesPensionarios().subscribe({
+                next: (data) => this.regimenPensionarioList = data,
                 error: (error) => {
-                    verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar bancos');
+                    verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar regimenes pensionarios');
                 }
-            });*/
+            });
         }
 
         /* Funcion para generar texto segun tipo de dato */
