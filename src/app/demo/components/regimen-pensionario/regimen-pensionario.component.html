@@ -3,7 +3,7 @@
 
 <div class="container">
     <p-panel header="Régimen Pensionario" class="mb-3">
-        <p-breadcrumb [model]="items" class="max-w-full"></p-breadcrumb>
+        <!--<p-breadcrumb [model]="items" class="max-w-full"></p-breadcrumb>-->
     </p-panel>
     <br />
     <div class="card">
@@ -140,7 +140,7 @@
                                     pInitEditableRow
                                     (click)="onRowEditInit(regimen)"
                                     icon="pi pi-pencil"
-                                    pTooltip="Editar Régimen Pensionario"
+                                    pTooltip="Editar"
                                     [disabled]="isNew || isEditingAnyRow"
                                     class="p-button-rounded p-button-text p-button-sm"
                                     ></button>
@@ -161,12 +161,15 @@
                                     pTooltip="Cancelar"
                                     class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
 
-                            <!-- Botón Eliminar -->
+                            <!-- Botón Eliminar
+                            Se pasaba tambien el parametro ri en onDelete,
+                            pero no es necesario ya que se puede identificar con el objeto regimen
+                            -->
                             <button *ngIf="!editing" pButton
                                     type="button"
-                                    (click)="onDelete(regimen, ri)"
+                                    (click)="onDelete(regimen)"
                                     icon="pi pi-trash"
-                                    pTooltip="Borrar Régimen Pensionario"
+                                    pTooltip="Eliminar"
                                     [disabled]="isNew || isEditingAnyRow"
                                     class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
 

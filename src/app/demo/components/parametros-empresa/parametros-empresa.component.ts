@@ -19,6 +19,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { ParametroxEmpresa } from '../../model/ParametroxEmpresa';
 
+import { ParametroEmpresaService } from '../../service/parametro-empresa.service';
+
+import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
+
 @Component({
   selector: 'app-parametros-empresa',
   standalone: true,
@@ -45,7 +49,7 @@ export class ParametrosEmpresaComponent implements OnInit {
     rowsPerPage: number = 10; // Numero de filas por página
 
     constructor(
-        //private bancoService: BancoService,
+        private parametroEmpresaService: ParametroEmpresaService,
         private fb: FormBuilder,
         private confirmationService: ConfirmationService,
         //private bS: BreadcrumbService,
@@ -98,55 +102,14 @@ export class ParametrosEmpresaComponent implements OnInit {
 
     // cargar data
     cargarParametrosxEmpresa(): void {
-      this.parametroxEmpresaList = [
-        {
-            pla41empresacod: '001',
-            pla41anio: '2025',
-            pla41codigo: '01',
-            pla41descripcion: 'CUOTA SINDICAL',
-            pla41flagtipodato: 'N',
-            pla4101: 10,
-            pla4102: 10,
-            pla4103: 10,
-            pla4104: 10,
-            pla4105: 10,
-            pla4106: 10,
-            pla4107: 10,
-            pla4108: 10,
-            pla4109: 10,
-            pla4110: 10,
-            pla4111: 10,
-            pla4112: 10,
-            pla41flagestandar: 'S'
-        },
-        {
-            pla41empresacod: '002',
-            pla41anio: '2025',
-            pla41codigo: '02',
-            pla41descripcion: 'SCTR',
-            pla41flagtipodato: 'N',
-            pla4101: 10,
-            pla4102: 10,
-            pla4103: 10,
-            pla4104: 10,
-            pla4105: 10,
-            pla4106: 10,
-            pla4107: 10,
-            pla4108: 10,
-            pla4109: 10,
-            pla4110: 10,
-            pla4111: 10,
-            pla4112: 10,
-            pla41flagestandar: 'S'
-        }
-      ]
-      /*this.bancoService.GetBancos().subscribe({
-            next: (data) => this.bancoList = data,
-            error: (error) => {
-                verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar bancos');
-            }
-        });*/
+      this.parametroEmpresaService.GetParametrosxEmpresa().subscribe({
+                      next: (data) => this.parametroxEmpresaList = data,
+                      error: (error) => {
+                          verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar regimenes pensionarios');
+                      }
+                  });
     }
+
     //edicion
     onRowEditInit(parametro: ParametroxEmpresa): void {
         this.editingParametroxEmpresa = { ...parametro };
@@ -154,42 +117,18 @@ export class ParametrosEmpresaComponent implements OnInit {
     }
 
     onRowEditSave(parametro: ParametroxEmpresa): void {
-        if (this.editingParametroxEmpresa) {
-            const index = this.parametroxEmpresaList.findIndex(p =>
-                p.pla41empresacod === parametro.pla41empresacod &&
-                p.pla41codigo === parametro.pla41codigo
-            );
-
-            if (index !== -1) {
-                this.parametroxEmpresaList[index] = { ...parametro };
-
-                this.editingParametroxEmpresa = null;
-                this.isEditingAnyRow = false;
-
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Registro actualizado correctamente'
-                });
-            } else {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'No se pudo encontrar el registro para actualizar'
-                });
-            }
-
-            /*this.bancoService.ActualizarBanco(banco).subscribe({
-                next: () => {
-                    this.editingBanco = null;
-                    this.isEditingAnyRow = false;
-                    verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro actualizado');
-                },
-                error: () => {
-                    verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al actualizar');
-                }
-            })*/
-        }
+      if (this.editingParametroxEmpresa) {
+                        this.parametroEmpresaService.ActualizarParametroxEmpresa(parametro).subscribe({
+                            next: () => {
+                                this.editingParametroxEmpresa = null;
+                                this.isEditingAnyRow = false;
+                                verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro actualizado');
+                            },
+                            error: () => {
+                                verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al actualizar');
+                            }
+                        })
+                    }
     }
 
 
@@ -198,6 +137,7 @@ export class ParametrosEmpresaComponent implements OnInit {
             this.parametroxEmpresaList[index] = { ...this.editingParametroxEmpresa };
             this.editingParametroxEmpresa = null;
             this.isEditingAnyRow = false;
+            this.cargarParametrosxEmpresa();
         }
     }
 
@@ -218,38 +158,21 @@ export class ParametrosEmpresaComponent implements OnInit {
     onSave() {
         if (this.parametroxEmpresaForm.valid) {
             const newParametroxEmpresa: ParametroxEmpresa = this.parametroxEmpresaForm.value;
-            // Verifica si ya existe el registro
-            const existe = this.parametroxEmpresaList.some(p =>
-                p.pla41empresacod === newParametroxEmpresa.pla41empresacod &&
-                p.pla41codigo === newParametroxEmpresa.pla41codigo
-            );
-
-            if (existe) {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Ya existe un registro con ese código y empresa'
-                });
-                return;
-            }
-
-            // Agrega el nuevo registro
-            this.parametroxEmpresaList.push(newParametroxEmpresa);
-            this.isEditing = false;
-            this.isNew = false;
-            this.parametroxEmpresaForm.reset();
-
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Registro guardado correctamente'
+            this.parametroEmpresaService.CrearParametroxEmpresa(newParametroxEmpresa).subscribe({
+                next: () => {
+                    this.isEditing = false;
+                    this.isNew = false;
+                    this.parametroxEmpresaForm.reset();
+                    verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado correctamente');
+                    this.cargarParametrosxEmpresa();
+                },
+                error: (err) => {
+                    verMensajeInformativo(this.messageService, 'error', 'Error', err.message || 'Ya existe un registro con ese código y empresa');
+                }
             });
         } else {
-            this.messageService.add({
-                severity: 'warn',
-                summary: 'Advertencia',
-                detail: 'Complete todos los campos requeridos'
-            });
+            verMensajeInformativo(this.messageService, 'warn', 'Advertencia', 'Complete todos los campos requeridos');
+        }
             /*
             this.parametroxEmpresaService.CrearParametroxEmpresa(newParametroxEmpresa).subscribe({
                 next: () => {
@@ -264,7 +187,7 @@ export class ParametrosEmpresaComponent implements OnInit {
                     verMensajeInformativo(this.messageService, 'error', 'Error', 'No se pudo guardar el registro');
                 },
             })*/
-        }
+
     }
 
     onCancel() {
@@ -278,7 +201,7 @@ export class ParametrosEmpresaComponent implements OnInit {
         });
     }
 
-    onDelete(parametro: ParametroxEmpresa, index: number) {
+    onDelete(parametro: ParametroxEmpresa) {
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar el parametro <b>${parametro.pla41descripcion}</b>?`,
             header: 'Confirmar Eliminación',
@@ -288,11 +211,18 @@ export class ParametrosEmpresaComponent implements OnInit {
             acceptButtonStyleClass: 'p-button-danger',
             rejectButtonStyleClass: 'p-button',
             accept: () => {
-              this.parametroxEmpresaList.splice(index, 1);
-              this.messageService.add({
-                  severity: 'success',
-                  summary: 'Éxito',
-                  detail: 'Registro eliminado correctamente'
+              this.parametroEmpresaService.EliminarParametroxEmpresa(
+                  parametro.pla41empresacod,
+                  parametro.pla41anio,
+                  parametro.pla41codigo
+              ).subscribe({
+                  next: () => {
+                      verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro eliminado correctamente');
+                      this.cargarParametrosxEmpresa();
+                  },
+                  error: () => {
+                      verMensajeInformativo(this.messageService, 'error', 'Error', 'No se pudo eliminar el registro');
+                  }
               });
               /*
                 this.bancoService.EliminarBanco(banco.ban01Empresa, banco.ban01IdBanco).subscribe({

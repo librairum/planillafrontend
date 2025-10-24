@@ -20,6 +20,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { ParametroGeneral } from '../../model/ParametroGeneral';
 
+import { ParametroGeneralService } from '../../service/parametro-general.service';
+
+import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
+
 @Component({
   selector: 'app-parametros-general',
   standalone: true,
@@ -46,7 +50,7 @@ export class ParametrosGeneralComponent implements OnInit {
     rowsPerPage: number = 10; // Numero de filas por página
 
     constructor(
-        //private bancoService: BancoService,
+        private parametroGeneralService: ParametroGeneralService,
         private fb: FormBuilder,
         private confirmationService: ConfirmationService,
         //private bS: BreadcrumbService,
@@ -97,50 +101,12 @@ export class ParametrosGeneralComponent implements OnInit {
 
     // cargar data
     cargarParametrosGenerales(): void {
-      this.parametroGeneralList = [
-        {
-            pla40anio: '2025',
-            pla40codigo: '01',
-            pla40descripcion: 'REMUNERACION MINIMA VITAL',
-            pla40flagtipodato: 'I',
-            pla4001: 1130.00,
-            pla4002: 1130.00,
-            pla4003: 1130.00,
-            pla4004: 1130.00,
-            pla4005: 1130.00,
-            pla4006: 1130.00,
-            pla4007: 1130.00,
-            pla4008: 1130.00,
-            pla4009: 1130.00,
-            pla4010: 1130.00,
-            pla4011: 1130.00,
-            pla4012: 1130.00
-        },
-        {
-            pla40anio: '2025',
-            pla40codigo: '03',
-            pla40descripcion: 'APORTE SENATI',
-            pla40flagtipodato: 'P',
-            pla4001: 0.75,
-            pla4002: 0.75,
-            pla4003: 0.75,
-            pla4004: 0.75,
-            pla4005: 0.75,
-            pla4006: 0.75,
-            pla4007: 0.75,
-            pla4008: 0.75,
-            pla4009: 0.75,
-            pla4010: 0.75,
-            pla4011: 0.75,
-            pla4012: 0.75
-        }
-      ]
-      /*this.bancoService.GetBancos().subscribe({
-            next: (data) => this.bancoList = data,
-            error: (error) => {
-                verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar bancos');
-            }
-        });*/
+      this.parametroGeneralService.GetParametrosGenerales().subscribe({
+                      next: (data) => this.parametroGeneralList = data,
+                      error: (error) => {
+                          verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar regimenes pensionarios');
+                      }
+                  });
     }
 
     /* Funcion para generar texto segun tipo de dato */
@@ -163,41 +129,17 @@ export class ParametrosGeneralComponent implements OnInit {
 
     onRowEditSave(parametro: ParametroGeneral): void {
         if (this.editingParametroGeneral) {
-            const index = this.parametroGeneralList.findIndex(p =>
-                p.pla40anio === parametro.pla40anio &&
-                p.pla40codigo === parametro.pla40codigo
-            );
-
-            if (index !== -1) {
-                this.parametroGeneralList[index] = { ...parametro };
-
-                this.editingParametroGeneral = null;
-                this.isEditingAnyRow = false;
-
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Registro actualizado correctamente'
-                });
-            } else {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'No se pudo encontrar el registro para actualizar'
-                });
-            }
-
-            /*this.bancoService.ActualizarBanco(banco).subscribe({
-                next: () => {
-                    this.editingBanco = null;
-                    this.isEditingAnyRow = false;
-                    verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro actualizado');
-                },
-                error: () => {
-                    verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al actualizar');
-                }
-            })*/
-        }
+                        this.parametroGeneralService.ActualizarParametroGeneral(parametro).subscribe({
+                            next: () => {
+                                this.editingParametroGeneral = null;
+                                this.isEditingAnyRow = false;
+                                verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro actualizado');
+                            },
+                            error: () => {
+                                verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al actualizar');
+                            }
+                        })
+                    }
     }
 
 
@@ -206,6 +148,7 @@ export class ParametrosGeneralComponent implements OnInit {
             this.parametroGeneralList[index] = { ...this.editingParametroGeneral };
             this.editingParametroGeneral = null;
             this.isEditingAnyRow = false;
+            this.cargarParametrosGenerales();
         }
     }
 
@@ -225,54 +168,22 @@ export class ParametrosGeneralComponent implements OnInit {
 
     onSave() {
         if (this.parametroGeneralForm.valid) {
-            const newParametroGeneral: ParametroGeneral = this.parametroGeneralForm.value;
-            // Verifica si ya existe el registro
-            const existe = this.parametroGeneralList.some(p =>
-                p.pla40anio === newParametroGeneral.pla40anio &&
-                p.pla40codigo === newParametroGeneral.pla40codigo
-            );
-
-            if (existe) {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Ya existe un registro con ese código y empresa'
-                });
-                return;
-            }
-
-            // Agrega el nuevo registro
-            this.parametroGeneralList.push(newParametroGeneral);
-            this.isEditing = false;
-            this.isNew = false;
-            this.parametroGeneralForm.reset();
-
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Registro guardado correctamente'
-            });
-        } else {
-            this.messageService.add({
-                severity: 'warn',
-                summary: 'Advertencia',
-                detail: 'Complete todos los campos requeridos'
-            });
-            /*
-            this.parametroxEmpresaService.CrearParametroxEmpresa(newParametroxEmpresa).subscribe({
-                next: () => {
-                    this.isEditing = false;
-                    this.isNew = false;
-                    this.bancoForm.reset();
-                    verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado');
-                    this.cargarBancos();
-                },
-                error: (err) => {
-                    console.error('Error al guardar:', err);
-                    verMensajeInformativo(this.messageService, 'error', 'Error', 'No se pudo guardar el registro');
-                },
-            })*/
-        }
+                    const newParametroGeneral: ParametroGeneral = this.parametroGeneralForm.value;
+                    this.parametroGeneralService.CrearParametroGeneral(newParametroGeneral).subscribe({
+                        next: () => {
+                            this.isEditing = false;
+                            this.isNew = false;
+                            this.parametroGeneralForm.reset();
+                            verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado correctamente');
+                            this.cargarParametrosGenerales();
+                        },
+                        error: (err) => {
+                            verMensajeInformativo(this.messageService, 'error', 'Error', err.message || 'Ya existe un registro con ese código y empresa');
+                        }
+                    });
+                } else {
+                    verMensajeInformativo(this.messageService, 'warn', 'Advertencia', 'Complete todos los campos requeridos');
+                }
     }
 
     onCancel() {
@@ -296,21 +207,18 @@ export class ParametrosGeneralComponent implements OnInit {
             acceptButtonStyleClass: 'p-button-danger',
             rejectButtonStyleClass: 'p-button',
             accept: () => {
-              this.parametroGeneralList.splice(index, 1);
-              this.messageService.add({
-                  severity: 'success',
-                  summary: 'Éxito',
-                  detail: 'Registro eliminado correctamente'
+              this.parametroGeneralService.EliminarParametroGeneral(
+                  parametro.pla40anio,
+                  parametro.pla40codigo
+              ).subscribe({
+                  next: () => {
+                      verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro eliminado correctamente');
+                      this.cargarParametrosGenerales();
+                  },
+                  error: () => {
+                      verMensajeInformativo(this.messageService, 'error', 'Error', 'No se pudo eliminar el registro');
+                  }
               });
-              /*
-                this.bancoService.EliminarBanco(banco.ban01Empresa, banco.ban01IdBanco).subscribe({
-                    next: () => {
-                        this.bancoList.splice(index, 1);
-                        verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro Eliminado');
-                        this.cargarBancos()
-                    }
-                })
-                    */
             }
         })
     }

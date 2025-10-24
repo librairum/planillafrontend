@@ -22,7 +22,9 @@ import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { PlantillaAsistencia } from '../../model/PlantillaAsistencia';
 import { PlantillaAsistenciaDetalle } from '../../model/PlantillaAsistenciaDetalle';
 
+import { PlantillaAsistenciaService } from '../../service/plantilla-asistencia.service';
 
+import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
 
 @Component({
   selector: 'app-plantilla-asistencia',
@@ -63,7 +65,7 @@ export class PlantillaAsistenciaComponent implements OnInit {
     //La cual devuelve SOLO los detalles que estan marcados en la plantilla
 
     constructor(
-      //agregar Servicio cuando sea implementado
+      private plantillaAsistenciaService: PlantillaAsistenciaService,
       private fb: FormBuilder,
       private router: Router,
       private messageService: MessageService,
@@ -79,6 +81,7 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     initForm() {
       this.plantillaAsistenciaForm = this.fb.group({
+        pla20empresacod: '',
         pla20plantillacod: ['', Validators.required],
         pla20descripcion: ['', Validators.required],
         pla20flagmodifxusuario: [false],
@@ -89,14 +92,12 @@ export class PlantillaAsistenciaComponent implements OnInit {
     }
 
     cargarPlantillaAsistencia(): void {
-      this.plantillaAsistenciaList = [
-        { pla20plantillacod: '001', pla20descripcion: 'PLANILLA MENSUAL', pla20flagmodifxusuario: 'S', pla20flagregistrainasis: 'N' },
-        { pla20plantillacod: '002', pla20descripcion: 'PLANILLA VACACIONES', pla20flagmodifxusuario: 'S', pla20flagregistrainasis: 'N' },
-        { pla20plantillacod: '003', pla20descripcion: 'PLANILLA GRATIFICACIONES', pla20flagmodifxusuario: 'S', pla20flagregistrainasis: 'N' },
-        { pla20plantillacod: '004', pla20descripcion: 'PLANILLA LIQUIDACION', pla20flagmodifxusuario: 'S', pla20flagregistrainasis: 'N' },
-        { pla20plantillacod: '005', pla20descripcion: 'PLANILLA UTILIDAD', pla20flagmodifxusuario: 'N', pla20flagregistrainasis: 'N' },
-        { pla20plantillacod: '006', pla20descripcion: 'PLANILLA ADELANTO', pla20flagmodifxusuario: 'N', pla20flagregistrainasis: 'N' }
-      ];
+      this.plantillaAsistenciaService.GetPlantillasAsistencia().subscribe({
+                            next: (data) => this.plantillaAsistenciaList = data,
+                            error: (error) => {
+                                verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al cargar plantillas de asistencia');
+                            }
+                        });
     }
 
     // Edits
@@ -107,29 +108,17 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     onRowEditSave(plantilla: PlantillaAsistencia): void {
       if (this.editingPlantillaAsistencia) {
-        const index = this.plantillaAsistenciaList.findIndex(p=>
-          p.pla20plantillacod === plantilla.pla20plantillacod
-        )
-
-        if (index !== -1){
-          this.plantillaAsistenciaList[index] = { ...plantilla };
-
-          this.editingPlantillaAsistencia = null;
-          this.isEditingAnyRow = false;
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Plantilla de asistencia actualizada correctamente'
-          });
-        } else{
-          this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'No se pudo encontrar el registro para actualizar'
-                });
-        }
-      }
+                        this.plantillaAsistenciaService.ActualizarPlantillaAsistencia(plantilla).subscribe({
+                            next: () => {
+                                this.editingPlantillaAsistencia = null;
+                                this.isEditingAnyRow = false;
+                                verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro actualizado');
+                            },
+                            error: () => {
+                                verMensajeInformativo(this.messageService, 'error', 'Error', 'Error al actualizar');
+                            }
+                        })
+                    }
     }
 
     onRowEditCancel(plantilla: PlantillaAsistencia, index: number): void {
@@ -137,6 +126,7 @@ export class PlantillaAsistenciaComponent implements OnInit {
         this.plantillaAsistenciaList[index] = { ...this.editingPlantillaAsistencia};
         this.editingPlantillaAsistencia = null;
         this.isEditingAnyRow = false;
+        this.cargarPlantillaAsistencia();
       }
     }
 
@@ -157,47 +147,47 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     onSave(){
       if (this.plantillaAsistenciaForm.valid) {
-        const raw = this.plantillaAsistenciaForm.value;
-        //Mapear booleanos S/N
-        const newPlantillaAsistencia: PlantillaAsistencia = {
-          ...raw,
-          pla20flagmodifxusuario: raw.pla20flagmodifxusuario ? 'S' : 'N',
-          pla20flagregistrainasis: raw.pla20flagregistrainasis ? 'S' : 'N'
-        };
+            const raw = this.plantillaAsistenciaForm.value;
+            //mapear booleanos a S/N
+            const newPlantillaAsistencia: PlantillaAsistencia = {
+              ...raw,
+              pla20flagmodifxusuario: raw.pla20flagmodifxusuario ? 'S' : 'N',
+              pla20flagregistrainasis: raw.pla20flagregistrainasis ? 'S' : 'N',
+            };
 
-        const existe = this.plantillaAsistenciaList.some(p =>
-          p.pla20plantillacod === newPlantillaAsistencia.pla20plantillacod
-        )
-
-        if (existe){
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Ya existe una plantilla con el mismo código'
-          });
-          return;
-        }
-
-        // Agregar la nueva plantilla a la lista
-        this.plantillaAsistenciaList.push(newPlantillaAsistencia);
-        this.isEditing = false;
-        this.isNew = false;
-        this.plantillaAsistenciaForm.reset();
-
-        // Mostrar mensaje de éxito
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Plantilla de asistencia creada correctamente'
-        });
-      }
-      else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Por favor, complete todos los campos requeridos'
-        });
-      }
+            this.plantillaAsistenciaService
+              .CrearPlantillaAsistencia(newPlantillaAsistencia)
+              .subscribe({
+                next: () => {
+                  this.isEditing = false;
+                  this.isNew = false;
+                  this.plantillaAsistenciaForm.reset();
+                  verMensajeInformativo(
+                    this.messageService,
+                    'success',
+                    'Éxito',
+                    'Registro guardado'
+                  );
+                  this.cargarPlantillaAsistencia();
+                },
+                error: (err) => {
+                  console.error('Error al guardar:', err);
+                  verMensajeInformativo(
+                    this.messageService,
+                    'error',
+                    'Error',
+                    'No se pudo guardar el registro'
+                  );
+                },
+              });
+              } else {
+                verMensajeInformativo(
+                  this.messageService,
+                  'warn',
+                  'Advertencia',
+                  'Complete todos los campos requeridos'
+                );
+              }
     }
 
     // helper para togglear flags en la fila y mantener 'S'/'N'
@@ -219,32 +209,35 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     onDelete(plantilla: PlantillaAsistencia, index: number){
       this.confirmationService.confirm({
-        message: `¿Está seguro que desea eliminar la plantilla de asistencia <b>${plantilla.pla20descripcion}</b>?`,
-              header: 'Confirmar Eliminación',
-              icon: 'pi pi-exclamation-triangle',
-              acceptLabel: 'Sí',
-              rejectLabel: 'No',
-              acceptButtonStyleClass: 'p-button-danger',
-              rejectButtonStyleClass: 'p-button',
-
-              accept: () => {
-                this.plantillaAsistenciaList.splice(index, 1);
-                this.messageService.add({
-                  severity:'success',
-                  summary: 'Éxito',
-                  detail: 'Plantilla de asistencia eliminada correctamente'
-                });
-              }
-              /*accept: () => {
-                  this.bancoService.EliminarBanco(banco.ban01Empresa, banco.ban01IdBanco).subscribe({
-                      next: () => {
-                          this.bancoList.splice(index, 1);
-                          verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro Eliminado');
-                          this.cargarBancos()
-                      }
-                  })
-              }*/
-      })
+      message: `¿Está seguro que desea eliminar la plantilla <b>${plantilla.pla20descripcion}</b>?`,
+      header: 'Confirmar Eliminación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button',
+      accept: () => {
+        this.plantillaAsistenciaService
+          .EliminarPlantillaAsistencia(plantilla.pla20empresacod, plantilla.pla20plantillacod)
+          .subscribe({
+            next: () => {
+              this.cargarPlantillaAsistencia();
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Registro eliminado correctamente',
+              });
+            },
+            error: () => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se pudo eliminar el registro',
+              });
+            },
+          });
+          },
+        });
     }
 
     // Mock data centralizado para detalles (mejor organizar aquí)

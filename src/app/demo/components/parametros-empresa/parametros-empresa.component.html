@@ -3,7 +3,7 @@
 
 <div class="container">
     <p-panel header="Parámetros por Empresa" class="mb-3">
-        <p-breadcrumb [model]="items" class="max-w-full"></p-breadcrumb>
+        <!--<p-breadcrumb [model]="items" class="max-w-full"></p-breadcrumb>-->
     </p-panel>
     <br />
     <div class="card">
@@ -240,7 +240,7 @@
                                     pInitEditableRow
                                     (click)="onRowEditInit(parametro)"
                                     icon="pi pi-pencil"
-                                    pTooltip="Editar Parametro x Empresa"
+                                    pTooltip="Editar"
                                     [disabled]="isNew || isEditingAnyRow"
                                     class="p-button-rounded p-button-text p-button-sm"
                                     ></button>
@@ -261,12 +261,14 @@
                                     pTooltip="Cancelar"
                                     class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
 
-                            <!-- Botón Eliminar -->
+                            <!-- Botón Eliminar
+                            Ya no es necesario pasar el índice, se puede obtener del parámetro
+                            -->
                             <button *ngIf="!editing" pButton
                                     type="button"
-                                    (click)="onDelete(parametro, ri)"
+                                    (click)="onDelete(parametro)"
                                     icon="pi pi-trash"
-                                    pTooltip="Borrar Parametro x Empresa"
+                                    pTooltip="Eliminar"
                                     [disabled]="isNew || isEditingAnyRow"
                                     class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
 
@@ -280,6 +282,25 @@
                 <tr *ngIf="isEditing">
                     <td colspan="4">
                         <form [formGroup]="parametroxEmpresaForm" class="grid p-fluid">
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla41empresacod"
+                                           placeholder="Código de empresa"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
+                            <div class="col-2" style="width: 20%">
+                                <span class="p-input-icon-left w-full">
+                                    <input pInputText
+                                           formControlName="pla41anio"
+                                           placeholder="Año"
+                                           class="p-inputtext-sm w-full"/>
+                                </span>
+                            </div>
+
                             <div class="col-2" style="width: 20%">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
@@ -288,6 +309,7 @@
                                            class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
+
 
                             <div class="col-4" style="width: 40%">
                                 <span class="p-input-icon-left w-full">

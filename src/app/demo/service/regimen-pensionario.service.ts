@@ -18,6 +18,30 @@ export class RegimenPensionarioService {
   urlAPI: string = ''; //
   apiUrl: any;
 
+  //Lista con datos mock, eliminar luego
+  public regimenPensionarioList: RegimenPensionario[] = [
+    {
+            pla61codigo: '01',
+            pla61descripcion: 'SIST NACIONAL DE PENSIONES DL 19990',
+            pla61tiporegpensionariocod: 'SNP',
+            pla61flagsectorprivado: 'S',
+            pla61flagsectorpublico: 'S',
+            pla61afpnetcod: '',
+            pla61plamecod: '02',
+            pla61flagactivo: 'S'
+        },
+        {
+            pla61codigo: '02',
+            pla61descripcion: 'INTEGRA',
+            pla61tiporegpensionariocod: 'SPP',
+            pla61flagsectorprivado: 'S',
+            pla61flagsectorpublico: 'S',
+            pla61afpnetcod: 'IN',
+            pla61plamecod: '21',
+            pla61flagactivo: 'S'
+        }
+  ];
+
   constructor(
     private httpClient: HttpClient,
     private configService: ConfigService
@@ -39,32 +63,10 @@ export class RegimenPensionarioService {
 
   public GetRegimenesPensionarios(): Observable<RegimenPensionario[]>
   {
-    const mockData: RegimenPensionario[] = [
-        {
-            pla61codigo: '01',
-            pla61descripcion: 'SIST NACIONAL DE PENSIONES DL 19990',
-            pla61tiporegpensionariocod: 'SNP',
-            pla61flagsectorprivado: 'S',
-            pla61flagsectorpublico: 'S',
-            pla61afpnetcod: '',
-            pla61plamecod: '02',
-            pla61flagactivo: 'S'
-        },
-        {
-            pla61codigo: '02',
-            pla61descripcion: 'INTEGRA',
-            pla61tiporegpensionariocod: 'SPP',
-            pla61flagsectorprivado: 'S',
-            pla61flagsectorpublico: 'S',
-            pla61afpnetcod: 'IN',
-            pla61plamecod: '21',
-            pla61flagactivo: 'S'
-        }
-    ];
-    return new Observable<RegimenPensionario[]>(observer => {
-        observer.next(mockData);
-        observer.complete();
-    });
+        return new Observable<RegimenPensionario[]>(observer => {
+          observer.next(this.regimenPensionarioList);
+          observer.complete();
+      });
         /*return this.http
             .get<RespuestaAPIBase<Banco[]>>(this.urlAPI + '/SpList?empresa=01')
             .pipe(
@@ -86,23 +88,65 @@ export class RegimenPensionarioService {
     }
 
   public CrearRegimenPensionario(regimen: RegimenPensionario): Observable<any> {
-        return this.http.post<any>(this.urlAPI + '/SpCreate', regimen);
+        const existe = this.regimenPensionarioList.some(r =>
+            r.pla61codigo === regimen.pla61codigo
+        );
+
+        return new Observable(observer => {
+            if (existe) {
+                observer.error({ success: false, message: 'Ya existe un registro con ese código' });
+            } else {
+                this.regimenPensionarioList.push({ ...regimen });
+                observer.next({ success: true, message: 'Registro guardado correctamente' });
+                observer.complete();
+            }
+        });
+        //return this.http.post<any>(this.urlAPI + '/SpCreate', regimen);
     }
 
   public ActualizarRegimenPensionario(regimen: RegimenPensionario): Observable<any> {
-        let urlmodificada = this.urlAPI + '/SpUpdate';
-        return this.http.put<any>(urlmodificada, regimen);
+
+                const index = this.regimenPensionarioList.findIndex(r =>
+                    r.pla61codigo === regimen.pla61codigo
+                );
+
+                if (index !== -1) {
+                    this.regimenPensionarioList[index] = { ...regimen };
+
+                    return new Observable(observer => {
+                      //console.log('Registro actualizado:', this.regimenPensionarioList[index]);
+                        observer.next({ success: true, message: 'Registro actualizado correctamente' });
+                        observer.complete();
+                    });
+                } else {
+                    return new Observable(observer => {
+                      //console.log('No se encontró el registro para actualizar:', regimen.pla61codigo);
+                        observer.error({ success: false, message: 'No se pudo encontrar el registro para actualizar' });
+                    });
+                }
+        /*let urlmodificada = this.urlAPI + '/SpUpdate';
+        return this.http.put<any>(urlmodificada, regimen);*/
     }
 
-  public EliminarRegimenPensionario()
-    //(idempresa: string, plantilla: string): Observable<any>
-    {
+  public EliminarRegimenPensionario(idregimen: string): Observable<any> {
+    const index = this.regimenPensionarioList.findIndex(r =>
+        r.pla61codigo === idregimen
+      );
 
-
+    return new Observable(observer => {
+        if (index !== -1) {
+            this.regimenPensionarioList.splice(index, 1);
+            observer.next({ success: true, message: 'Registro eliminado correctamente' });
+            observer.complete();
+        } else {
+            observer.error({ success: false, message: 'No se encontró el registro para eliminar' });
+        }
+    });
         //let urlmodificada = `${this.urlAPI}/SpDelete?idempresa=${idempresa}&idbanco=${plantilla}`;
         //return this.http.delete<any>(urlmodificada);
     }
 
+    // Metodo no implementado ni usado aún
     public getData(): Observable<RegimenPensionario[]> {
         return this.http.get<RegimenPensionario[]>(this.urlAPI);
     }
