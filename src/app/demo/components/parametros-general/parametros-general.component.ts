@@ -222,4 +222,4 @@ export class ParametrosGeneralComponent implements OnInit {
             }
         })
     }
-}
+}  
