@@ -1,5 +1,6 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
+
 <p-dialog header="Detalle Plantilla"
 [(visible)]="showDetalleModal"
 [modal]="true"
@@ -18,17 +19,28 @@
       <tr>
         <th>Columna</th>
         <th>Alias</th>
-        <th>Estado</th>
+        <th style="text-align: center;">Estado</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-det let-i="rowIndex">
       <tr>
         <td>{{ det.pla21camponombre }}</td>
         <td>{{ det.pla21campoalias }}</td>
-        <td>{{ det.pla21correlativo }}</td>
+        <td style="text-align: center;">
+          <p-checkbox
+            [binary]="true"
+            [(ngModel)]="det.estado"
+            [trueValue]="1"
+            [falseValue]="0"
+          ></p-checkbox>
+        </td>
       </tr>
     </ng-template>
   </p-table>
+  <div class="flex justify-content-end mt-3">
+    <button pButton type="button" label="Guardar cambios" icon="pi pi-save"
+      (click)="guardarEstadosDetalle()" class="p-button-success p-button-sm"></button>
+  </div>
 </p-dialog>
 
 <div class="container">
@@ -60,9 +72,9 @@
         <!-- Cabecera de Tabla -->
         <ng-template pTemplate="header">
             <tr>
-                <th>Descripción</th>
-                <th>Mod.Usuario</th>
-                <th>Reg.Inasistencia</th>
+                <th style="text-align: center;">Descripción</th>
+                <th style="text-align: center;">Mod.Usuario</th>
+                <th style="text-align: center;">Reg.Inasistencia</th>
                 <th style="text-align: center;">Acciones</th>
             </tr>
         </ng-template>
@@ -82,7 +94,7 @@
                   </p-cellEditor>
                 </td>
 
-                <td>
+                <td style="text-align: center;">
                   <!-- Mod.Usuario como checkbox (S = checked, N = unchecked) -->
                   <p-checkbox
                     [binary]="true"
@@ -103,7 +115,7 @@
                 -->
                 </td>
 
-                <td>
+                <td style="text-align: center;">
                   <!-- Reg.Inasistencia como checkbox (S = checked, N = unchecked) -->
                   <p-checkbox
                     [binary]="true"
@@ -178,7 +190,7 @@
                                     *ngIf="!editing"
                                     pButton
                                     type="button"
-                                    (click)="onDelete(plantilla, ri)"
+                                    (click)="onDelete(plantilla)"
                                     icon="pi pi-trash"
                                     pTooltip="Eliminar"
                                     [disabled]="isNew || isEditingAnyRow"

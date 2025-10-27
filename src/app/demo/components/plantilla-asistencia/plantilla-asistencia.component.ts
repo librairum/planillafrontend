@@ -76,7 +76,6 @@ export class PlantillaAsistenciaComponent implements OnInit {
       this.initForm();
       this.cargarPlantillaAsistencia();
       // construir mapa una sola vez
-      this.buildDetalleMap(); //borrar esto despues de implementar el servicio
     }
 
     initForm() {
@@ -207,7 +206,7 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     //Eliminar
 
-    onDelete(plantilla: PlantillaAsistencia, index: number){
+    onDelete(plantilla: PlantillaAsistencia){
       this.confirmationService.confirm({
       message: `¿Está seguro que desea eliminar la plantilla <b>${plantilla.pla20descripcion}</b>?`,
       header: 'Confirmar Eliminación',
@@ -240,56 +239,26 @@ export class PlantillaAsistenciaComponent implements OnInit {
         });
     }
 
-    // Mock data centralizado para detalles (mejor organizar aquí)
-    //Borrar luego
-    mockDetalleData: PlantillaAsistenciaDetalle[] = [
-      // details for plantilla 001
-      { pla21empresacod:'00032', pla21plantillacod:'001', pla21correlativo: 1, pla21camponombre:'Pla01CampoA', pla21campoalias:'Campo A'},
-      { pla21empresacod:'00032', pla21plantillacod:'001', pla21correlativo: 2, pla21camponombre:'Pla01CampoB', pla21campoalias:'Campo B'},
 
-      // details for plantilla 002
-      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 1, pla21camponombre:'Pla02VacacionesFisicas', pla21campoalias:'Dias Fisicos'},
-      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 2, pla21camponombre:'Pla02VacacionesVendidas', pla21campoalias:'Dias Vendidas'},
-      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 3, pla21camponombre:'Pla02VacaFechaIni', pla21campoalias:'Fecha Inicio'},
-      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 4, pla21camponombre:'Pla02VacaFechaFin', pla21campoalias:'Fecha Fin'},
-
-      // details for plantilla 003
-      { pla21empresacod:'00032', pla21plantillacod:'003', pla21correlativo: 1, pla21camponombre:'Pla03CampoA', pla21campoalias:'Campo A'},
-      { pla21empresacod:'00032', pla21plantillacod:'003', pla21correlativo: 2, pla21camponombre:'Pla03CampoB', pla21campoalias:'Campo B'},
-
-      // other empresas / ejemplos
-      { pla21empresacod:'00032', pla21plantillacod:'004', pla21correlativo: 1, pla21camponombre:'Pla04CampoA', pla21campoalias:'Campo A'}
-    ];
-
-    // Mapa indexado por pla21plantillacod para acceso rápido
-    detalleMap: { [plantillaCod: string]: PlantillaAsistenciaDetalle[] } = {};
-
-    // Construye el índice/mapa desde el arreglo mock
-    buildDetalleMap(): void {
-      this.detalleMap = {};
-      for (const d of this.mockDetalleData) {
-        if (!this.detalleMap[d.pla21plantillacod]) {
-          this.detalleMap[d.pla21plantillacod] = [];
-        }
-        this.detalleMap[d.pla21plantillacod].push(d);
-      }
-    }
 
 
     //cargar detalles
-    cargarDetalle(pla20plantillacod: string, pla20empresacod?: string): void {
-      const all = this.detalleMap[pla20plantillacod] ?? [];
-      if (pla20empresacod) {
-        this.plantillaDetalleList = all.filter(x => x.pla21empresacod === pla20empresacod);
-      } else {
-        this.plantillaDetalleList = [...all]; // copia para evitar mutaciones accidentales
-      }
+    cargarDetalle(pla20plantillacod: string, pla20empresacod: string): void {
+      this.plantillaAsistenciaService.GetPlantillaAsistenciaDetalleList(pla20plantillacod, pla20empresacod)
+        .subscribe({
+          next: (detalles) => {
+            this.plantillaDetalleList = detalles.map(det => ({ ...det }));
+          },
+          error: () => {
+            this.plantillaDetalleList = [];
+          }
+        });
     }
 
     // llamado desde el botón "ver detalle"
     showDetalle(plantilla: PlantillaAsistencia): void {
       this.selectedPlantilla = plantilla;
-      this.cargarDetalle(plantilla.pla20plantillacod);
+      this.cargarDetalle(plantilla.pla20plantillacod, plantilla.pla20empresacod);
       this.showDetalleModal = true;
     }
 
@@ -298,6 +267,20 @@ export class PlantillaAsistenciaComponent implements OnInit {
       this.showDetalleModal = false;
       this.selectedPlantilla = null;
       this.plantillaDetalleList = [];
+    }
+
+    //guardar estados de detalles
+
+    guardarEstadosDetalle(): void {
+      this.plantillaAsistenciaService.GuardarEstadosDetalle(this.plantillaDetalleList)
+        .subscribe({
+          next: () => {
+            verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Estados guardados correctamente');
+          },
+          error: () => {
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'No se pudieron guardar los estados');
+          }
+        });
     }
 
 }

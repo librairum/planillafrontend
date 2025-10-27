@@ -8,6 +8,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 //import { RespuestaAPIBase } from '../components/utilities/funciones_utilitarias';
 
 import { PlantillaAsistencia } from '../model/PlantillaAsistencia';
+import { PlantillaAsistenciaDetalle } from '../model/PlantillaAsistenciaDetalle';
 
 @Injectable({
   providedIn: 'root'
@@ -136,5 +137,60 @@ export class PlantillaAsistenciaService {
 
     public getData(): Observable<PlantillaAsistencia[]> {
         return this.http.get<PlantillaAsistencia[]>(this.urlAPI);
+    }
+
+    // DETALLES
+
+    // Mock data centralizado para detalles (mejor organizar aquí)
+    //Borrar luego
+    mockDetalleData: PlantillaAsistenciaDetalle[] = [
+      // details for plantilla 001
+      { pla21empresacod:'00032', pla21plantillacod:'001', pla21correlativo: 1, pla21camponombre:'Pla01CampoA', pla21campoalias:'Campo A'},
+      { pla21empresacod:'00032', pla21plantillacod:'001', pla21correlativo: 2, pla21camponombre:'Pla01CampoB', pla21campoalias:'Campo B'},
+
+      // details for plantilla 002
+      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 1, pla21camponombre:'Pla02VacacionesFisicas', pla21campoalias:'Dias Fisicos', estado: 1},
+      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 2, pla21camponombre:'Pla02VacacionesVendidas', pla21campoalias:'Dias Vendidas', estado: 1},
+      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 3, pla21camponombre:'Pla02VacaFechaIni', pla21campoalias:'Fecha Inicio', estado: 1},
+      { pla21empresacod:'00032', pla21plantillacod:'002', pla21correlativo: 4, pla21camponombre:'Pla02VacaFechaFin', pla21campoalias:'Fecha Fin', estado: 1},
+
+      // details for plantilla 003
+      { pla21empresacod:'00032', pla21plantillacod:'003', pla21correlativo: 1, pla21camponombre:'Pla03CampoA', pla21campoalias:'Campo A'},
+      { pla21empresacod:'00032', pla21plantillacod:'003', pla21correlativo: 2, pla21camponombre:'Pla03CampoB', pla21campoalias:'Campo B'},
+
+      // other empresas / ejemplos
+      { pla21empresacod:'00032', pla21plantillacod:'004', pla21correlativo: 1, pla21camponombre:'Pla04CampoA', pla21campoalias:'Campo A'}
+    ];
+
+    // Obtiene los detalles por código de plantilla y empresa
+    // select * from Spu_Pla_Trae_CamposPlantillaDetalle('00032','002')
+
+    public GetPlantillaAsistenciaDetalleList(pla20plantillacod: string, pla20empresacod: string): Observable<PlantillaAsistenciaDetalle[]> {
+      let detalles = this.mockDetalleData.filter(d => d.pla21plantillacod === pla20plantillacod && d.pla21empresacod === pla20empresacod);
+      if (pla20empresacod) {
+        detalles = detalles.filter(d => d.pla21empresacod === pla20empresacod && d.pla21plantillacod === pla20plantillacod);
+      }
+      return new Observable<PlantillaAsistenciaDetalle[]>(observer => {
+        observer.next([...detalles]);
+        observer.complete();
+      });
+    }
+
+    // Método para actualizar los estados
+    public GuardarEstadosDetalle(plantillaDetalleList: PlantillaAsistenciaDetalle[]): Observable<any> {
+      plantillaDetalleList.forEach(det => {
+        const idx = this.mockDetalleData.findIndex(d =>
+          d.pla21empresacod === det.pla21empresacod &&
+          d.pla21plantillacod === det.pla21plantillacod &&
+          d.pla21correlativo === det.pla21correlativo
+        );
+        if (idx !== -1) {
+          this.mockDetalleData[idx].estado = det.estado;
+        }
+      });
+      return new Observable(observer => {
+        observer.next({ success: true, message: 'Estados actualizados correctamente' });
+        observer.complete();
+      });
     }
 }

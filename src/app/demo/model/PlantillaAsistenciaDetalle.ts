@@ -6,4 +6,5 @@ export interface PlantillaAsistenciaDetalle {
   pla21correlativo: number;     // integer NOT NULL
   pla21camponombre: string;     // text NOT NULL
   pla21campoalias: string;      // text NOT NULL
+  estado?: number;              // integer NULL (Opcional, 0 o 1)
 }
