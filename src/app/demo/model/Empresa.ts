@@ -33,3 +33,15 @@ export interface Empresa {
   responsablePlanilla: ResponsablePlanilla;
   bancos: Banco;
 }
+
+export interface Cargo {
+  pla51codigo: string;
+  pla51descripcion: string;
+  pla51flagactivo: boolean;
+}
+
+export interface CentroCosto{
+  pla57codigo: string;
+  pla57descripcion: string;
+  pla57flagactivo: boolean;
+}
