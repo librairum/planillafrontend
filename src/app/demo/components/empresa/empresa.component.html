@@ -1,35 +1,48 @@
-<div class="min-h-screen flex justify-content-center py-5 px-3">
-    <div class="w-full xl:w-11">
-        <p-card header="Empresas" styleClass="shadow-2 border-round"> 
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 
-            <p-toast></p-toast>
-            <p-confirmDialog></p-confirmDialog>
+<div class="min-h-screen flex justify-content-center py-5">
+    <div class="w-full xl:w-12">
+        <p-card header="Empresas" styleClass="shadow-2 border-round"> 
 
             <p-panel header="Acciones" [toggleable]="true" styleClass="h-full border-round px-5">
             <p-toolbar styleClass="mb-3 surface-card border-none">
                 <div class="p-toolbar-group-start flex flex-wrap gap-2">
-                    <button pButton pRipple type="button" label="Agregar" icon="pi pi-plus" class="p-button-success" (click)="agregarEmpresa()" [disabled]="mode !== 'view'"></button>
-                    <button pButton pRipple type="button" label="Modificar" icon="pi pi-pencil" class="p-button-warning" (click)="editarEmpresa()" [disabled]="mode !== 'view' || !selectedEmpresa"></button>
-                    <button pButton pRipple type="button" label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="eliminarEmpresa()" [disabled]="mode !== 'view' || !selectedEmpresa"></button>
+                    <button pButton pRipple type="button" label="Agregar" icon="pi pi-plus" class="p-button-success" 
+                        (click)="agregarEmpresa()" [disabled]="!isViewMode">
+                    </button>
+                    <button pButton pRipple type="button" label="Modificar" icon="pi pi-pencil" class="p-button-warning" 
+                        (click)="editarEmpresa()" [disabled]="!isViewMode || !selectedEmpresa">
+                    </button>
+                    <button pButton pRipple type="button" label="Eliminar" icon="pi pi-trash" class="p-button-danger" 
+                        (click)="eliminarEmpresa()" [disabled]="!isViewMode || !selectedEmpresa">
+                    </button>
                     
-                    <button pButton pRipple type="button" label="Ver" icon="pi pi-search" class="p-button-info" (click)="verEmpresa()" [disabled]="true"></button>
-                    <button pButton pRipple type="button" label="Refrescar la lista" icon="pi pi-refresh" class="p-button-secondary" (click)="refrescarEmpresa()"></button>
+                    <button pButton pRipple type="button" label="Ver" icon="pi pi-search" class="p-button-info" 
+                        (click)="verEmpresa()" [disabled]="true">
+                    </button>
+                    <button pButton pRipple type="button" label="Refrescar la lista" icon="pi pi-refresh" class="p-button-secondary" 
+                        (click)="refrescarEmpresa()"[disabled]="!isViewMode">
+                    </button>
                 </div>
 
-                <div class="p-toolbar-group-end flex flex-wrap gap-2 pr-1" *ngIf="mode !== 'view'">
-                    <button pButton pRipple type="button" icon="pi pi-save" class="p-button-primary" (click)="guardar()" label="Guardar"></button>
-                    <button pButton pRipple type="button" icon="pi pi-times" class="p-button-secondary" (click)="cancelar()" label="Cancelar"></button>
+                <div class="p-toolbar-group-end flex flex-wrap gap-2 pr-1" *ngIf="isAddMode || isEditMode">
+                    <button pButton pRipple type="button" icon="pi pi-save" class="p-button-primary" 
+                        (click)="guardar()" label="Guardar">
+                    </button>
+                    <button pButton pRipple type="button" icon="pi pi-times" class="p-button-secondary" 
+                        (click)="cancelar()" label="Cancelar">
+                    </button>
                 </div>
             </p-toolbar>
             </p-panel>
 
-            <div *ngIf="mode === 'view'" class="px-5 py-1">
+            <div *ngIf="isViewMode" class="px-5 py-1">
                 
                 <div class="relative"> 
-                             
                     <div *ngIf="loading" 
-                         class="absolute inset-0 z-5 flex align-items-end justify-content-center border-round" 
-                         >
+                        class="absolute inset-0 z-5 flex align-items-end justify-content-between border-round" 
+                        >
                         <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="5" animationDuration=".5s">
                             
                         </p-progressSpinner>
@@ -49,7 +62,7 @@
 
                     <p-table [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa" dataKey="empresacod"
                             [tableStyle]="{'min-width': '50rem'}" styleClass="p-datatable-sm" 
-                            [paginator]="true" [rows]="rowsPerPage"  
+                            [paginator]="true" [rows]="rowsPerPage"  
                             paginatorPosition="bottom">
 
                         <ng-template pTemplate="paginatorcenter" let-state>
@@ -79,9 +92,10 @@
                             </tr>
                         </ng-template>
                     </p-table>
-                </div> </div>
+                </div> 
+            </div>
             
-            <div *ngIf="mode !== 'view'"> 
+            <div *ngIf="isAddMode || isEditMode"> 
                 
                 <div class="grid gap-2 justify-content-center py-4 px-4"> 
                     <div class="col-12 md:col-12 justify-content-center ">
@@ -90,9 +104,10 @@
                             <div class="col-12"> 
                                 <div class="field">
                                     <span class="p-float-label">
-                                        <input pInputText id="codigo" [(ngModel)]="empresa.empresacod" 
-                                        [disabled]="isDisabled() || mode === 'edit'" 
-                                        class="w-full" />
+                                        <input pInputText id="codigo" 
+                                            [(ngModel)]="empresa.empresacod" 
+                                            [disabled]="isDisabled() || isEditMode" 
+                                            class="w-full" />
                                         <label for="codigo">Código</label>
                                     </span>
                                 </div>
@@ -101,9 +116,10 @@
                             <div class="col-12">
                                 <div class="field">
                                     <span class="p-float-label">
-                                        <input pInputText id="ruc" [(ngModel)]="empresa.ruc" 
-                                        [disabled]="isDisabled()" 
-                                        class="w-full" />
+                                        <input pInputText id="ruc" 
+                                            [(ngModel)]="empresa.ruc" 
+                                            [disabled]="isDisabled()" 
+                                            class="w-full" />
                                         <label for="ruc">RUC</label>
                                     </span>
                                 </div>
@@ -113,9 +129,9 @@
                                 <div class="field">
                                     <span class="p-float-label">
                                         <input pInputText id="razonSocial" 
-                                        [(ngModel)]="empresa.razonsocial" 
-                                        [disabled]="isDisabled()" 
-                                        class="w-full" />
+                                            [(ngModel)]="empresa.razonsocial" 
+                                            [disabled]="isDisabled()" 
+                                            class="w-full" />
                                         <label for="razonSocial">Razón Social</label>
                                     </span>
                                 </div>
@@ -125,9 +141,9 @@
                                 <div class="field">
                                     <span class="p-float-label">
                                         <input pInputText id="direccion" 
-                                        [(ngModel)]="empresa.direccion" 
-                                        [disabled]="isDisabled()" 
-                                        class="w-full" />
+                                            [(ngModel)]="empresa.direccion" 
+                                            [disabled]="isDisabled()" 
+                                            class="w-full" />
                                         <label for="direccion">Dirección</label>
                                     </span>
                                 </div>
@@ -149,8 +165,8 @@
                                                         [(ngModel)]="empresa.representanteLegal.replegaldoctip" placeholder="Seleccione Tipo Doc" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
                                                         [class.p-filled]="empresa.representanteLegal.replegaldoctip" 
-                                                        id="docTipoRL"></p-dropdown>
-                                            <label for="docTipoRL">Tipo Documento</label>
+                                                        id="docTipoRL" [disabled]="isDisabled()"></p-dropdown>
+                                                <label for="docTipoRL">Tipo Documento</label>
                                         </span>
                                     </div>
                                 </div>
@@ -158,8 +174,8 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <input pInputText id="docNroRL"
-                                             [(ngModel)]="empresa.representanteLegal.replegaldocnro" 
-                                             class="w-full" />
+                                                [(ngModel)]="empresa.representanteLegal.replegaldocnro" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="docNroRL">Doc. Nro</label>
                                         </span>
                                     </div>
@@ -168,8 +184,8 @@
                                     <div class="field">
                                         <span class="p-float-label">
                                             <input pInputText id="apPaternoRL" 
-                                            [(ngModel)]="empresa.representanteLegal.replegalapepaterno" 
-                                            class="w-full" />
+                                                [(ngModel)]="empresa.representanteLegal.replegalapepaterno" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="apPaternoRL">Apellido Paterno</label>
                                         </span>
                                     </div>
@@ -177,7 +193,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="apMaternoRL" [(ngModel)]="empresa.representanteLegal.replegalapematerno" class="w-full" />
+                                            <input pInputText id="apMaternoRL" 
+                                                [(ngModel)]="empresa.representanteLegal.replegalapematerno" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="apMaternoRL">Apellido Materno</label>
                                         </span>
                                     </div>
@@ -185,7 +203,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="nombresRL" [(ngModel)]="empresa.representanteLegal.replegalnombres" class="w-full" />
+                                            <input pInputText id="nombresRL" 
+                                                [(ngModel)]="empresa.representanteLegal.replegalnombres" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="nombresRL">Nombres</label>
                                         </span>
                                     </div>
@@ -203,7 +223,8 @@
                                             <p-dropdown [options]="docTipos" optionLabel="label" optionValue="value" 
                                                         [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladoctip" placeholder="Seleccione Tipo Doc" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.responsablePlanilla.encargadoplanilladoctip" id="docTipoRP"></p-dropdown>
+                                                        [class.p-filled]="empresa.responsablePlanilla.encargadoplanilladoctip" 
+                                                        id="docTipoRP" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="docTipoRP">Doc. Tipo</label>
                                         </span>
                                     </div>
@@ -211,7 +232,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="docNroRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladocnro" class="w-full" />
+                                            <input pInputText id="docNroRP" 
+                                                [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladocnro" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="docNroRP">Doc. Nro</label>
                                         </span>
                                     </div>
@@ -219,7 +242,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="apPaternoRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanillaapepaterno" class="w-full" />
+                                            <input pInputText id="apPaternoRP" 
+                                                [(ngModel)]="empresa.responsablePlanilla.encargadoplanillaapepaterno" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="apPaternoRP">Ap. Paterno</label>
                                         </span>
                                     </div>
@@ -227,7 +252,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="apMaternoRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanillaapematerno" class="w-full" />
+                                            <input pInputText id="apMaternoRP" 
+                                                [(ngModel)]="empresa.responsablePlanilla.encargadoplanillaapematerno" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="apMaternoRP">Ap. Materno</label>
                                         </span>
                                     </div>
@@ -235,7 +262,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="nombresRP" [(ngModel)]="empresa.responsablePlanilla.encargadoplanillanombres" class="w-full" />
+                                            <input pInputText id="nombresRP" 
+                                                [(ngModel)]="empresa.responsablePlanilla.encargadoplanillanombres" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="nombresRP">Nombres</label>
                                         </span>
                                     </div>
@@ -243,7 +272,9 @@
                             </div>
                         </p-panel>
                     </div>
-                </div> <div class="grid mb-5 px-4 py-0">
+                </div> 
+
+                <div class="grid mb-5 px-4 py-0">
                     <div class="col-12">
                         <p-panel header="Bancos" [toggleable]="true" styleClass="h-full border-round">
                             <div class="grid formgrid gap-2 pt-3 px-1">
@@ -253,7 +284,8 @@
                                             <p-dropdown [options]="bancosOptions" optionLabel="label" optionValue="value" 
                                                         [(ngModel)]="empresa.bancos.ctasolespagobancocod" placeholder="Seleccione Banco" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.bancos.ctasolespagobancocod" id="bancoSoles"></p-dropdown>
+                                                        [class.p-filled]="empresa.bancos.ctasolespagobancocod" 
+                                                        id="bancoSoles" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="bancoSoles">Banco Soles</label>
                                         </span>
                                     </div>
@@ -261,7 +293,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="ctaSoles" [(ngModel)]="empresa.bancos.ctasolespagonumero" class="w-full" />
+                                            <input pInputText id="ctaSoles" 
+                                                [(ngModel)]="empresa.bancos.ctasolespagonumero" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="ctaSoles">Nro. Cuenta Soles</label>
                                         </span>
                                     </div>
@@ -272,7 +306,8 @@
                                             <p-dropdown [options]="bancosOptions" optionLabel="label" optionValue="value" 
                                                         [(ngModel)]="empresa.bancos.ctadolarespagobancocod" placeholder="Seleccione Banco" 
                                                         [filter]="true" [showClear]="true" styleClass="w-full" 
-                                                        [class.p-filled]="empresa.bancos.ctadolarespagobancocod" id="bancoDolares"></p-dropdown>
+                                                        [class.p-filled]="empresa.bancos.ctadolarespagobancocod" 
+                                                        id="bancoDolares" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="bancoDolares">Banco Dólares</label>
                                         </span>
                                     </div>
@@ -280,7 +315,9 @@
                                 <div class="col-12">
                                     <div class="field">
                                         <span class="p-float-label">
-                                            <input pInputText id="ctaDolares" [(ngModel)]="empresa.bancos.ctadolarespagonumero" class="w-full" />
+                                            <input pInputText id="ctaDolares" 
+                                                [(ngModel)]="empresa.bancos.ctadolarespagonumero" 
+                                                class="w-full" [disabled]="isDisabled()" />
                                             <label for="ctadolares">Nro. Cuenta Dólares</label>
                                         </span>
                                     </div>
@@ -288,6 +325,8 @@
                             </div>
                         </p-panel>
                     </div>
-                </div> </div> </p-card>
+                </div> 
+            </div> 
+        </p-card>
     </div>
 </div>

@@ -17,7 +17,6 @@ export class ParametroEmpresaService {
     //apiUrl: string = ''; //
     urlAPI: string = ''; //
     apiUrl: any;
-
     //Lista con datos mock, eliminar luego
     public parametroxEmpresaList: ParametroxEmpresa[] = [
       {

@@ -21,6 +21,16 @@ import { ConfirmationService } from 'primeng/api';
 // Importación de modelos
 import { Empresa, RepresentanteLegal, ResponsablePlanilla, Banco } from 'src/app/demo/model/Empresa'; 
 
+// Importación de Funciones Utilitarias
+import { 
+  verMensajeInformativo, 
+  esVacio, 
+  validarRUC, 
+  validarDNI, 
+  aMayusculas 
+} from 'src/app/demo/components/utilities/funciones_utilitarias'; 
+
+
 @Component({
   selector: 'app-empresa',
   standalone: true, 
@@ -46,16 +56,17 @@ import { Empresa, RepresentanteLegal, ResponsablePlanilla, Banco } from 'src/app
 
 export class EmpresaComponent implements OnInit {
 
-  empresa: Empresa = this.initializeEmpresa();
+  empresa: Empresa = this.initForm(); // Cambio de nombre de la función
 
-  loading: boolean = false;
+  loading: boolean = false; 
 
-  // Array para almacenar las empresas (se usa para la tabla)
+  // Array para almacenar las empresas 
   empresas: Empresa[] = []; 
   rowsPerPage: number = 10; 
 
-  // Estado de la UI: 'view' (ver), 'edit' (editar), 'add' (agregar)
-  mode: 'view' | 'edit' | 'add' = 'view';
+  isViewMode: boolean = true; 
+  isAddMode: boolean = false; 
+  isEditMode: boolean = false; 
   
   // Opciones para combobox 
   docTipos = [
@@ -71,7 +82,6 @@ export class EmpresaComponent implements OnInit {
     { label: 'BANCO INTERBANK', value: '08' }
   ];
   
-  // Empresas simuladas para la carga inicial 
   currentEmpresas: Empresa[] = [ 
     {
         empresacod: '00004',
@@ -139,7 +149,7 @@ export class EmpresaComponent implements OnInit {
     this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); 
   }
 
-  private initializeEmpresa(): Empresa {
+  private initForm(): Empresa { 
     return {
       empresacod: '', 
       ruc: '', 
@@ -168,39 +178,45 @@ export class EmpresaComponent implements OnInit {
     };
   }
 
-  // --- Métodos de Control ---
+//Métodos de Control
 
- refrescarEmpresa(): void {
+  refrescarEmpresa(): void {
   this.loading = true; 
   
   setTimeout(() => {
-    this.mode = 'view';
-    this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas));
+    this.isViewMode = true;
+    this.isAddMode = false;
+    this.isEditMode = false;
+    
+    // Recarga la lista 
+    this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); 
     this.selectedEmpresa = null;
 
     this.loading = false; 
-
   }, 1000); 
   }
 
   verEmpresa(): void {
-
   }
 
   agregarEmpresa(): void {
-    // Validación de código repetido al intentar agregar
-    if (this.mode === 'add' && this.empresa.empresacod && this.currentEmpresas.some(e => e.empresacod === this.empresa.empresacod)) {
-        this.messageService.add({severity:'error', summary:'Error', detail:'El Código de Empresa ya existe.'});
-        return; 
-    }
-    this.mode = 'add';
-    this.empresa = this.initializeEmpresa(); 
+    // Establece el modo a Agregar
+    this.isViewMode = false;
+    this.isAddMode = true;
+    this.isEditMode = false;
+    
+    this.empresa = this.initForm(); // Limpia el formulario
+    this.selectedEmpresa = null;
   }
 
   editarEmpresa(): void {
     if (this.selectedEmpresa) {
-        this.mode = 'edit';
-        this.empresa = JSON.parse(JSON.stringify(this.selectedEmpresa)); 
+        // Establece el modo a Editar
+        this.isViewMode = false;
+        this.isAddMode = false;
+        this.isEditMode = true;
+        
+        this.empresa = JSON.parse(JSON.stringify(this.selectedEmpresa)); // Carga los datos
     } 
   }
 
@@ -223,62 +239,145 @@ export class EmpresaComponent implements OnInit {
             
             // Lógica de eliminación (simulación)
             this.currentEmpresas = this.currentEmpresas.filter(e => e.empresacod !== empresaAeliminar.empresacod);
-            this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas));
+            this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); // Actualiza la tabla
 
-            this.messageService.add({severity:'success', summary:'Éxito', detail:`Empresa ${empresaAeliminar.empresacod} eliminada.`});
+            // Uso de verMensajeInformativo
+            verMensajeInformativo(this.messageService, 'success', 'Éxito', `Empresa ${empresaAeliminar.empresacod} eliminada.`);
 
             this.selectedEmpresa = null; 
         }
     });
   }
 
+  
   validarCampos(): boolean {
-    if (!this.empresa.empresacod || !this.empresa.ruc || !this.empresa.razonsocial) {
+    // 1. Validación de campos de primer nivel
+    if (esVacio(this.empresa.empresacod)) {
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'El campo Código de Empresa es obligatorio.');
+      return false; // Validación fallida
+    }
+    
+    if (esVacio(this.empresa.ruc)) {
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'El campo RUC es obligatorio.');
       return false;
     }
-    if (!this.empresa.representanteLegal.replegalnombres || !this.empresa.bancos.ctasolespagonumero) {      
+    
+    if(!validarRUC(this.empresa.ruc)){
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'El RUC debe tener 11 dígitos numéricos.');
+      return false; 
     }
+
+    if (esVacio(this.empresa.razonsocial)) {
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'la Razón Social es obligatoria');
+      return false;
+    }
+    
+    if (esVacio(this.empresa.direccion)) {
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'La Dirección es obligatoria.');
+      return false;
+    }
+
+    // 2. Validaciones de Representante Legal
+    const rl = this.empresa.representanteLegal;
+    if (esVacio(rl.replegaldoctip) || esVacio(rl.replegaldocnro) || esVacio(rl.replegalnombres)) {
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'Complete los campos obligatorios del Representante Legal (Tipo/Nro. Documento y Nombres).');
+      return false;
+    }
+
+    // 2.1 Validación de formato del documento del Representante Legal (DNI)
+    if (rl.replegaldoctip === '01' && !validarDNI(rl.replegaldocnro)) { 
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'El DNI del Representante Legal debe tener 8 dígitos.');
+      return false;
+    }
+
+    // 3. Validaciones de Responsable Planilla (Opcional, pero si se inicia, debe completarse)
+    const rp = this.empresa.responsablePlanilla;
+    if (rp.encargadoplanilladoctip || rp.encargadoplanilladocnro || rp.encargadoplanillanombres || rp.encargadoplanillaapepaterno || rp.encargadoplanillaapematerno) {
+        if (esVacio(rp.encargadoplanilladoctip) || esVacio(rp.encargadoplanilladocnro) || esVacio(rp.encargadoplanillanombres)) {
+             verMensajeInformativo(this.messageService, 'warn', 'Advertencia', 'Si registra el Responsable de Planilla, complete al menos Tipo/Nro. Documento y Nombres.');
+            return false;
+        }
+
+        // 3.1 Validación de formato del documento del Responsable de Planilla (DNI)
+        if (rp.encargadoplanilladoctip === '01' && !validarDNI(rp.encargadoplanilladocnro)) { 
+            verMensajeInformativo(this.messageService, 'warn', 'Advertencia', 'El DNI del Responsable de Planilla debe tener 8 dígitos.');
+            return false;
+        }
+    }
+
+    // 4. Validaciones de Bancos (Cuenta Soles Requerida)
+    const bancos = this.empresa.bancos;
+    if (esVacio(bancos.ctasolespagobancocod) || esVacio(bancos.ctasolespagonumero)) {
+      verMensajeInformativo(this.messageService, 'error', 'ERROR', 'Debe seleccionar el Banco y número de Cuenta Soles.');
+      return false;      
+    }
+    
     return true; 
   }
 
   guardar(): void {
     if (!this.validarCampos()) {
-      this.messageService.add({severity:'error', summary:'Error', detail:'Faltan campos por completar.'});
+      // El mensaje ya se muestra dentro de validarCampos()
       return;
     }
 
-    if (this.mode === 'add') {
-      // 1. Verificar si el código ya existe (solo al agregar)
+    this.empresa.razonsocial = aMayusculas(this.empresa.razonsocial);
+    this.empresa.direccion = aMayusculas(this.empresa.direccion);
+    
+    // Representante Legal
+    this.empresa.representanteLegal.replegalnombres = aMayusculas(this.empresa.representanteLegal.replegalnombres);
+    this.empresa.representanteLegal.replegalapepaterno = aMayusculas(this.empresa.representanteLegal.replegalapepaterno);
+    this.empresa.representanteLegal.replegalapematerno = aMayusculas(this.empresa.representanteLegal.replegalapematerno);
+
+    // Responsable Planilla
+    this.empresa.responsablePlanilla.encargadoplanillanombres = aMayusculas(this.empresa.responsablePlanilla.encargadoplanillanombres);
+    this.empresa.responsablePlanilla.encargadoplanillaapepaterno = aMayusculas(this.empresa.responsablePlanilla.encargadoplanillaapepaterno);
+    this.empresa.responsablePlanilla.encargadoplanillaapematerno = aMayusculas(this.empresa.responsablePlanilla.encargadoplanillaapematerno);
+
+    // Bancos
+    this.empresa.bancos.ctasolespagonumero = aMayusculas(this.empresa.bancos.ctasolespagonumero);
+    this.empresa.bancos.ctadolarespagonumero = aMayusculas(this.empresa.bancos.ctadolarespagonumero);
+    
+
+    if (this.isAddMode) {
+      // 1. Verificar si el código ya existe 
       if (this.currentEmpresas.some(e => e.empresacod === this.empresa.empresacod)) {
-          this.messageService.add({severity:'error', summary:'Error', detail:`El Código ${this.empresa.empresacod} ya existe.`});
-          return;
+        verMensajeInformativo(this.messageService, 'error', 'Error', `El Código ${this.empresa.empresacod} ya existe.`);
+        return;
       }
 
-      // Simulación: Añadir la nueva empresa a la lista
+      // Añadir la nueva empresa a la lista
       this.currentEmpresas.push(this.empresa); 
-      this.messageService.add({severity:'success', summary:'Éxito', detail:'Empresa agregada exitosamente.'});
+      verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Empresa agregada exitosamente.');
 
-    } else if (this.mode === 'edit') {
+    } else if (this.isEditMode) {
       // Simulación: Encontrar y reemplazar la empresa editada
       const index = this.currentEmpresas.findIndex(e => e.empresacod === this.empresa.empresacod);
       if (index > -1) {
-          this.currentEmpresas[index] = this.empresa;
-          this.messageService.add({severity:'success', summary:'Éxito', detail:'Cambios guardados exitosamente.'});
+        // Clonar la empresa para asegurar que no haya referencias cruzadas inesperadas en la lista simulada.
+        this.currentEmpresas[index] = JSON.parse(JSON.stringify(this.empresa)); 
+        verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Cambios guardados exitosamente.');
       }
     }
-    
+    //Permite la actualización de la lista de empresas
     this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); 
-    this.mode = 'view';
+    this.isViewMode = true;
+    this.isAddMode = false;
+    this.isEditMode = false;
     this.selectedEmpresa = null;
   }
 
   cancelar(): void {
-    this.mode = 'view';
-    this.empresa = this.initializeEmpresa();
+    this.isViewMode = true;
+    this.isAddMode = false;
+    this.isEditMode = false;
+
+    this.empresa = this.initForm();
     this.selectedEmpresa = null;
   }
 
+  // Método auxiliar para deshabilitar campos en vista
   isDisabled(): boolean {
-    return this.mode === 'view';
+    return this.isViewMode;
   }
 }
