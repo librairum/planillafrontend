@@ -110,6 +110,16 @@ export class ParametrosEmpresaComponent implements OnInit {
                   });
     }
 
+    getTipoDatoTexto(flag: string): string {
+        if (flag === 'I') {
+            return 'Importe';
+        } else if (flag === 'P') {
+            return 'Porcentaje';
+        } else {
+            return 'No definido';
+        }
+    }
+
     //edicion
     onRowEditInit(parametro: ParametroxEmpresa): void {
         this.editingParametroxEmpresa = { ...parametro };
@@ -146,8 +156,10 @@ export class ParametrosEmpresaComponent implements OnInit {
     showAddRow() {
         this.isEditing = true;
         this.isNew = true;
+        //
+        const nuevoCodigo = this.parametroEmpresaService.GenerarNuevoCodigoParametroEmpresa();
         this.parametroxEmpresaForm.reset({
-
+          pla41codigo: nuevoCodigo
           /*
             pla41empresacod: this.globalService.getCodigoEmpresa(),
             */
@@ -165,6 +177,7 @@ export class ParametrosEmpresaComponent implements OnInit {
                     this.parametroxEmpresaForm.reset();
                     verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado correctamente');
                     this.cargarParametrosxEmpresa();
+                    console.log(newParametroxEmpresa);
                 },
                 error: (err) => {
                     verMensajeInformativo(this.messageService, 'error', 'Error', err.message || 'Ya existe un registro con ese código y empresa');

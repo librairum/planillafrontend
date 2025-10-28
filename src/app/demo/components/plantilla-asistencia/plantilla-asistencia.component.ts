@@ -80,7 +80,7 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     initForm() {
       this.plantillaAsistenciaForm = this.fb.group({
-        pla20empresacod: '',
+        pla20empresacod: [''], //Falta crear logica para obtener empresa
         pla20plantillacod: ['', Validators.required],
         pla20descripcion: ['', Validators.required],
         pla20flagmodifxusuario: [false],
@@ -133,8 +133,10 @@ export class PlantillaAsistenciaComponent implements OnInit {
     showAddRow(){
       this.isEditing = true;
       this.isNew = true;
+      // Se llama al servicio para generar el nuevo código
+      const nuevoCodPlantilla = this.plantillaAsistenciaService.GenerarNuevoCodigoPlantilla();
       this.plantillaAsistenciaForm.reset({
-
+        pla20plantillacod: nuevoCodPlantilla,
         //CheckBoxes en false por defecto
         pla20flagmodifxusuario: false,
         pla20flagregistrainasis: false
@@ -146,6 +148,15 @@ export class PlantillaAsistenciaComponent implements OnInit {
 
     onSave(){
       if (this.plantillaAsistenciaForm.valid) {
+        this.confirmationService.confirm({
+          message: '¿Está seguro que desea guardar este nuevo registro?',
+          header: 'Confirmar Registro',
+          icon: 'pi pi-question-circle',
+          acceptLabel: 'Sí',
+          rejectLabel: 'No',
+          acceptButtonStyleClass: 'p-button',
+          rejectButtonStyleClass: 'p-button-danger',
+          accept: () => {
             const raw = this.plantillaAsistenciaForm.value;
             //mapear booleanos a S/N
             const newPlantillaAsistencia: PlantillaAsistencia = {
@@ -168,6 +179,8 @@ export class PlantillaAsistenciaComponent implements OnInit {
                     'Registro guardado'
                   );
                   this.cargarPlantillaAsistencia();
+                  //
+                  console.log(newPlantillaAsistencia)
                 },
                 error: (err) => {
                   console.error('Error al guardar:', err);
@@ -179,14 +192,17 @@ export class PlantillaAsistenciaComponent implements OnInit {
                   );
                 },
               });
-              } else {
-                verMensajeInformativo(
-                  this.messageService,
-                  'warn',
-                  'Advertencia',
-                  'Complete todos los campos requeridos'
-                );
-              }
+          }
+          // No es necesario manejar el reject, simplemente no hace nada
+        });
+      } else {
+        verMensajeInformativo(
+          this.messageService,
+          'warn',
+          'Advertencia',
+          'Complete todos los campos requeridos'
+        );
+      }
     }
 
     // helper para togglear flags en la fila y mantener 'S'/'N'
@@ -284,4 +300,3 @@ export class PlantillaAsistenciaComponent implements OnInit {
     }
 
 }
- 

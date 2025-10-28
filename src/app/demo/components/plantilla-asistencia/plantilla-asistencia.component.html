@@ -72,10 +72,10 @@
         <!-- Cabecera de Tabla -->
         <ng-template pTemplate="header">
             <tr>
-                <th style="text-align: center;">Descripción</th>
-                <th style="text-align: center;">Mod.Usuario</th>
-                <th style="text-align: center;">Reg.Inasistencia</th>
-                <th style="text-align: center;">Acciones</th>
+                <th style="text-align: center; width: 40%;">Descripción</th>
+                <th style="text-align: center; width: 20%;">Mod.Usuario</th>
+                <th style="text-align: center; width: 20%;">Reg.Inasistencia</th>
+                <th style="text-align: center; width: 20%;">Acciones</th>
             </tr>
         </ng-template>
 
@@ -102,17 +102,6 @@
                     (onChange)="onToggleFlag(plantilla, 'pla20flagmodifxusuario', $event.checked)"
                     [disabled]="!editing">
                   </p-checkbox>
-
-                  <!--
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input  type="text" pInputText [(ngModel)]="plantilla.pla20flagmodifxusuario" class="p-inputtext-sm w-full" required />
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{ plantilla.pla20flagmodifxusuario }}
-                    </ng-template>
-                  </p-cellEditor>
-                -->
                 </td>
 
                 <td style="text-align: center;">
@@ -123,17 +112,6 @@
                     (onChange)="onToggleFlag(plantilla, 'pla20flagregistrainasis', $event.checked)"
                     [disabled]="!editing">
                   </p-checkbox>
-
-                  <!--
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input type="text" pInputText [(ngModel)]="plantilla.pla20flagregistrainasis" class="p-inputtext-sm w-full" required />
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{ plantilla.pla20flagregistrainasis }}
-                    </ng-template>
-                  </p-cellEditor>
-                -->
                 </td>
 
                 <td>
@@ -206,16 +184,8 @@
           <tr *ngIf="isEditing">
               <td colspan="4">
                   <form [formGroup]="plantillaAsistenciaForm" class="grid p-fluid">
-                      <!-- Código Plantilla -->
-                      <div class="col-3" style="width: 25%">
-                          <input pInputText
-                              formControlName="pla20plantillacod"
-                              placeholder="Código (necesario por el momento)"
-                              class="p-inputtext-sm w-full"/>
-                      </div>
-
                       <!-- Descripción -->
-                      <div class="col-3" style="width: 25%">
+                      <div class="col-4" style="width: 40%;">
                           <input pInputText
                               formControlName="pla20descripcion"
                               placeholder="Descripción"
@@ -223,33 +193,17 @@
                       </div>
 
                       <!-- Mod.Usuario (formulario) -->
-                      <div class="col-2" style="width: 25%">
+                      <div class="col-2" style="width: 20%; text-align: center;">
                           <p-checkbox [binary]="true" formControlName="pla20flagmodifxusuario"></p-checkbox>
                       </div>
-                      <!--
-                      <div class="col-2" style="width: 25%">
-                          <input pInputText
-                              formControlName="pla20flagmodifxusuario"
-                              placeholder="Mod.Usuario"
-                              class="p-inputtext-sm w-full"/>
-                      </div>
-                      -->
 
                       <!-- Reg.Inasistencia (formulario) -->
-                      <div class="col-2" style="width: 25%">
+                      <div class="col-2" style="width: 20%; text-align: center;">
                           <p-checkbox [binary]="true" formControlName="pla20flagregistrainasis"></p-checkbox>
                       </div>
-                      <!--
-                      <div class="col-2" style="width: 25%">
-                          <input pInputText
-                              formControlName="pla20flagregistrainasis"
-                              placeholder="Reg.Inasistencia"
-                              class="p-inputtext-sm w-full"/>
-                      </div>
-                      -->
 
                       <!-- Botones de Acción -->
-                      <div class="col-2" style="width: 100%">
+                      <div class="col-2" style="width: 20%;">
                           <div class="flex gap-2 justify-content-center">
                               <button pButton type="button" icon="pi pi-check" class="p-button-success p-button-sm"
                                       (click)="onSave()" pTooltip="Guardar"></button>

@@ -90,6 +90,15 @@ export class PlantillaAsistenciaService {
               //return this.http.post<any>(this.urlAPI + '/SpCreate', regimen);
     }
 
+    // Nuevo método para generar el siguiente código correlativo
+    // Spu_Pla_Trae_CodigoPlantillaCabecera
+    public GenerarNuevoCodigoPlantilla(): string {
+      const codigos = this.plantillaAsistenciaList.map(p => parseInt(p.pla20plantillacod, 10));
+      const max = codigos.length > 0 ? Math.max(...codigos) : 0;
+      const nuevoCodigo = (max + 1).toString().padStart(3, '0');
+      return nuevoCodigo;
+    }
+
     public ActualizarPlantillaAsistencia(plantilla: PlantillaAsistencia): Observable<any> {
         const index = this.plantillaAsistenciaList.findIndex(r =>
                           r.pla20plantillacod === plantilla.pla20plantillacod &&

@@ -29,15 +29,15 @@
             <!-- Cabecera de Tabla -->
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Tipo de Régimen Pensionario</th>
-                    <th>AFPNet</th>
-                    <th>Plame Descripción</th>
-                    <th style="text-align: center;">Sector Privado</th>
-                    <th style="text-align: center;">Sector Público</th>
-                    <th style="text-align: center;">Activo</th>
-                    <th style="text-align: center;">Acciones</th>
+                    <th style="text-align: center; width: 10%;">Código</th>
+                    <th style="text-align: center; width: 15%;">Descripción</th>
+                    <th style="text-align: center; width: 15%;">Tipo de Régimen Pensionario</th>
+                    <th style="text-align: center; width: 10%;">AFPNet</th>
+                    <th style="text-align: center; width: 15%;">Plame Descripción</th>
+                    <th style="text-align: center; width: 10%;">Sector Privado</th>
+                    <th style="text-align: center; width: 10%;">Sector Público</th>
+                    <th style="text-align: center; width: 5%;">Activo</th>
+                    <th style="text-align: center; width: 10%;">Acciones</th>
                 </tr>
             </ng-template>
 
@@ -45,7 +45,7 @@
             <ng-template pTemplate="body" let-regimen let-ri="rowIndex" let-editing="editing">
                 <tr [pEditableRow]="regimen">
 
-                    <td style="text-align: left;">
+                    <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <input pInputText type="text" [(ngModel)]="regimen.pla61codigo"
@@ -57,7 +57,7 @@
                         </p-cellEditor>
                     </td>
 
-                    <td style="text-align: left;">
+                    <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <input pInputText type="text" [(ngModel)]="regimen.pla61descripcion"
@@ -69,19 +69,30 @@
                         </p-cellEditor>
                     </td>
 
-                    <td style="text-align: left;">
+                    <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="regimen.pla61tiporegpensionariocod"
-                                       class="p-inputtext-sm w-full" required>
+                                <p-dropdown
+                                    [(ngModel)]="regimen.pla61tiporegpensionariocod"
+                                    [options]="[
+                                        { label: 'Otros Regimenes Pensionarios', value: 'ORP' },
+                                        { label: 'Sistema Nacional de Pensiones', value: 'SNP' },
+                                        { label: 'Sistema Privado de Pensiones', value: 'SPP' }
+                                    ]"
+                                    placeholder="Tipo de dato"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    class="p-inputtext-sm w-full"
+                                    appendTo="body">
+                                </p-dropdown>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{regimen.pla61tiporegpensionariocod}}
+                                {{getTipoDatoCodRegimenPensionario(regimen.pla61tiporegpensionariocod)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
 
-                    <td style="text-align: left;">
+                    <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <input pInputText type="text" [(ngModel)]="regimen.pla61afpnetcod"
@@ -93,14 +104,24 @@
                         </p-cellEditor>
                     </td>
 
-                    <td style="text-align: left;">
+                    <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="regimen.pla61plamecod"
-                                       class="p-inputtext-sm w-full" required>
+                                <p-dropdown
+                                    [(ngModel)]="regimen.pla61plamecod"
+                                    [options]="[
+                                        { label: 'DL 19990 - SIST NAC DE PENS - ONP', value: '02' },
+                                        { label: 'SPP INTEGRA', value: '21' }
+                                    ]"
+                                    placeholder="Planilla Electrónica"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    class="p-inputtext-sm w-full"
+                                    appendTo="body">
+                                </p-dropdown>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{regimen.pla61plamecod}}
+                                {{getTipoDatoPlameDes(regimen.pla61plamecod)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -181,36 +202,46 @@
             <!-- Footer para Nuevo Registro -->
             <ng-template pTemplate="footer">
                 <tr *ngIf="isEditing">
-                    <td colspan="4">
+                    <td colspan="9">
                         <form [formGroup]="regimenPensionarioForm" class="grid p-fluid">
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-1" style="width: 10%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla61codigo"
                                            placeholder="Código"
-                                           class="p-inputtext-sm w-full"/>
+                                           class="p-inputtext-sm w-full"
+                                           readonly/>
                                 </span>
                             </div>
 
-                            <div class="col-4" style="width: 40%">
+                            <div class="col-1" style="width: 15%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla61descripcion"
-                                           placeholder="Descripción del Régimen"
+                                           placeholder="Descripción"
                                            class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-4" style="width: 40%">
+                            <div class="col-1" style="width: 15%;">
                                 <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla61tiporegpensionariocod"
-                                           placeholder="Tipo de regimen pensionario"
-                                           class="p-inputtext-sm w-full"/>
+                                    <p-dropdown
+                                        formControlName="pla61tiporegpensionariocod"
+                                        [options]="[
+                                            { label: 'Otros Regimenes Pensionarios', value: 'ORP' },
+                                            { label: 'Sistema Nacional de Pensiones', value: 'SNP' },
+                                            { label: 'Sistema Privado de Pensiones', value: 'SPP' }
+                                        ]"
+                                        placeholder="Tipo de régimen"
+                                        optionLabel="label"
+                                        optionValue="value"
+                                        class="p-inputtext-sm w-full"
+                                        appendTo="body">
+                                    </p-dropdown>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-1" style="width: 10%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla61afpnetcod"
@@ -219,55 +250,37 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-1" style="width: 15%;">
                                 <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla61plamecod"
-                                           placeholder="Plame Des"
-                                           class="p-inputtext-sm w-full"/>
+                                    <p-dropdown
+                                        formControlName="pla61plamecod"
+                                        [options]="[
+                                            { label: 'DL 19990 - SIST NAC DE PENS - ONP', value: '02' },
+                                            { label: 'SPP INTEGRA', value: '21' }
+                                        ]"
+                                        placeholder="Plame"
+                                        optionLabel="label"
+                                        optionValue="value"
+                                        class="p-inputtext-sm w-full"
+                                        appendTo="body">
+                                    </p-dropdown>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-1" style="text-align: center; width: 10%;">
                               <p-checkbox formControlName="pla61flagsectorprivado" [binary]="true"></p-checkbox>
-                              <!--
-                                <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla61flagsectorprivado"
-                                           placeholder="Sector Privado"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                              -->
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-
+                            <div class="col-1" style="text-align: center; width: 10%;">
                               <p-checkbox formControlName="pla61flagsectorpublico" [binary]="true"></p-checkbox>
-                              <!--
-                                <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla61flagsectorpublico"
-                                           placeholder="Sector Público"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                              -->
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-
-                              <p-checkbox formControlName="pla61flagsectorpublico" [binary]="true"></p-checkbox>
-                              <!--
-                                <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla61flagactivo"
-                                           placeholder="Activo"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                              -->
+                            <div class="col-1" style="text-align: center; width: 5%;">
+                              <p-checkbox formControlName="pla61flagactivo" [binary]="true"></p-checkbox>
                             </div>
 
                             <!-- Botones de Acción -->
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-1" style="width: 10%;">
                                 <div class="flex gap-2 justify-content-center">
 
                                     <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"

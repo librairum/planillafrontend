@@ -79,11 +79,21 @@
                     <td style="text-align: left;">
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla41flagtipodato"
-                                       class="p-inputtext-sm w-full" required>
+                                <p-dropdown
+                                    [(ngModel)]="parametro.pla41flagtipodato"
+                                    [options]="[
+                                        { label: 'Importe', value: 'I' },
+                                        { label: 'Porcentaje', value: 'P' }
+                                    ]"
+                                    placeholder="Tipo de dato"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    class="p-inputtext-sm w-full"
+                                    appendTo="body">
+                                </p-dropdown>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{parametro.pla41flagtipodato}}
+                                {{ getTipoDatoTexto(parametro.pla41flagtipodato) }}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -301,16 +311,6 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla41codigo"
-                                           placeholder="Código"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
-
-
                             <div class="col-4" style="width: 40%">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
@@ -322,10 +322,17 @@
 
                             <div class="col-4" style="width: 40%">
                                 <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla41flagtipodato"
-                                           placeholder="Tipo de dato"
-                                           class="p-inputtext-sm w-full"/>
+                                  <p-dropdown
+                                      formControlName="pla41flagtipodato"
+                                      [options]="[
+                                          { label: 'Importe', value: 'I' },
+                                          { label: 'Porcentaje', value: 'P' }
+                                      ]"
+                                      placeholder="Tipo de dato"
+                                      optionLabel="label"
+                                      optionValue="value"
+                                      class="p-inputtext-sm w-full">
+                                  </p-dropdown>
                                 </span>
                             </div>
 

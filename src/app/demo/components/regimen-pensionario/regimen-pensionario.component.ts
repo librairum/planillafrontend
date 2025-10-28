@@ -3,21 +3,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { TableModule, EditableRow } from 'primeng/table';
+import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { PanelModule } from 'primeng/panel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { DropdownModule } from 'primeng/dropdown';
@@ -53,7 +47,7 @@ import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
   ],
   templateUrl: './regimen-pensionario.component.html',
   styleUrls: ['./regimen-pensionario.component.css'],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService, EditableRow],
 })
 export class RegimenPensionarioComponent implements OnInit {
   regimenPensionarioForm: FormGroup = this.fb.group({}); //Quitar el = luego
@@ -120,13 +114,27 @@ export class RegimenPensionarioComponent implements OnInit {
     });
   }
 
-  /* Funcion para generar texto segun tipo de dato */
+  /* Funcion para generar el texto del regimen pensionario  */
 
-  getTipoDatoTexto(flag: string): string {
-    if (flag === 'I') {
-      return 'Importe';
-    } else if (flag === 'P') {
-      return 'Porcentaje';
+  getTipoDatoCodRegimenPensionario(flag: string): string {
+    if (flag === 'ORP') {
+      return 'Otros Regimenes Pensionarios';
+    } else if (flag === 'SNP') {
+      return 'Sistema Nacional de Pensiones';
+    } else if (flag === 'SPP') {
+      return 'Sistema Privado de Pensiones';
+    } else {
+      return 'No definido';
+    }
+  }
+
+  /* Funcion para generar el texto del regimen pensionario  */
+
+  getTipoDatoPlameDes(plame: string): string {
+    if (plame === '02') {
+      return 'DL 19990 - SIST NAC DE PENS - ONP';
+    } else if (plame === '21') {
+      return 'SPP INTEGRA';
     } else {
       return 'No definido';
     }
@@ -180,7 +188,9 @@ export class RegimenPensionarioComponent implements OnInit {
   showAddRow() {
     this.isEditing = true;
     this.isNew = true;
+    const nuevoCodigo = this.regimenPensionarioService.GenerarNuevoCodigoRegimen();
     this.regimenPensionarioForm.reset({
+      pla61codigo: nuevoCodigo,
       pla61flagsectorprivado: false,
       pla61flagsectorpublico: false,
       pla61flagactivo: false,

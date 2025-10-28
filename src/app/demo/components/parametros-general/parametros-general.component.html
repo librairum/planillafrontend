@@ -27,23 +27,24 @@
             <!-- Cabecera de Tabla -->
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Cod Tipo</th>
-                    <th>Tipo de dato</th>
-                    <th>01</th>
-                    <th>02</th>
-                    <th>03</th>
-                    <th>04</th>
-                    <th>05</th>
-                    <th>06</th>
-                    <th>07</th>
-                    <th>08</th>
-                    <th>09</th>
-                    <th>10</th>
-                    <th>11</th>
-                    <th>12</th>
-                    <th style="text-align: center;">Acciones</th>
+                  <!-- 17 columnas -->
+                    <th style="text-align: center; width: 5%;">Código</th>
+                    <th style="text-align: center; width: 10%;">Descripción</th>
+                    <th style="text-align: center; width: 7%;">Cod Tipo</th>
+                    <th style="text-align: center; width: 8%;">Tipo de dato</th>
+                    <th style="text-align: center; width: 5%;">01</th>
+                    <th style="text-align: center; width: 5%;">02</th>
+                    <th style="text-align: center; width: 5%;">03</th>
+                    <th style="text-align: center; width: 5%;">04</th>
+                    <th style="text-align: center; width: 5%;">05</th>
+                    <th style="text-align: center; width: 5%;">06</th>
+                    <th style="text-align: center; width: 5%;">07</th>
+                    <th style="text-align: center; width: 5%;">08</th>
+                    <th style="text-align: center; width: 5%;">09</th>
+                    <th style="text-align: center; width: 5%;">10</th>
+                    <th style="text-align: center; width: 5%;">11</th>
+                    <th style="text-align: center; width: 5%;">12</th>
+                    <th style="text-align: center; width: 10%;">Acciones</th>
                 </tr>
             </ng-template>
 
@@ -78,8 +79,18 @@
                     <td style="text-align: left;">
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla40flagtipodato"
-                                       class="p-inputtext-sm w-full" required>
+                                <p-dropdown
+                                    [(ngModel)]="parametro.pla40flagtipodato"
+                                    [options]="[
+                                        { label: 'Importe', value: 'I' },
+                                        { label: 'Porcentaje', value: 'P' }
+                                    ]"
+                                    placeholder="Tipo de dato"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    class="p-inputtext-sm w-full"
+                                    appendTo="body">
+                                </p-dropdown>
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{parametro.pla40flagtipodato}}
@@ -281,9 +292,9 @@
             <!-- Footer para Nuevo Registro -->
             <ng-template pTemplate="footer">
                 <tr *ngIf="isEditing">
-                    <td colspan="4">
+                    <td colspan="17">
                         <form [formGroup]="parametroGeneralForm" class="grid p-fluid">
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla40codigo"
@@ -292,25 +303,38 @@
                                 </span>
                             </div>
 
-                            <div class="col-4" style="width: 40%">
+                            <div class="col-4" style="width: 10%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla40descripcion"
-                                           placeholder="Descripción del Parámetro"
+                                           placeholder="Descripción"
                                            class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-4" style="width: 40%">
+                            <div class="col-4" style="width: 7%;">
+                              <!-- Vacio -->
                                 <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla40flagtipodato"
-                                           placeholder="Tipo de dato"
-                                           class="p-inputtext-sm w-full"/>
+                                    <p-dropdown
+                                        formControlName="pla40flagtipodato"
+                                        [options]="[
+                                            { label: 'Importe', value: 'I' },
+                                            { label: 'Porcentaje', value: 'P' }
+                                        ]"
+                                        placeholder="Tipo de dato"
+                                        optionLabel="label"
+                                        optionValue="value"
+                                        class="p-inputtext-sm w-full"
+                                        appendTo="body">
+                                    </p-dropdown>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-4" style="width: 8%;">
+                              <!-- Vacio por ahora -->
+                            </div>
+
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4001"
@@ -319,7 +343,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4002"
@@ -328,7 +352,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4003"
@@ -337,7 +361,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4004"
@@ -346,7 +370,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4005"
@@ -355,7 +379,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4006"
@@ -364,7 +388,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4007"
@@ -373,7 +397,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4008"
@@ -382,7 +406,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4009"
@@ -391,7 +415,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4010"
@@ -400,7 +424,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4011"
@@ -409,7 +433,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 5%;">
                                 <span class="p-input-icon-left w-full">
                                     <input pInputText
                                            formControlName="pla4012"
@@ -419,7 +443,7 @@
                             </div>
 
                             <!-- Botones de Acción -->
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 10%">
                                 <div class="flex gap-2 justify-content-center">
 
                                     <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"
@@ -434,4 +458,4 @@
             </ng-template>
         </p-table>
     </div>
-</div>  
+</div>

@@ -104,6 +104,14 @@ export class RegimenPensionarioService {
         //return this.http.post<any>(this.urlAPI + '/SpCreate', regimen);
     }
 
+    // Generar nuevo codigo
+    public GenerarNuevoCodigoRegimen(): string {
+      const codigos = this.regimenPensionarioList.map(p => parseInt(p.pla61codigo, 10));
+      const max = codigos.length > 0 ? Math.max(...codigos) : 0;
+      const nuevoCodigo = (max + 1).toString().padStart(2, '0');
+      return nuevoCodigo;
+    }
+
   public ActualizarRegimenPensionario(regimen: RegimenPensionario): Observable<any> {
 
                 const index = this.regimenPensionarioList.findIndex(r =>

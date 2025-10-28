@@ -24,7 +24,7 @@ export class ParametroEmpresaService {
             pla41anio: '2025',
             pla41codigo: '01',
             pla41descripcion: 'CUOTA SINDICAL',
-            pla41flagtipodato: 'N',
+            pla41flagtipodato: 'P',
             pla4101: 10,
             pla4102: 10,
             pla4103: 10,
@@ -44,7 +44,7 @@ export class ParametroEmpresaService {
             pla41anio: '2025',
             pla41codigo: '02',
             pla41descripcion: 'SCTR',
-            pla41flagtipodato: 'N',
+            pla41flagtipodato: 'I',
             pla4101: 10,
             pla4102: 10,
             pla4103: 10,
@@ -123,6 +123,13 @@ export class ParametroEmpresaService {
               }
           });
           //return this.http.post<any>(this.urlAPI + '/SpCreate', regimen);
+      }
+
+      public GenerarNuevoCodigoParametroEmpresa(): string {
+        const codigos = this.parametroxEmpresaList.map(p => parseInt(p.pla41codigo, 10));
+        const max = codigos.length > 0 ? Math.max(...codigos) : 0;
+        const nuevoCodigo = (max + 1).toString().padStart(2, '0');
+        return nuevoCodigo;
       }
 
     public ActualizarParametroxEmpresa(parametro: ParametroxEmpresa): Observable<any> {

@@ -41,7 +41,7 @@ export class ParametroGeneralService {
         },
         {
             pla40anio: '2025',
-            pla40codigo: '03',
+            pla40codigo: '02',
             pla40descripcion: 'APORTE SENATI',
             pla40flagtipodato: 'P',
             pla4001: 0.75,
@@ -120,6 +120,14 @@ export class ParametroGeneralService {
                 }
             });
             //return this.http.post<any>(this.urlAPI + '/SpCreate', regimen);
+        }
+
+        // Spu_Pla_Trae_ParametrosGeneralCodigo
+        public GenerarNuevoCodigoParametro(): string {
+          const codigos = this.parametroGeneralList.map(p => parseInt(p.pla40codigo, 10));
+          const max = codigos.length > 0 ? Math.max(...codigos) : 0;
+          const nuevoCodigo = (max + 1).toString().padStart(2, '0');
+          return nuevoCodigo;
         }
 
       public ActualizarParametroGeneral(parametro: ParametroGeneral): Observable<any> {

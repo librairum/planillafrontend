@@ -78,7 +78,7 @@ export class ParametrosGeneralComponent implements OnInit {
 
     initForm() {
         this.parametroGeneralForm = this.fb.group({
-            pla40anio: [''],
+            pla40anio: [''], // configurar requerido luego
             pla40codigo: ['', Validators.required],
             pla40descripcion: ['', Validators.required],
             pla40flagtipodato: ['', Validators.required],
@@ -157,8 +157,10 @@ export class ParametrosGeneralComponent implements OnInit {
     showAddRow() {
         this.isEditing = true;
         this.isNew = true;
-        this.parametroGeneralForm.reset({
 
+        const nuevoCodigo = this.parametroGeneralService.GenerarNuevoCodigoParametro();
+        this.parametroGeneralForm.reset({
+          pla40codigo: nuevoCodigo
           /*
             pla41empresacod: this.globalService.getCodigoEmpresa(),
             */
@@ -176,6 +178,7 @@ export class ParametrosGeneralComponent implements OnInit {
                             this.parametroGeneralForm.reset();
                             verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado correctamente');
                             this.cargarParametrosGenerales();
+                            console.log(newParametroGeneral);
                         },
                         error: (err) => {
                             verMensajeInformativo(this.messageService, 'error', 'Error', err.message || 'Ya existe un registro con ese código y empresa');
@@ -222,4 +225,4 @@ export class ParametrosGeneralComponent implements OnInit {
             }
         })
     }
-}  
+}
