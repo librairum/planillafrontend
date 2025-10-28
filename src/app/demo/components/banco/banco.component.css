@@ -1,0 +1,281 @@
+/* ================================
+   CONTENEDOR PRINCIPAL
+================================ */
+.banco-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+/* ================================
+   HEADER
+================================ */
+.page-header {
+  background-color: #b8c6db;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-title {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.add-button {
+  background-color: #22c55e !important;
+  border-color: #22c55e !important;
+  padding: 0.4rem 0.6rem !important;
+}
+
+.add-button:hover {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+}
+
+/* ================================
+   TABLA WRAPPER
+================================ */
+.table-wrapper {
+  flex: 1;
+  overflow: auto;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  margin: 0;
+}
+
+/* ================================
+   TABLA
+================================ */
+::ng-deep .banco-table {
+  width: 100%;
+}
+
+::ng-deep .banco-table .p-datatable-wrapper {
+  border: none;
+}
+
+::ng-deep .banco-table .p-datatable-thead > tr > th {
+  background-color: #e0e7ff;
+  color: #1e293b;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+::ng-deep .banco-table .p-datatable-tbody > tr > td {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+::ng-deep .banco-table .p-datatable-tbody > tr:hover {
+  background-color: #f8fafc;
+}
+
+::ng-deep .banco-table .p-datatable-tbody > tr > td:first-child {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+/* ================================
+   INPUTS EN TABLA
+================================ */
+.table-input {
+  width: 100%;
+  padding: 0.4rem 0.6rem !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 4px !important;
+  font-size: 0.875rem !important;
+  background-color: #ffffff !important;
+}
+
+.table-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+  outline: none !important;
+}
+
+.table-input:disabled {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  cursor: not-allowed;
+}
+
+/* ================================
+   CHECKBOXES
+================================ */
+.text-center {
+  text-align: center;
+}
+
+::ng-deep .p-checkbox {
+  display: inline-flex;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box:hover {
+  border-color: #3b82f6;
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+/* ================================
+   ACCIONES
+================================ */
+.actions-cell {
+  text-align: center;
+  padding: 0.5rem !important;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .action-btn {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+}
+
+::ng-deep .action-btn .p-button-icon {
+  font-size: 0.875rem;
+}
+
+/* Botón editar */
+::ng-deep .p-button-warning {
+  background-color: #f59e0b !important;
+  border-color: #f59e0b !important;
+}
+
+::ng-deep .p-button-warning:hover {
+  background-color: #d97706 !important;
+  border-color: #d97706 !important;
+}
+
+/* Botón eliminar */
+::ng-deep .p-button-danger {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+}
+
+::ng-deep .p-button-danger:hover {
+  background-color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+/* Botón cancelar */
+::ng-deep .p-button-secondary {
+  background-color: #94a3b8 !important;
+  border-color: #94a3b8 !important;
+}
+
+::ng-deep .p-button-secondary:hover {
+  background-color: #64748b !important;
+  border-color: #64748b !important;
+}
+
+/* Botón guardar */
+::ng-deep .p-button-success {
+  background-color: #22c55e !important;
+  border-color: #22c55e !important;
+}
+
+::ng-deep .p-button-success:hover {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+}
+
+/* ================================
+   MENSAJE VACÍO
+================================ */
+.empty-message {
+  color: #64748b;
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+.empty-message i {
+  font-size: 1.5rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.empty-message p {
+  margin: 0.5rem 0 0 0;
+}
+
+/* ================================
+   SCROLLBAR PERSONALIZADO
+================================ */
+.table-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background-color: #f1f5f9;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+
+  ::ng-deep .banco-table .p-datatable-tbody > tr > td {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  .action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+}

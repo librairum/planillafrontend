@@ -1,1 +1,185 @@
-<p>planilla-grupo works!</p>
+<div class="planilla-grupo-container">
+  <!-- Toast para notificaciones -->
+  <p-toast></p-toast>
+  
+  <!-- Confirm Dialog -->
+  <p-confirmDialog></p-confirmDialog>
+
+  <!-- Header con botón de agregar -->
+  <div class="page-header">
+    <div class="header-content">
+      <span class="header-title">Planilla grupo</span>
+      <button pButton type="button" 
+              icon="pi pi-plus" 
+              class="p-button-sm add-button"
+              (click)="agregarNuevo()"
+              pTooltip="Agregar nueva planilla grupo"
+              tooltipPosition="bottom"></button>
+    </div>
+  </div>
+
+  <!-- Tabla de planillas grupo -->
+  <div class="table-wrapper">
+    <p-table 
+      [value]="planillasGrupo" 
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20, 50]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} planillas"
+      [globalFilterFields]="['codigo', 'descripcion', 'tipoSueldoDes', 'frecuenciaPago', 'controlAsistencia']"
+      [tableStyle]="{ 'min-width': '100%' }"
+      styleClass="planilla-grupo-table">
+      
+      <!-- Columnas -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+          <th style="width: 180px">TipoSueldoDes</th>
+          <th style="width: 180px">Frecuencia Pago</th>
+          <th style="width: 180px">Control Asistencia</th>
+          <th style="width: 220px; text-align: center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <!-- Filas -->
+      <ng-template pTemplate="body" let-planilla let-rowIndex="rowIndex">
+        <tr>
+          <!-- Código -->
+          <td>
+            <input 
+              *ngIf="planilla.isEditing" 
+              type="text" 
+              pInputText 
+              [(ngModel)]="planilla.codigo"
+              [disabled]="!planilla.isNew"
+              class="table-input"
+              maxlength="10" />
+            <span *ngIf="!planilla.isEditing">{{ planilla.codigo }}</span>
+          </td>
+
+          <!-- Descripción -->
+          <td>
+            <input 
+              *ngIf="planilla.isEditing" 
+              type="text" 
+              pInputText 
+              [(ngModel)]="planilla.descripcion"
+              class="table-input"
+              maxlength="100" />
+            <span *ngIf="!planilla.isEditing">{{ planilla.descripcion }}</span>
+          </td>
+
+          <!-- TipoSueldoDes -->
+          <td>
+            <p-dropdown 
+              *ngIf="planilla.isEditing"
+              [options]="tiposSueldo" 
+              [(ngModel)]="planilla.tipoSueldoDes"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccione"
+              [style]="{'width': '100%'}"
+              styleClass="table-dropdown">
+            </p-dropdown>
+            <span *ngIf="!planilla.isEditing">{{ planilla.tipoSueldoDes }}</span>
+          </td>
+
+          <!-- Frecuencia Pago -->
+          <td>
+            <p-dropdown 
+              *ngIf="planilla.isEditing"
+              [options]="frecuenciasPago" 
+              [(ngModel)]="planilla.frecuenciaPago"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccione"
+              [style]="{'width': '100%'}"
+              styleClass="table-dropdown">
+            </p-dropdown>
+            <span *ngIf="!planilla.isEditing">{{ planilla.frecuenciaPago }}</span>
+          </td>
+
+          <!-- Control Asistencia -->
+          <td>
+            <p-dropdown 
+              *ngIf="planilla.isEditing"
+              [options]="controlesAsistencia" 
+              [(ngModel)]="planilla.controlAsistencia"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccione"
+              [style]="{'width': '100%'}"
+              styleClass="table-dropdown">
+            </p-dropdown>
+            <span *ngIf="!planilla.isEditing">{{ planilla.controlAsistencia }}</span>
+          </td>
+
+          <!-- Acciones -->
+          <td class="actions-cell">
+            <div class="action-buttons">
+              <!-- Botón Editar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-pencil" 
+                class="p-button-warning p-button-sm action-btn"
+                (click)="editar(planilla)"
+                [disabled]="planilla.isEditing"
+                pTooltip="Editar"
+                tooltipPosition="top">
+              </button>
+
+              <!-- Botón Eliminar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-danger p-button-sm action-btn"
+                (click)="eliminar(planilla, rowIndex)"
+                [disabled]="planilla.isEditing"
+                pTooltip="Eliminar"
+                tooltipPosition="top">
+              </button>
+
+              <!-- Botón Cancelar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-undo" 
+                class="p-button-secondary p-button-sm action-btn"
+                (click)="cancelar(planilla, rowIndex)"
+                [disabled]="!planilla.isEditing"
+                pTooltip="Cancelar"
+                tooltipPosition="top">
+              </button>
+
+              <!-- Botón Guardar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-save" 
+                class="p-button-success p-button-sm action-btn"
+                (click)="guardar(planilla, rowIndex)"
+                [disabled]="!planilla.isEditing"
+                pTooltip="Guardar"
+                tooltipPosition="top">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Empty message -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center empty-message">
+            <i class="pi pi-info-circle"></i>
+            <p>No se encontraron planillas grupo</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -1,1 +1,185 @@
-<p>base-afectacion works!</p>
+<div class="base-afectacion-container">
+  <!-- Toast para notificaciones -->
+  <p-toast></p-toast>
+  
+  <!-- Confirm Dialog -->
+  <p-confirmDialog></p-confirmDialog>
+
+  <!-- Header con botón de agregar -->
+  <div class="page-header">
+    <div class="header-content">
+      <span class="header-title">Base de afectacion</span>
+      <button pButton type="button" 
+              icon="pi pi-plus" 
+              class="p-button-sm add-button"
+              (click)="agregarNuevo()"
+              pTooltip="Agregar nueva base de afectación"
+              tooltipPosition="bottom"></button>
+    </div>
+  </div>
+
+  <!-- Tabla de bases de afectación -->
+  <div class="table-wrapper">
+    <p-table 
+      #dt
+      [value]="basesAfectacion" 
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20, 50]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} bases de afectación"
+      [globalFilterFields]="['codigo', 'descripcion', 'alias']"
+      [tableStyle]="{ 'min-width': '100%' }"
+      styleClass="base-afectacion-table">
+      
+      <!-- Columnas -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+          <th style="width: 100px">Posicion</th>
+          <th style="width: 150px">Alias</th>
+          <th style="width: 80px; text-align: center">Activo</th>
+          <th style="width: 80px; text-align: center">Sunat</th>
+          <th style="width: 220px; text-align: center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <!-- Filas -->
+      <ng-template pTemplate="body" let-base let-rowIndex="rowIndex">
+        <tr>
+          <!-- Código -->
+          <td>
+            <input 
+              *ngIf="base.isEditing" 
+              type="text" 
+              pInputText 
+              [(ngModel)]="base.codigo"
+              [disabled]="!base.isNew"
+              class="table-input"
+              maxlength="10" />
+            <span *ngIf="!base.isEditing">{{ base.codigo }}</span>
+          </td>
+
+          <!-- Descripción -->
+          <td>
+            <input 
+              *ngIf="base.isEditing" 
+              type="text" 
+              pInputText 
+              [(ngModel)]="base.descripcion"
+              class="table-input"
+              maxlength="150" />
+            <span *ngIf="!base.isEditing">{{ base.descripcion }}</span>
+          </td>
+
+          <!-- Posición -->
+          <td>
+            <input 
+              *ngIf="base.isEditing" 
+              type="number" 
+              pInputText 
+              [(ngModel)]="base.posicion"
+              class="table-input" />
+            <span *ngIf="!base.isEditing">{{ base.posicion }}</span>
+          </td>
+
+          <!-- Alias -->
+          <td>
+            <input 
+              *ngIf="base.isEditing" 
+              type="text" 
+              pInputText 
+              [(ngModel)]="base.alias"
+              class="table-input"
+              maxlength="50" />
+            <span *ngIf="!base.isEditing">{{ base.alias }}</span>
+          </td>
+
+          <!-- Activo (checkbox) -->
+          <td class="text-center">
+            <p-checkbox 
+              [(ngModel)]="base.activo" 
+              [binary]="true"
+              [disabled]="!base.isEditing"
+              inputId="activo-{{rowIndex}}">
+            </p-checkbox>
+          </td>
+
+          <!-- Sunat (checkbox) -->
+          <td class="text-center">
+            <p-checkbox 
+              [(ngModel)]="base.sunat" 
+              [binary]="true"
+              [disabled]="!base.isEditing"
+              inputId="sunat-{{rowIndex}}">
+            </p-checkbox>
+          </td>
+
+          <!-- Acciones -->
+          <td class="actions-cell">
+            <div class="action-buttons">
+              <!-- Botón Editar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-pencil" 
+                class="p-button-warning p-button-sm action-btn"
+                (click)="editar(base)"
+                [disabled]="base.isEditing"
+                pTooltip="Editar"
+                tooltipPosition="top">
+              </button>
+
+              <!-- Botón Eliminar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-danger p-button-sm action-btn"
+                (click)="eliminar(base, rowIndex)"
+                [disabled]="base.isEditing"
+                pTooltip="Eliminar"
+                tooltipPosition="top">
+              </button>
+
+              <!-- Botón Cancelar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-undo" 
+                class="p-button-secondary p-button-sm action-btn"
+                (click)="cancelar(base, rowIndex)"
+                [disabled]="!base.isEditing"
+                pTooltip="Cancelar"
+                tooltipPosition="top">
+              </button>
+
+              <!-- Botón Guardar -->
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-save" 
+                class="p-button-success p-button-sm action-btn"
+                (click)="guardar(base, rowIndex)"
+                [disabled]="!base.isEditing"
+                pTooltip="Guardar"
+                tooltipPosition="top">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Empty message -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center empty-message">
+            <i class="pi pi-info-circle"></i>
+            <p>No se encontraron bases de afectación</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
