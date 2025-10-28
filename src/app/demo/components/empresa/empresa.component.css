@@ -52,12 +52,12 @@
     
 }
 
-/*:host ::ng-deep .p-button {
+:host ::ng-deep .p-button {
     padding: 0.35rem 0.7rem !important;
     font-size: 0.8rem !important;
 }
 
-:host ::ng-deep .p-button .p-button-icon {
+/*:host ::ng-deep .p-button .p-button-icon {
     font-size: 0.8rem !important;
 }
 
@@ -67,19 +67,4 @@
 
 .p-datatable .p-paginator.p-paginator-bottom {
     justify-content: flex-end; 
-}
-
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    padding: 1.0rem 1.0rem !important; /* Valor reducido, ej: 0.5rem */
-}
-
-/* 2. Aplica el mismo tamaño de fuente compacto de los inputs */
-:host ::ng-deep .p-datatable {
-    font-size: 1.0rem !important;
-}
-
-/* Opcional: Ajustar el padding de la fila seleccionada si usas selectionMode="single" */
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr.p-highlight {
-    font-size: 1.0rem !important;
 }
