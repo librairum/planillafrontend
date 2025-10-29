@@ -3,11 +3,11 @@
 
 <div class="p-1 py-5 max-h-screen">
     <div class="mb-4">
-        <p-card header="Empresas" styleClass="shadow-2 border-round">
+        <p-card header="Empresas" styleClass="shadow-xl rounded-xl">
 
-            <p-toolbar styleClass="mb-3 surface-card border-none px-5">
+            <p-toolbar styleClass="mb-4 surface-card border-none px-4">
                 <div class="p-toolbar-group-start flex flex-wrap gap-3">
-                    <button pButton pRipple type="button" label="Agregar" icon="pi pi-plus" class="p-button-success"
+                    <button pButton pRipple type="button" label="Nuevo" icon="pi pi-plus" class="p-button-success"
                         (click)="agregarEmpresa()" [disabled]="!isViewMode">
                     </button>
                     <button pButton pRipple type="button" label="Modificar" icon="pi pi-pencil" class="p-button-warning"
@@ -34,27 +34,29 @@
                             (click)="cancelar()" label="Cancelar">
                         </button>
                     </div>
-                    <div class="flex align-items-center">
-                        <label for="rowsPerPageTable" class="mr-2 text-sm">Filas por página:</label>
-                        <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage"
-                            placeholder="Seleccionar" class="p-button-sm">
-                        </p-dropdown>
+
+                    <div class="p-toolbar-group-end">
+                        <div class="flex align-items-center">
+                            <label for="rowsPerPageTable">Filas por página:</label>
+                            <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage"
+                                placeholder="10" styleClass="p-button-sm w-16 text-center">
+                            </p-dropdown>
+                        </div>
                     </div>
                 </div>
             </p-toolbar>
 
-            <div *ngIf="isViewMode" class="px-5 py-1">
+            <div *ngIf="isViewMode" class="px-4 py-3">
                 <div class="relative">
-                    <div *ngIf="loading"
-                        class="absolute inset-0 z-2 flex align-items-center border-round" >
+                    <div *ngIf="loading" class="absolute inset-0 z-2 flex align-items-center border-round">
                         <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="5" animationDuration=".5s">
-                            
+
                         </p-progressSpinner>
                     </div>
 
                     <p-table [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa"
-                        dataKey="empresacod"  styleClass="p-datatable-sm"
-                        [paginator]="true" [rows]="rowsPerPage"  paginatorPosition="bottom">
+                        dataKey="empresacod" styleClass="p-datatable-sm" [paginator]="true" [rows]="rowsPerPage"
+                        responsiveLayout="scroll">
 
                         <ng-template pTemplate="paginatorcenter" let-state>
                         </ng-template>
@@ -148,6 +150,7 @@
                                                 [(ngModel)]="empresa.representanteLegal.replegaldoctip"
                                                 placeholder="Seleccione Tipo Doc" [filter]="true" [showClear]="true"
                                                 styleClass="w-full"
+                                                appendTo="body"
                                                 [class.p-filled]="empresa.representanteLegal.replegaldoctip"
                                                 id="docTipoRL" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="docTipoRL">Tipo Documento</label>
@@ -208,6 +211,7 @@
                                                 [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladoctip"
                                                 placeholder="Seleccione Tipo Doc" [filter]="true" [showClear]="true"
                                                 styleClass="w-full"
+                                                appendTo="body"
                                                 [class.p-filled]="empresa.responsablePlanilla.encargadoplanilladoctip"
                                                 id="docTipoRP" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="docTipoRP">Doc. Tipo</label>
@@ -313,7 +317,7 @@
                         </p-panel>
                     </div>
                 </div>
-            </div>  
+            </div>
         </p-card>
     </div>
 </div>

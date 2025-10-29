@@ -40,6 +40,14 @@ export interface Cargo {
   pla51flagactivo: boolean;
 }
 
+export interface Establecimiento {  
+    pla20codigo: string;
+    pla20denominacion: string;
+    pla20establecimientotipo: string;
+    pla20sctrflag: boolean; 
+    pla20sctrtasa: number;
+}
+
 export interface CentroCosto{
   pla57codigo: string;
   pla57descripcion: string;

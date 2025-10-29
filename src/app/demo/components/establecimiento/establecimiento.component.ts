@@ -18,7 +18,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 
-import { Establecimiento } from 'src/app/demo/model/Establecimiento'; 
+import { Establecimiento } from 'src/app/demo/model/Empresa'; 
 import { 
   verMensajeInformativo, 
   esVacio, 
