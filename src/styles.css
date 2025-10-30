@@ -1,4 +1,4 @@
-/* src/styles.css - Estilos globales */
+/* src/styles.css - Estilos globales profesionales */
 
 /* Importar PrimeNG y PrimeFlex */
 @import "primeng/resources/themes/lara-light-blue/theme.css";
@@ -6,68 +6,44 @@
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
 
-/* Estilos base 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: var(--font-family);
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa;
-}
-
-html, body {
-  height: 100%;
-  width: 100%;
-}*/
-
-
 /* =====================================================
-   ESTILOS GLOBALES - SISTEMA DE DISEÑO CENTRALIZADO
-   ===================================================== */
-
-/* =====================================================
-   VARIABLES CSS (Design Tokens)
+   VARIABLES CSS - DISEÑO CORPORATIVO PROFESIONAL
    ===================================================== */
 :root {
-  /* Colores principales */
-  --primary-color: #667eea;
-  --primary-dark: #764ba2;
-  --primary-light: #c7d2fe;
-  --primary-lighter: #eef2ff;
+  /* Colores principales - Paleta corporativa */
+  --primary-color: #0d6efd;
+  --primary-dark: #0b5ed7;
+  --primary-light: #6ea8fe;
+  --primary-lighter: #cfe2ff;
   
-  /* Colores de estado */
-  --success-color: #22c55e;
-  --danger-color: #ef4444;
-  --warning-color: #f59e0b;
-  --info-color: #3b82f6;
+  /* Colores de estado - Bootstrap estándar */
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+  --secondary-color: #6c757d;
   
   /* Colores de fondo */
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
-  --bg-tertiary: #f3f4f6;
-  --bg-quaternary: #f9fafb;
+  --bg-tertiary: #e9ecef;
+  --bg-quaternary: #dee2e6;
   
   /* Colores de texto */
-  --text-primary: #1f2937;
-  --text-secondary: #374151;
-  --text-tertiary: #6b7280;
-  --text-quaternary: #9ca3af;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-tertiary: #6c757d;
+  --text-quaternary: #adb5bd;
   
   /* Bordes */
-  --border-color: #e5e7eb;
-  --border-color-light: #d1d5db;
-  --border-color-dark: #9ca3af;
+  --border-color: #dee2e6;
+  --border-color-light: #e9ecef;
+  --border-color-dark: #adb5bd;
   
-  /* Sombras */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-primary: 0 4px 12px rgba(102, 126, 234, 0.3);
+  /* Sombras sutiles */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.10);
   
   /* Espaciado */
   --spacing-xs: 0.25rem;
@@ -76,22 +52,22 @@ html, body {
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   
-  /* Bordes redondeados */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Bordes redondeados mínimos */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
   
   /* Tamaños de fuente */
   --font-xs: 0.75rem;
   --font-sm: 0.875rem;
-  --font-md: 0.95rem;
+  --font-md: 1rem;
   --font-lg: 1.125rem;
-  --font-xl: 1.5rem;
-  --font-2xl: 1.75rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
   
-  /* Transiciones */
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s ease;
+  /* Transiciones suaves */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
 }
 
 /* =====================================================
@@ -104,11 +80,18 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-secondary);
   color: var(--text-primary);
+  font-size: var(--font-md);
+  line-height: 1.5;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
 }
 
 /* =====================================================
@@ -118,15 +101,13 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: var(--spacing-lg);
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-secondary);
   padding: var(--spacing-md);
 }
 
 .content-card {
   background-color: var(--bg-primary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
   overflow: hidden;
   flex: 1;
   display: flex;
@@ -134,18 +115,17 @@ body {
 }
 
 /* =====================================================
-   HEADERS GLOBALES
+   HEADERS GLOBALES - ESTILO CORPORATIVO
    ===================================================== */
 .page-header,
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-lg);
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-  color: white;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .header-content {
@@ -155,15 +135,16 @@ body {
 }
 
 .header-icon {
-  font-size: var(--font-2xl);
+  font-size: var(--font-xl);
+  color: var(--primary-color);
 }
 
 .page-header h2,
 .section-header h2 {
   margin: 0;
-  font-size: var(--font-2xl);
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 /* =====================================================
@@ -173,11 +154,11 @@ body {
 ::ng-deep .p-inputnumber input,
 ::ng-deep .p-calendar input,
 ::ng-deep .p-dropdown {
-  padding: 0.6rem 0.75rem !important;
+  padding: 0.4rem 0.6rem !important;
   font-size: var(--font-sm) !important;
-  border-radius: var(--radius-md) !important;
-  border: 1px solid var(--border-color-light) !important;
-  transition: all var(--transition-fast) !important;
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--border-color) !important;
+  transition: border-color var(--transition-fast) !important;
 }
 
 ::ng-deep .p-inputtext:enabled:hover,
@@ -192,7 +173,7 @@ body {
 ::ng-deep .p-calendar input:enabled:focus,
 ::ng-deep .p-dropdown:not(.p-disabled).p-focus {
   border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1) !important;
   outline: none !important;
 }
 
@@ -204,13 +185,12 @@ body {
   opacity: 0.6 !important;
 }
 
-/* Ajustes específicos de dropdown */
 ::ng-deep .p-dropdown {
-  min-height: 2.5rem !important;
+  min-height: 2.25rem !important;
 }
 
 ::ng-deep .p-dropdown .p-dropdown-label {
-  padding: 0.6rem 0.75rem !important;
+  padding: 0.4rem 0.6rem !important;
   font-size: var(--font-sm) !important;
 }
 
@@ -218,57 +198,104 @@ body {
    PRIMENG - BOTONES GLOBALES
    ===================================================== */
 ::ng-deep .p-button {
-  padding: 0.75rem 1.25rem !important;
+  padding: 0.5rem 1rem !important;
   font-size: var(--font-sm) !important;
-  font-weight: 600 !important;
-  border-radius: var(--radius-md) !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-sm) !important;
   transition: all var(--transition-fast) !important;
-  border: none !important;
+  border: 1px solid transparent !important;
 }
 
+/* Botón primario */
 ::ng-deep .p-button:not(.p-button-outlined):not(.p-button-text) {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
   color: white !important;
 }
 
 ::ng-deep .p-button:not(.p-button-outlined):not(.p-button-text):not(:disabled):hover {
-  transform: translateY(-2px) !important;
-  box-shadow: var(--shadow-primary) !important;
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
 }
 
+/* Botón outlined */
 ::ng-deep .p-button.p-button-outlined {
-  border: 2px solid var(--primary-color) !important;
+  border: 1px solid var(--primary-color) !important;
   color: var(--primary-color) !important;
   background: transparent !important;
 }
 
 ::ng-deep .p-button.p-button-outlined:hover:not(:disabled) {
   background: var(--primary-lighter) !important;
+  color: var(--primary-dark) !important;
 }
 
+/* Botón secundario */
 ::ng-deep .p-button.p-button-secondary {
-  background: var(--bg-secondary) !important;
-  color: var(--text-secondary) !important;
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
+  color: white !important;
 }
 
 ::ng-deep .p-button.p-button-secondary:hover:not(:disabled) {
-  background: var(--bg-tertiary) !important;
+  background-color: #5c636a !important;
+  border-color: #5c636a !important;
+}
+
+/* Botón success */
+::ng-deep .p-button.p-button-success {
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+}
+
+::ng-deep .p-button.p-button-success:hover:not(:disabled) {
+  background-color: #157347 !important;
+  border-color: #146c43 !important;
+}
+
+/* Botón danger */
+::ng-deep .p-button.p-button-danger {
+  background-color: var(--danger-color) !important;
+  border-color: var(--danger-color) !important;
+}
+
+::ng-deep .p-button.p-button-danger:hover:not(:disabled) {
+  background-color: #bb2d3b !important;
+  border-color: #b02a37 !important;
+}
+
+/* Botón warning */
+::ng-deep .p-button.p-button-warning {
+  background-color: var(--warning-color) !important;
+  border-color: var(--warning-color) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .p-button.p-button-warning:hover:not(:disabled) {
+  background-color: #ffca2c !important;
+  border-color: #ffc720 !important;
 }
 
 ::ng-deep .p-button:disabled {
-  opacity: 0.4 !important;
+  opacity: 0.5 !important;
   cursor: not-allowed !important;
 }
 
 /* Botones de iconos */
 ::ng-deep .p-button.p-button-icon-only {
-  width: 40px !important;
-  height: 40px !important;
+  width: 32px !important;
+  height: 32px !important;
   padding: 0 !important;
 }
 
 ::ng-deep .p-button .p-button-icon {
   font-size: var(--font-sm) !important;
+}
+
+/* Botones pequeños */
+::ng-deep .p-button.p-button-sm {
+  padding: 0.35rem 0.75rem !important;
+  font-size: var(--font-xs) !important;
 }
 
 /* =====================================================
@@ -277,9 +304,8 @@ body {
 ::ng-deep .p-toolbar {
   background-color: var(--bg-secondary) !important;
   border: none !important;
-  border-bottom: 2px solid var(--border-color) !important;
-  padding: var(--spacing-md) var(--spacing-lg) !important;
-  border-radius: 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: var(--spacing-sm) var(--spacing-md) !important;
 }
 
 ::ng-deep .p-toolbar .p-toolbar-group-start,
@@ -294,21 +320,23 @@ body {
    PRIMENG - DATATABLE
    ===================================================== */
 ::ng-deep .p-datatable {
-  border-radius: var(--radius-md);
-  overflow: hidden;
   font-size: var(--font-sm);
 }
 
+::ng-deep .p-datatable table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
 ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-  background-color: var(--primary-color) !important;
-  color: white !important;
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
   font-weight: 600 !important;
-  padding: 0.75rem !important;
-  border: none !important;
-  font-size: var(--font-xs) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  white-space: nowrap !important;
+  padding: 0.5rem !important;
+  border: 1px solid var(--border-color) !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  font-size: var(--font-sm) !important;
+  text-align: center !important;
 }
 
 ::ng-deep .p-datatable .p-datatable-tbody > tr {
@@ -316,16 +344,18 @@ body {
 }
 
 ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-  padding: 0.75rem !important;
-  border-bottom: 1px solid var(--border-color) !important;
+  padding: 0.4rem !important;
+  border: 1px solid var(--border-color) !important;
+  font-size: var(--font-sm) !important;
+  text-align: center !important;
 }
 
 ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-  background-color: var(--primary-lighter) !important;
+  background-color: var(--bg-secondary) !important;
 }
 
 ::ng-deep .p-datatable .p-datatable-tbody > tr.p-highlight {
-  background-color: var(--primary-light) !important;
+  background-color: var(--primary-lighter) !important;
 }
 
 /* Paginador */
@@ -333,48 +363,65 @@ body {
   background-color: var(--bg-secondary) !important;
   border: none !important;
   border-top: 1px solid var(--border-color) !important;
-  padding: var(--spacing-md) !important;
+  padding: var(--spacing-sm) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  font-size: var(--font-sm) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  min-width: 2rem;
+  height: 2rem;
+  font-size: var(--font-sm);
 }
 
 ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
   color: white !important;
 }
 
 /* =====================================================
    PRIMENG - DIALOG
    ===================================================== */
+::ng-deep .p-dialog {
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
 ::ng-deep .p-dialog .p-dialog-header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-  color: white !important;
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
   font-weight: 600 !important;
-  padding: 1.25rem !important;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+  padding: 1rem !important;
+  border-bottom: 2px solid var(--border-color) !important;
 }
 
 ::ng-deep .p-dialog .p-dialog-content {
-  padding: var(--spacing-xl) !important;
+  padding: var(--spacing-lg) !important;
 }
 
 ::ng-deep .p-dialog .p-dialog-footer {
-  padding: var(--spacing-md) var(--spacing-xl) var(--spacing-lg) !important;
+  padding: var(--spacing-md) var(--spacing-lg) !important;
   border-top: 1px solid var(--border-color) !important;
   display: flex !important;
-  gap: var(--spacing-md) !important;
+  gap: var(--spacing-sm) !important;
   justify-content: flex-end !important;
+  background-color: var(--bg-secondary) !important;
 }
 
 ::ng-deep .p-dialog .p-dialog-footer button {
-  min-width: 120px !important;
+  min-width: 100px !important;
 }
 
 /* =====================================================
    PRIMENG - TAGS
    ===================================================== */
 ::ng-deep .p-tag {
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
   font-size: var(--font-xs) !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   border-radius: var(--radius-sm) !important;
 }
 
@@ -390,12 +437,12 @@ body {
 
 ::ng-deep .p-tag.p-tag-warning {
   background-color: var(--warning-color) !important;
-  color: white !important;
+  color: var(--text-primary) !important;
 }
 
 ::ng-deep .p-tag.p-tag-info {
   background-color: var(--info-color) !important;
-  color: white !important;
+  color: var(--text-primary) !important;
 }
 
 /* =====================================================
@@ -403,24 +450,29 @@ body {
    ===================================================== */
 ::ng-deep .p-panel .p-panel-header {
   background-color: var(--bg-secondary) !important;
-  border-bottom: 2px solid var(--primary-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
   font-weight: 600 !important;
   color: var(--text-primary) !important;
-  padding: var(--spacing-md) var(--spacing-lg) !important;
+  padding: var(--spacing-md) !important;
 }
 
 ::ng-deep .p-panel .p-panel-content {
-  padding: var(--spacing-lg) !important;
+  padding: var(--spacing-md) !important;
 }
 
 ::ng-deep .p-card {
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
   border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 ::ng-deep .p-card .p-card-body {
-  padding: var(--spacing-xl) !important;
+  padding: var(--spacing-lg) !important;
+}
+
+::ng-deep .p-card .p-card-title {
+  font-weight: 600;
+  font-size: var(--font-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 /* =====================================================
@@ -431,13 +483,13 @@ body {
 }
 
 ::ng-deep .p-datepicker {
-  border-radius: var(--radius-md) !important;
   border: 1px solid var(--border-color) !important;
 }
 
 ::ng-deep .p-datepicker .p-datepicker-header {
-  background-color: var(--primary-color) !important;
-  color: white !important;
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
 }
 
 ::ng-deep .p-datepicker table td > span.p-highlight {
@@ -449,10 +501,10 @@ body {
    PRIMENG - CHECKBOX Y RADIO
    ===================================================== */
 ::ng-deep .p-checkbox .p-checkbox-box {
-  width: 20px !important;
-  height: 20px !important;
+  width: 18px !important;
+  height: 18px !important;
   border-radius: var(--radius-sm) !important;
-  border: 2px solid var(--border-color-light) !important;
+  border: 1px solid var(--border-color) !important;
   transition: all var(--transition-fast) !important;
 }
 
@@ -462,9 +514,9 @@ body {
 }
 
 ::ng-deep .p-radiobutton .p-radiobutton-box {
-  width: 20px !important;
-  height: 20px !important;
-  border: 2px solid var(--border-color-light) !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: 1px solid var(--border-color) !important;
   transition: all var(--transition-fast) !important;
 }
 
@@ -478,23 +530,54 @@ body {
 }
 
 /* =====================================================
-   PRIMENG - STEPS
+   PRIMENG - TOAST
    ===================================================== */
-::ng-deep .p-steps .p-steps-item .p-menuitem-link {
+::ng-deep .p-toast {
+  opacity: 1 !important;
+}
+
+::ng-deep .p-toast .p-toast-message {
+  border-radius: var(--radius-sm) !important;
+  border-width: 1px !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+::ng-deep .p-toast .p-toast-message-content {
+  padding: 0.75rem !important;
+}
+
+/* =====================================================
+   PRIMENG - CONFIRM DIALOG
+   ===================================================== */
+::ng-deep .p-confirm-dialog .p-dialog-content {
+  padding: var(--spacing-lg) !important;
+}
+
+::ng-deep .p-confirm-dialog .p-confirm-dialog-icon {
+  font-size: 2rem !important;
+  color: var(--warning-color) !important;
+}
+
+::ng-deep .p-confirm-dialog .p-confirm-dialog-message {
+  margin-left: var(--spacing-md) !important;
+}
+
+/* =====================================================
+   PRIMENG - BREADCRUMB
+   ===================================================== */
+::ng-deep .p-breadcrumb {
   background-color: transparent !important;
-  padding: var(--spacing-md) !important;
-  transition: all var(--transition-fast) !important;
+  border: none !important;
+  padding: var(--spacing-sm) 0 !important;
 }
 
-::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-number {
-  background-color: var(--primary-color) !important;
-  color: white !important;
-  border-color: var(--primary-color) !important;
+::ng-deep .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link {
+  color: var(--text-secondary) !important;
+  font-size: var(--font-sm) !important;
 }
 
-::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-title {
+::ng-deep .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link:hover {
   color: var(--primary-color) !important;
-  font-weight: 600 !important;
 }
 
 /* =====================================================
@@ -507,8 +590,6 @@ body {
 ::ng-deep .p-panelmenu .p-panelmenu-header > a {
   border: none !important;
   background-color: transparent !important;
-  border-radius: var(--radius-md) !important;
-  margin: var(--spacing-xs) var(--spacing-sm) !important;
   padding: 0.75rem var(--spacing-md) !important;
   transition: all var(--transition-fast) !important;
 }
@@ -519,23 +600,21 @@ body {
 
 ::ng-deep .p-panelmenu .p-panelmenu-header.p-highlight > a {
   background-color: var(--primary-lighter) !important;
-  color: var(--info-color) !important;
+  color: var(--primary-color) !important;
 }
 
 ::ng-deep .p-panelmenu .p-menuitem-link {
   padding: var(--spacing-sm) var(--spacing-md) !important;
-  border-radius: var(--radius-sm) !important;
-  margin: 0.125rem var(--spacing-sm) !important;
   transition: all var(--transition-fast) !important;
 }
 
 ::ng-deep .p-panelmenu .p-menuitem-link:hover {
-  background-color: var(--bg-quaternary) !important;
+  background-color: var(--bg-secondary) !important;
 }
 
 ::ng-deep .p-panelmenu .p-menuitem-link.p-menuitem-link-active {
-  background-color: #dbeafe !important;
-  color: var(--info-color) !important;
+  background-color: var(--primary-lighter) !important;
+  color: var(--primary-color) !important;
   font-weight: 600 !important;
 }
 
@@ -545,13 +624,13 @@ body {
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 .form-field.full-width {
@@ -561,32 +640,33 @@ body {
 .form-label {
   font-weight: 600;
   color: var(--text-secondary);
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
 }
 
 .form-label .required {
   color: var(--danger-color);
-  font-weight: 700;
+  margin-left: 0.125rem;
 }
 
 /* Información adicional */
 .info-panel {
-  background-color: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
   padding: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .info-row {
   display: flex;
-  padding: 0.4rem 0;
+  padding: 0.25rem 0;
+  font-size: var(--font-sm);
 }
 
 .info-label {
   font-weight: 600;
   color: var(--text-secondary);
-  min-width: 100px;
+  min-width: 120px;
   margin-right: var(--spacing-sm);
 }
 
@@ -619,7 +699,6 @@ body {
 
 .text-danger {
   color: var(--danger-color) !important;
-  font-weight: 700;
 }
 
 .text-warning {
@@ -630,13 +709,34 @@ body {
   color: var(--info-color) !important;
 }
 
+.text-muted {
+  color: var(--text-tertiary) !important;
+}
+
+/* Tamaños de fuente */
+.text-xs {
+  font-size: var(--font-xs) !important;
+}
+
+.text-sm {
+  font-size: var(--font-sm) !important;
+}
+
+.text-md {
+  font-size: var(--font-md) !important;
+}
+
+.text-lg {
+  font-size: var(--font-lg) !important;
+}
+
 /* =====================================================
    MENSAJES Y ALERTAS
    ===================================================== */
 .empty-message {
   text-align: center;
   color: var(--text-tertiary);
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   padding: var(--spacing-xl) 0;
 }
 
@@ -649,34 +749,36 @@ body {
 .alert-message {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-md);
-  padding: 1.25rem;
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-sm);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid;
+  font-size: var(--font-sm);
 }
 
 .alert-info {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e40af;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
 }
 
 .alert-success {
-  background-color: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #15803d;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
 }
 
 .alert-warning {
-  background-color: #fffbeb;
-  border: 1px solid #fde68a;
-  color: #92400e;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
 }
 
 .alert-danger {
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
 }
 
 /* =====================================================
@@ -689,50 +791,37 @@ body {
 
 ::-webkit-scrollbar-track {
   background: var(--bg-tertiary);
-  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--border-color-dark);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--text-tertiary);
 }
 
 /* =====================================================
-   ANIMACIONES
+   UTILIDADES DE ESPACIADO
    ===================================================== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+.mb-1 { margin-bottom: var(--spacing-xs) !important; }
+.mb-2 { margin-bottom: var(--spacing-sm) !important; }
+.mb-3 { margin-bottom: var(--spacing-md) !important; }
+.mb-4 { margin-bottom: var(--spacing-lg) !important; }
+.mb-5 { margin-bottom: var(--spacing-xl) !important; }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+.mt-1 { margin-top: var(--spacing-xs) !important; }
+.mt-2 { margin-top: var(--spacing-sm) !important; }
+.mt-3 { margin-top: var(--spacing-md) !important; }
+.mt-4 { margin-top: var(--spacing-lg) !important; }
+.mt-5 { margin-top: var(--spacing-xl) !important; }
 
-.fade-in {
-  animation: fadeIn var(--transition-normal);
-}
-
-.slide-in {
-  animation: slideIn var(--transition-normal);
-}
+.p-1 { padding: var(--spacing-xs) !important; }
+.p-2 { padding: var(--spacing-sm) !important; }
+.p-3 { padding: var(--spacing-md) !important; }
+.p-4 { padding: var(--spacing-lg) !important; }
+.p-5 { padding: var(--spacing-xl) !important; }
 
 /* =====================================================
    RESPONSIVE
@@ -755,12 +844,12 @@ body {
   
   .page-header,
   .section-header {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
   }
   
   .page-header h2,
   .section-header h2 {
-    font-size: var(--font-xl);
+    font-size: var(--font-lg);
   }
   
   ::ng-deep .p-dialog .p-dialog-content {
@@ -770,4 +859,636 @@ body {
   ::ng-deep .p-card .p-card-body {
     padding: var(--spacing-md) !important;
   }
-}  
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.35rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+/* =====================================================
+   AÑADIR AL FINAL DE TU styles.css EXISTENTE
+   ===================================================== */
+
+/* ================================
+   HEADERS CONSISTENTES PARA TODOS LOS COMPONENTES
+================================ */
+.page-header {
+  background-color: var(--bg-secondary) !important; /* #f8f9fa - gris claro profesional */
+  padding: 0.75rem 1.5rem !important;
+  border-bottom: 1px solid var(--border-color) !important; /* #dee2e6 */
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-title {
+  font-weight: 600;
+  color: var(--text-primary) !important; /* #212529 - texto oscuro */
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Botón agregar consistente */
+.add-button {
+  background-color: var(--primary-color) !important; /* #0d6efd - azul profesional */
+  border-color: var(--primary-color) !important;
+  padding: 0.4rem 0.6rem !important;
+  font-size: var(--font-sm) !important;
+}
+
+.add-button:hover:not(:disabled) {
+  background-color: var(--primary-dark) !important; /* #0b5ed7 */
+  border-color: var(--primary-dark) !important;
+}
+
+/* ================================
+   TABLA WRAPPER CONSISTENTE
+================================ */
+.table-wrapper {
+  flex: 1;
+  overflow: auto;
+  background-color: var(--bg-primary); /* #ffffff */
+  border: 1px solid var(--border-color); /* #dee2e6 */
+  margin: 0;
+}
+
+/* ================================
+   TABLAS - ESTILO PROFESIONAL UNIFORME
+================================ */
+::ng-deep .p-datatable .p-datatable-wrapper {
+  border: none;
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+  color: var(--text-primary) !important; /* #212529 */
+  font-weight: 600 !important;
+  padding: 0.5rem !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  border-bottom: 2px solid var(--border-color) !important;
+  font-size: var(--font-sm) !important; /* 0.875rem */
+  text-align: center !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.4rem !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  background-color: var(--bg-primary) !important; /* #ffffff */
+  font-size: var(--font-sm) !important; /* 0.875rem */
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td:first-child {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+}
+
+/* ================================
+   INPUTS EN TABLA CONSISTENTES
+================================ */
+.table-input {
+  width: 100% !important;
+  padding: 0.4rem 0.6rem !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  border-radius: var(--radius-sm) !important; /* 2px */
+  font-size: var(--font-sm) !important;
+  background-color: var(--bg-primary) !important;
+}
+
+.table-input:focus {
+  border-color: var(--primary-color) !important; /* #0d6efd */
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1) !important;
+  outline: none !important;
+}
+
+.table-input:disabled {
+  background-color: var(--bg-tertiary) !important; /* #e9ecef */
+  color: var(--text-tertiary) !important; /* #6c757d */
+  cursor: not-allowed !important;
+}
+
+/* ================================
+   CHECKBOXES CONSISTENTES
+================================ */
+::ng-deep .p-checkbox .p-checkbox-box {
+  width: 18px !important;
+  height: 18px !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  background-color: var(--primary-color) !important; /* #0d6efd */
+  border-color: var(--primary-color) !important;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box:hover {
+  border-color: var(--primary-color) !important;
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1) !important;
+  border-color: var(--primary-color) !important;
+}
+
+::ng-deep .p-checkbox.p-checkbox-disabled .p-checkbox-box {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color-light) !important;
+  cursor: not-allowed !important;
+}
+
+/* ================================
+   BOTONES DE ACCIÓN CONSISTENTES
+================================ */
+.actions-cell {
+  text-align: center !important;
+  padding: 0.4rem !important;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .action-btn {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--radius-sm) !important; /* 2px */
+}
+
+::ng-deep .action-btn .p-button-icon {
+  font-size: 0.75rem !important;
+}
+
+::ng-deep .action-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* ================================
+   MENSAJE VACÍO CONSISTENTE
+================================ */
+.empty-message {
+  color: var(--text-tertiary) !important; /* #6c757d */
+  font-size: var(--font-sm) !important;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.empty-message i {
+  font-size: 1.5rem;
+  color: var(--text-quaternary) !important; /* #adb5bd */
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.empty-message p {
+  margin: 0.5rem 0 0 0;
+}
+
+/* ================================
+   SCROLLBAR CONSISTENTE
+================================ */
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--border-color-dark); /* #adb5bd */
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-tertiary); /* #6c757d */
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background-color: var(--bg-tertiary); /* #e9ecef */
+}
+
+/* ================================
+   PAGINADOR CONSISTENTE
+================================ */
+::ng-deep .p-paginator {
+  padding: 0.5rem !important;
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+  border: none !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  font-size: var(--font-sm) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  min-width: 2rem;
+  height: 2rem;
+  font-size: var(--font-sm) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: var(--primary-color) !important; /* #0d6efd */
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+/* =====================================================
+   SISTEMA UNIVERSAL DE TABLAS - AGREGAR A styles.css
+   Funciona para TODOS los componentes automáticamente
+   ===================================================== */
+
+/* ================================
+   ESTRUCTURA BASE - CONTENEDOR
+   Usar: <div class="table-page-container">
+================================ */
+.table-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--bg-primary); /* #ffffff */
+}
+
+/* ================================
+   HEADER UNIVERSAL
+   Usar: <div class="table-page-header">
+================================ */
+.table-page-header {
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+  padding: 0.75rem 1.5rem !important;
+  border-bottom: 1px solid var(--border-color) !important; /* #dee2e6 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.table-page-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.table-page-header .header-title {
+  font-weight: 600;
+  color: var(--text-primary) !important; /* #212529 */
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.table-page-header .header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ================================
+   WRAPPER DE TABLA UNIVERSAL
+   Usar: <div class="table-content-wrapper">
+================================ */
+.table-content-wrapper {
+  flex: 1;
+  overflow: auto;
+  background-color: var(--bg-primary); /* #ffffff */
+  border: 1px solid var(--border-color); /* #dee2e6 */
+  margin: 0;
+}
+
+/* ================================
+   ESTILOS DE TABLA UNIVERSAL
+   IMPORTANTE: No necesitas agregar clases específicas
+   Solo usa p-table normalmente
+================================ */
+
+/* Headers de tabla */
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+  color: var(--text-primary) !important; /* #212529 */
+  font-weight: 600 !important;
+  padding: 0.5rem !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  border-bottom: 2px solid var(--border-color) !important;
+  font-size: var(--font-sm) !important; /* 0.875rem = 13px aprox */
+  text-align: center !important;
+}
+
+/* Celdas de tabla */
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.4rem !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  background-color: var(--bg-primary) !important; /* #ffffff */
+  font-size: var(--font-sm) !important; /* 0.875rem = 13px aprox */
+  text-align: center !important;
+  vertical-align: middle;
+  word-wrap: break-word;
+}
+
+/* Hover en filas */
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+}
+
+/* Primera columna (código) con estilo especial */
+::ng-deep .p-datatable .p-datatable-tbody > tr > td:first-child {
+  color: var(--primary-color) !important; /* #0d6efd - azul para códigos */
+  font-weight: 500;
+}
+
+/* Fila seleccionada */
+::ng-deep .p-datatable .p-datatable-tbody > tr.p-highlight {
+  background-color: var(--primary-lighter) !important; /* #cfe2ff */
+}
+
+/* ================================
+   INPUTS DENTRO DE TABLAS
+   Usar: <input pInputText class="table-input">
+================================ */
+::ng-deep .table-input,
+::ng-deep .p-datatable .p-inputtext {
+  width: 100% !important;
+  padding: 0.4rem 0.6rem !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  border-radius: var(--radius-sm) !important; /* 2px */
+  font-size: var(--font-sm) !important;
+  background-color: var(--bg-primary) !important;
+}
+
+::ng-deep .table-input:focus,
+::ng-deep .p-datatable .p-inputtext:focus {
+  border-color: var(--primary-color) !important; /* #0d6efd */
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1) !important;
+  outline: none !important;
+}
+
+::ng-deep .table-input:disabled,
+::ng-deep .p-datatable .p-inputtext:disabled {
+  background-color: var(--bg-tertiary) !important; /* #e9ecef */
+  color: var(--text-tertiary) !important; /* #6c757d */
+  cursor: not-allowed !important;
+}
+
+/* Inputs tipo number centrados */
+::ng-deep .table-input[type="number"],
+::ng-deep .p-datatable input[type="number"] {
+  text-align: center;
+}
+
+/* ================================
+   CHECKBOXES UNIVERSALES
+================================ */
+::ng-deep .p-datatable .p-checkbox .p-checkbox-box {
+  width: 18px !important;
+  height: 18px !important;
+  border: 1px solid var(--border-color) !important; /* #dee2e6 */
+  border-radius: var(--radius-sm) !important; /* 2px */
+}
+
+::ng-deep .p-datatable .p-checkbox .p-checkbox-box.p-highlight {
+  background-color: var(--primary-color) !important; /* #0d6efd */
+  border-color: var(--primary-color) !important;
+}
+
+::ng-deep .p-datatable .p-checkbox .p-checkbox-box:hover {
+  border-color: var(--primary-color) !important;
+}
+
+::ng-deep .p-datatable .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1) !important;
+  border-color: var(--primary-color) !important;
+}
+
+::ng-deep .p-datatable .p-checkbox.p-checkbox-disabled .p-checkbox-box {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color-light) !important;
+  cursor: not-allowed !important;
+}
+
+/* ================================
+   COLUMNA DE ACCIONES UNIVERSAL
+   Usar: <td class="actions-cell">
+================================ */
+::ng-deep .p-datatable .actions-cell {
+  text-align: center !important;
+  padding: 0.4rem !important;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botones de acción estándar */
+::ng-deep .action-btn {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--radius-sm) !important; /* 2px */
+}
+
+::ng-deep .action-btn .p-button-icon {
+  font-size: 0.75rem !important;
+}
+
+::ng-deep .action-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* ================================
+   PAGINADOR UNIVERSAL
+================================ */
+::ng-deep .p-paginator {
+  padding: 0.5rem !important;
+  background-color: var(--bg-secondary) !important; /* #f8f9fa */
+  border: none !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  font-size: var(--font-sm) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  min-width: 2rem;
+  height: 2rem;
+  font-size: var(--font-sm) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: var(--primary-color) !important; /* #0d6efd */
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* ================================
+   MENSAJE VACÍO UNIVERSAL
+   Usar: <div class="empty-state">
+================================ */
+.empty-state {
+  text-align: center;
+  color: var(--text-tertiary) !important; /* #6c757d */
+  font-size: var(--font-sm) !important;
+  padding: 2rem 0;
+}
+
+.empty-state i {
+  font-size: 1.5rem;
+  color: var(--text-quaternary) !important; /* #adb5bd */
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.empty-state p {
+  margin: 0.5rem 0 0 0;
+}
+
+/* ================================
+   SCROLLBAR UNIVERSAL
+================================ */
+.table-content-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-content-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--border-color-dark); /* #adb5bd */
+  border-radius: 4px;
+}
+
+.table-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-tertiary); /* #6c757d */
+}
+
+.table-content-wrapper::-webkit-scrollbar-track {
+  background-color: var(--bg-tertiary); /* #e9ecef */
+}
+
+/* ================================
+   RESPONSIVE UNIVERSAL
+================================ */
+@media (max-width: 768px) {
+  .table-page-header {
+    padding: 0.5rem 1rem !important;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-page-header .header-left,
+  .table-page-header .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.35rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    padding: 0.4rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+}
+/* =====================================================
+   BOTONES ROUNDED TEXT - ICONOS SIMPLES UNIVERSALES
+   ===================================================== */
+
+::ng-deep .p-button-rounded.p-button-text {
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+}
+
+::ng-deep .p-button-rounded.p-button-text:hover,
+::ng-deep .p-button-rounded.p-button-text:focus,
+::ng-deep .p-button-rounded.p-button-text:active {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .p-button-rounded.p-button-text .p-button-icon {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Colores por tipo de botón */
+::ng-deep .p-button-rounded.p-button-text:not(.p-button-danger):not(.p-button-success):not(.p-button-secondary) .p-button-icon {
+  color: #0d6efd !important; /* Azul para editar */
+}
+
+::ng-deep .p-button-rounded.p-button-text:not(.p-button-danger):not(.p-button-success):not(.p-button-secondary):hover .p-button-icon {
+  color: #0b5ed7 !important;
+  transform: scale(1.15);
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-danger .p-button-icon {
+  color: #dc3545 !important; /* Rojo para eliminar */
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-danger:hover .p-button-icon {
+  color: #bb2d3b !important;
+  transform: scale(1.15);
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-success .p-button-icon {
+  color: #198754 !important; /* Verde para guardar */
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-success:hover .p-button-icon {
+  color: #157347 !important;
+  transform: scale(1.15);
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-secondary .p-button-icon {
+  color: #6c757d !important; /* Gris para cancelar */
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-secondary:hover .p-button-icon {
+  color: #5c636a !important;
+  transform: scale(1.15);
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-info .p-button-icon {
+  color: #0dcaf0 !important; /* Azul claro para ver */
+}
+
+::ng-deep .p-button-rounded.p-button-text.p-button-info:hover .p-button-icon {
+  color: #0aa2c0 !important;
+  transform: scale(1.15);
+}
+
+/* Estados deshabilitados */
+::ng-deep .p-button-rounded.p-button-text:disabled .p-button-icon {
+  color: #adb5bd !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}

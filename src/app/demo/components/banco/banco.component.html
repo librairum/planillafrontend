@@ -88,7 +88,7 @@
                 pButton 
                 type="button" 
                 icon="pi pi-pencil" 
-                class="p-button-warning p-button-sm action-btn"
+                class="p-button-rounded p-button-text p-button-sm"
                 (click)="editar(banco)"
                 pTooltip="Editar"
                 tooltipPosition="top">
@@ -99,7 +99,7 @@
                 pButton 
                 type="button" 
                 icon="pi pi-trash" 
-                class="p-button-danger p-button-sm action-btn"
+                class="p-button-rounded p-button-text p-button-sm p-button-danger"
                 (click)="eliminar(banco, rowIndex)"
                 pTooltip="Eliminar"
                 tooltipPosition="top">
@@ -110,7 +110,7 @@
                 pButton 
                 type="button" 
                 icon="pi pi-undo" 
-                class="p-button-secondary p-button-sm action-btn"
+                class="p-button-rounded p-button-text p-button-sm p-button-secondary"
                 (click)="cancelar(banco, rowIndex)"
                 [disabled]="!banco.isEditing"
                 pTooltip="Cancelar"
@@ -122,7 +122,7 @@
                 pButton 
                 type="button" 
                 icon="pi pi-save" 
-                class="p-button-success p-button-sm action-btn"
+                class="p-button-rounded p-button-text p-button-sm p-button-success"
                 (click)="guardar(banco, rowIndex)"
                 [disabled]="!banco.isEditing"
                 pTooltip="Guardar"

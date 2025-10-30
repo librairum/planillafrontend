@@ -1,0 +1,19 @@
+/* ====================================================
+   CSS INDIVIDUAL DEL COMPONENTE
+   Solo agrega aquí ajustes MUY específicos
+   Todo lo demás viene de styles.css automáticamente
+==================================================== */
+
+/* Ejemplo: Si necesitas que una columna específica esté alineada a la izquierda */
+::ng-deep .planilla-tipo-table td.columna-descripcion {
+  text-align: left !important;
+}
+
+/* Ejemplo: Si necesitas un ancho fijo para alguna columna */
+::ng-deep .planilla-tipo-table th.columna-codigo,
+::ng-deep .planilla-tipo-table td.columna-codigo {
+  width: 120px;
+  max-width: 120px;
+}
+
+/* La mayoría de componentes NO necesitarán nada aquí */
