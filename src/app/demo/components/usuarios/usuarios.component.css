@@ -1,0 +1,94 @@
+/* Contenedor principal */
+.usuarios-container {
+  padding: 1.5rem;
+}
+
+/* Estilos de la cabecera */
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.add-button {
+  font-weight: 600;
+}
+
+/* Contenedor de tabla */
+.table-wrapper {
+  background: var(--surface-card);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Título de la tabla de detalle */
+.detail-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--surface-d);
+}
+
+/* Celdas de acciones */
+.actions-cell {
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+/* Inputs y Dropdowns dentro de la tabla */
+.table-input,
+::ng-deep .table-dropdown .p-dropdown {
+  width: 100% !important;
+}
+
+::ng-deep .table-dropdown .p-dropdown {
+  min-width: 150px;
+}
+
+::ng-deep .p-password-input.table-input {
+  width: 100%;
+}
+
+/* Mensaje de tabla vacía */
+.empty-message {
+  padding: 2rem 1rem;
+  color: var(--text-color-secondary);
+  text-align: center;
+}
+
+.empty-message i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--surface-d);
+}
+
+.empty-message p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Ajuste para la fila seleccionada */
+::ng-deep .p-datatable .p-datatable-tbody > tr.p-highlight {
+  background-color: var(--blue-50) !important;
+  color: var(--primary-color) !important;
+}

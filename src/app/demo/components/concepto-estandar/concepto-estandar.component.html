@@ -9,7 +9,7 @@
       <div class="toolbar-buttons">
         <button pButton type="button" icon="pi pi-plus" class="p-button-sm toolbar-btn"
           (click)="agregarNuevo()" pTooltip="Crear" tooltipPosition="bottom"></button>
-        
+
         <button pButton type="button" icon="pi pi-refresh" class="p-button-sm toolbar-btn"
           (click)="refrescarTabla()" pTooltip="Refrescar" tooltipPosition="bottom"></button>
       </div>
@@ -22,19 +22,18 @@
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} conceptos"
       [globalFilterFields]="['codigo', 'descripcion', 'conceptoTipoDesc', 'conceptoSubTipoc']"
       [tableStyle]="{ 'min-width': '100%' }" styleClass="concepto-estandar-table">
-      
+
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 80px">Codigo</th>
-          <th style="width: 250px">Descripcion</th>
-          <th style="width: 100px; text-align: center">Impresion</th>
+          <th style="width: 280px">Descripcion</th> <th style="width: 100px; text-align: center">Impresion</th>
           <th style="width: 80px; text-align: center">Activo</th>
           <th style="width: 120px; text-align: center">Configurable</th>
           <th style="width: 150px">Concepto Sunat</th>
           <th style="width: 150px">ConceptoTipoDesc</th>
           <th style="width: 150px">Concepto SubTipoc</th>
           <th style="width: 100px">Tipo</th>
-          <th style="width: 140px; text-align: center">Acciones</th> </tr>
+          <th style="width: 180px; text-align: center">Acciones</th> </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-concepto>
@@ -49,7 +48,7 @@
           <td>{{ concepto.conceptoSubTipoc }}</td>
           <td>{{ concepto.tipo }}</td>
           <td class="text-center">
-            
+
             <button pButton type="button" icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text p-button-sm action-btn"
               (click)="mostrarDetalleConcepto(concepto)" pTooltip="Ver" tooltipPosition="top">
@@ -107,9 +106,8 @@
             <div class="input-with-button">
               <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCalculoCod"
                 (keypress)="soloNumeros($event)" readonly maxlength="2" style="width: 50px" />
-              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCalculoDes" readonly
-                class="readonly-input" />
-              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCalculoDes"
+                [disabled]="true" /> <button pButton type="button" icon="pi pi-search" class="p-button-sm"
                 [disabled]="esModoVisualizacion" (click)="abrirBusquedaTipoCalculo()"></button>
             </div>
           </div>
@@ -118,9 +116,8 @@
             <div class="input-with-button">
               <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCod"
                 (keypress)="soloNumeros($event)" readonly maxlength="2" style="width: 50px" />
-              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoDes" readonly
-                class="readonly-input" />
-              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoDes"
+                [disabled]="true" /> <button pButton type="button" icon="pi pi-search" class="p-button-sm"
                 [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoTipo()"></button>
             </div>
           </div>
@@ -129,9 +126,8 @@
             <div class="input-with-button">
               <input type="text" pInputText [(ngModel)]="conceptoActual.subTipoCod"
                 (keypress)="soloNumeros($event)" readonly maxlength="2" style="width: 50px" />
-              <input type="text" pInputText [(ngModel)]="conceptoActual.subTipoDes" readonly
-                class="readonly-input" />
-              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              <input type="text" pInputText [(ngModel)]="conceptoActual.subTipoDes"
+                [disabled]="true" /> <button pButton type="button" icon="pi pi-search" class="p-button-sm"
                 [disabled]="esModoVisualizacion" (click)="abrirBusquedaSubTipo()"></button>
             </div>
           </div>
@@ -163,11 +159,9 @@
 
       <div class="text-areas">
         <div class="textarea-container">
-          <textarea pInputTextarea rows="8" readonly></textarea>
-        </div>
+          <textarea pInputTextarea rows="8" [disabled]="true"></textarea> </div>
         <div class="textarea-container">
-          <textarea pInputTextarea rows="8" readonly></textarea>
-        </div>
+          <textarea pInputTextarea rows="8" [disabled]="true"></textarea> </div>
       </div>
 
       <div class="sunat-observacion">
@@ -176,9 +170,8 @@
           <div class="input-with-button">
             <input type="text" pInputText [(ngModel)]="conceptoActual.conceptoSunatCod"
               (keypress)="soloNumeros($event)" readonly style="width: 100px" />
-            <input type="text" pInputText [(ngModel)]="conceptoActual.conceptoSunatDes" readonly
-              class="readonly-input" style="flex: 1" />
-            <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+            <input type="text" pInputText [(ngModel)]="conceptoActual.conceptoSunatDes"
+              [disabled]="true" style="flex: 1" /> <button pButton type="button" icon="pi pi-search" class="p-button-sm"
               [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoSunat()"></button>
           </div>
         </div>
@@ -380,4 +373,4 @@
     </ng-template>
   </p-dialog>
 
-  </div>
+</div>

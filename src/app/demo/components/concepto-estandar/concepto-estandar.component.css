@@ -5,13 +5,14 @@
   min-height: 100vh;
 }
 
-/* Header */
+/* Header (NUEVO ESTILO APLICADO) */
 .page-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #ffffff; /* Fondo blanco */
   padding: 1rem 1.5rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6; /* Borde gris suave */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .header-content {
@@ -20,8 +21,9 @@
   align-items: center;
 }
 
+/* Título (NUEVO ESTILO APLICADO) */
 .header-title {
-  color: white;
+  color: #212529; /* Texto oscuro serio */
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -33,23 +35,28 @@
   gap: 0.75rem;
 }
 
+/* Botones (NUEVO ESTILO APLICADO) */
 .toolbar-btn {
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  color: white !important;
+  background-color: #0d6efd !important; /* Azul Bootstrap */
+  border: 1px solid #0b5ed7 !important;
+  color: #ffffff !important;
   transition: all 0.3s ease;
   padding: 0.5rem 0.75rem !important;
+  border-radius: 6px;
+  font-weight: 500;
 }
 
 .toolbar-btn:hover {
-  background-color: rgba(255, 255, 255, 0.3) !important;
-  border: 1px solid rgba(255, 255, 255, 0.5) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #0b5ed7 !important; /* Azul más oscuro */
+  border-color: #0a58ca !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.4);
 }
 
 .toolbar-btn:active {
   transform: translateY(0);
+  background-color: #0a58ca !important;
+  border-color: #0a53be !important;
 }
 
 /* Tabla wrapper */
@@ -174,18 +181,6 @@
   font-size: 0.9rem;
 }
 
-.input-with-button .readonly-input {
-  background-color: #e9ecef;
-  flex: 1;
-  cursor: not-allowed;
-}
-
-.input-with-button input[readonly] {
-  background-color: #fff3cd;
-  border: 1px solid #ffc107;
-  cursor: pointer;
-}
-
 .input-with-button button {
   height: 32px;
   width: 32px;
@@ -203,7 +198,7 @@
   resize: none;
   font-family: monospace;
   font-size: 0.85rem;
-  background-color: #f8f9fa;
+  background-color: #f8f9fa; /* Fondo por defecto para textarea */
 }
 
 /* Concepto Sunat y Observación */
@@ -273,11 +268,11 @@
   .tabs-section {
     grid-template-columns: 1fr;
   }
-  
+
   .text-areas {
     grid-template-columns: 1fr;
   }
-  
+
   .sunat-observacion {
     grid-template-columns: 1fr;
   }
@@ -297,7 +292,7 @@
   font-size: 0.85rem;
   padding: 0.5rem;
 }
- 
+
 .text-center {
   text-align: center !important;
 }
@@ -318,72 +313,26 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Estilos para campos amarillos con readonly */
-::ng-deep .p-inputtext[readonly] {
-  background-color: #fff3cd !important;
-  border: 1px solid #ffc107 !important;
-  cursor: pointer !important;
+/* ======================================================= */
+/* ESTILOS DE CAMPOS DESHABILITADOS Y SOLO LECTURA (CORREGIDO) */
+/* ======================================================= */
+
+/* Estilo para todos los p-inputtext y p-inputtextarea que están [disabled] */
+::ng-deep .p-inputtext[disabled],
+::ng-deep .p-inputtextarea[disabled] {
+  background-color: #e9ecef !important; /* Fondo gris para deshabilitados */
+  color: #495057 !important; /* Color de texto estándar */
+  cursor: not-allowed !important; /* Cursor de "no permitido" */
+  opacity: 1 !important; /* Asegura que no se vea semitransparente */
 }
 
-::ng-deep .p-inputtext[readonly]:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
+/* Estilo para los inputs con [readonly] (que son solo los códigos en los input-with-button) */
+::ng-deep .input-with-button input[readonly] {
+  background-color: #fff3cd !important; /* Fondo amarillo */
+  border: 1px solid #ffc107 !important; /* Borde amarillo */
+  cursor: pointer !important; /* Cursor de puntero para indicar que se puede interactuar con el botón de búsqueda */
 }
 
-/* Diálogo de búsqueda */
-.busqueda-content {
-  padding: 1rem 0;
-}
-
-.busqueda-subtitle {
-  color: #6c757d;
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-::ng-deep .busqueda-dialog .p-dialog-content {
-  padding: 1.5rem;
-}
-
-::ng-deep .busqueda-dialog .p-dialog-footer {
-  padding: 1rem 1.5rem;
-}
-/* Header */
-.page-header {
-  background: #ffffff; /* Fondo blanco */
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  border: 1px solid #dee2e6; /* Borde gris suave */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.header-title {
-  color: #212529; /* Texto oscuro serio */
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-/* Toolbar buttons */
-.toolbar-btn {
-  background-color: #0d6efd !important; /* Azul Bootstrap */
-  border: 1px solid #0b5ed7 !important;
-  color: #ffffff !important;
-  transition: all 0.3s ease;
-  padding: 0.5rem 0.75rem !important;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-.toolbar-btn:hover {
-  background-color: #0b5ed7 !important; /* Azul más oscuro */
-  border-color: #0a58ca !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.4);
-}
-
-.toolbar-btn:active {
-  transform: translateY(0);
-  background-color: #0a58ca !important;
-  border-color: #0a53be !important;
+::ng-deep .input-with-button input[readonly]:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important; /* Sombra de foco amarilla */
 }

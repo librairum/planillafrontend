@@ -102,12 +102,9 @@ export class ConceptoEstandarComponent implements OnInit {
   displayConceptoTipoDialog: boolean = false;
   displaySubTipoDialog: boolean = false;
   displayConceptoSunatDialog: boolean = false;
-  // --- SE ELIMINÓ displayBusquedaDialog ---
 
   // Modelo del concepto actual
   conceptoActual: any = {};
-
-  // --- SE ELIMINÓ textoBusqueda ---
 
   // Datos de los catálogos
   tiposCalculo: TipoCalculo[] = [
@@ -254,7 +251,7 @@ export class ConceptoEstandarComponent implements OnInit {
   // Agregar nuevo concepto
   agregarNuevo() {
     this.isNewRecord = true;
-    this.esModoVisualizacion = false; // Desactivar modo visualización
+    this.esModoVisualizacion = false;
     this.conceptoActual = {
       codigo: '',
       descripcion: '',
@@ -282,23 +279,35 @@ export class ConceptoEstandarComponent implements OnInit {
   // Editar concepto
   editarConcepto(concepto: ConceptoEstandar) {
     this.isNewRecord = false;
-    this.esModoVisualizacion = false; // Desactivar modo visualización
+    this.esModoVisualizacion = false;
+    
+    // Hacemos una copia profunda para evitar modificar el original antes de guardar
     this.conceptoActual = {
+      // Cargamos los datos del diálogo desde el concepto
+      ...JSON.parse(JSON.stringify(this.conceptoActual)), // Carga valores base por si acaso
       codigo: concepto.codigo,
       descripcion: concepto.descripcion,
+      
+      // Mapeamos de 'S'/'N' a boolean
+      imprimible: concepto.impresion === 'S',
+      activo: concepto.activo === 'S',
+      configurable: concepto.configurable === 'S',
+
+      // Cargamos descripciones (idealmente esto vendría de un servicio)
+      conceptoSunatDes: concepto.conceptoSunat,
+      tipoDes: concepto.conceptoTipoDesc,
+      subTipoDes: concepto.conceptoSubTipoc,
+
+      // Datos hardcodeados (como en tu lógica original)
       tipoCalculoCod: '01',
       tipoCalculoDes: 'Calculo Planill',
       tipoCod: '04',
-      tipoDes: 'Otros',
       subTipoCod: '01',
-      subTipoDes: 'Conceptos Fijo',
-      imprimible: concepto.impresion === 'S',
-      configBasica: concepto.configurable === 'S',
       formulable: false,
-      activo: concepto.activo === 'S',
       conceptoSunatCod: '',
-      conceptoSunatDes: concepto.conceptoSunat,
       observacion: '',
+
+      // Cargamos las tablas de afectaciones (idealmente esto se cargaría desde un servicio por ID)
       afectacionesSunat: JSON.parse(JSON.stringify(this.afectacionesSunat)),
       afectacionOtros: JSON.parse(JSON.stringify(this.afectacionOtros)),
       planillasAsignadas: JSON.parse(JSON.stringify(this.planillasAsignadas)),
@@ -307,25 +316,28 @@ export class ConceptoEstandarComponent implements OnInit {
     this.displayDialog = true;
   }
 
-  // MÉTODO AHORA USADO POR EL BOTÓN 'VER': Mostrar detalle en modo visualización
+  // Mostrar detalle en modo visualización
   mostrarDetalleConcepto(concepto: ConceptoEstandar) {
     this.isNewRecord = false;
     this.esModoVisualizacion = true; // ACTIVAR MODO VISUALIZACIÓN
+    
+    // Usamos la misma lógica de 'editarConcepto' para cargar los datos
     this.conceptoActual = {
+      ...JSON.parse(JSON.stringify(this.conceptoActual)),
       codigo: concepto.codigo,
       descripcion: concepto.descripcion,
+      imprimible: concepto.impresion === 'S',
+      activo: concepto.activo === 'S',
+      configurable: concepto.configurable === 'S',
+      conceptoSunatDes: concepto.conceptoSunat,
+      tipoDes: concepto.conceptoTipoDesc,
+      subTipoDes: concepto.conceptoSubTipoc,
       tipoCalculoCod: '01',
       tipoCalculoDes: 'Calculo Planill',
       tipoCod: '04',
-      tipoDes: 'Otros',
       subTipoCod: '01',
-      subTipoDes: 'Conceptos Fijo',
-      imprimible: concepto.impresion === 'S',
-      configBasica: concepto.configurable === 'S',
       formulable: false,
-      activo: concepto.activo === 'S',
       conceptoSunatCod: '',
-      conceptoSunatDes: concepto.conceptoSunat,
       observacion: '',
       afectacionesSunat: JSON.parse(JSON.stringify(this.afectacionesSunat)),
       afectacionOtros: JSON.parse(JSON.stringify(this.afectacionOtros)),
@@ -385,8 +397,11 @@ export class ConceptoEstandarComponent implements OnInit {
     this.displayConceptoSunatDialog = false;
   }
 
-  // Guardar concepto
+  // =======================================================
+  // FUNCIÓN CORREGIDA
+  // =======================================================
   guardarConcepto() {
+    // 1. Validación
     if (!this.conceptoActual.codigo || !this.conceptoActual.descripcion) {
       this.messageService.add({
         severity: 'error',
@@ -396,19 +411,71 @@ export class ConceptoEstandarComponent implements OnInit {
       return;
     }
 
+    // 2. Mapear del formulario al formato de la tabla (ConceptoEstandar)
+    const conceptoGuardar: ConceptoEstandar = {
+      codigo: this.conceptoActual.codigo,
+      descripcion: this.conceptoActual.descripcion,
+      impresion: this.conceptoActual.imprimible ? 'S' : 'N',
+      activo: this.conceptoActual.activo ? 'S' : 'N',
+      configurable: this.conceptoActual.configBasica ? 'S' : 'N',
+      conceptoSunat: this.conceptoActual.conceptoSunatDes || 'Otros',
+      conceptoTipoDesc: this.conceptoActual.tipoDes || 'Otros',
+      conceptoSubTipoc: this.conceptoActual.subTipoDes || 'Conceptos Fijos',
+      tipo: 'Estandar' // Asumimos que siempre es 'Estandar'
+    };
+
+    // 3. Lógica para Agregar o Editar
+    if (this.isNewRecord) {
+      // --- CREAR NUEVO ---
+      // Validar código duplicado
+      if (this.conceptos.find(c => c.codigo === conceptoGuardar.codigo)) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'El código ya existe. Por favor, ingrese uno diferente.'
+        });
+        return;
+      }
+      
+      // Agregar al arreglo
+      this.conceptos.push(conceptoGuardar);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Concepto creado correctamente'
+      });
+
+    } else {
+      // --- EDITAR EXISTENTE ---
+      // Buscar el índice del concepto a editar
+      const index = this.conceptos.findIndex(c => c.codigo === conceptoGuardar.codigo);
+      if (index !== -1) {
+        // Reemplazar el objeto en el arreglo
+        this.conceptos[index] = conceptoGuardar;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Concepto actualizado correctamente'
+        });
+      }
+    }
+
+    // 4. Forzar la actualización de la tabla clonando el arreglo
+    // Esto es clave para que PrimeNG detecte el cambio
+    this.conceptos = [...this.conceptos];
+
+    // 5. Cerrar y limpiar
     this.displayDialog = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Concepto guardado correctamente'
-    });
+    this.conceptoActual = {};
+    this.isNewRecord = false;
   }
 
   // Cancelar edición
   cancelarEdicion() {
     this.displayDialog = false;
     this.conceptoActual = {};
-    this.esModoVisualizacion = false; // Resetear modo visualización
+    this.esModoVisualizacion = false;
+    this.isNewRecord = false; // Asegurarse de resetear esto también
   }
 
   // Eliminar concepto
@@ -420,8 +487,9 @@ export class ConceptoEstandarComponent implements OnInit {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: () => {
-        const index = this.conceptos.indexOf(concepto);
-        this.conceptos.splice(index, 1);
+        // Filtrar el arreglo para quitar el concepto (más seguro que splice)
+        this.conceptos = this.conceptos.filter(c => c.codigo !== concepto.codigo);
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Éxito',
@@ -430,11 +498,6 @@ export class ConceptoEstandarComponent implements OnInit {
       }
     });
   }
-
-  // --- SE ELIMINARON LOS MÉTODOS: ---
-  // - buscarConceptos()
-  // - ejecutarBusqueda()
-  // - cancelarBusqueda()
 
   // Refrescar tabla
   refrescarTabla() {
