@@ -5,14 +5,17 @@
   min-height: 100vh;
 }
 
-/* Header (NUEVO ESTILO APLICADO) */
+/* ======================================================= */
+/* REGLA MODIFICADA COMO SOLICITASTE */
+/* ======================================================= */
+/* Header (SIN COLOR DE FONDO) */
 .page-header {
-  background: #ffffff; /* Fondo blanco */
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  border: 1px solid #dee2e6; /* Borde gris suave */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: transparent; /* Fondo transparente */
+  padding: 1rem 1.5rem; /* Mantenemos padding para espaciado interno */
+  border-radius: 0; /* Sin bordes redondeados */
+  margin-bottom: 1.5rem; /* Mantenemos separación */
+  border: none; /* Sin borde */
+  box-shadow: none; /* Sin sombra */
 }
 
 .header-content {
