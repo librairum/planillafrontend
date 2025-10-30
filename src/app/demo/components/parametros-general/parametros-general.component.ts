@@ -14,7 +14,7 @@ import { PanelModule } from 'primeng/panel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -27,7 +27,7 @@ import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
 @Component({
   selector: 'app-parametros-general',
   standalone: true,
-  imports: [ToastModule, TableModule, ReactiveFormsModule, CommonModule, ButtonModule,
+  imports: [ToastModule, TableModule, ReactiveFormsModule, CommonModule, ButtonModule, KeyFilterModule,
         CardModule, InputTextModule, PanelModule, BreadcrumbModule, ConfirmDialogModule, FormsModule, DropdownModule],
   templateUrl: './parametros-general.component.html',
   styleUrls: ['./parametros-general.component.css'],

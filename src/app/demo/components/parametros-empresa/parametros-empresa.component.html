@@ -29,22 +29,22 @@
             <!-- Cabecera de Tabla -->
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Tipo de dato</th>
-                    <th>01</th>
-                    <th>02</th>
-                    <th>03</th>
-                    <th>04</th>
-                    <th>05</th>
-                    <th>06</th>
-                    <th>07</th>
-                    <th>08</th>
-                    <th>09</th>
-                    <th>10</th>
-                    <th>11</th>
-                    <th>12</th>
-                    <th style="text-align: center;">Acciones</th>
+                    <th style="width: 5%;">Código</th>
+                    <th style="width: 15%;">Descripción</th>
+                    <th style="width: 12%;">Tipo de dato</th>
+                    <th style="width: 5%;">01</th>
+                    <th style="width: 5%;">02</th>
+                    <th style="width: 5%;">03</th>
+                    <th style="width: 5%;">04</th>
+                    <th style="width: 5%;">05</th>
+                    <th style="width: 5%;">06</th>
+                    <th style="width: 5%;">07</th>
+                    <th style="width: 5%;">08</th>
+                    <th style="width: 5%;">09</th>
+                    <th style="width: 5%;">10</th>
+                    <th style="width: 5%;">11</th>
+                    <th style="width: 5%;">12</th>
+                    <th style="text-align: center; width: 8%;">Acciones</th>
                 </tr>
             </ng-template>
 
@@ -290,162 +290,166 @@
             <!-- Footer para Nuevo Registro -->
             <ng-template pTemplate="footer">
                 <tr *ngIf="isEditing">
-                    <td colspan="4">
+                    <td colspan="16">
                         <form [formGroup]="parametroxEmpresaForm" class="grid p-fluid">
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla41empresacod"
-                                           placeholder="Código de empresa"
-                                           class="p-inputtext-sm w-full"/>
+                                          formControlName="pla41codigo"
+                                          placeholder="Código"
+                                          class="p-inputtext-sm w-full"
+                                          readonly/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-4" style="width: 15%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla41anio"
-                                           placeholder="Año"
-                                           class="p-inputtext-sm w-full"/>
+                                          formControlName="pla41descripcion"
+                                          placeholder="Descripción del Parámetro"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-4" style="width: 40%">
-                                <span class="p-input-icon-left w-full">
-                                    <input pInputText
-                                           formControlName="pla41descripcion"
-                                           placeholder="Descripción del Parámetro"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
-
-                            <div class="col-4" style="width: 40%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-4" style="width: 12%;">
+                                <span class="w-full">
                                   <p-dropdown
                                       formControlName="pla41flagtipodato"
                                       [options]="[
                                           { label: 'Importe', value: 'I' },
                                           { label: 'Porcentaje', value: 'P' }
                                       ]"
-                                      placeholder="Tipo de dato"
+                                      placeholder="Tipo"
                                       optionLabel="label"
                                       optionValue="value"
-                                      class="p-inputtext-sm w-full">
+                                      class="p-inputtext-sm w-full"
+                                      appendTo="body">
                                   </p-dropdown>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4101"
-                                           placeholder="01"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4101"
+                                          placeholder="01"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4102"
-                                           placeholder="02"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4102"
+                                          placeholder="02"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4103"
-                                           placeholder="03"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4103"
+                                          placeholder="03"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4104"
-                                           placeholder="04"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4104"
+                                          placeholder="04"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4105"
-                                           placeholder="05"
-                                           class="p-inputtext-sm w-full"/>
+                                          formControlName="pla4105"
+                                          placeholder="05"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4106"
-                                           placeholder="06"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4106"
+                                          placeholder="06"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4107"
-                                           placeholder="07"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4107"
+                                          placeholder="07"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4108"
-                                           placeholder="08"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4108"
+                                          placeholder="08"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4109"
-                                           placeholder="09"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4109"
+                                          placeholder="09"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4110"
-                                           placeholder="10"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4110"
+                                          placeholder="10"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4111"
-                                           placeholder="11"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4111"
+                                          placeholder="11"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
-                            <div class="col-2" style="width: 20%">
-                                <span class="p-input-icon-left w-full">
+                            <div class="col-2" style="width: 5%;">
+                                <span class="w-full">
                                     <input pInputText
-                                           formControlName="pla4112"
-                                           placeholder="12"
-                                           class="p-inputtext-sm w-full"/>
+                                          pKeyFilter="num"
+                                          formControlName="pla4112"
+                                          placeholder="12"
+                                          class="p-inputtext-sm w-full"/>
                                 </span>
                             </div>
 
                             <!-- Botones de Acción -->
-                            <div class="col-2" style="width: 20%">
+                            <div class="col-2" style="width: 8%;">
                                 <div class="flex gap-2 justify-content-center">
 
                                     <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"
