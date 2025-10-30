@@ -53,7 +53,6 @@
         <div class="toolbar-group">
           <button pButton type="button" 
                   icon="pi pi-calendar-times" 
-                  label="Registrar Inasistencia"
                   class="p-button-warning toolbar-button-text"
                   (click)="registrarInasistencia()"
                   [disabled]="!selectedTrabajador"
@@ -88,7 +87,6 @@
         [rows]="10"
         [rowsPerPageOptions]="[5, 10, 20, 50]"
         [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} trabajadores"
         [globalFilterFields]="['codigo', 'idIdentidad', 'apellidosNombres', 'estado']"
         [scrollable]="true"
         scrollHeight="flex"
@@ -96,7 +94,7 @@
         styleClass="p-datatable-striped p-datatable-gridlines p-datatable-sm">
         
         <!-- Caption con filtro -->
-        <ng-template pTemplate="caption">
+        <!--<ng-template pTemplate="caption">
           <div class="table-header">
             <span class="p-input-icon-left search-input">
               <i class="pi pi-search"></i>
@@ -106,42 +104,40 @@
                      placeholder="Buscar trabajador..." />
             </span>
           </div>
-        </ng-template>
+        </ng-template>-->
 
         <!-- Columnas -->
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="codigo" style="min-width: 90px;">
-              Código <p-sortIcon field="codigo"></p-sortIcon>
+            <th style="min-width: 90px;">
+              Código <!--<p-sortIcon field="codigo"></p-sortIcon>-->
             </th>
-            <th pSortableColumn="idIdentidad" style="min-width: 110px;">
-              ID/DNI <p-sortIcon field="idIdentidad"></p-sortIcon>
+            <th style="min-width: 110px;">
+              ID/DNI 
             </th>
-            <th pSortableColumn="apellidosNombres" style="min-width: 250px;">
-              Apellidos y Nombres <p-sortIcon field="apellidosNombres"></p-sortIcon>
+            <th style="min-width: 250px;">
+              Apellidos y Nombres 
             </th>
-            <th pSortableColumn="fechaIngreso" style="min-width: 120px;">
-              Fecha Ingreso <p-sortIcon field="fechaIngreso"></p-sortIcon>
+            <th style="min-width: 120px;">
+              Fecha Ingreso
             </th>
-            <th pSortableColumn="estado" style="min-width: 90px;">
-              Estado <p-sortIcon field="estado"></p-sortIcon>
+            <th style="min-width: 90px;">
+              Estado 
             </th>
-            <th pSortableColumn="dias" style="min-width: 70px;">
-              Días <p-sortIcon field="dias"></p-sortIcon>
+            <th style="min-width: 70px;">
+              Días
             </th>
             <th style="min-width: 70px;">Horas</th>
-            <th style="min-width: 90px;">HE Simples</th>
-            <th style="min-width: 90px;">HE Dobles</th>
-            <th style="min-width: 80px;">HE 100</th>
-            <th style="min-width: 90px;">H Nocturnas</th>
+            <th style="min-width: 90px;">HE 25%</th>
+            <th style="min-width: 90px;">HE 35%</th>
+            <th style="min-width: 90px;">HE 100%</th>
+            <th style="min-width: 90px;">HNocturnas</th>
             <th style="min-width: 80px;">Días Comp.</th>
             <th style="min-width: 110px;">Días Enfermedad</th>
             <th style="min-width: 150px;">Días Subsidio Enfermedad</th>
             <th style="min-width: 150px;">Días Subsidio Materno</th>
             <th style="min-width: 110px;">Días Licencia</th>
-            <th pSortableColumn="faltas" style="min-width: 80px;">
-              Faltas <p-sortIcon field="faltas"></p-sortIcon>
-            </th>
+            <th style="min-width: 80px;">Faltas</th>
           </tr>
         </ng-template>
 

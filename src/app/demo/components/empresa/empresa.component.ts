@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast'; 
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 import { MessageService } from 'primeng/api';
@@ -46,6 +47,7 @@ import {
     RippleModule,
     TableModule,
     ToastModule,
+    TooltipModule,
     ConfirmDialogModule,
     ProgressSpinnerModule 
   ],

@@ -15,15 +15,15 @@
 
 :host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    padding: 0.6rem 0.6rem !important; /* Valor reducido, ej: 0.5rem */
+    padding: 0.6rem 0.6rem !important; 
 }
 
-/* 2. Aplica el mismo tamaño de fuente compacto de los inputs */
 :host ::ng-deep .p-datatable {
     font-size: 1.0rem !important;
 }
 
-/* Opcional: Ajustar el padding de la fila seleccionada si usas selectionMode="single" */
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr.p-highlight {
-    font-size: 1.0rem !important;
+:host ::ng-deep .p-button-icon {
+    color: white !important;
 }
+
+

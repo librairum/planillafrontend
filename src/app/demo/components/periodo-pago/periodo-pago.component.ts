@@ -57,6 +57,7 @@ export class PeriodoPagoComponent implements OnInit {
   selectedPeriodo: Periodo | null = null;
   displayDialog: boolean = false;
   isEditing: boolean = false;
+  isViewing: boolean = false;
   globalFilterValue: string = '';
 
   // Formulario
@@ -187,13 +188,20 @@ export class PeriodoPagoComponent implements OnInit {
     }
   }
 
-  buscar() {
-    // Implementar lógica de búsqueda avanzada
+  ver() {
+    if (this.selectedPeriodo) {
+    this.periodoForm = { ...this.selectedPeriodo };
+    
+    this.isEditing = false; 
+    this.isViewing = true;  
+    this.displayDialog = true;
+  } else {
     this.messageService.add({
-      severity: 'info',
-      summary: 'Búsqueda',
-      detail: 'Función de búsqueda avanzada'
+      severity: 'warn',
+      summary: 'Advertencia',
+      detail: 'Debe seleccionar un periodo para ver los detalles'
     });
+  }
   }
 
   refrescar() {
@@ -296,6 +304,7 @@ export class PeriodoPagoComponent implements OnInit {
       });
     }
     this.displayDialog = false;
+    this.isViewing = false;
   }
 
   // Filtro global

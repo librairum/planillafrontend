@@ -3,24 +3,24 @@
 
 <div class="p-1 py-5 max-h-screen">
     <div class="mb-4">
-        <p-card header="Empresas" styleClass="shadow-xl rounded-xl">
+        <p-panel header="Empresas" styleClass="shadow-xl rounded-xl">
 
             <p-toolbar styleClass="mb-4 surface-card border-none px-4">
                 <div class="p-toolbar-group-start flex flex-wrap gap-3">
-                    <button pButton pRipple type="button" label="Nuevo" icon="pi pi-plus" class="p-button-success"
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Agregar empresa" icon="pi pi-plus" class="p-button-success "
                         (click)="agregarEmpresa()" [disabled]="!isViewMode">
                     </button>
-                    <button pButton pRipple type="button" label="Modificar" icon="pi pi-pencil" class="p-button-warning"
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Modificar empresa" icon="pi pi-pencil" class="p-button-warning"
                         (click)="editarEmpresa()" [disabled]="!isViewMode || !selectedEmpresa">
                     </button>
-                    <button pButton pRipple type="button" label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Eliminar empresa" icon="pi pi-trash" class="p-button-danger"
                         (click)="eliminarEmpresa()" [disabled]="!isViewMode || !selectedEmpresa">
                     </button>
 
-                    <button pButton pRipple type="button" label="Ver" icon="pi pi-search" class="p-button-info"
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Ver empresa" icon="pi pi-search" class="p-button-info"
                         (click)="verEmpresa()" [disabled]="true">
                     </button>
-                    <button pButton pRipple type="button" label="Refrescar la lista" icon="pi pi-refresh"
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Refrescar la lista" icon="pi pi-refresh"
                         class="p-button-secondary" (click)="refrescarEmpresa()" [disabled]="!isViewMode">
                     </button>
                 </div>
@@ -28,10 +28,10 @@
                 <div class="p-toolbar-group-start flex flex-wrap gap-3">
                     <div class="p-toolbar-group-start flex flex-wrap gap-2 pr-1" *ngIf="isAddMode || isEditMode">
                         <button pButton pRipple type="button" icon="pi pi-save" class="p-button-primary"
-                            (click)="guardar()" label="Guardar">
+                            (click)="guardar()" tooltipPosition="bottom" pTooltip="Guardar">
                         </button>
                         <button pButton pRipple type="button" icon="pi pi-times" class="p-button-secondary"
-                            (click)="cancelar()" label="Cancelar">
+                            (click)="cancelar()" tooltipPosition="bottom" pTooltip="Cancelar">
                         </button>
                     </div>
 
@@ -39,21 +39,15 @@
                         <div class="flex align-items-center">
                             <label for="rowsPerPageTable">Filas por página:</label>
                             <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage"
-                                placeholder="10" styleClass="p-button-sm w-16 text-center">
+                                placeholder="Seleccionar" styleClass="p-button-sm w-16 text-center">
                             </p-dropdown>
                         </div>
                     </div>
                 </div>
             </p-toolbar>
 
-            <div *ngIf="isViewMode" class="px-4 py-3">
+            <div *ngIf="isViewMode" class="px-4">
                 <div class="relative">
-                    <div *ngIf="loading" class="absolute inset-0 z-2 flex align-items-center border-round">
-                        <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="5" animationDuration=".5s">
-
-                        </p-progressSpinner>
-                    </div>
-
                     <p-table [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa"
                         dataKey="empresacod" styleClass="p-datatable-sm" [paginator]="true" [rows]="rowsPerPage"
                         responsiveLayout="scroll">
@@ -318,6 +312,6 @@
                     </div>
                 </div>
             </div>
-        </p-card>
+        </p-panel>
     </div>
 </div>
