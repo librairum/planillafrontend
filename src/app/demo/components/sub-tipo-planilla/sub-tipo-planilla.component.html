@@ -256,7 +256,12 @@
 
                                 <div class="col-2" style="width: 10%; text-align: center;">
                                     <span class="w-full">
-                                        <p-checkbox [binary]="true" formControlName="pla55flagactivo"></p-checkbox>
+                                        <p-checkbox
+                                        [binary]="true"
+                                        formControlName="pla55flagactivo"
+                                        [trueValue]="1"
+                                        [falseValue]="0"
+                                        ></p-checkbox>
                                     </span>
                                 </div>
 

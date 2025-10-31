@@ -170,38 +170,45 @@ export class ParametrosEmpresaComponent implements OnInit {
 
     onSave() {
         if (this.parametroxEmpresaForm.valid) {
-            const newParametroxEmpresa: ParametroxEmpresa = this.parametroxEmpresaForm.value;
-            this.parametroEmpresaService.CrearParametroxEmpresa(newParametroxEmpresa).subscribe({
-                next: () => {
-                    this.isEditing = false;
-                    this.isNew = false;
-                    this.parametroxEmpresaForm.reset();
-                    verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado correctamente');
-                    this.cargarParametrosxEmpresa();
-                    console.log(newParametroxEmpresa);
-                },
-                error: (err) => {
-                    verMensajeInformativo(this.messageService, 'error', 'Error', err.message || 'Ya existe un registro con ese código y empresa');
-                }
+            this.confirmationService.confirm({
+              message: '¿Está seguro que desea guardar este nuevo parámetro?',
+                  header: 'Confirmar Parámetro',
+                  icon: 'pi pi-question-circle',
+                  acceptLabel: 'Sí',
+                  rejectLabel: 'No',
+                  acceptButtonStyleClass: 'p-button',
+                  rejectButtonStyleClass: 'p-button-danger',
+                  accept: () => {
+                  const newParametroxEmpresa: ParametroxEmpresa = this.parametroxEmpresaForm.value;
+                  this.parametroEmpresaService.CrearParametroxEmpresa(newParametroxEmpresa).subscribe({
+                      next: () => {
+                          this.isEditing = false;
+                          this.isNew = false;
+                          this.parametroxEmpresaForm.reset();
+                          verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Parámetro guardado correctamente');
+                          this.cargarParametrosxEmpresa();
+                          console.log(newParametroxEmpresa);
+                      },
+                      error: (err) => {
+                          console.error('Error al guardar:', err);
+                          verMensajeInformativo(
+                            this.messageService,
+                            'error',
+                            'Error',
+                            'No se pudo guardar el parámetro'
+                          );
+                        },
+                  });
+                  }
             });
         } else {
-            verMensajeInformativo(this.messageService, 'warn', 'Advertencia', 'Complete todos los campos requeridos');
-        }
-            /*
-            this.parametroxEmpresaService.CrearParametroxEmpresa(newParametroxEmpresa).subscribe({
-                next: () => {
-                    this.isEditing = false;
-                    this.isNew = false;
-                    this.bancoForm.reset();
-                    verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Registro guardado');
-                    this.cargarBancos();
-                },
-                error: (err) => {
-                    console.error('Error al guardar:', err);
-                    verMensajeInformativo(this.messageService, 'error', 'Error', 'No se pudo guardar el registro');
-                },
-            })*/
-
+                  verMensajeInformativo(
+                  this.messageService,
+                  'warn',
+                  'Advertencia',
+                  'Complete todos los campos requeridos'
+                );
+              }
     }
 
     onCancel() {

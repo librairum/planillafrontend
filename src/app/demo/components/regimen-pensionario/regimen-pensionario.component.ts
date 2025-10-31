@@ -202,92 +202,62 @@ export class RegimenPensionarioComponent implements OnInit {
   }
 
   onSave() {
-    if (this.regimenPensionarioForm.valid) {
-      const raw = this.regimenPensionarioForm.value;
-      //mapear booleanos a S/N
-      const newRegimenPensionario: RegimenPensionario = {
-        ...raw,
-        pla61flagsectorprivado: raw.pla61flagsectorprivado ? 'S' : 'N',
-        pla61flagsectorpublico: raw.pla61flagsectorpublico ? 'S' : 'N',
-        pla61flagactivo: raw.pla61flagactivo ? 'S' : 'N',
-      };
+      if (this.regimenPensionarioForm.valid) {
+        this.confirmationService.confirm({
+          message: '¿Está seguro que desea guardar este nuevo régimen?',
+          header: 'Confirmar Régimen',
+          icon: 'pi pi-question-circle',
+          acceptLabel: 'Sí',
+          rejectLabel: 'No',
+          acceptButtonStyleClass: 'p-button',
+          rejectButtonStyleClass: 'p-button-danger',
+          accept: () => {
+            const raw = this.regimenPensionarioForm.value;
+            //mapear booleanos a S/N
+            const newRegimenPensionario: RegimenPensionario = {
+              ...raw,
+              pla61flagsectorprivado: raw.pla61flagsectorprivado ? 'S' : 'N',
+              pla61flagsectorpublico: raw.pla61flagsectorpublico ? 'S' : 'N',
+              pla61flagactivo: raw.pla61flagactivo ? 'S' : 'N',
+            };
 
-      this.regimenPensionarioService
-        .CrearRegimenPensionario(newRegimenPensionario)
-        .subscribe({
-          next: () => {
-            this.isEditing = false;
-            this.isNew = false;
-            this.regimenPensionarioForm.reset();
-            verMensajeInformativo(
-              this.messageService,
-              'success',
-              'Éxito',
-              'Registro guardado'
-            );
-            this.cargarRegimenesPensionarios();
-          },
-          error: (err) => {
-            console.error('Error al guardar:', err);
-            verMensajeInformativo(
-              this.messageService,
-              'error',
-              'Error',
-              'No se pudo guardar el registro'
-            );
-          },
-        });
-        } else {
-          verMensajeInformativo(
-            this.messageService,
-            'warn',
-            'Advertencia',
-            'Complete todos los campos requeridos'
-          );
-        }
-        /*
-                const raw = this.regimenPensionarioForm.value;
-                //mapear booleanos a S/N
-                const newRegimenPensionario: RegimenPensionario = {
-                    ...raw,
-                    pla61flagsectorprivado: raw.pla61flagsectorprivado ? 'S' : 'N',
-                    pla61flagsectorpublico: raw.pla61flagsectorpublico ? 'S' : 'N',
-                    pla61flagactivo: raw.pla61flagactivo ? 'S' : 'N'
-                };
-
-                // Verifica si ya existe el registro
-                const existe = this.regimenPensionarioList.some(r =>
-                    r.pla61codigo === newRegimenPensionario.pla61codigo
-                );
-
-                if (existe) {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: 'Ya existe un registro con ese código'
-                    });
-                    return;
-                }
-
-                // Agrega el nuevo registro
-                this.regimenPensionarioList.push(newRegimenPensionario);
+            this.regimenPensionarioService
+            .CrearRegimenPensionario(newRegimenPensionario)
+            .subscribe({
+              next: () => {
                 this.isEditing = false;
                 this.isNew = false;
                 this.regimenPensionarioForm.reset();
+                verMensajeInformativo(
+                  this.messageService,
+                  'success',
+                  'Éxito',
+                  'Registro guardado'
+                );
+                this.cargarRegimenesPensionarios();
+              },
+              error: (err) => {
+                console.error('Error al guardar:', err);
+                verMensajeInformativo(
+                  this.messageService,
+                  'error',
+                  'Error',
+                  'No se pudo guardar el régimen'
+                );
+              },
+            });
+          },
+        });
+      } else {
+        verMensajeInformativo(
+          this.messageService,
+          'warn',
+          'Advertencia',
+          'Complete todos los campos requeridos'
+        );
+      }
+    }
 
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Registro guardado correctamente'
-                });
-            } else {
-                this.messageService.add({
-                    severity: 'warn',
-                    summary: 'Advertencia',
-                    detail: 'Complete todos los campos requeridos'
-                });
-                */
-  }
 
   onCancel() {
     this.isEditing = false;
