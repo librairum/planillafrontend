@@ -22,6 +22,13 @@ export interface Concepto {
   conceptotipodesc?: string;
   conceptosubtipodesc?: string;
   calculotipodesc?: string;
+  conceptosunatdesc?: string;
+
+  //esto era opcional, pero por errores lo estoy poniendo obligatorio
+  afectacionesSunat: AfectacionSunat[];
+  afectacionOtros: AfectacionOtros[];
+  planillasAsignadas: PlanillaAsignada[];
+  regimenesLaborales: RegimenLaboral[];
 }
 
 /*
@@ -61,6 +68,7 @@ pla10empresacod text COLLATE pg_catalog."default" NOT NULL,
     ConceptoTipoDesc TEXT, //Pla50ConceptoTipo
     ConceptoSubTipoDesc TEXT, //Pla51ConceptoSubTipo
     CalculoTipoDesc TEXT, //Pla52CalculoTipo
+    ConceptoSunatDesc TEXT //Glo01ConceptosSunat
 
     (CASE COALESCE(c.Pla10FlagEstandar, 'E')
             WHEN '' THEN 'No Especificado'
@@ -70,3 +78,26 @@ pla10empresacod text COLLATE pg_catalog."default" NOT NULL,
         END),
 
     */
+
+export interface AfectacionSunat {
+  codigo: string;
+  descripcion: string;
+  valor: boolean;
+}
+export interface AfectacionOtros {
+  codigo: string;
+  descripcion: string;
+  valor: boolean;
+}
+
+export interface PlanillaAsignada {
+  codigo: string;
+  descripcion: string;
+  valor: boolean;
+}
+
+export interface RegimenLaboral {
+  codigo: string;
+  descripcion: string;
+  valor: boolean;
+}

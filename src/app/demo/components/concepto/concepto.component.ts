@@ -58,12 +58,17 @@ export class ConceptoComponent  implements OnInit{
     editingConcepto: Concepto | null = null;
     editingRows: { [s: string]: boolean } = {};
     editingData: any = {};
-    displayDialog: boolean = false;
     isNew: boolean = false;
     clonedConceptos: { [s: string]: Concepto } = {};
     items: any[] = [];
     isEditingAnyRow: boolean = false;
     rowsPerPage: number = 10; // Numero de filas por página
+
+    // Ver detalle
+    displayDialog: boolean = false;
+    conceptoActual = {} as Concepto;
+    esModoVisualizacion: boolean = false;
+    isNewRecord: boolean = false;
 
     constructor(
       private conceptoService: ConceptoService,
@@ -94,9 +99,9 @@ export class ConceptoComponent  implements OnInit{
         pla10conceptocod: ['', Validators.required],
         pla10conceptodesc: ['', Validators.required],
         pla10conceptoalias: [''],
-        pla10flagclase: [''],
+        pla10flagclase: [''], //Formulable o no
         pla10flagimpresion: [''],
-        pla10flagactivo: ['', Validators.required],
+        pla10flagactivo: [''],
         pla10flagconfigurable: [''],
         pla10tipoconceptocod: [''],
         pla10subtipoconceptocod: [''],
@@ -105,12 +110,18 @@ export class ConceptoComponent  implements OnInit{
         pla10formula: [''],
         pla10formulaalias: [''],
         pla10comentario: [''],
-        pla10flagestandar: ['', Validators.required],
+        pla10flagestandar: [''],
         pla10conceptopadrecod: [''],
 
         conceptotipodesc: [''], //corresponde a la quinta columna del formulario escritorio
         conceptosubtipodesc: [''],
         calculotipodesc: [''],
+        conceptosunatdesc: [''],
+
+        afectacionesSunat: [[]],
+        afectacionOtros: [[]],
+        planillasAsignadas: [[]],
+        regimenesLaborales: [[]],
       });
     }
 
@@ -215,6 +226,11 @@ export class ConceptoComponent  implements OnInit{
               //mapear booleanos a S/N
               const newConcepto: Concepto = {
                 ...raw,
+                pla10flagclase: raw.pla10flagclase ? 'F' : 'C', // F = formulable, C = constante
+                pla10flagimpresion: raw.pla10flagimpresion ? 'S' : 'N',
+                pla10flagactivo: raw.pla10flagactivo ? 'S' : 'N',
+                pla10flagconfigurable: raw.pla10flagconfigurable ? 'S' : 'N',
+                pla10flagestandar: raw.pla10flagestandar ? 'S' : 'N',
               };
 
               this.conceptoService
@@ -321,10 +337,11 @@ export class ConceptoComponent  implements OnInit{
     }*/
 
 
-      showDetalle(concepto: Concepto) {
-
-        this.displayDialog = true;
-      }
+    // helper para togglear flags en la fila y mantener 'S'/'N'
+        onToggleFlag(concepto: Concepto,
+          field: 'pla10flagactivo' | 'pla10flagimpresion' | 'pla10flagconfigurable' | 'pla10flagclase' | 'pla10flagestandar', checked: boolean): void {
+          concepto[field] = checked ? 'S' : 'N';
+        }
 
       // Mostrar ayuda sobre el concepto
       // Solo muestra un mensaje informativo como ejemplo
@@ -335,4 +352,75 @@ export class ConceptoComponent  implements OnInit{
           detail: `Información sobre el concepto: ${concepto.pla10conceptodesc}`
         });
       }
+
+      abrirModalConcepto(concepto: Concepto | null, modoVisualizacion: boolean = false) {
+        if (concepto) {
+          // Si es edición o visualización, carga los datos en el formulario
+
+          const raw = {
+            ...concepto,
+            pla10flagimpresion: concepto.pla10flagimpresion === 'S',
+            pla10flagconfigurable: concepto.pla10flagconfigurable === 'S',
+            pla10flagclase: concepto.pla10flagclase === 'F',
+            pla10flagactivo: concepto.pla10flagactivo === 'S',
+            pla10flagestandar: concepto.pla10flagestandar === 'S'
+          }
+
+          this.conceptoForm.reset(raw);
+        } else {
+          // Si es nuevo, resetea el formulario
+          this.conceptoForm.reset({
+            pla10conceptocod: this.conceptoService.GenerarNuevoCodigoConcepto(),
+            afectacionesSunat: [],
+            afectacionOtros: [],
+            planillasAsignadas: [],
+            regimenesLaborales: [],
+            // ...otros valores por defecto si necesitas
+          });
+        }
+
+        this.esModoVisualizacion = modoVisualizacion;
+        this.isNewRecord = !concepto;
+        this.displayDialog = true;
+
+        // Habilita o deshabilita el formulario según el modo
+        if (modoVisualizacion) {
+          this.conceptoForm.disable();
+        } else {
+          this.conceptoForm.enable();
+        }
+      }
+
+      showDetalle(concepto: Concepto) {
+        this.conceptoActual = { ...concepto };
+        console.log(this.conceptoActual.afectacionesSunat)
+        this.abrirModalConcepto(concepto, true);
+      }
+
+      cerrarDetalle(){
+        this.displayDialog = false;
+        this.esModoVisualizacion = false;
+        this.isNewRecord = false; // Asegurarse de resetear esto también
+      }
+
+      // Abrir búsqueda para Tipo de Cálculo
+      abrirBusquedaTipoCalculo() {
+
+      }
+
+      // Abrir búsqueda para Tipo de Concepto
+      abrirBusquedaConceptoTipo() {
+
+      }
+
+      // Abrir búsqueda para Sub Tipo de Concepto
+      abrirBusquedaSubTipo() {
+
+      }
+
+      abrirBusquedaConceptoSunat() {
+
+      }
+
+
 }

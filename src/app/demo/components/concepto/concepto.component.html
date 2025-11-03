@@ -127,7 +127,8 @@
                                     type="button"
                                     icon="pi pi-question-circle"
                                     pTooltip="Ayuda"
-                                    class="p-button-rounded p-button-text p-button-sm"></button>
+                                    class="p-button-rounded p-button-text p-button-sm"
+                                    (click)="mostrarAyuda(concepto)"></button>
 
                             <!-- Botón Ver Detalle -->
 
@@ -283,6 +284,258 @@
 <p-dialog
   [(visible)]="displayDialog"
   [header]="'Detalle de concepto'"
+  [style]="{width: '95vw', height: '90vh'}"
   [modal]="true"
-  [draggable]="false">
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="false">
+  <form [formGroup]="conceptoForm">
+    <div class="concepto-detalle">
+      <div class="info-basica">
+
+        <!-- Código y descripción -->
+        <div class="form-row flex gap-3 mb-3 align-items-center">
+
+          <div class="form-group flex-2">
+            <label>Código :</label>
+            <input type="text" pInputText formControlName="pla10conceptocod"
+            [disabled]="!isNewRecord || esModoVisualizacion" maxlength="10"
+            class="w-full"/>
+          </div>
+
+          <div class="form-group flex-1">
+            <label>Descripción :</label>
+            <input type="text" pInputText formControlName="pla10conceptodesc"
+            [disabled]="esModoVisualizacion" maxlength="150"
+            class="w-full"/>
+          </div>
+
+        </div>
+
+        <!-- Tipos -->
+        <div class="form-row flex gap-3 mb-3 align-items-center">
+
+          <div class="form-group flex-1">
+            <label>Tipo cálculo :</label>
+            <div class="flex gap-2 align-items-center">
+              <input type="text" pInputText formControlName="pla10tipocalculocod"
+              readonly maxlength="2" style="width: 60px" />
+              <input type="text" pInputText formControlName="calculotipodesc"
+              class="w-full"/>
+              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              [disabled]="esModoVisualizacion" (click)="abrirBusquedaTipoCalculo()"></button>
+            </div>
+          </div>
+
+          <div class="form-group flex-1">
+            <label>Tipo :</label>
+            <div class="flex gap-2 align-items-center">
+              <input type="text" pInputText formControlName="pla10tipoconceptocod"
+              readonly maxlength="2" style="width: 60px" />
+              <input type="text" pInputText formControlName="pla10conceptodesc"
+              class="w-full"/>
+              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoTipo()"></button>
+              </div>
+          </div>
+
+          <div class="form-group flex-1">
+            <label>Sub Tipo :</label>
+            <div class="flex gap-2 align-items-center">
+              <input type="text" pInputText formControlName="pla10subtipoconceptocod"
+              readonly maxlength="2" style="width: 60px" />
+              <input type="text" pInputText formControlName="conceptosubtipodesc"
+              class="w-full"/>
+              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              [disabled]="esModoVisualizacion" (click)="abrirBusquedaSubTipo()"></button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="flex gap-4 mb-3 align-items-center">
+
+          <p-checkbox formControlName="pla10flagimpresion"
+          [binary]="true" label="Imprimible"
+          [disabled]="esModoVisualizacion" inputId="imprimible"></p-checkbox>
+
+          <p-checkbox formControlName="pla10flagconfigurable"
+          [binary]="true" label="Config.Basica"
+          [disabled]="esModoVisualizacion" inputId="configBasica"></p-checkbox>
+
+          <p-checkbox formControlName="pla10flagclase"
+          [binary]="true" label="Formulable"
+          [disabled]="esModoVisualizacion" inputId="formulable"></p-checkbox>
+
+          <p-checkbox formControlName="pla10flagactivo"
+          [binary]="true" label="Activo"
+          [disabled]="esModoVisualizacion" inputId="activo"></p-checkbox>
+
+        </div>
+
+      </div>
+
+      <!-- Text Areas -->
+      <div class="flex gap-4 mb-3">
+        <textarea pInputTextarea rows="8" formControlName="pla10formula" class="w-full"></textarea>
+        <textarea pInputTextarea rows="8" formControlName="pla10formulaalias" class="w-full"></textarea>
+      </div>
+
+      <!-- Concepto Sunat y Observacion -->
+      <div class="flex gap-4 mb-3">
+        <div class="flex-1">
+          <label>Concepto Sunat :</label>
+          <div class="flex gap-2 align-items-center">
+            <input type="text" pInputText formControlName="pla10conceptosunatcod"
+              readonly style="width: 100px" />
+            <input type="text" pInputText formControlName="conceptosunatdesc"
+            style="flex: 1" />
+            <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+            [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoSunat()"></button>
+          </div>
+        </div>
+
+        <div class="flex-1">
+          <label>Observación</label>
+          <textarea pInputTextarea rows="3" formControlName="pla10comentario"
+          [disabled]="esModoVisualizacion" class="w-full"></textarea>
+        </div>
+      </div>
+
+      <!-- Tablas Relacionadas -->
+      <div class="flex gap-3 mt-3">
+
+        <!-- Afectaciones Sunat -->
+        <div class="flex-1">
+          <h4 class="mb-2">Afectaciones Sunat</h4>
+          <p-table
+          [value]="conceptoActual.afectacionesSunat"
+          [scrollable]="true"
+          scrollHeight="200px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="text-align: center; width: 20%;">Código</th>
+                <th style="text-align: center; width: 60%;">Descripción</th>
+                <th style="text-align: center; width: 20%;">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <!-- Standalone es necesario para evitar conflictos con el formulario -->
+                  <p-checkbox
+                  [(ngModel)]="item.valor"
+                  [ngModelOptions]="{standalone: true}"
+                  [binary]="true"
+                  [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="flex-1">
+          <h4 class="mb-2">Afectación Otros</h4>
+          <p-table
+          [value]="conceptoActual.afectacionOtros"
+          [scrollable]="true"
+          scrollHeight="200px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="text-align: center; width: 20%;">Código</th>
+                <th style="text-align: center; width: 60%;">Descripción</th>
+                <th style="text-align: center; width: 20%;">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <!-- Standalone es necesario para evitar conflictos con el formulario -->
+                  <p-checkbox
+                  [(ngModel)]="item.valor"
+                  [ngModelOptions]="{standalone: true}"
+                  [binary]="true"
+                  [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="flex-1">
+          <h4 class="mb-2">Plantilla Asignada</h4>
+          <p-table
+          [value]="conceptoActual.planillasAsignadas"
+          [scrollable]="true"
+          scrollHeight="200px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="text-align: center; width: 20%;">Código</th>
+                <th style="text-align: center; width: 60%;">Descripción</th>
+                <th style="text-align: center; width: 20%;">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <!-- Standalone es necesario para evitar conflictos con el formulario -->
+                  <p-checkbox
+                  [(ngModel)]="item.valor"
+                  [ngModelOptions]="{standalone: true}"
+                  [binary]="true"
+                  [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="flex-1">
+          <h4 class="mb-2">Régimen Laboral</h4>
+          <p-table
+          [value]="conceptoActual.regimenesLaborales"
+          [scrollable]="true"
+          scrollHeight="200px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="text-align: center; width: 20%;">Código</th>
+                <th style="text-align: center; width: 60%;">Descripción</th>
+                <th style="text-align: center; width: 20%;">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <!-- Standalone es necesario para evitar conflictos con el formulario -->
+                  <p-checkbox
+                  [(ngModel)]="item.valor"
+                  [ngModelOptions]="{standalone: true}"
+                  [binary]="true"
+                  [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Cerrar" icon="pi pi-times"
+    (click)="cerrarDetalle()" class="p-button-text"></button>
+
+  </ng-template>
 </p-dialog>
