@@ -45,11 +45,12 @@ export class ConceptoService {
               pla10tipocalculocod: '01',
               pla10conceptosunatcod: '0803',
               pla10formula: "if V('0066')=INGNUMERO(1) then V('2016')*ParametroG('03') else INGNUMERO(0) end",
-              pla10formulaalias: '',
-              pla10comentario: '',
+              pla10formulaalias: 'formula 1',
+              pla10comentario: 'Ninguna observación',
               pla10flagestandar: 'S', // SN POR AHORA
               pla10conceptopadrecod: '',
 
+              pla10flagestandardesc: 'Estandar',
               conceptotipodesc: 'Aportes',
               conceptosubtipodesc: 'Aportes',
               calculotipodesc: 'Calculo Planillas',
@@ -102,10 +103,12 @@ export class ConceptoService {
               pla10tipocalculocod: '01',
               pla10conceptosunatcod: '0807',
               pla10formula: "if V('0066')=INGNUMERO(1) then V('2016')*ParametroG('03') else INGNUMERO(0) end",
-              pla10formulaalias: '',
-              pla10comentario: '',
+              pla10formulaalias: 'formula 2',
+              pla10comentario: 'Ninguna observación',
               pla10flagestandar: 'S',
               pla10conceptopadrecod: '',
+
+              pla10flagestandardesc: 'Estandar',
 
               conceptotipodesc: 'Aportes',
               conceptosubtipodesc: 'Aportes',
@@ -113,36 +116,36 @@ export class ConceptoService {
               conceptosunatdesc: 'SENATI',
 
               afectacionesSunat: [
-                { codigo: '01', descripcion: 'ESSALUD SEGURO REGULAR TRABAJADOR', valor: false },
-                { codigo: '04', descripcion: 'ESSALUD SCTR', valor: false },
-                { codigo: '07', descripcion: 'SENATI', valor: false },
-                { codigo: '08', descripcion: 'SISTEMA NACIONAL DE PENSIONES 19990', valor: false },
-                { codigo: '09', descripcion: 'SISTEMA PRIVADO DE PENSIONES', valor: false },
-                { codigo: '10', descripcion: 'RENTA 5TA CATEGORÍA RETENCIONES', valor: false },
-                { codigo: '15', descripcion: 'FONDO COMPLEMENTARIO DE JUBILACIÓN MINERA', valor: false }
+                { codigo: '01', descripcion: 'ESSALUD SEGURO REGULAR TRABAJADOR', valor: true },
+                { codigo: '04', descripcion: 'ESSALUD SCTR', valor: true },
+                { codigo: '07', descripcion: 'SENATI', valor: true },
+                { codigo: '08', descripcion: 'SISTEMA NACIONAL DE PENSIONES 19990', valor: true },
+                { codigo: '09', descripcion: 'SISTEMA PRIVADO DE PENSIONES', valor: true },
+                { codigo: '10', descripcion: 'RENTA 5TA CATEGORÍA RETENCIONES', valor: true },
+                { codigo: '15', descripcion: 'FONDO COMPLEMENTARIO DE JUBILACIÓN MINERA', valor: true }
               ],
               afectacionOtros: [
-                { codigo: '13', descripcion: 'SEGURO VIDA LEY', valor: false },
-                { codigo: '14', descripcion: 'JUICIO POR ALIMENTOS', valor: false },
-                { codigo: '16', descripcion: 'SCTR PENSION PRIVADO', valor: false },
-                { codigo: '17', descripcion: 'CTS 6 ULTIMAS REM', valor: false },
-                { codigo: '20', descripcion: 'INGRESOS VARIABLES PROMEDIO (VAC,GRA,CTS,5TA PROYECCION)', valor: false },
-                { codigo: '21', descripcion: 'INGRESOS EXTRAORDINARIOS PARA 5TA CATEGORIA', valor: false }
+                { codigo: '13', descripcion: 'SEGURO VIDA LEY', valor: true },
+                { codigo: '14', descripcion: 'JUICIO POR ALIMENTOS', valor: true },
+                { codigo: '16', descripcion: 'SCTR PENSION PRIVADO', valor: true },
+                { codigo: '17', descripcion: 'CTS 6 ULTIMAS REM', valor: true },
+                { codigo: '20', descripcion: 'INGRESOS VARIABLES PROMEDIO (VAC,GRA,CTS,5TA PROYECCION)', valor: true },
+                { codigo: '21', descripcion: 'INGRESOS EXTRAORDINARIOS PARA 5TA CATEGORIA', valor: true }
               ],
               planillasAsignadas: [
-                { codigo: '01', descripcion: 'Planilla Mensual', valor: true },
-                { codigo: '02', descripcion: 'Planilla Vacaciones', valor: true },
-                { codigo: '16', descripcion: 'Planilla Gratificaciones ley', valor: true },
-                { codigo: '05', descripcion: 'Planilla Liquidaciones', valor: true },
-                { codigo: '04', descripcion: 'Planilla Utilidades', valor: true },
-                { codigo: '20', descripcion: 'Planilla Quincenal Adelanto', valor: true }
+                { codigo: '01', descripcion: 'Planilla Mensual', valor: false },
+                { codigo: '02', descripcion: 'Planilla Vacaciones', valor: false },
+                { codigo: '16', descripcion: 'Planilla Gratificaciones ley', valor: false },
+                { codigo: '05', descripcion: 'Planilla Liquidaciones', valor: false },
+                { codigo: '04', descripcion: 'Planilla Utilidades', valor: false },
+                { codigo: '20', descripcion: 'Planilla Quincenal Adelanto', valor: false }
               ],
               regimenesLaborales: [
-                { codigo: '01', descripcion: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728', valor: true },
-                { codigo: '16', descripcion: 'MICROEMPRESA D. LEG. 1086 (1)', valor: true },
-                { codigo: '17', descripcion: 'PEQUEÑA EMPRESA D. LEG. 1086 (1)', valor: true },
-                { codigo: '18', descripcion: 'AGRARIO LEY 27360', valor: true },
-                { codigo: '20', descripcion: 'MINEROS', valor: true }
+                { codigo: '01', descripcion: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728', valor: false },
+                { codigo: '16', descripcion: 'MICROEMPRESA D. LEG. 1086 (1)', valor: false },
+                { codigo: '17', descripcion: 'PEQUEÑA EMPRESA D. LEG. 1086 (1)', valor: false },
+                { codigo: '18', descripcion: 'AGRARIO LEY 27360', valor: false },
+                { codigo: '20', descripcion: 'MINEROS', valor: false }
               ]
           }
     ];

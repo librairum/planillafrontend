@@ -113,6 +113,8 @@ export class ConceptoComponent  implements OnInit{
         pla10flagestandar: [''],
         pla10conceptopadrecod: [''],
 
+        pla10flagestandardesc: [''],
+
         conceptotipodesc: [''], //corresponde a la quinta columna del formulario escritorio
         conceptosubtipodesc: [''],
         calculotipodesc: [''],
@@ -391,16 +393,29 @@ export class ConceptoComponent  implements OnInit{
         }
       }
 
-      showDetalle(concepto: Concepto) {
+      verConcepto(concepto: Concepto) {
         this.conceptoActual = { ...concepto };
-        console.log(this.conceptoActual.afectacionesSunat)
+        //console.log(this.conceptoActual.afectacionesSunat)
         this.abrirModalConcepto(concepto, true);
       }
 
-      cerrarDetalle(){
+      cerrarConcepto(){
         this.displayDialog = false;
         this.esModoVisualizacion = false;
         this.isNewRecord = false; // Asegurarse de resetear esto también
+      }
+
+      editarConcepto(concepto: Concepto) {
+        this.conceptoActual = { ...concepto }; // Haz una copia para editar
+        this.abrirModalConcepto(concepto, false); // Carga los datos en el formulario y abre el modal en modo edición
+
+        /*this.esModoVisualizacion = false;
+        this.isNewRecord = false;
+        this.displayDialog = true;*/
+      }
+
+      guardarConcepto() {
+
       }
 
       // Abrir búsqueda para Tipo de Cálculo

@@ -19,6 +19,8 @@ export interface Concepto {
   pla10flagestandar: string;
   pla10conceptopadrecod: string;
 
+  pla10flagestandardesc?: string;
+
   conceptotipodesc?: string;
   conceptosubtipodesc?: string;
   calculotipodesc?: string;
