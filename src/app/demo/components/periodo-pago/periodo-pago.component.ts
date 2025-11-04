@@ -54,6 +54,7 @@ interface Periodo {
 })
 export class PeriodoPagoComponent implements OnInit {
   periodos: Periodo[] = [];
+   rowsPerPage: number = 10; 
   selectedPeriodo: Periodo | null = null;
   displayDialog: boolean = false;
   isEditing: boolean = false;

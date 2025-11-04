@@ -77,21 +77,23 @@
       </ng-template>
     </p-toolbar>
 
+    <div class="table-controls-header flex justify-content-end align-items-center" style="padding: 0.8rem 1rem; border-top: 1px solid #dee2e6;">
+            <div class="flex align-items-center px-2">
+                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por página:</label>
+                <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
+                    placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center"></p-dropdown>
+            </div>          
+        </div>
+
     <!-- Tabla de asistencia -->
     <div class="table-container">
       <p-table 
-        [value]="trabajadores" 
-        [(selection)]="selectedTrabajador"
-        selectionMode="single"
-        [paginator]="true"
-        [rows]="10"
-        [rowsPerPageOptions]="[5, 10, 20, 50]"
-        [showCurrentPageReport]="true"
-        [globalFilterFields]="['codigo', 'idIdentidad', 'apellidosNombres', 'estado']"
-        [scrollable]="true"
-        scrollHeight="flex"
-        [tableStyle]="{ 'min-width': '100%' }"
-        styleClass="p-datatable-striped p-datatable-gridlines p-datatable-sm">
+        #dt [value]="trabajadores" [(selection)]="selectedTrabajador" selectionMode="single" [paginator]="true" 
+                [rows]="rowsPerPage"
+                responsiveLayout="scroll"
+                [showCurrentPageReport]="false"
+                [globalFilterFields]="['codigo', 'idIdentidad', 'apellidosNombres', 'estado']"
+                [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-striped p-datatable-gridlines">
         
         <!-- Caption con filtro -->
         <!--<ng-template pTemplate="caption">

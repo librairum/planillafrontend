@@ -1,245 +1,228 @@
 <div class="periodo-pago-container">
-  <!-- Toast para notificaciones -->
-  <p-toast></p-toast>
+    <p-toast></p-toast>
 
-  <!-- Confirm Dialog -->
-  <p-confirmDialog></p-confirmDialog>
+    <p-confirmDialog></p-confirmDialog>
 
-  <!-- Header -->
-  <div class="page-header">
-    <div class="header-content">
-      <i class="pi pi-calendar-plus header-icon " style="color: white;"></i>
-      <h2 style="color: white;">Periodo Pago</h2>
-    </div>
-  </div>
-
-  <!-- Card contenedor -->
-  <div class="content-card">
-    <!-- Toolbar con acciones -->
-    <p-toolbar styleClass="custom-toolbar">
-      <ng-template pTemplate="left">
-        <div class="toolbar-group">
-          <button pButton type="button" icon="pi pi-plus" class="p-button-success toolbar-button" (click)="agregar()"
-            pTooltip="Agregar nuevo periodo" tooltipPosition="bottom"></button>
-
-          <button pButton type="button" icon="pi pi-pencil" class="p-button-warning toolbar-button"
-            (click)="modificar()" [disabled]="!selectedPeriodo" pTooltip="Modificar periodo seleccionado"
-            tooltipPosition="bottom"></button>
-
-          <button pButton type="button" icon="pi pi-trash" class="p-button-danger toolbar-button" (click)="eliminar()"
-            [disabled]="!selectedPeriodo" pTooltip="Eliminar periodo seleccionado" tooltipPosition="bottom"></button>
-
-          <button pButton type="button" icon="pi pi-search" class="p-button-info toolbar-button" (click)="ver()"
-            pTooltip="Ver" tooltipPosition="bottom"></button>
-
-          <button pButton type="button" icon="pi pi-refresh" class="p-button-secondary toolbar-button"
-            (click)="refrescar()" pTooltip="Refrescar datos" tooltipPosition="bottom"></button>
+    <div class="page-header">
+        <div class="header-content">
+            <i class="pi pi-calendar-plus header-icon " style="color: white;"></i>
+            <h2 style="color: white;">Periodo Pago</h2>
         </div>
-      </ng-template>
-
-      <ng-template pTemplate="right">
-        <div class="toolbar-group">
-          <button pButton type="button" icon="pi pi-lock-open" label="Abrir Periodo"
-            class="p-button-help toolbar-button-text" (click)="abrirPeriodo()" [disabled]="!selectedPeriodo"
-            pTooltip="Abrir periodo seleccionado" tooltipPosition="bottom"></button>
-
-          <button pButton type="button" icon="pi pi-lock" label="Cerrar Periodo"
-            class="p-button-danger toolbar-button-text" (click)="cerrarPeriodo()" [disabled]="!selectedPeriodo"
-            pTooltip="Cerrar periodo seleccionado" tooltipPosition="bottom"></button>
-        </div>
-      </ng-template>
-    </p-toolbar>
-
-    <!-- Tabla de periodos -->
-    <div class="table-container py-7">
-      <p-table [value]="periodos" [(selection)]="selectedPeriodo" selectionMode="single" [paginator]="true" [rows]="10"
-        [rowsPerPageOptions]="[10, 20, 50]" 
-
-        [globalFilterFields]="['periodo', 'descripcion', 'estado', 'descSubTipoPlanilla']"
-        [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-striped p-datatable-gridlines">
-
-        <!-- Caption con filtro -->
-        <!--<ng-template pTemplate="caption">
-          <div class="table-header">
-            <span class="p-input-icon-left search-input">
-              <i class="pi pi-search"></i>
-              <input pInputText type="text" [(ngModel)]="globalFilterValue" (input)="onGlobalFilter($event)"
-                placeholder="Buscar en todos los campos..." />
-            </span>
-          </div>
-        </ng-template>-->
-
-        <!-- Columnas -->
-        <ng-template pTemplate="header">
-          <tr>
-            <th pSortableColumn="periodo">
-              Periodo <!--<p-sortIcon field="periodo"></p-sortIcon>-->
-            </th>
-            <th style="width: 20%; text-align: center;" pSortableColumn="descripcion">
-              Descripción 
-            </th>
-            <th pSortableColumn="fecInicio">
-              Fec.Inicio
-            </th>
-            <th style="text-align: center;" pSortableColumn="fecFinal">
-              Fec.Final
-            </th>
-            <th>Calculado</th>
-            <th style="text-align: center;">Flag Fin Mes</th>
-            <th style="text-align: center;" pSortableColumn="fecPago">
-              Fec.Pago 
-            </th>
-            <th pSortableColumn="estado">
-              Estado
-            </th>
-            <th pSortableColumn="fecProceso">
-              Fec.Proceso
-            </th>
-            <th style="text-align: center;">Desc.SubTipo Planilla</th>
-            <th pSortableColumn="tipoCambio">
-              Tipo Cambio 
-            </th>
-          </tr>
-        </ng-template>
-
-        <!-- Filas -->
-        <ng-template pTemplate="body" let-periodo>
-          <tr [pSelectableRow]="periodo" [class.selected-row]="selectedPeriodo === periodo">
-            <td text-center>{{ periodo.periodo }}</td>
-            <td style="text-align: center;">{{ periodo.descripcion }}</td>
-            <td>{{ periodo.fecInicio | date:'dd/MM/yyyy' }}</td>
-            <td>{{ periodo.fecFinal | date:'dd/MM/yyyy' }}</td>
-            <td class="text-center">
-              <i
-                [class]="periodo.calculado ? 'pi pi-check-circle text-green-500' : 'pi pi-times-circle text-red-500'"></i>
-            </td>
-            <td class="text-center">
-              <i
-                [class]="periodo.flagFinMes ? 'pi pi-check-circle text-green-500' : 'pi pi-times-circle text-red-500'"></i>
-            </td>
-            <td>{{ periodo.fecPago | date:'dd/MM/yyyy' }}</td>
-            <td>
-              <p-tag [value]="periodo.estado" [severity]="getSeverity(periodo.estado)"></p-tag>
-            </td>
-            <td>{{ periodo.fecProceso | date:'dd/MM/yyyy' }}</td>
-            <td style="text-align: center;">{{ periodo.descSubTipoPlanilla }}</td>
-            <td class="text-right">{{ periodo.tipoCambio | number:'1.2-2' }}</td>
-          </tr>
-        </ng-template>
-
-        <!-- Empty message -->
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="11" class="text-center empty-message">
-              <i class="pi pi-info-circle"></i>
-              <p>No se encontraron periodos</p>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
-
-  <!-- Dialog para agregar/modificar -->
-  <p-dialog [(visible)]="displayDialog" 
-    [header]="isViewing ? 'Ver Periodo' : (isEditing ? 'Modificar Periodo' : 'Nuevo Periodo')" 
-    [modal]="true" [style]="{width: '800px'}" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
-
-    <div class="dialog-content">
-      <div class="form-grid">
-        <!-- Periodo -->
-        <div class="form-field">
-          <label for="periodo" class="form-label">
-            Periodo: <span class="required">*</span>
-          </label>
-          <input id="periodo" type="text" pInputText [(ngModel)]="periodoForm.periodo" [disabled]="isViewing || isEditing"
-            class="w-full" placeholder="Ej: 202001" />
-        </div>
-
-        <!-- Descripción -->
-        <div class="form-field full-width">
-          <label for="desc" class="form-label">
-            Descripción:
-          </label>
-          <input id="desc" type="text" pInputText [(ngModel)]="periodoForm.descripcion" class="w-full"
-            [disabled]="isViewing" placeholder="Ingrese descripción" />
-        </div>
-
-        <!-- Fecha Inicio -->
-        <div class="form-field">
-          <label for="fecIni" class="form-label">
-            Fecha Inicio: <span class="required">*</span>
-          </label>
-          <p-calendar id="fecIni" [(ngModel)]="periodoForm.fecInicio" dateFormat="dd/mm/yy" [showIcon]="true"
-           [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
-        </div>
-
-        <!-- Fecha Final -->
-        <div class="form-field">
-          <label for="fecFin" class="form-label">
-            Fecha Final: <span class="required">*</span>
-          </label>
-          <p-calendar id="fecFin" [(ngModel)]="periodoForm.fecFinal" dateFormat="dd/mm/yy" [showIcon]="true"
-            [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
-        </div>
-
-        <!-- Fecha Pago -->
-        <div class="form-field">
-          <label for="fecPago" class="form-label">
-            Fecha Pago: <span class="required">*</span>
-          </label>
-          <p-calendar id="fecPago" [(ngModel)]="periodoForm.fecPago" dateFormat="dd/mm/yy" [showIcon]="true"
-            [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
-        </div>
-
-        <!-- Estado -->
-        <div class="form-field">
-          <label for="estado" class="form-label">
-            Estado: <span class="required">*</span>
-          </label>
-          <p-dropdown id="estado" [(ngModel)]="periodoForm.estado" [options]="estadoOptions" optionLabel="label"
-            [disabled]="isViewing" optionValue="value" placeholder="Seleccione estado" styleClass="w-full"></p-dropdown>
-        </div>
-
-        <!-- Tipo Cambio -->
-        <div class="form-field">
-          <label for="tipoCambio" class="form-label">
-            Tipo de Cambio:
-          </label>
-          <input id="tipoCambio" type="number" pInputText [(ngModel)]="periodoForm.tipoCambio" class="w-full"
-            step="0.01" placeholder="0.00" [disabled]="isViewing" />
-        </div>
-
-        <!-- SubTipo Planilla -->
-        <div class="form-field">
-          <label for="subTipo" class="form-label">
-            SubTipo Planilla:
-          </label>
-          <input id="subTipo" type="text" pInputText [(ngModel)]="periodoForm.descSubTipoPlanilla" class="w-full"
-            placeholder="Ej: Empleados" [disabled]="isViewing" />
-        </div>
-
-        <!-- Checkboxes -->
-        <div class="form-field checkbox-container">
-          <div class="checkbox-item">
-            <p-checkbox id="calculado" [(ngModel)]="periodoForm.calculado" [binary]="true"
-              [disabled]="isViewing" inputId="calculado"></p-checkbox>
-            <label for="calculado" class="checkbox-label">Calculado</label>
-          </div>
-
-          <div class="checkbox-item">
-            <p-checkbox id="flagFin" [(ngModel)]="periodoForm.flagFinMes" [binary]="true"
-              inputId="flagFin" [disabled]="isViewing"></p-checkbox>
-            <label for="flagFin" class="checkbox-label">Fin de Mes</label>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <ng-template pTemplate="footer">
-      <button pButton type="button" label="{{isViewing ? 'Cerrar' : 'Cancelar'}}" icon="pi pi-times" class="p-button-secondary p-button-outlined"
-        (click)="displayDialog = false; isViewing = false"></button>
-      <button pButton type="button" label="Guardar" icon="pi pi-check" (click)="guardarPeriodo()" *ngIf="!isViewing"></button>
-    </ng-template>
-  </p-dialog>
+    <div class="content-card">
+        <p-toolbar styleClass="custom-toolbar">
+            <ng-template pTemplate="left">
+                <div class="toolbar-group">
+                    <button pButton type="button" icon="pi pi-plus" class="p-button-success toolbar-button" (click)="agregar()"
+                        pTooltip="Agregar nuevo periodo" tooltipPosition="bottom"></button>
+
+                    <button pButton type="button" icon="pi pi-pencil" class="p-button-warning toolbar-button"
+                        (click)="modificar()" [disabled]="!selectedPeriodo" pTooltip="Modificar periodo seleccionado"
+                        tooltipPosition="bottom"></button>
+
+                    <button pButton type="button" icon="pi pi-trash" class="p-button-danger toolbar-button" (click)="eliminar()"
+                        [disabled]="!selectedPeriodo" pTooltip="Eliminar periodo seleccionado" tooltipPosition="bottom"></button>
+
+                    <button pButton type="button" icon="pi pi-search" class="p-button-info toolbar-button" (click)="ver()"
+                        pTooltip="Ver detalles del periodo" tooltipPosition="bottom"></button>
+
+                    <button pButton type="button" icon="pi pi-refresh" class="p-button-secondary toolbar-button"
+                        (click)="refrescar()" pTooltip="Refrescar datos" tooltipPosition="bottom"></button>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="right">
+                <div class="toolbar-group flex align-items-center gap-3">
+
+                    <button pButton type="button" icon="pi pi-lock-open" label="Abrir Periodo"
+                        class="p-button-help toolbar-button-text" (click)="abrirPeriodo()" [disabled]="!selectedPeriodo"
+                        pTooltip="Abrir periodo seleccionado" tooltipPosition="bottom"></button>
+
+                    <button pButton type="button" icon="pi pi-lock" label="Cerrar Periodo"
+                        class="p-button-danger toolbar-button-text" (click)="cerrarPeriodo()" [disabled]="!selectedPeriodo"
+                        pTooltip="Cerrar periodo seleccionado" tooltipPosition="bottom"></button>
+                </div>
+            </ng-template>
+        </p-toolbar>
+
+        <div class="table-controls-header flex justify-content-end align-items-center" style="padding: 0.8rem 1rem; border-top: 1px solid #dee2e6;">
+            <div class="flex align-items-center px-2">
+                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por página:</label>
+                <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
+                    placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center"></p-dropdown>
+            </div>          
+        </div>
+
+        <div class="table-container py-2">
+            <p-table #dt [value]="periodos" [(selection)]="selectedPeriodo" selectionMode="single" [paginator]="true" 
+                [rows]="rowsPerPage"
+                responsiveLayout="scroll"
+                [showCurrentPageReport]="false"
+                [globalFilterFields]="['periodo', 'descripcion', 'estado', 'descSubTipoPlanilla']"
+                [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-striped p-datatable-gridlines">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="text-align: center;" pSortableColumn="periodo">
+                            Periodo
+                        </th>
+                        <th style="width: 20%; text-align: center;" pSortableColumn="descripcion">
+                            Descripción
+                        </th>
+                        <th style="text-align: center;" pSortableColumn="fecInicio">
+                            Fec.Inicio
+                        </th>
+                        <th style="text-align: center;" pSortableColumn="fecFinal">
+                            Fec.Final
+                        </th>
+                        <th style="text-align: center;">Calculado</th>
+                        <th style="text-align: center;">Flag Fin Mes</th>
+                        <th style="text-align: center;" pSortableColumn="fecPago">
+                            Fec.Pago
+                        </th>
+                        <th style="text-align: center;" pSortableColumn="estado">
+                            Estado
+                        </th>
+                        <th style="text-align: center;" pSortableColumn="fecProceso">
+                            Fec.Proceso
+                        </th>
+                        <th style="text-align: center;">Desc.SubTipo Planilla</th>
+                        <th style="text-align: center;" pSortableColumn="tipoCambio">
+                            Tipo Cambio
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-periodo>
+                    <tr [pSelectableRow]="periodo" [class.selected-row]="selectedPeriodo === periodo">
+                        <td class="text-center">{{ periodo.periodo }}</td>
+                        <td class="text-center">{{ periodo.descripcion }}</td>
+                        <td class="text-center">{{ periodo.fecInicio | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center">{{ periodo.fecFinal | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center">
+                            <i
+                                [class]="periodo.calculado ? 'pi pi-check-circle text-green-500' : 'pi pi-times-circle text-red-500'"></i>
+                        </td>
+                        <td class="text-center">
+                            <i
+                                [class]="periodo.flagFinMes ? 'pi pi-check-circle text-green-500' : 'pi pi-times-circle text-red-500'"></i>
+                        </td>
+                        <td class="text-center">{{ periodo.fecPago | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center">
+                            <p-tag [value]="periodo.estado" [severity]="getSeverity(periodo.estado)"></p-tag>
+                        </td>
+                        <td class="text-center">{{ periodo.fecProceso | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center">{{ periodo.descSubTipoPlanilla }}</td>
+                        <td class="text-center">{{ periodo.tipoCambio | number:'1.2-2' }}</td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="11" class="text-center empty-message">
+                            <i class="pi pi-info-circle"></i>
+                            <p>No se encontraron periodos</p>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <p-dialog [(visible)]="displayDialog"
+        [header]="isViewing ? 'Ver Periodo' : (isEditing ? 'Modificar Periodo' : 'Nuevo Periodo')"
+        [modal]="true" [style]="{width: '800px'}" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
+
+        <div class="dialog-content">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="periodo" class="form-label">
+                        Periodo: <span class="required">*</span>
+                    </label>
+                    <input id="periodo" type="text" pInputText [(ngModel)]="periodoForm.periodo" [disabled]="isViewing || isEditing"
+                        class="w-full" placeholder="Ej: 202001" />
+                </div>
+
+                <div class="form-field full-width">
+                    <label for="desc" class="form-label">
+                        Descripción:
+                    </label>
+                    <input id="desc" type="text" pInputText [(ngModel)]="periodoForm.descripcion" class="w-full"
+                        [disabled]="isViewing" placeholder="Ingrese descripción" />
+                </div>
+
+                <div class="form-field">
+                    <label for="fecIni" class="form-label">
+                        Fecha Inicio: <span class="required">*</span>
+                    </label>
+                    <p-calendar id="fecIni" [(ngModel)]="periodoForm.fecInicio" dateFormat="dd/mm/yy" [showIcon]="true"
+                        [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
+                </div>
+
+                <div class="form-field">
+                    <label for="fecFin" class="form-label">
+                        Fecha Final: <span class="required">*</span>
+                    </label>
+                    <p-calendar id="fecFin" [(ngModel)]="periodoForm.fecFinal" dateFormat="dd/mm/yy" [showIcon]="true"
+                        [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
+                </div>
+
+                <div class="form-field">
+                    <label for="fecPago" class="form-label">
+                        Fecha Pago: <span class="required">*</span>
+                    </label>
+                    <p-calendar id="fecPago" [(ngModel)]="periodoForm.fecPago" dateFormat="dd/mm/yy" [showIcon]="true"
+                        [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
+                </div>
+
+                <div class="form-field">
+                    <label for="estado" class="form-label">
+                        Estado: <span class="required">*</span>
+                    </label>
+                    <p-dropdown id="estado" [(ngModel)]="periodoForm.estado" [options]="estadoOptions" optionLabel="label"
+                        [disabled]="isViewing" optionValue="value" placeholder="Seleccione estado" styleClass="w-full"></p-dropdown>
+                </div>
+
+                <div class="form-field">
+                    <label for="tipoCambio" class="form-label">
+                        Tipo de Cambio:
+                    </label>
+                    <input id="tipoCambio" type="number" pInputText [(ngModel)]="periodoForm.tipoCambio" class="w-full"
+                        step="0.01" placeholder="0.00" [disabled]="isViewing" />
+                </div>
+
+                <div class="form-field">
+                    <label for="subTipo" class="form-label">
+                        SubTipo Planilla:
+                    </label>
+                    <input id="subTipo" type="text" pInputText [(ngModel)]="periodoForm.descSubTipoPlanilla" class="w-full"
+                        placeholder="Ej: Empleados" [disabled]="isViewing" />
+                </div>
+
+                <div class="form-field checkbox-container">
+                    <div class="checkbox-item">
+                        <p-checkbox id="calculado" [(ngModel)]="periodoForm.calculado" [binary]="true"
+                            [disabled]="isViewing" inputId="calculado"></p-checkbox>
+                        <label for="calculado" class="checkbox-label">Calculado</label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <p-checkbox id="flagFin" [(ngModel)]="periodoForm.flagFinMes" [binary]="true"
+                            inputId="flagFin" [disabled]="isViewing"></p-checkbox>
+                        <label for="flagFin" class="checkbox-label">Fin de Mes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="{{isViewing ? 'Cerrar' : 'Cancelar'}}" icon="pi pi-times" 
+                class="p-button-secondary p-button-outlined"
+                (click)="displayDialog = false; isViewing = false"></button>
+            
+            <button pButton type="button" label="Guardar" icon="pi pi-check" 
+                (click)="guardarPeriodo()" *ngIf="!isViewing"></button>
+        </ng-template>
+    </p-dialog>
 </div>

@@ -3,7 +3,7 @@
     <p-confirmDialog></p-confirmDialog>
     
     <p-card header="Centro de costos" [styleClass]="'rounded-xl bg-white'">
-        <div class="mb-4">
+        <div class="mb-2"> <!-- mb-4 permite -->
             <p-toolbar styleClass="bg-white border-none">
                 <div class="p-toolbar-group-start">
                     <p-button 
@@ -17,7 +17,7 @@
                 
                 <div class="p-toolbar-group-end">
                     <div class="flex align-items-center">
-                        <label for="rowsPerPageTable" >Filas por página: </label>
+                        <label style="margin-right: 0.5rem;" for="rowsPerPageTable" >Filas por página: </label>
                         <p-dropdown id="rowsPerPageTable" 
                                     [options]="[10, 20, 40]" 
                                     [(ngModel)]="rowsPerPage" 

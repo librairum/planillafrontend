@@ -68,6 +68,7 @@ interface Inasistencia {
 })
 export class AsistenciaComponent implements OnInit {
   trabajadores: Trabajador[] = [];
+  rowsPerPage: number = 10; 
   selectedTrabajador: Trabajador | null = null;
   displayInasistenciaDialog: boolean = false;
   globalFilterValue: string = '';

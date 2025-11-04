@@ -53,3 +53,17 @@ export interface CentroCosto{
   pla57descripcion: string;
   pla57flagactivo: boolean;
 }
+
+export interface Calcular{
+  pla01empleadocod: string;
+  pla01docuidentidadnro: string;
+  pla01apepaterno: string;
+  pla01apematerno: string;
+  pla01nombre1: string;
+  pla01nombre2: string;
+  pla01fechaingreso: Date;
+  pla01centrocostocod: string;
+  pla01puestocod: string;
+
+  calculoestado: string;
+}
