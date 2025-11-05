@@ -434,6 +434,9 @@ export class AsistenciaComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button',
+
       accept: () => {
         this.loadTrabajadores();
         this.selectedTrabajador = null;
@@ -453,10 +456,9 @@ export class AsistenciaComponent implements OnInit {
       icon: 'pi pi-check-circle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button',
       accept: () => {
-        // Simular guardado exitoso
-        // En producción, aquí harías la llamada al backend
-        // this.asistenciaService.guardarAsistencias(this.trabajadores).subscribe(...)
         
         this.messageService.add({
           severity: 'success',
@@ -483,6 +485,8 @@ export class AsistenciaComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button',
       accept: () => {
         if (this.selectedTrabajador) {
           // Resetear valores de asistencia

@@ -207,6 +207,8 @@ export class PeriodoPagoComponent implements OnInit {
           icon: 'pi pi-lock-open',
           acceptLabel: 'Sí',
           rejectLabel: 'No',
+          acceptButtonStyleClass: 'p-button-danger',
+          rejectButtonStyleClass: 'p-button',
           accept: () => {
             this.selectedPeriodo!.pla01flagperiodocerrado = false; // Abrir
             verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Periodo abierto correctamente');
@@ -229,6 +231,8 @@ export class PeriodoPagoComponent implements OnInit {
           icon: 'pi pi-lock',
           acceptLabel: 'Sí',
           rejectLabel: 'No',
+          acceptButtonStyleClass: 'p-button-danger',
+          rejectButtonStyleClass: 'p-button',
           accept: () => {
             this.selectedPeriodo!.pla01flagperiodocerrado = true; // Cerrar
             verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Periodo cerrado correctamente');

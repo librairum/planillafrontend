@@ -19,11 +19,18 @@
     <p-toolbar styleClass="custom-toolbar">
       <ng-template pTemplate="left">
         <div class="toolbar-group">
+                    <button pButton type="button" 
+                  icon="pi pi-trash" 
+                  class="p-button-danger toolbar-button"
+                  (click)="eliminar()"
+                  [disabled]="!selectedTrabajador"
+                  pTooltip="Eliminar"
+                  tooltipPosition="bottom"></button>   
           <button pButton type="button" 
                   icon="pi pi-save" 
                   class="p-button-success toolbar-button"
                   (click)="guardar()"
-                  pTooltip="Guardar cambios"
+                  pTooltip="Guardar"
                   tooltipPosition="bottom"></button>
           
           <button pButton type="button" 
@@ -40,39 +47,25 @@
                   pTooltip="Vista previa"
                   tooltipPosition="bottom"></button>
           
-          <button pButton type="button" 
+          <!--<button pButton type="button" 
                   icon="pi pi-print" 
                   class="p-button-secondary toolbar-button"
                   (click)="imprimir()"
                   pTooltip="Imprimir"
-                  tooltipPosition="bottom"></button>
+                  tooltipPosition="bottom"></button>-->
         </div>
       </ng-template>
 
       <ng-template pTemplate="right">
         <div class="toolbar-group">
-          <button pButton type="button" 
+          <!--<button pButton type="button" 
                   icon="pi pi-calendar-times" 
                   class="p-button-warning toolbar-button-text"
                   (click)="registrarInasistencia()"
                   [disabled]="!selectedTrabajador"
                   pTooltip="Registrar inasistencia del trabajador seleccionado"
-                  tooltipPosition="bottom"></button>
-          
-          <button pButton type="button" 
-                  icon="pi pi-trash" 
-                  class="p-button-danger toolbar-button"
-                  (click)="eliminar()"
-                  [disabled]="!selectedTrabajador"
-                  pTooltip="Eliminar"
-                  tooltipPosition="bottom"></button>
-          
-          <button pButton type="button" 
-                  icon="pi pi-refresh" 
-                  class="p-button-help toolbar-button"
-                  (click)="refrescar()"
-                  pTooltip="Refrescar datos"
-                  tooltipPosition="bottom"></button>
+                  tooltipPosition="bottom"></button>-->
+               
         </div>
       </ng-template>
     </p-toolbar>
