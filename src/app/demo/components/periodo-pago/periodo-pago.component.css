@@ -298,7 +298,7 @@
    BOTONES FOOTER DIALOG
 ================================ */
 ::ng-deep .p-dialog-footer button {
-  min-width: 120px;
+  min-width: 100px;
 }
 
 ::ng-deep .p-button-secondary.p-button-outlined {

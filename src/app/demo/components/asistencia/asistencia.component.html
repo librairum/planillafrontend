@@ -115,7 +115,7 @@
               Código <!--<p-sortIcon field="codigo"></p-sortIcon>-->
             </th>
             <th style="min-width: 110px;">
-              ID/DNI 
+              IdentidadNro
             </th>
             <th style="min-width: 250px;">
               Apellidos y Nombres 
@@ -126,20 +126,9 @@
             <th style="min-width: 90px;">
               Estado 
             </th>
-            <th style="min-width: 70px;">
-              Días
+            <th style="min-width: 90px;">
+              Acciones
             </th>
-            <th style="min-width: 70px;">Horas</th>
-            <th style="min-width: 90px;">HE 25%</th>
-            <th style="min-width: 90px;">HE 35%</th>
-            <th style="min-width: 90px;">HE 100%</th>
-            <th style="min-width: 90px;">HNocturnas</th>
-            <th style="min-width: 80px;">Días Comp.</th>
-            <th style="min-width: 110px;">Días Enfermedad</th>
-            <th style="min-width: 150px;">Días Subsidio Enfermedad</th>
-            <th style="min-width: 150px;">Días Subsidio Materno</th>
-            <th style="min-width: 110px;">Días Licencia</th>
-            <th style="min-width: 80px;">Faltas</th>
           </tr>
         </ng-template>
 
@@ -152,23 +141,11 @@
             <td>{{ trabajador.apellidosNombres }}</td>
             <td>{{ trabajador.fechaIngreso | date:'dd/MM/yyyy' }}</td>
             <td>
-              <p-tag [value]="getEstadoLabel(trabajador.estado)" 
-                     [severity]="getSeverity(trabajador.estado)"></p-tag>
+              <span [ngClass]="{'status-closed': trabajador.estado === 'CERRADO', 'status-active': trabajador.estado === 'ACTIVO'}">
+                                {{ getEstadoLabel(trabajador.estado) }}
+                            </span>
             </td>
-            <td class="text-center">{{ trabajador.dias }}</td>
-            <td class="text-center">{{ trabajador.horas }}</td>
-            <td class="text-center">{{ trabajador.heSimples }}</td>
-            <td class="text-center">{{ trabajador.heDobles }}</td>
-            <td class="text-center">{{ trabajador.he100 }}</td>
-            <td class="text-center">{{ trabajador.hNocturnas }}</td>
-            <td class="text-center">{{ trabajador.diasCompensados }}</td>
-            <td class="text-center">{{ trabajador.diasEnfermedad }}</td>
-            <td class="text-center">{{ trabajador.diasSubsidioEnfermedad }}</td>
-            <td class="text-center">{{ trabajador.diasSubsidioMaterno }}</td>
-            <td class="text-center">{{ trabajador.diasLicencia }}</td>
-            <td class="text-center" [class.text-danger]="trabajador.faltas > 0">
-              <strong>{{ trabajador.faltas }}</strong>
-            </td>
+            <td class="text-center"></td>
           </tr>
         </ng-template>
 

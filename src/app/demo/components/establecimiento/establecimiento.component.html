@@ -17,7 +17,7 @@
                 
                 <div class="p-toolbar-group-end">
                     <div class="flex align-items-center">
-                        <label style="margin-right: 0.5rem;" for="rowsPerPageTable" >Filas por página:</label>
+                        <label style="margin-right: 0.5rem; font-size: 15px;" for="rowsPerPageTable" >Filas por página:</label>
                         <p-dropdown id="rowsPerPageTable" 
                                     [options]="[10, 20, 40]" 
                                     appendTo="body"
@@ -37,7 +37,7 @@
                 [rows]="rowsPerPage" 
                 [paginator]="true" 
                 responsiveLayout="scroll"
-                styleClass="p-datatable-sm"
+                styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
             >
                 <!-- Encabezado de la Tabla -->
                 <ng-template pTemplate="header">
