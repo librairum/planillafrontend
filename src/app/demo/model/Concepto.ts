@@ -81,6 +81,26 @@ pla10empresacod text COLLATE pg_catalog."default" NOT NULL,
 
     */
 
+export interface TipoCalculo {
+  codigo: string;
+  descripcion: string;
+}
+
+export interface ConceptoTipo {
+  codigo: string;
+  descripcion: string;
+}
+
+export interface SubTipoConcepto {
+  conceptoTipoCod: string;
+  codigo: string;
+  descripcion: string;
+}
+
+export interface ConceptoSunat {
+  codigoSunat: string;
+  descripcion: string;
+}
 export interface AfectacionSunat {
   codigo: string;
   descripcion: string;

@@ -1,470 +1,471 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
-<div class="container">
-    <p-panel header="Parámetros Generales" class="mb-3"></p-panel>
-    <br />
-    <div class="card">
-        <!-- Botón Nuevo y Dropdown Filas por Página -->
-        <div class="flex justify-content-between align-items-center mb-3">
-            <button type="button" pButton icon="pi pi-plus" label="Nuevo Parámetro"
-                    (click)="showAddRow()" [disabled]="isEditingAnyRow"
-                    class="p-button-sm"></button>
-            <div class="flex align-items-center">
-                <label for="rowsPerPage" class="mr-2">Filas por página:</label>
-                <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
-            </div>
-        </div>
+<div class="p-1 py-5 max-h-screen">
+    <p-panel header="Parámetros Generales" styleClass="shadow-xl rounded-xl mb-3">
 
-        <!-- Tabla Principal -->
-        <p-table [value]="parametroGeneralList"
-                 dataKey="pla40codigo"
-                 editMode="row"
-                 [paginator]="true"
-                 [rows]="rowsPerPage"
-                 responsiveLayout="scroll"
-                 styleClass="p-datatable-sm">
-            <!-- Cabecera de Tabla -->
-            <ng-template pTemplate="header">
-                <tr>
-                  <!-- 17 columnas -->
-                    <th style="text-align: center; width: 5%;">Código</th>
-                    <th style="text-align: center; width: 10%;">Descripción</th>
-                    <th style="text-align: center; width: 7%;">Cod Tipo</th>
-                    <th style="text-align: center; width: 8%;">Tipo de dato</th>
-                    <th style="text-align: center; width: 5%;">01</th>
-                    <th style="text-align: center; width: 5%;">02</th>
-                    <th style="text-align: center; width: 5%;">03</th>
-                    <th style="text-align: center; width: 5%;">04</th>
-                    <th style="text-align: center; width: 5%;">05</th>
-                    <th style="text-align: center; width: 5%;">06</th>
-                    <th style="text-align: center; width: 5%;">07</th>
-                    <th style="text-align: center; width: 5%;">08</th>
-                    <th style="text-align: center; width: 5%;">09</th>
-                    <th style="text-align: center; width: 5%;">10</th>
-                    <th style="text-align: center; width: 5%;">11</th>
-                    <th style="text-align: center; width: 5%;">12</th>
-                    <th style="text-align: center; width: 10%;">Acciones</th>
-                </tr>
-            </ng-template>
+      <div class="card">
+          <!-- Botón Nuevo y Dropdown Filas por Página -->
+          <div class="flex justify-content-between align-items-center mb-3">
+              <button type="button" pButton icon="pi pi-plus" label="Nuevo Parámetro"
+                      (click)="showAddRow()" [disabled]="isEditingAnyRow"
+                      class="p-button-sm"></button>
+              <div class="flex align-items-center">
+                  <label for="rowsPerPage" class="mr-2">Filas por página:</label>
+                  <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
+              </div>
+          </div>
 
-            <!-- Cuerpo de Tabla -->
-            <ng-template pTemplate="body" let-parametro let-ri="rowIndex" let-editing="editing">
-                <tr [pEditableRow]="parametro">
+          <!-- Tabla Principal -->
+          <p-table [value]="parametroGeneralList"
+                   dataKey="pla40codigo"
+                   editMode="row"
+                   [paginator]="true"
+                   [rows]="rowsPerPage"
+                   responsiveLayout="scroll"
+                   styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+              <!-- Cabecera de Tabla -->
+              <ng-template pTemplate="header">
+                  <tr>
+                    <!-- 17 columnas -->
+                      <th style="text-align: center; width: 5%;">Código</th>
+                      <th style="text-align: center; width: 10%;">Descripción</th>
+                      <th style="text-align: center; width: 7%;">Cod Tipo</th>
+                      <th style="text-align: center; width: 8%;">Tipo de dato</th>
+                      <th style="text-align: center; width: 5%;">01</th>
+                      <th style="text-align: center; width: 5%;">02</th>
+                      <th style="text-align: center; width: 5%;">03</th>
+                      <th style="text-align: center; width: 5%;">04</th>
+                      <th style="text-align: center; width: 5%;">05</th>
+                      <th style="text-align: center; width: 5%;">06</th>
+                      <th style="text-align: center; width: 5%;">07</th>
+                      <th style="text-align: center; width: 5%;">08</th>
+                      <th style="text-align: center; width: 5%;">09</th>
+                      <th style="text-align: center; width: 5%;">10</th>
+                      <th style="text-align: center; width: 5%;">11</th>
+                      <th style="text-align: center; width: 5%;">12</th>
+                      <th style="text-align: center; width: 10%;">Acciones</th>
+                  </tr>
+              </ng-template>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla40codigo"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla40codigo}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+              <!-- Cuerpo de Tabla -->
+              <ng-template pTemplate="body" let-parametro let-ri="rowIndex" let-editing="editing">
+                  <tr [pEditableRow]="parametro">
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla40descripcion"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla40descripcion}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla40codigo"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla40codigo}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <p-dropdown
-                                    [(ngModel)]="parametro.pla40flagtipodato"
-                                    [options]="[
-                                        { label: 'Importe', value: 'I' },
-                                        { label: 'Porcentaje', value: 'P' }
-                                    ]"
-                                    placeholder="Tipo de dato"
-                                    optionLabel="label"
-                                    optionValue="value"
-                                    class="p-inputtext-sm w-full"
-                                    appendTo="body">
-                                </p-dropdown>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla40flagtipodato}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla40descripcion"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla40descripcion}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                      {{ getTipoDatoTexto(parametro.pla40flagtipodato) }}
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <p-dropdown
+                                      [(ngModel)]="parametro.pla40flagtipodato"
+                                      [options]="[
+                                          { label: 'Importe', value: 'I' },
+                                          { label: 'Porcentaje', value: 'P' }
+                                      ]"
+                                      placeholder="Tipo de dato"
+                                      optionLabel="label"
+                                      optionValue="value"
+                                      class="p-inputtext-sm w-full"
+                                      appendTo="body">
+                                  </p-dropdown>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla40flagtipodato}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4001"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4001}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                        {{ getTipoDatoTexto(parametro.pla40flagtipodato) }}
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4002"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4002}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4001"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4001}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4003"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4003}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4002"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4002}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4004"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4004}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4003"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4003}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4005"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4005}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4004"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4004}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4006"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4006}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4005"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4005}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4007"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4007}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4006"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4006}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4008"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4008}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4007"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4007}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4009"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4009}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4008"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4008}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4010"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4010}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4009"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4009}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4011"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4011}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4010"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4010}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <td style="text-align: left;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="parametro.pla4012"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{parametro.pla4012}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4011"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4011}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                    <!-- Acciones -->
-                    <td>
-                        <div class="flex justify-content-center gap-2">
-                            <!-- Botón Editar -->
-                            <button *ngIf="!editing" pButton
-                                    pInitEditableRow
-                                    (click)="onRowEditInit(parametro)"
-                                    icon="pi pi-pencil"
-                                    pTooltip="Editar"
-                                    [disabled]="isNew || isEditingAnyRow"
-                                    class="p-button-rounded p-button-text p-button-sm"
-                                    ></button>
+                      <td style="text-align: left;">
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="parametro.pla4012"
+                                         class="p-inputtext-sm w-full" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{parametro.pla4012}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
 
-                            <!-- Botón Guardar -->
-                            <button *ngIf="editing" pButton
-                                    pSaveEditableRow
-                                    (click)="onRowEditSave(parametro)"
-                                    icon="pi pi-check"
-                                    pTooltip="Guardar"
-                                    class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+                      <!-- Acciones -->
+                      <td>
+                          <div class="flex justify-content-center gap-2">
+                              <!-- Botón Editar -->
+                              <button *ngIf="!editing" pButton
+                                      pInitEditableRow
+                                      (click)="onRowEditInit(parametro)"
+                                      icon="pi pi-pencil"
+                                      pTooltip="Editar"
+                                      [disabled]="isNew || isEditingAnyRow"
+                                      class="p-button-rounded p-button-text p-button-sm"
+                                      ></button>
 
-                            <!-- Botón Cancelar -->
-                            <button *ngIf="editing" pButton
-                                    pCancelEditableRow
-                                    (click)="onRowEditCancel(parametro, ri)"
-                                    icon="pi pi-times"
-                                    pTooltip="Cancelar"
-                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+                              <!-- Botón Guardar -->
+                              <button *ngIf="editing" pButton
+                                      pSaveEditableRow
+                                      (click)="onRowEditSave(parametro)"
+                                      icon="pi pi-check"
+                                      pTooltip="Guardar"
+                                      class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
 
-                            <!-- Botón Eliminar -->
-                            <button *ngIf="!editing" pButton
-                                    type="button"
-                                    (click)="onDelete(parametro, ri)"
-                                    icon="pi pi-trash"
-                                    pTooltip="Eliminar"
-                                    [disabled]="isNew || isEditingAnyRow"
-                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+                              <!-- Botón Cancelar -->
+                              <button *ngIf="editing" pButton
+                                      pCancelEditableRow
+                                      (click)="onRowEditCancel(parametro, ri)"
+                                      icon="pi pi-times"
+                                      pTooltip="Cancelar"
+                                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
 
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
+                              <!-- Botón Eliminar -->
+                              <button *ngIf="!editing" pButton
+                                      type="button"
+                                      (click)="onDelete(parametro, ri)"
+                                      icon="pi pi-trash"
+                                      pTooltip="Eliminar"
+                                      [disabled]="isNew || isEditingAnyRow"
+                                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
 
-            <!-- Footer para Nuevo Registro -->
-            <ng-template pTemplate="footer">
-                <tr *ngIf="isEditing">
-                    <td colspan="17">
-                        <form [formGroup]="parametroGeneralForm" class="grid p-fluid">
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          formControlName="pla40codigo"
-                                          placeholder="Código"
+                          </div>
+                      </td>
+                  </tr>
+              </ng-template>
+
+              <!-- Footer para Nuevo Registro -->
+              <ng-template pTemplate="footer">
+                  <tr *ngIf="isEditing">
+                      <td colspan="17">
+                          <form [formGroup]="parametroGeneralForm" class="grid p-fluid">
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            formControlName="pla40codigo"
+                                            placeholder="Código"
+                                            class="p-inputtext-sm w-full"
+                                            readonly/>
+                                  </span>
+                              </div>
+
+                              <div class="col-4" style="width: 10%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            formControlName="pla40descripcion"
+                                            placeholder="Descripción"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
+
+                              <!-- Tipo de dato y Cod tipo-->
+                              <div class="col-4" style="width: 15%;">
+                                  <span class="w-full">
+                                      <p-dropdown
+                                          formControlName="pla40flagtipodato"
+                                          [options]="[
+                                              { label: 'Importe', value: 'I' },
+                                              { label: 'Porcentaje', value: 'P' }
+                                          ]"
+                                          placeholder="Tipo de dato"
+                                          optionLabel="label"
+                                          optionValue="value"
                                           class="p-inputtext-sm w-full"
-                                          readonly/>
-                                </span>
-                            </div>
+                                          appendTo="body">
+                                      </p-dropdown>
+                                  </span>
+                              </div>
 
-                            <div class="col-4" style="width: 10%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          formControlName="pla40descripcion"
-                                          placeholder="Descripción"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4001"
+                                            placeholder="01"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <!-- Tipo de dato y Cod tipo-->
-                            <div class="col-4" style="width: 15%;">
-                                <span class="w-full">
-                                    <p-dropdown
-                                        formControlName="pla40flagtipodato"
-                                        [options]="[
-                                            { label: 'Importe', value: 'I' },
-                                            { label: 'Porcentaje', value: 'P' }
-                                        ]"
-                                        placeholder="Tipo de dato"
-                                        optionLabel="label"
-                                        optionValue="value"
-                                        class="p-inputtext-sm w-full"
-                                        appendTo="body">
-                                    </p-dropdown>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4002"
+                                            placeholder="02"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4001"
-                                          placeholder="01"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4003"
+                                            placeholder="03"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4002"
-                                          placeholder="02"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4004"
+                                            placeholder="04"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4003"
-                                          placeholder="03"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4005"
+                                            placeholder="05"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4004"
-                                          placeholder="04"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4006"
+                                            placeholder="06"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4005"
-                                          placeholder="05"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4007"
+                                            placeholder="07"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4006"
-                                          placeholder="06"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4008"
+                                            placeholder="08"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4007"
-                                          placeholder="07"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4009"
+                                            placeholder="09"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4008"
-                                          placeholder="08"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4010"
+                                            placeholder="10"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4009"
-                                          placeholder="09"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4011"
+                                            placeholder="11"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4010"
-                                          placeholder="10"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <div class="col-2" style="width: 5%;">
+                                  <span class="w-full">
+                                      <input pInputText
+                                            pKeyFilter="num"
+                                            formControlName="pla4012"
+                                            placeholder="12"
+                                            class="p-inputtext-sm w-full"/>
+                                  </span>
+                              </div>
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4011"
-                                          placeholder="11"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
+                              <!-- Botones de Acción -->
+                              <div class="col-2" style="width: 10%">
+                                  <div class="flex gap-2 justify-content-center">
 
-                            <div class="col-2" style="width: 5%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          pKeyFilter="num"
-                                          formControlName="pla4012"
-                                          placeholder="12"
-                                          class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
-
-                            <!-- Botones de Acción -->
-                            <div class="col-2" style="width: 10%">
-                                <div class="flex gap-2 justify-content-center">
-
-                                    <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"
-                                            (onClick)="onSave()" pTooltip="Guardar"></p-button>
-                                    <p-button icon="pi pi-times" styleClass="p-button-danger p-button-sm" [text]="true"
-                                            (onClick)="onCancel()" pTooltip="Cancelar"></p-button>
-                                </div>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+                                      <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"
+                                              (onClick)="onSave()" pTooltip="Guardar"></p-button>
+                                      <p-button icon="pi pi-times" styleClass="p-button-danger p-button-sm" [text]="true"
+                                              (onClick)="onCancel()" pTooltip="Cancelar"></p-button>
+                                  </div>
+                              </div>
+                          </form>
+                      </td>
+                  </tr>
+              </ng-template>
+          </p-table>
+      </div>
+    </p-panel>
 </div>

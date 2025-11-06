@@ -33,6 +33,65 @@ export class ConceptoService {
     public conceptoList: Concepto[] = [
           {
               pla10empresacod: '00032',
+              pla10conceptocod: '4216',
+              pla10conceptodesc: 'SENATI APORTE',
+              pla10conceptoalias: '4216_SEN_APO',
+              pla10flagclase: 'F',
+              pla10flagimpresion: 'S',
+              pla10flagactivo: 'S',
+              pla10flagconfigurable: 'N',
+              pla10tipocalculocod: '01',
+              pla10tipoconceptocod: '03',
+              pla10subtipoconceptocod: '07',
+              pla10conceptosunatcod: '0807',
+              pla10formula: "if V('0066')=INGNUMERO(1) then V('2016')*ParametroG('03') else INGNUMERO(0) end",
+              pla10formulaalias: 'formula 2',
+              pla10comentario: 'Ninguna observación',
+              pla10flagestandar: 'S',
+              pla10conceptopadrecod: '',
+
+              pla10flagestandardesc: 'Estandar',
+
+              calculotipodesc: 'Calculo Planillas',
+              conceptotipodesc: 'Aportes',
+              conceptosubtipodesc: 'Aportes',
+              conceptosunatdesc: 'SENATI',
+
+              afectacionesSunat: [
+                { codigo: '01', descripcion: 'ESSALUD SEGURO REGULAR TRABAJADOR', valor: true },
+                { codigo: '04', descripcion: 'ESSALUD SCTR', valor: true },
+                { codigo: '07', descripcion: 'SENATI', valor: true },
+                { codigo: '08', descripcion: 'SISTEMA NACIONAL DE PENSIONES 19990', valor: true },
+                { codigo: '09', descripcion: 'SISTEMA PRIVADO DE PENSIONES', valor: true },
+                { codigo: '10', descripcion: 'RENTA 5TA CATEGORÍA RETENCIONES', valor: true },
+                { codigo: '15', descripcion: 'FONDO COMPLEMENTARIO DE JUBILACIÓN MINERA', valor: true }
+              ],
+              afectacionOtros: [
+                { codigo: '13', descripcion: 'SEGURO VIDA LEY', valor: true },
+                { codigo: '14', descripcion: 'JUICIO POR ALIMENTOS', valor: true },
+                { codigo: '16', descripcion: 'SCTR PENSION PRIVADO', valor: true },
+                { codigo: '17', descripcion: 'CTS 6 ULTIMAS REM', valor: true },
+                { codigo: '20', descripcion: 'INGRESOS VARIABLES PROMEDIO (VAC,GRA,CTS,5TA PROYECCION)', valor: true },
+                { codigo: '21', descripcion: 'INGRESOS EXTRAORDINARIOS PARA 5TA CATEGORIA', valor: true }
+              ],
+              planillasAsignadas: [
+                { codigo: '01', descripcion: 'Planilla Mensual', valor: false },
+                { codigo: '02', descripcion: 'Planilla Vacaciones', valor: false },
+                { codigo: '16', descripcion: 'Planilla Gratificaciones ley', valor: false },
+                { codigo: '05', descripcion: 'Planilla Liquidaciones', valor: false },
+                { codigo: '04', descripcion: 'Planilla Utilidades', valor: false },
+                { codigo: '20', descripcion: 'Planilla Quincenal Adelanto', valor: false }
+              ],
+              regimenesLaborales: [
+                { codigo: '01', descripcion: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728', valor: false },
+                { codigo: '16', descripcion: 'MICROEMPRESA D. LEG. 1086 (1)', valor: false },
+                { codigo: '17', descripcion: 'PEQUEÑA EMPRESA D. LEG. 1086 (1)', valor: false },
+                { codigo: '18', descripcion: 'AGRARIO LEY 27360', valor: false },
+                { codigo: '20', descripcion: 'MINEROS', valor: false }
+              ]
+          },
+          {
+              pla10empresacod: '00032',
               pla10conceptocod: '4220',
               pla10conceptodesc: 'SEGURO VIDA LEY D. LEG 688',
               pla10conceptoalias: '4220_SEG_VID_LEY_D._LEG_688',
@@ -89,65 +148,6 @@ export class ConceptoService {
                 { codigo: '20', descripcion: 'MINEROS', valor: true }
               ]
           },
-          {
-              pla10empresacod: '00032',
-              pla10conceptocod: '4216',
-              pla10conceptodesc: 'SENATI APORTE',
-              pla10conceptoalias: '4216_SEN_APO',
-              pla10flagclase: 'F',
-              pla10flagimpresion: 'S',
-              pla10flagactivo: 'S',
-              pla10flagconfigurable: 'N',
-              pla10tipoconceptocod: '03',
-              pla10subtipoconceptocod: '07',
-              pla10tipocalculocod: '01',
-              pla10conceptosunatcod: '0807',
-              pla10formula: "if V('0066')=INGNUMERO(1) then V('2016')*ParametroG('03') else INGNUMERO(0) end",
-              pla10formulaalias: 'formula 2',
-              pla10comentario: 'Ninguna observación',
-              pla10flagestandar: 'S',
-              pla10conceptopadrecod: '',
-
-              pla10flagestandardesc: 'Estandar',
-
-              conceptotipodesc: 'Aportes',
-              conceptosubtipodesc: 'Aportes',
-              calculotipodesc: 'Calculo Planillas',
-              conceptosunatdesc: 'SENATI',
-
-              afectacionesSunat: [
-                { codigo: '01', descripcion: 'ESSALUD SEGURO REGULAR TRABAJADOR', valor: true },
-                { codigo: '04', descripcion: 'ESSALUD SCTR', valor: true },
-                { codigo: '07', descripcion: 'SENATI', valor: true },
-                { codigo: '08', descripcion: 'SISTEMA NACIONAL DE PENSIONES 19990', valor: true },
-                { codigo: '09', descripcion: 'SISTEMA PRIVADO DE PENSIONES', valor: true },
-                { codigo: '10', descripcion: 'RENTA 5TA CATEGORÍA RETENCIONES', valor: true },
-                { codigo: '15', descripcion: 'FONDO COMPLEMENTARIO DE JUBILACIÓN MINERA', valor: true }
-              ],
-              afectacionOtros: [
-                { codigo: '13', descripcion: 'SEGURO VIDA LEY', valor: true },
-                { codigo: '14', descripcion: 'JUICIO POR ALIMENTOS', valor: true },
-                { codigo: '16', descripcion: 'SCTR PENSION PRIVADO', valor: true },
-                { codigo: '17', descripcion: 'CTS 6 ULTIMAS REM', valor: true },
-                { codigo: '20', descripcion: 'INGRESOS VARIABLES PROMEDIO (VAC,GRA,CTS,5TA PROYECCION)', valor: true },
-                { codigo: '21', descripcion: 'INGRESOS EXTRAORDINARIOS PARA 5TA CATEGORIA', valor: true }
-              ],
-              planillasAsignadas: [
-                { codigo: '01', descripcion: 'Planilla Mensual', valor: false },
-                { codigo: '02', descripcion: 'Planilla Vacaciones', valor: false },
-                { codigo: '16', descripcion: 'Planilla Gratificaciones ley', valor: false },
-                { codigo: '05', descripcion: 'Planilla Liquidaciones', valor: false },
-                { codigo: '04', descripcion: 'Planilla Utilidades', valor: false },
-                { codigo: '20', descripcion: 'Planilla Quincenal Adelanto', valor: false }
-              ],
-              regimenesLaborales: [
-                { codigo: '01', descripcion: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728', valor: false },
-                { codigo: '16', descripcion: 'MICROEMPRESA D. LEG. 1086 (1)', valor: false },
-                { codigo: '17', descripcion: 'PEQUEÑA EMPRESA D. LEG. 1086 (1)', valor: false },
-                { codigo: '18', descripcion: 'AGRARIO LEY 27360', valor: false },
-                { codigo: '20', descripcion: 'MINEROS', valor: false }
-              ]
-          }
     ];
 
     private handleError(error: HttpErrorResponse) {

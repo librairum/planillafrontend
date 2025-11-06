@@ -1,284 +1,99 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
-<div class="container">
-    <p-panel header="Concepto" class="mb-3">
-        <!--<p-breadcrumb [model]="items" class="max-w-full"></p-breadcrumb>-->
+<div class="p-1 py-5 max-h-screen">
+    <p-panel header="Concepto" styleClass="shadow-xl rounded-xl mb-3">
+
+      <div class="card">
+          <!-- Botón Nuevo y Dropdown Filas por Página -->
+          <div class="flex justify-content-between align-items-center mb-3">
+              <button type="button" pButton icon="pi pi-plus" label="Nuevo Concepto"
+                      (click)="nuevoConcepto()"
+                      class="p-button-sm"></button>
+              <div class="flex align-items-center">
+                  <label for="rowsPerPage" class="mr-2">Filas por página:</label>
+                  <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
+              </div>
+          </div>
+
+          <!-- Tabla Principal -->
+          <p-table [value]="conceptoList"
+                   dataKey="pla10conceptocod"
+                   [paginator]="true"
+                   [rows]="rowsPerPage"
+                   responsiveLayout="scroll"
+                   styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+
+              <!-- Cabecera de Tabla -->
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th style="text-align: center; width: 10%;">Código</th>
+                      <th style="text-align: center; width: 30%;">Descripción</th>
+                      <th style="text-align: center; width: 15%;">TipoFlagEstandar</th>
+                      <th style="text-align: center; width: 10%;">Activo</th>
+                      <th style="text-align: center; width: 15%;">ConceptoTipoDesc</th>
+                      <th style="text-align: center; width: 10%;">Concept.Padre</th>
+                      <th style="text-align: center; width: 10%;">Acciones</th>
+                  </tr>
+              </ng-template>
+
+              <!-- Cuerpo de Tabla -->
+              <ng-template pTemplate="body" let-concepto let-ri="rowIndex">
+                  <tr>
+                    <td>{{concepto.pla10conceptocod}}</td>
+                    <td>{{concepto.pla10conceptodesc}}</td>
+                    <td>{{concepto.pla10flagestandardesc}}</td>
+                    <td>{{concepto.pla10flagactivo}}</td>
+                    <td>{{concepto.conceptotipodesc}}</td>
+                    <td>{{concepto.pla10conceptopadrecod}}</td>
+
+                      <!-- Acciones -->
+                      <td>
+                          <div class="flex justify-content-center gap-2">
+
+                            <!-- Botón Ver Detalle -->
+
+                            <button pButton
+                                    type="button"
+                                    icon="pi pi-eye"
+                                    pTooltip="Ver Detalle"
+                                    (click)="verConcepto(concepto)"
+                                    class="p-button-rounded p-button-text p-button-sm"></button>
+
+                              <!-- Botón de Ayuda-->
+
+                              <button pButton
+                                      type="button"
+                                      icon="pi pi-question-circle"
+                                      pTooltip="Ayuda"
+                                      class="p-button-rounded p-button-text p-button-sm"
+                                      (click)="mostrarAyuda(concepto)"></button>
+
+                              <!-- Botón Editar -->
+                              <button pButton
+                                      (click)="editarConcepto(concepto)"
+                                      icon="pi pi-pencil"
+                                      pTooltip="Editar"
+                                      class="p-button-rounded p-button-text p-button-sm"
+                                      ></button>
+
+                              <!-- Botón Eliminar -->
+                              <button pButton
+                                      type="button"
+                                      (click)="eliminarConcepto(concepto)"
+                                      icon="pi pi-trash"
+                                      pTooltip="Eliminar"
+                                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+                          </div>
+                      </td>
+                  </tr>
+              </ng-template>
+
+
+          </p-table>
+      </div>
     </p-panel>
-    <br />
-    <div class="card">
-        <!-- Botón Nuevo y Dropdown Filas por Página -->
-        <div class="flex justify-content-between align-items-center mb-3">
-            <button type="button" pButton icon="pi pi-plus" label="Nuevo Concepto"
-                    (click)="showAddRow()" [disabled]="isEditingAnyRow"
-                    class="p-button-sm"></button>
-            <div class="flex align-items-center">
-                <label for="rowsPerPage" class="mr-2">Filas por página:</label>
-                <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
-            </div>
-        </div>
-
-        <!-- Tabla Principal -->
-        <p-table [value]="conceptoList"
-                 dataKey="pla10conceptocod"
-                 editMode="row"
-                 [paginator]="true"
-                 [rows]="rowsPerPage"
-                 responsiveLayout="scroll"
-                 styleClass="p-datatable-sm">
-
-            <!-- Cabecera de Tabla -->
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="text-align: center; width: 10%;">Código</th>
-                    <th style="text-align: center; width: 30%;">Descripción</th>
-                    <th style="text-align: center; width: 15%;">TipoFlagEstandar</th>
-                    <th style="text-align: center; width: 10%;">Activo</th>
-                    <th style="text-align: center; width: 15%;">ConceptoTipoDesc</th>
-                    <th style="text-align: center; width: 10%;">Concept.Padre</th>
-                    <th style="text-align: center; width: 10%;">Acciones</th>
-                </tr>
-            </ng-template>
-
-            <!-- Cuerpo de Tabla -->
-            <ng-template pTemplate="body" let-concepto let-ri="rowIndex">
-                <tr>
-                  <td>{{concepto.pla10conceptocod}}</td>
-                  <td>{{concepto.pla10conceptodesc}}</td>
-                  <td>{{concepto.pla10flagestandardesc}}</td>
-                  <td>{{concepto.pla10flagactivo}}</td>
-                  <td>{{concepto.conceptotipodesc}}</td>
-                  <td>{{concepto.pla10conceptopadrecod}}</td>
-                  <!--
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="concepto.pla10conceptocod"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{concepto.pla10conceptocod}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="concepto.pla10conceptodesc"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{concepto.pla10conceptodesc}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="concepto.pla10flagestandardesc"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{concepto.pla10flagestandardesc}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="concepto.pla10flagactivo"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{concepto.pla10flagactivo}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="concepto.conceptotipodesc"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{concepto.conceptotipodesc}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-
-                    <td style="text-align: center;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="concepto.pla10conceptopadrecod"
-                                       class="p-inputtext-sm w-full" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{concepto.pla10conceptopadrecod}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    -->
-
-                    <!-- Acciones -->
-                    <td>
-                        <div class="flex justify-content-center gap-2">
-
-                          <!-- Botón Ver Detalle -->
-
-                          <button pButton
-                                  type="button"
-                                  icon="pi pi-eye"
-                                  pTooltip="Ver Detalle"
-                                  (click)="verConcepto(concepto)"
-                                  class="p-button-rounded p-button-text p-button-sm"></button>
-
-                            <!-- Botón de Ayuda-->
-
-                            <button pButton
-                                    type="button"
-                                    icon="pi pi-question-circle"
-                                    pTooltip="Ayuda"
-                                    class="p-button-rounded p-button-text p-button-sm"
-                                    (click)="mostrarAyuda(concepto)"></button>
-
-                            <!-- Botón Editar -->
-                            <button pButton
-                                    (click)="editarConcepto(concepto)"
-                                    icon="pi pi-pencil"
-                                    pTooltip="Editar"
-                                    class="p-button-rounded p-button-text p-button-sm"
-                                    ></button>
-
-                            <!--
-                              <button *ngIf="editing" pButton
-                              pSaveEditableRow
-                              (click)="onRowEditSave(concepto)"
-                              icon="pi pi-check"
-                              pTooltip="Guardar"
-                              class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
-
-                            <button *ngIf="editing" pButton
-                                    pCancelEditableRow
-                                    (click)="onRowEditCancel(concepto, ri)"
-                                    icon="pi pi-times"
-                                    pTooltip="Cancelar"
-                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
-                            -->
-
-                            <!-- Botón Eliminar -->
-                            <button pButton
-                                    type="button"
-                                    (click)="onDelete(concepto)"
-                                    icon="pi pi-trash"
-                                    pTooltip="Eliminar"
-                                    [disabled]="isNew || isEditingAnyRow"
-                                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
-
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-
-            <!-- Footer para Nuevo Registro -->
-            <ng-template pTemplate="footer">
-                <tr *ngIf="isEditing">
-                    <td colspan="9">
-                        <form [formGroup]="conceptoForm" class="grid p-fluid">
-                            <div class="col-1" style="width: 10%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                          formControlName="pla61codigo"
-                                          placeholder="Código"
-                                          class="p-inputtext-sm w-full"
-                                          readonly/>
-                                </span>
-                            </div>
-
-                            <div class="col-1" style="width: 15%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                           formControlName="pla61descripcion"
-                                           placeholder="Descripción"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
-
-                            <div class="col-1" style="width: 15%;">
-                                <span class="w-full">
-                                    <p-dropdown
-                                        formControlName="pla61tiporegpensionariocod"
-                                        [options]="[
-                                            { label: 'Otros Regimenes Pensionarios', value: 'ORP' },
-                                            { label: 'Sistema Nacional de Pensiones', value: 'SNP' },
-                                            { label: 'Sistema Privado de Pensiones', value: 'SPP' }
-                                        ]"
-                                        placeholder="Tipo de régimen"
-                                        optionLabel="label"
-                                        optionValue="value"
-                                        class="p-inputtext-sm w-full"
-                                        appendTo="body">
-                                    </p-dropdown>
-                                </span>
-                            </div>
-
-                            <div class="col-1" style="width: 10%;">
-                                <span class="w-full">
-                                    <input pInputText
-                                           formControlName="pla61afpnetcod"
-                                           placeholder="AFPNet"
-                                           class="p-inputtext-sm w-full"/>
-                                </span>
-                            </div>
-
-                            <div class="col-1" style="width: 15%;">
-                                <span class="w-full">
-                                    <p-dropdown
-                                        formControlName="pla61plamecod"
-                                        [options]="[
-                                            { label: 'DL 19990 - SIST NAC DE PENS - ONP', value: '02' },
-                                            { label: 'SPP INTEGRA', value: '21' }
-                                        ]"
-                                        placeholder="Plame"
-                                        optionLabel="label"
-                                        optionValue="value"
-                                        class="p-inputtext-sm w-full"
-                                        appendTo="body">
-                                    </p-dropdown>
-                                </span>
-                            </div>
-
-                            <div class="col-1" style="text-align: center; width: 10%;">
-                              <p-checkbox formControlName="pla61flagsectorprivado" [binary]="true"></p-checkbox>
-                            </div>
-
-                            <div class="col-1" style="text-align: center; width: 10%;">
-                              <p-checkbox formControlName="pla61flagsectorpublico" [binary]="true"></p-checkbox>
-                            </div>
-
-                            <div class="col-1" style="text-align: center; width: 5%;">
-                              <p-checkbox formControlName="pla61flagactivo" [binary]="true"></p-checkbox>
-                            </div>
-
-                            <!-- Botones de Acción -->
-                            <div class="col-1" style="width: 10%;">
-                                <div class="flex gap-2 justify-content-center">
-
-                                    <p-button icon="pi pi-check" styleClass="p-button-success p-button-sm" [text]="true"
-                                            (onClick)="onSave()" pTooltip="Guardar"></p-button>
-                                    <p-button icon="pi pi-times" styleClass="p-button-danger p-button-sm" [text]="true"
-                                            (onClick)="onCancel()" pTooltip="Cancelar"></p-button>
-                                </div>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
 </div>
 
 <!-- Diálogo de Detalle -->
@@ -302,7 +117,7 @@
             <label>Código :</label>
             <input type="text" pInputText formControlName="pla10conceptocod"
             [disabled]="!isNewRecord || esModoVisualizacion" maxlength="10"
-            class="w-full"/>
+            class="w-full" readonly/>
           </div>
 
           <div class="form-group flex-1">
@@ -334,7 +149,7 @@
             <div class="flex gap-2 align-items-center">
               <input type="text" pInputText formControlName="pla10tipoconceptocod"
               readonly maxlength="2" style="width: 60px" />
-              <input type="text" pInputText formControlName="pla10conceptodesc"
+              <input type="text" pInputText formControlName="conceptotipodesc"
               readonly class="w-full"/>
               <button pButton type="button" icon="pi pi-search" class="p-button-sm"
               [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoTipo()"></button>
@@ -416,7 +231,7 @@
           <div class="border-1 border-round surface-border surface-0 p-2 mb-0">
             <div class="mb-2 font-medium">Afectaciones Sunat</div>
             <p-table
-            [value]="conceptoActual.afectacionesSunat"
+            [value]="conceptoForm.value.afectacionesSunat"
             [scrollable]="true"
             scrollHeight="200px"
             styleClass="p-datatable-sm w-full">
@@ -449,7 +264,7 @@
           <div class="border-1 border-round surface-border surface-0 p-2 mb-0">
             <div class="mb-2 font-medium">Afectación Otros</div>
             <p-table
-            [value]="conceptoActual.afectacionOtros"
+            [value]="conceptoForm.value.afectacionOtros"
             [scrollable]="true"
             scrollHeight="200px"
             styleClass="p-datatable-sm w-full">
@@ -482,7 +297,7 @@
           <div class="border-1 border-round surface-border surface-0 p-2 mb-0">
             <div class="mb-2 font-medium">Plantilla Asignada</div>
             <p-table
-            [value]="conceptoActual.planillasAsignadas"
+            [value]="conceptoForm.value.planillasAsignadas"
             [scrollable]="true"
             scrollHeight="200px"
             styleClass="p-datatable-sm w-full">
@@ -515,7 +330,7 @@
           <div class="border-1 border-round surface-border surface-0 p-2 mb-0">
             <div class="mb-2 font-medium">Régimen Laboral</div>
             <p-table
-            [value]="conceptoActual.regimenesLaborales"
+            [value]="conceptoForm.value.regimenesLaborales"
             [scrollable]="true"
             scrollHeight="200px"
             styleClass="p-datatable-sm w-full">
@@ -558,4 +373,95 @@
     class="p-button-success" (click)="guardarConcepto()"></button>
 
   </ng-template>
+
+</p-dialog>
+
+<p-dialog [(visible)]="displayTipoCalculoDialog" header="Tipo de calculo" [modal]="true"
+    [style]="{width: '600px'}" [draggable]="false" [closable]="false">
+    <p-table [value]="tiposCalculo" [scrollable]="true" scrollHeight="300px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tipo>
+        <tr [pSelectableRow]="tipo" (click)="seleccionarTipoCalculo(tipo)" style="cursor: pointer">
+          <td>{{ tipo.codigo }}</td>
+          <td>{{ tipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayTipoCalculoDialog = false"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="displayConceptoTipoDialog" header="Concepto Tipo" [modal]="true"
+    [style]="{width: '500px'}" [draggable]="false" [closable]="false">
+    <p-table [value]="conceptosTipo" [scrollable]="true" scrollHeight="250px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tipo>
+        <tr [pSelectableRow]="tipo" (click)="seleccionarConceptoTipo(tipo)" style="cursor: pointer">
+          <td>{{ tipo.codigo }}</td>
+          <td>{{ tipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayConceptoTipoDialog = false"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="displaySubTipoDialog" header="Subtipo de Concepto Tipo" [modal]="true"
+    [style]="{width: '700px'}" [draggable]="false" [closable]="false">
+    <p-table [value]="subTiposConcepto" [scrollable]="true" scrollHeight="300px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 150px">Concepto Tipo Cod.</th>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-subTipo>
+        <tr [pSelectableRow]="subTipo" (click)="seleccionarSubTipo(subTipo)" style="cursor: pointer">
+          <td>{{ subTipo.conceptoTipoCod }}</td>
+          <td>{{ subTipo.codigo }}</td>
+          <td>{{ subTipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displaySubTipoDialog = false"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="displayConceptoSunatDialog" header="Concepto Sunat" [modal]="true"
+    [style]="{width: '800px'}" [draggable]="false" [closable]="false">
+    <p-table [value]="conceptosSunat" [scrollable]="true" scrollHeight="350px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 120px">CodigoSunat</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-concepto>
+        <tr [pSelectableRow]="concepto" (click)="seleccionarConceptoSunat(concepto)" style="cursor: pointer">
+          <td>{{ concepto.codigoSunat }}</td>
+          <td>{{ concepto.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayConceptoSunatDialog = false"></button>
+    </ng-template>
 </p-dialog>
