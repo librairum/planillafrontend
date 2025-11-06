@@ -1,3 +1,7 @@
 :host ::ng-deep .p-button-success {
     color: white !important;
 }
+
+::ng-deep .custom-panel-header .ui-panel-titlebar {
+  font-size: 24px;
+}

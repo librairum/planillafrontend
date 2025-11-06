@@ -17,3 +17,4 @@ export interface PeriodoPago {
   Pla55Descripcion: string;
   pla01tipocambio: number;
 }
+

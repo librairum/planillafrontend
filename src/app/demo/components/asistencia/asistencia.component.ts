@@ -1,46 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// --- DEPENDENCIAS y MÓDULOS de PrimeNG ---
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
-import { DialogModule } from 'primeng/dialog';
-import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
+import { PaginatorModule } from 'primeng/paginator';
 
-interface Trabajador {
-  codigo: string;
-  idIdentidad: string;
-  apellidosNombres: string;
-  fechaIngreso: Date;
-  estado: string;
-  dias: number;
-  horas: number;
-  heSimples: number;
-  heDobles: number;
-  he100: number;
-  hNocturnas: number;
-  diasCompensados: number;
-  diasEnfermedad: number;
-  diasSubsidioEnfermedad: number;
-  diasSubsidioMaterno: number;
-  diasLicencia: number;
-  faltas: number;
+// Nota: Dado que el modelo no está disponible, se define una interfaz de mock para asegurar la compilación.
+export interface Asistencia {
+  pla01empleadocod: string;
+  apellidosynombres: string;
+  pla01fechaingreso: Date;
+  pla01estado: string;
+  pla02utilidad: number;
+  pla02gratificacion: number;
 }
 
-interface Inasistencia {
-  tipoSuspension: string;
-  descripcion: string;
-  fechaInicio: Date;
-  fechaFin: Date;
-  diasNoTrabajados: number;
+export interface AsistenciaView extends Asistencia {
+  idIdentidad: string;
+}
+
+interface PeriodoPago {
+  label: string;
+  value: string;
 }
 
 @Component({
@@ -54,400 +47,104 @@ interface Inasistencia {
     ToolbarModule,
     InputTextModule,
     TooltipModule,
-    DialogModule,
-    CalendarModule,
     DropdownModule,
-    InputNumberModule,
     ConfirmDialogModule,
     ToastModule,
-    TagModule
+    CardModule,
+    PanelModule,
+    TagModule,
+    PaginatorModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './asistencia.component.html',
   styleUrls: ['./asistencia.component.css']
 })
 export class AsistenciaComponent implements OnInit {
-  trabajadores: Trabajador[] = [];
-  rowsPerPage: number = 10; 
-  selectedTrabajador: Trabajador | null = null;
-  displayInasistenciaDialog: boolean = false;
+  // Usamos AsistenciaView para los datos del componente
+  trabajadores: AsistenciaView[] = [];
+  rowsPerPage: number = 10;
+  selectedTrabajador: AsistenciaView | null = null;
   globalFilterValue: string = '';
 
-  // Formulario de inasistencia
-  inasistenciaForm: Inasistencia = this.createEmptyInasistencia();
+  // Propiedades para Paginador Externo
+  totalRecords: number = 0; // Total de registros
+  first: number = 0; // Índice de la primera fila
 
-  // Opciones para dropdowns
-  tipoSuspensionOptions = [
-    { label: 'Falta', value: 'FALTA' },
-    { label: 'Licencia con goce', value: 'LICENCIA_GOCE' },
-    { label: 'Licencia sin goce', value: 'LICENCIA_SIN_GOCE' },
-    { label: 'Descanso médico', value: 'DESCANSO_MEDICO' },
-    { label: 'Subsidio por enfermedad', value: 'SUBSIDIO_ENFERMEDAD' },
-    { label: 'Subsidio por maternidad', value: 'SUBSIDIO_MATERNIDAD' },
-    { label: 'Vacaciones', value: 'VACACIONES' },
-    { label: 'Suspensión perfecta', value: 'SUSPENSION_PERFECTA' }
+  // Propiedad para simular el cierre del menú (cierra la vista)
+  isMenuOpen: boolean = true;
+
+  // --- PROPIEDADES PARA EL PERÍODO DE PAGO ---
+  periodoPagoOptions: PeriodoPago[] = [
+    { label: 'Planilla Utilidades - 20251', value: 'UTILIDADES' },
+    { label: 'Planilla Gratificaciones ley - 20252', value: 'GRATIFICACIONES' }
   ];
+  selectedPeriodoPago: string = 'UTILIDADES'; // Valor inicial por defecto
 
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadTrabajadores();
   }
 
-  createEmptyInasistencia(): Inasistencia {
-    return {
-      tipoSuspension: '',
-      descripcion: '',
-      fechaInicio: new Date(),
-      fechaFin: new Date(),
-      diasNoTrabajados: 0
-    };
-  }
-
+  // Método de carga de datos (simulada)
   loadTrabajadores() {
-    // Datos de ejemplo basados en las capturas
-    this.trabajadores = [
+    const fullData: AsistenciaView[] = [
       {
-        codigo: '000001',
+        pla01empleadocod: '000001',
         idIdentidad: '08680851',
-        apellidosNombres: 'MARTINEZ GARCIA Joel',
-        fechaIngreso: new Date(2006, 7, 16),
-        estado: 'A',
-        dias: 31,
-        horas: 0,
-        heSimples: 0,
-        heDobles: 0,
-        he100: 0,
-        hNocturnas: 0,
-        diasCompensados: 0,
-        diasEnfermedad: 0,
-        diasSubsidioEnfermedad: 0,
-        diasSubsidioMaterno: 0,
-        diasLicencia: 0,
-        faltas: 0
+        apellidosynombres: 'MARTINEZ GARCIA Joel alberto',
+        pla01fechaingreso: new Date(2006, 7, 16),
+        pla01estado: 'A',
+        pla02utilidad: 180,
+        pla02gratificacion: 150,
       },
       {
-        codigo: '000002',
+        pla01empleadocod: '000002',
         idIdentidad: '07271641',
-        apellidosNombres: 'CALDERON PEREZ PYME',
-        fechaIngreso: new Date(2006, 0, 1),
-        estado: 'A',
-        dias: 31,
-        horas: 0,
-        heSimples: 0,
-        heDobles: 0,
-        he100: 0,
-        hNocturnas: 0,
-        diasCompensados: 0,
-        diasEnfermedad: 0,
-        diasSubsidioEnfermedad: 0,
-        diasSubsidioMaterno: 0,
-        diasLicencia: 0,
-        faltas: 0
+        apellidosynombres: 'CALDERON PEREZ PYME',
+        pla01fechaingreso: new Date(2006, 0, 1),
+        pla01estado: 'A',
+        pla02utilidad: 180,
+        pla02gratificacion: 180,
       },
       {
-        codigo: '000003',
+        pla01empleadocod: '000003',
         idIdentidad: '10861418',
-        apellidosNombres: 'SARMIENTO RENDON',
-        fechaIngreso: new Date(2019, 0, 1),
-        estado: 'A',
-        dias: 31,
-        horas: 0,
-        heSimples: 0,
-        heDobles: 0,
-        he100: 0,
-        hNocturnas: 0,
-        diasCompensados: 0,
-        diasEnfermedad: 0,
-        diasSubsidioEnfermedad: 0,
-        diasSubsidioMaterno: 0,
-        diasLicencia: 0,
-        faltas: 0
+        apellidosynombres: 'SARMIENTO RENDON MYPE',
+        pla01fechaingreso: new Date(2019, 0, 1),
+        pla01estado: 'A',
+        pla02utilidad: 100,
+        pla02gratificacion: 100,
       },
       {
-        codigo: '000007',
-        idIdentidad: '10207645',
-        apellidosNombres: 'AFP Comision Flujo Detallado',
-        fechaIngreso: new Date(2019, 0, 1),
-        estado: 'A',
-        dias: 31,
-        horas: 0,
-        heSimples: 0,
-        heDobles: 0,
-        he100: 0,
-        hNocturnas: 0,
-        diasCompensados: 0,
-        diasEnfermedad: 0,
-        diasSubsidioEnfermedad: 0,
-        diasSubsidioMaterno: 0,
-        diasLicencia: 0,
-        faltas: 0
-      },
-      {
-        codigo: '000020',
+        pla01empleadocod: '000009',
         idIdentidad: '10890765',
-        apellidosNombres: 'rodri prueba prueta',
-        fechaIngreso: new Date(2020, 8, 1),
-        estado: 'A',
-        dias: 16,
-        horas: 0,
-        heSimples: 0,
-        heDobles: 0,
-        he100: 0,
-        hNocturnas: 0,
-        diasCompensados: 0,
-        diasEnfermedad: 0,
-        diasSubsidioEnfermedad: 0,
-        diasSubsidioMaterno: 0,
-        diasLicencia: 0,
-        faltas: 15
+        apellidosynombres: 'SNP SNP RegGeneralRP ',
+        pla01fechaingreso: new Date(2020, 8, 1),
+        pla01estado: 'A',
+        pla02utilidad: 90,
+        pla02gratificacion: 45,
       }
     ];
+
+    this.totalRecords = fullData.length;
+    this.trabajadores = fullData; // Se carga la lista inicial
   }
 
-  // Acciones de la barra de herramientas
-  registrarInasistencia() {
-    if (!this.selectedTrabajador) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Debe seleccionar un trabajador'
-      });
-      return;
-    }
-    this.inasistenciaForm = this.createEmptyInasistencia();
-    this.displayInasistenciaDialog = true;
+  // Método para paginación externa
+  onPageChange(event: any) {
+    this.first = event.first; // Índice de inicio
+    this.rowsPerPage = event.rows; // Filas por página
   }
 
-  guardarInasistencia() {
-    if (!this.validarInasistencia()) {
-      return;
-    }
-
-    // Aplicar la inasistencia al trabajador seleccionado
-    if (this.selectedTrabajador) {
-      const diasNoTrabajados = this.inasistenciaForm.diasNoTrabajados;
-      
-      // Actualizar según el tipo de suspensión
-      switch (this.inasistenciaForm.tipoSuspension) {
-        case 'FALTA':
-          this.selectedTrabajador.faltas += diasNoTrabajados;
-          this.selectedTrabajador.dias -= diasNoTrabajados;
-          break;
-        case 'DESCANSO_MEDICO':
-          this.selectedTrabajador.diasEnfermedad += diasNoTrabajados;
-          break;
-        case 'SUBSIDIO_ENFERMEDAD':
-          this.selectedTrabajador.diasSubsidioEnfermedad += diasNoTrabajados;
-          break;
-        case 'SUBSIDIO_MATERNIDAD':
-          this.selectedTrabajador.diasSubsidioMaterno += diasNoTrabajados;
-          break;
-        case 'LICENCIA_GOCE':
-        case 'LICENCIA_SIN_GOCE':
-          this.selectedTrabajador.diasLicencia += diasNoTrabajados;
-          this.selectedTrabajador.dias -= diasNoTrabajados;
-          break;
-        case 'VACACIONES':
-          this.selectedTrabajador.dias -= diasNoTrabajados;
-          break;
-        default:
-          this.selectedTrabajador.dias -= diasNoTrabajados;
-      }
-
-      // Asegurar que los valores no sean negativos
-      if (this.selectedTrabajador.dias < 0) this.selectedTrabajador.dias = 0;
-    }
-
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Inasistencia registrada correctamente'
-    });
-    this.displayInasistenciaDialog = false;
+  getDynamicColumnLabel(): string {
+    return this.selectedPeriodoPago === 'UTILIDADES' ? 'Días Utilidad' : 'Días Gratificación';
   }
 
-  validarInasistencia(): boolean {
-    if (!this.inasistenciaForm.tipoSuspension) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Debe seleccionar un tipo de suspensión'
-      });
-      return false;
-    }
-    if (!this.inasistenciaForm.fechaInicio || !this.inasistenciaForm.fechaFin) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Debe ingresar las fechas de inicio y fin'
-      });
-      return false;
-    }
-    if (this.inasistenciaForm.fechaInicio > this.inasistenciaForm.fechaFin) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'La fecha de inicio no puede ser mayor a la fecha fin'
-      });
-      return false;
-    }
-    return true;
-  }
-
-  calcularDias() {
-    if (this.inasistenciaForm.fechaInicio && this.inasistenciaForm.fechaFin) {
-      const diffTime = Math.abs(this.inasistenciaForm.fechaFin.getTime() - this.inasistenciaForm.fechaInicio.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-      this.inasistenciaForm.diasNoTrabajados = diffDays;
-    }
-  }
-
-  imprimir() {
-    if (this.trabajadores.length === 0) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'No hay datos para imprimir'
-      });
-      return;
-    }
-    
-    // Simular impresión abriendo ventana de impresión del navegador
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Imprimir',
-      detail: 'Preparando documento para impresión...'
-    });
-    
-    setTimeout(() => {
-      window.print();
-    }, 500);
-  }
-
-  vistaPrevia() {
-    if (this.trabajadores.length === 0) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'No hay datos para visualizar'
-      });
-      return;
-    }
-    
-    // Generar contenido HTML para vista previa
-    const contenido = this.generarReporteHTML();
-    const ventana = window.open('', '_blank', 'width=800,height=600');
-    
-    if (ventana) {
-      ventana.document.write(contenido);
-      ventana.document.close();
-      
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Vista Previa',
-        detail: 'Abriendo vista previa en nueva ventana...'
-      });
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'No se pudo abrir la ventana. Verifique el bloqueador de ventanas emergentes.'
-      });
-    }
-  }
-
-  generarReporteHTML(): string {
-    const fecha = new Date().toLocaleDateString('es-PE');
-    let html = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Reporte de Asistencia</title>
-        <style>
-          body { font-family: Arial, sans-serif; padding: 20px; }
-          h1 { color: #667eea; text-align: center; }
-          .info { text-align: center; margin-bottom: 20px; }
-          table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
-          th { background-color: #667eea; color: white; padding: 8px; text-align: left; }
-          td { padding: 6px; border-bottom: 1px solid #ddd; }
-          tr:hover { background-color: #f5f5f5; }
-          .total { font-weight: bold; background-color: #f0f0f0; }
-        </style>
-      </head>
-      <body>
-        <h1>REPORTE DE ASISTENCIA</h1>
-        <div class="info">
-          <p><strong>Fecha:</strong> ${fecha}</p>
-          <p><strong>Total Trabajadores:</strong> ${this.trabajadores.length}</p>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>DNI</th>
-              <th>Apellidos y Nombres</th>
-              <th>F.Ingreso</th>
-              <th>Estado</th>
-              <th>Días</th>
-              <th>HE Simples</th>
-              <th>HE Dobles</th>
-              <th>Faltas</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-
-    this.trabajadores.forEach(t => {
-      html += `
-        <tr>
-          <td>${t.codigo}</td>
-          <td>${t.idIdentidad}</td>
-          <td>${t.apellidosNombres}</td>
-          <td>${new Date(t.fechaIngreso).toLocaleDateString('es-PE')}</td>
-          <td>${this.getEstadoLabel(t.estado)}</td>
-          <td>${t.dias}</td>
-          <td>${t.heSimples}</td>
-          <td>${t.heDobles}</td>
-          <td style="color: ${t.faltas > 0 ? 'red' : 'black'}; font-weight: ${t.faltas > 0 ? 'bold' : 'normal'}">${t.faltas}</td>
-        </tr>
-      `;
-    });
-
-    html += `
-          </tbody>
-        </table>
-      </body>
-      </html>
-    `;
-
-    return html;
-  }
-
-  cancelar() {
-    this.confirmationService.confirm({
-      message: '¿Está seguro que desea cancelar? Se perderán los cambios no guardados.',
-      header: 'Confirmar Cancelación',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Sí',
-      rejectLabel: 'No',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button',
-
-      accept: () => {
-        this.loadTrabajadores();
-        this.selectedTrabajador = null;
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Cancelado',
-          detail: 'Operación cancelada'
-        });
-      }
-    });
-  }
+  // --- FUNCIONES DE ACCIÓN CRUD/UTILIDAD (Implementación de PrimeNG) ---
 
   guardar() {
     this.confirmationService.confirm({
@@ -456,10 +153,9 @@ export class AsistenciaComponent implements OnInit {
       icon: 'pi pi-check-circle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button',
+      acceptButtonStyleClass: 'p-button-success toolbar-button-text',
+      rejectButtonStyleClass: 'p-button toolbar-button-text',
       accept: () => {
-        
         this.messageService.add({
           severity: 'success',
           summary: 'Éxito',
@@ -469,76 +165,82 @@ export class AsistenciaComponent implements OnInit {
     });
   }
 
-  eliminar() {
-    if (!this.selectedTrabajador) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Debe seleccionar un trabajador'
-      });
-      return;
-    }
-
+  // Botón Cancelar (Cierra el menú)
+  cancelar() {
     this.confirmationService.confirm({
-      message: `¿Está seguro que desea resetear los registros de asistencia de ${this.selectedTrabajador.apellidosNombres}?`,
-      header: 'Confirmar Eliminación',
+      message: '¿Está seguro que desea cancelar? Se perderán los cambios no guardados. (Esto cerrará el menú)',
+      header: 'Confirmar Cancelación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button',
+      acceptButtonStyleClass: 'p-button-danger toolbar-button-text',
+      rejectButtonStyleClass: 'p-button toolbar-button-text',
       accept: () => {
-        if (this.selectedTrabajador) {
-          // Resetear valores de asistencia
-          this.selectedTrabajador.dias = 31;
-          this.selectedTrabajador.horas = 0;
-          this.selectedTrabajador.heSimples = 0;
-          this.selectedTrabajador.heDobles = 0;
-          this.selectedTrabajador.he100 = 0;
-          this.selectedTrabajador.hNocturnas = 0;
-          this.selectedTrabajador.diasCompensados = 0;
-          this.selectedTrabajador.diasEnfermedad = 0;
-          this.selectedTrabajador.diasSubsidioEnfermedad = 0;
-          this.selectedTrabajador.diasSubsidioMaterno = 0;
-          this.selectedTrabajador.diasLicencia = 0;
-          this.selectedTrabajador.faltas = 0;
-          
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Registros de asistencia reseteados correctamente'
-          });
-        }
+        this.loadTrabajadores();
+        this.selectedTrabajador = null;
+        this.isMenuOpen = false; // Simula el cierre de la vista/menú
+        this.messageService.add({ severity: 'info', summary: 'Cerrando', detail: 'Vista cerrada. Operación cancelada.' });
       }
     });
   }
 
-  refrescar() {
-    this.loadTrabajadores();
-    this.selectedTrabajador = null;
-    this.globalFilterValue = '';
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Actualizado',
-      detail: 'Datos actualizados correctamente'
+  /**
+   * Confirma y ejecuta la eliminación/limpieza de la asistencia de *todos* los trabajadores 
+   * para el período seleccionado.
+   */
+  eliminar() {
+    this.confirmationService.confirm({
+      message: '¿Está seguro que desea eliminar la asistencia de todos los trabajadores para el período actual?',
+      header: 'Confirmar Eliminación Masiva',
+      icon: 'pi pi-trash',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button-danger toolbar-button-text',
+      rejectButtonStyleClass: 'p-button toolbar-button-text',
+      accept: () => {
+        this.trabajadores = this.trabajadores.map(t => {
+          if (this.selectedPeriodoPago === 'UTILIDADES') {
+            return { ...t, pla02utilidad: 0 };
+          } else if (this.selectedPeriodoPago === 'GRATIFICACIONES') {
+            return { ...t, pla02gratificacion: 0 };
+          }
+          return t;
+        });
+
+        // Forzar una actualización de la tabla modificando la referencia del array
+        this.trabajadores = [...this.trabajadores];
+
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Eliminado',
+          detail: `Días de ${this.getDynamicColumnLabel()} eliminados para todos los trabajadores.`
+        });
+      }
     });
   }
 
-  // Filtro global
+  // Botón Vista Previa
+  vistaPrevia() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Vista Previa',
+      detail: 'Generando vista previa del reporte de asistencia...'
+    });
+    // Lógica para abrir modal o nueva ventana con la vista previa del reporte
+  }
+
   onGlobalFilter(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.globalFilterValue = value;
   }
 
-  // Severidad del estado
+  // --- FUNCIONES DE FORMATO DE TABLA ---
+
   getSeverity(estado: string): string {
     switch (estado) {
-      case 'A':
-        return 'success';
-      case 'I':
-        return 'danger';
-      default:
-        return 'warning';
+      case 'A': return 'success';
+      case 'I': return 'danger';
+      default: return 'warning';
     }
   }
 

@@ -18,12 +18,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 
-// Importar la interfaz de la entidad
-// NOTA: Se asume que PeriodoPago y la ruta son correctas.
 import { PeriodoPago } from 'src/app/demo/model/PeriodoPago';
 
-// Importar funciones utilitarias
-// NOTA: Se asume que las utilidades están disponibles en la ruta relativa.
 import { verMensajeInformativo, aMayusculas, esVacio, esFechaValida } from '../utilities/funciones_utilitarias';
 
 @Component({
