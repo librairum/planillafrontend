@@ -28,12 +28,60 @@ export interface Trabajador {
   pla01ctaremunumero: string;
   pla01ctaremunmoneda: string;
 
+  // Reg laboral codigo y descripcion
   pla01trdatoslabregimenlaboral?: string;
   labregimenlaboraldes?: string;
 
-  //detalles adicionales
+  // Descripcion tipo documento
+  tipdocdesc?: string;
+
+
+
+  // tablas de seccion Principales
+  remuneraciones?: Remuneracion[];
+  regimenespensionarios?: RegimenPensionario[];
 
 }
+
+export interface Remuneracion {
+  pla05conceptocod: string;
+  conceptodesc: string;
+  pla05importe: number;
+}
+
+export interface RegimenPensionario {
+  pla31regpensionariocod: string;
+  desregpensionario: string;
+  pla31regpensionariocupss: string;
+  pla31fechaini: Date;
+  pla31fechafin: Date;
+  pla31flagcomisionmixta: string; // 0 o 1
+}
+
+
+/*
+            CreateGridColumn(Grid, "Pla31EmpresaCod", "Pla31EmpresaCod", 0, "", 70, true, false, false);
+            CreateGridColumn(Grid, "Empleado cod.", "Pla31EmpleadoCod", 0, "", 90, true, false, false);
+            CreateGridColumn(Grid, "Codigo", "Pla31Codigo", 0, "", 90, true, false, false);
+            //==
+
+            //==Campo de Ayuda
+            CreateGridColumn(Grid, "Regimen", "Pla31RegPensionarioCod", 0, "", 90, true, false, true);
+            CreateGridColumn(Grid, "Desc Regimen", "DesRegPensionario", 0, "", 120, true, false, true);
+            //==
+
+
+            //==Editable
+            CreateGridColumn(Grid, "CUPSS", "Pla31RegPensionarioCUPSS", 0, "", 120, false, false, true);
+            CreateGridDateColumn(Grid, "Fecha Inicio", "Pla31fechaini", 0, "{0:dd/MM/yyyy}", 90, false, false, true);
+            CreateGridDateColumn(Grid, "Fecha Fin", "Pla31fechafin", 0, "{0:dd/MM/yyyy}", 90, false, false, true);
+            CreateGridChkColumn(Grid, "Comision Mixta", "Pla31FlagComisionMixta", 0, "", 90, false, false, true);
+
+            //==
+
+            //==oculto
+            CreateGridColumn(Grid, "Pla31estado", "Pla31estado", 0, "", 90, true, false, false);
+*/
 
 /*
 

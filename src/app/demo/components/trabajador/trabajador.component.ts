@@ -3,7 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { TableModule, EditableRow } from 'primeng/table';
@@ -19,6 +19,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CalendarModule } from 'primeng/calendar';
+import { TabViewModule } from 'primeng/tabview';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -48,7 +49,8 @@ import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
       FormsModule,
       DropdownModule,
       RadioButtonModule,
-      CalendarModule
+      CalendarModule,
+      TabViewModule,
     ],
   templateUrl: './trabajador.component.html',
   styleUrls: ['./trabajador.component.css'],
@@ -58,6 +60,8 @@ export class TrabajadorComponent implements OnInit{
 
   trabajadorForm: FormGroup = this.fb.group({}); //Quitar el = luego
   trabajadorList: Trabajador[] = []; //Quitar el = luego
+
+
 
   /*isEditing: boolean = false;
   editingRowIndex: number | null = null;
@@ -97,6 +101,7 @@ export class TrabajadorComponent implements OnInit{
     this.cargarTrabajadores();
   }
 
+  // Por la complejidad del formulario, usaremos formarrays
   initForm() {
     this.trabajadorForm = this.fb.group({
       pla01empresacod: ['', Validators.required],
@@ -128,6 +133,11 @@ export class TrabajadorComponent implements OnInit{
 
       pla01trdatoslabregimenlaboral: [''],
       labregimenlaboraldes: [''],
+
+      tipdocdesc: [''],
+
+      remuneraciones: this.fb.array([]),
+      regimenespensionarios: this.fb.array([]),
     })
   }
 
@@ -150,6 +160,30 @@ export class TrabajadorComponent implements OnInit{
       });
     }
 
+    verificarDatosFormulario() {
+  console.log('Datos del formulario:', this.trabajadorForm.value);
+  console.log('Regímenes Pensionarios:', this.regimenespensionarios.value);
+}
+
+  cargarRegimenesPensionarios(regimenes: any[]) {
+    const regimenArray = this.fb.array(
+      regimenes.map((regimen) =>
+        this.fb.group({
+          pla31regpensionariocod: [regimen.pla31regpensionariocod],
+          desregpensionario: [regimen.desregpensionario],
+          pla31regpensionariocupss: [regimen.pla31regpensionariocupss],
+          pla31fechaini: [regimen.pla31fechaini ? new Date(regimen.pla31fechaini) : null],
+          pla31fechafin: [regimen.pla31fechafin ? new Date(regimen.pla31fechafin) : null],
+          pla31flagcomisionmixta: [regimen.pla31flagcomisionmixta === '1' ? 1 : 0], // Inicializa con 0 si no hay valor
+        })
+      )
+    );
+    this.trabajadorForm.setControl('regimenespensionarios', regimenArray);
+  }
+
+  get regimenespensionarios(): FormArray {
+    return this.trabajadorForm.get('regimenespensionarios') as FormArray;
+  }
 
 
 
@@ -168,6 +202,34 @@ export class TrabajadorComponent implements OnInit{
         };
 
         this.trabajadorForm.reset(raw);
+
+        // Inicializar las listas como FormArray
+        const regimenArray = this.fb.array((
+          trabajador.regimenespensionarios ?? []).map((regimen) =>
+            this.fb.group({
+              pla31regpensionariocod: [regimen.pla31regpensionariocod],
+              desregpensionario: [regimen.desregpensionario],
+              pla31regpensionariocupss: [regimen.pla31regpensionariocupss],
+              pla31fechaini: [regimen.pla31fechaini ? new Date(regimen.pla31fechaini) : null],
+              pla31fechafin: [regimen.pla31fechafin ? new Date(regimen.pla31fechafin) : null],
+              pla31flagcomisionmixta: [regimen.pla31flagcomisionmixta === '1' ? 1 : 0],
+            })
+          )
+        );
+
+        const remuneracionArray = this.fb.array((
+          trabajador.remuneraciones ?? []).map((remuneracion) =>
+            this.fb.group({
+              pla05conceptocod: [remuneracion.pla05conceptocod],
+              conceptodesc: [remuneracion.conceptodesc],
+              pla05importe: [remuneracion.pla05importe],
+            })
+          )
+        );
+
+        this.trabajadorForm.setControl('regimenespensionarios', regimenArray);
+        this.trabajadorForm.setControl('remuneraciones', remuneracionArray);
+
       } else {
         // Si es nuevo, resetea el formulario con valores por defecto
         this.trabajadorForm.reset({
@@ -193,6 +255,10 @@ export class TrabajadorComponent implements OnInit{
           pla01ctaremunumero: '',
           pla01ctaremunmoneda: '',
         });
+
+        // Inicializar las listas vacías
+        this.trabajadorForm.setControl('regimenespensionarios', this.fb.array([]));
+        this.trabajadorForm.setControl('remuneraciones', this.fb.array([]));
       }
 
       this.esModoVisualizacion = modoVisualizacion;
@@ -208,7 +274,37 @@ export class TrabajadorComponent implements OnInit{
     }
 
     nuevoTrabajador() {
+      this.isNewRecord = true;
+      this.esModoVisualizacion = false;
+      this.trabajadorActual = {} as Trabajador;
 
+      this.trabajadorForm.reset({
+        pla01empresacod: '00004',
+        pla01empleadocod: '',
+        pla01planillacod: '',
+        pla01docuidentidadtipo: '',
+        pla01docuidentidadnro: '',
+        pla01apepaterno: '',
+        pla01apematerno: '',
+        pla01nombre1: '',
+        pla01nombre2: '',
+        pla01direccion: '',
+        pla01fechanacimiento: null,
+        pla01telefono: '',
+        pla01fechaingreso: null,
+        pla01centrocostocod: '',
+        pla01fechacese: null,
+        pla01sexo: 'M',
+        pla01estado: 'A',
+        pla01puestocod: '',
+        pla01ctaremunbancocod: '',
+        pla01ctaremunumero: '',
+        pla01ctaremunmoneda: '',
+      });
+
+      // Inicializar las listas vacías
+      this.trabajadorForm.setControl('regimenespensionarios', this.fb.array([]));
+      this.trabajadorForm.setControl('remuneraciones', this.fb.array([]));
     }
 
     guardarTrabajador() {
@@ -217,8 +313,15 @@ export class TrabajadorComponent implements OnInit{
 
         // Separar nombres concatenados
         const nombres = raw.pla01nombre1.split(' ');
+
+        const regimenespensionarios = raw.regimenespensionarios.map((regimen: any) => ({
+          ...regimen,
+          pla31flagcomisionmixta: regimen.pla31flagcomisionmixta === 1 ? '1' : '0', // Convertir a cadena
+        }));
+
         const trabajadorEditado = {
           ...raw,
+          regimenespensionarios,
           pla01nombre1: nombres[0] || '', // Primer nombre
           pla01nombre2: nombres.slice(1).join(' ') || '', // Segundo nombre (si existe)
           pla01fechanacimiento: raw.pla01fechanacimiento || null,
@@ -283,4 +386,50 @@ export class TrabajadorComponent implements OnInit{
     abrirBusquedaRegLaboral() {
 
     }
+
+    abrirBusquedaTipoDocumento() {
+
+    }
+
+    onRowEditInit() {
+
+    }
+
+    onRowEditSave() {
+
+    }
+
+    onRowEditCancel() {
+
+    }
+
+    eliminarRemuneracion() {
+
+    }
+
+
+
+
+    /*
+    displayModalRegimenPensionario: boolean = false;
+    regimenesPensionarios: { codigo: string; descripcion: string }[] = [
+      { codigo: '21', descripcion: 'SPP INTEGRA' },
+      { codigo: '22', descripcion: 'SPP PRIMA' },
+      { codigo: '23', descripcion: 'SPP HABITAT' },
+    ];*/
+    /*
+    abrirModalRegimenPensionario(regimen: any) {
+      this.regimenSeleccionado = regimen;
+      this.displayModalRegimenPensionario = true;
+    }
+
+    seleccionarRegimenPensionario(regimen: { codigo: string; descripcion: string }) {
+      this.regimenSeleccionado.pla31regpensionariocod = regimen.codigo;
+      this.regimenSeleccionado.desregpensionario = regimen.descripcion;
+      this.displayModalRegimenPensionario = false;
+    }
+
+    eliminarRegimenPensionario(rowIndex: number) {
+      this.trabajadorForm.value.regimenespensionarios.splice(rowIndex, 1);
+    }*/
 }

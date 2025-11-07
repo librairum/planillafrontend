@@ -40,92 +40,19 @@ export class TrabajadorService {
         }
 
 
+  // los trabajadores estan abajo del codigo
   public trabajadorList: Trabajador[] = [
-    {
-      pla01empresacod: '00004', //pk
-      pla01empleadocod: '000001', //pk
-      pla01planillacod: '01',
-      pla01docuidentidadtipo: '01',
-      pla01docuidentidadnro: '12345678',
-
-      pla01apepaterno: 'Pérez',
-      pla01apematerno: 'García',
-      pla01nombre1: 'Juan',
-      pla01nombre2: 'Carlos',
-      pla01direccion: 'Av. Siempre Viva 742',
-      pla01fechanacimiento: new Date(1990, 0, 15),
-      pla01telefono: '987654321',
-      pla01fechaingreso: new Date(2020, 0, 15),
-      pla01centrocostocod: '',
-
-      //ocultos
-
-      pla01fechacese: null as unknown as Date,
-      pla01sexo: 'M',
-      pla01estado: 'A',
-
-      pla01puestocod: '',
-      pla01ctaremunbancocod: '',
-      pla01ctaremunumero: '',
-      pla01ctaremunmoneda: '',
-    },
-    {
-      pla01empresacod: '00004', //pk
-      pla01empleadocod: '000002', //pk
-      pla01planillacod: '01',
-      pla01docuidentidadtipo: '01',
-      pla01docuidentidadnro: '23456789',
-
-      pla01apepaterno: 'Morales',
-      pla01apematerno: 'Dúarez',
-      pla01nombre1: 'Amanda',
-      pla01nombre2: 'Cecilia',
-      pla01direccion: 'Av. Ramon Herrera 142',
-      pla01fechanacimiento: new Date(2000, 0, 14),
-      pla01telefono: '987654000',
-      pla01fechaingreso: new Date(2021, 0, 14),
-      pla01centrocostocod: '',
-
-      //ocultos
-
-      pla01fechacese: null as unknown as Date,
-      pla01sexo: 'F',
-      pla01estado: 'A',
-
-      pla01puestocod: '',
-      pla01ctaremunbancocod: '',
-      pla01ctaremunumero: '',
-      pla01ctaremunmoneda: '',
-    },
-    {
-      pla01empresacod: '00004', //pk
-      pla01empleadocod: '000003', //pk
-      pla01planillacod: '01',
-      pla01docuidentidadtipo: '01',
-      pla01docuidentidadnro: '34567890',
-
-      pla01apepaterno: 'Ramos',
-      pla01apematerno: 'Flores',
-      pla01nombre1: 'Carlos',
-      pla01nombre2: '',
-      pla01direccion: 'Av. La Paz 143',
-      pla01fechanacimiento: new Date(1980, 0, 13),
-      pla01telefono: '987654123',
-      pla01fechaingreso: new Date(2022, 0, 13),
-      pla01centrocostocod: '',
-
-      //ocultos
-
-      pla01fechacese: null as unknown as Date,
-      pla01sexo: 'M',
-      pla01estado: 'A',
-
-      pla01puestocod: '',
-      pla01ctaremunbancocod: '',
-      pla01ctaremunumero: '',
-      pla01ctaremunmoneda: '',
-    }
+    trabajador1,
+    trabajador2,
+    trabajador3
   ]
+
+  public GenerarNuevoCodigoTrabajador(): string {
+        const codigos = this.trabajadorList.map(t => parseInt(t.pla01empleadocod, 10));
+        const max = codigos.length > 0 ? Math.max(...codigos) : 0;
+        const nuevoCodigo = (max + 1).toString().padStart(6, '0');
+        return nuevoCodigo;
+      }
 
       public GetTrabajadores(): Observable<Trabajador[]>
       {
@@ -200,4 +127,138 @@ export class TrabajadorService {
         public getData(): Observable<Trabajador[]> {
             return this.http.get<Trabajador[]>(this.urlAPI);
         }
+
+
 }
+
+const trabajador1: Trabajador = {
+      pla01empresacod: '00004', //pk
+      pla01empleadocod: '000001', //pk
+      pla01planillacod: '01',
+      pla01docuidentidadtipo: '01',
+      pla01docuidentidadnro: '12345678',
+
+      pla01apepaterno: 'Pérez',
+      pla01apematerno: 'García',
+      pla01nombre1: 'Juan',
+      pla01nombre2: 'Carlos',
+      pla01direccion: 'Av. Siempre Viva 742',
+      pla01fechanacimiento: new Date(1990, 0, 15),
+      pla01telefono: '987654321',
+      pla01fechaingreso: new Date(2020, 0, 15),
+      pla01centrocostocod: '',
+
+      //ocultos
+
+      pla01fechacese: null as unknown as Date,
+      pla01sexo: 'M',
+      pla01estado: 'A',
+
+      pla01puestocod: '',
+      pla01ctaremunbancocod: '',
+      pla01ctaremunumero: '',
+      pla01ctaremunmoneda: '',
+
+      // Reg laboral codigo y descripcion
+      pla01trdatoslabregimenlaboral: '01',
+      labregimenlaboraldes: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728',
+
+      // Descripcion tipo documento
+      tipdocdesc: 'DOC. NACIONAL DE IDENTIDAD',
+
+      remuneraciones: [{
+        pla05conceptocod: '0001',
+        conceptodesc: 'Sueldo Mensual Básico',
+        pla05importe: 3000
+      },
+      {
+        pla05conceptocod: '0002',
+        conceptodesc: 'Primera Quincena Importe Fijo',
+        pla05importe: 1200
+      }],
+
+      regimenespensionarios: [{
+        pla31regpensionariocod: '21',
+        desregpensionario: 'SPP INTEGRA',
+        pla31regpensionariocupss: '551781MBCAV8',
+        pla31fechaini: new Date(2005, 7, 16),
+        pla31fechafin: new Date(2025, 0, 15),
+        pla31flagcomisionmixta: '1'
+      }]
+    }
+
+const trabajador2: Trabajador = {
+      pla01empresacod: '00004', //pk
+      pla01empleadocod: '000002', //pk
+      pla01planillacod: '01',
+      pla01docuidentidadtipo: '01',
+      pla01docuidentidadnro: '23456789',
+
+      pla01apepaterno: 'Morales',
+      pla01apematerno: 'Dúarez',
+      pla01nombre1: 'Amanda',
+      pla01nombre2: 'Cecilia',
+      pla01direccion: 'Av. Ramon Herrera 142',
+      pla01fechanacimiento: new Date(2000, 0, 14),
+      pla01telefono: '987654000',
+      pla01fechaingreso: new Date(2021, 0, 14),
+      pla01centrocostocod: '',
+
+      //ocultos
+
+      pla01fechacese: null as unknown as Date,
+      pla01sexo: 'F',
+      pla01estado: 'A',
+
+      pla01puestocod: '',
+      pla01ctaremunbancocod: '',
+      pla01ctaremunumero: '',
+      pla01ctaremunmoneda: '',
+
+      // Reg laboral codigo y descripcion
+      pla01trdatoslabregimenlaboral: '01',
+      labregimenlaboraldes: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728',
+
+      // Descripcion tipo documento
+      tipdocdesc: 'DOC. NACIONAL DE IDENTIDAD',
+
+      remuneraciones: []
+    }
+
+const trabajador3: Trabajador = {
+      pla01empresacod: '00004', //pk
+      pla01empleadocod: '000003', //pk
+      pla01planillacod: '01',
+      pla01docuidentidadtipo: '01',
+      pla01docuidentidadnro: '34567890',
+
+      pla01apepaterno: 'Ramos',
+      pla01apematerno: 'Flores',
+      pla01nombre1: 'Carlos',
+      pla01nombre2: '',
+      pla01direccion: 'Av. La Paz 143',
+      pla01fechanacimiento: new Date(1980, 0, 13),
+      pla01telefono: '987654123',
+      pla01fechaingreso: new Date(2022, 0, 13),
+      pla01centrocostocod: '',
+
+      //ocultos
+
+      pla01fechacese: null as unknown as Date,
+      pla01sexo: 'M',
+      pla01estado: 'A',
+
+      pla01puestocod: '',
+      pla01ctaremunbancocod: '',
+      pla01ctaremunumero: '',
+      pla01ctaremunmoneda: '',
+
+      // Reg laboral codigo y descripcion
+      pla01trdatoslabregimenlaboral: '01',
+      labregimenlaboraldes: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728',
+
+      // Descripcion tipo documento
+      tipdocdesc: 'DOC. NACIONAL DE IDENTIDAD',
+
+      remuneraciones: []
+    }
