@@ -183,7 +183,7 @@ export class ConceptoComponent  implements OnInit{
             this.messageService,
             'error',
             'Error',
-            'Error al cargar regimenes pensionarios'
+            'Error al cargar conceptos'
           );
         },
       });
