@@ -6,3 +6,7 @@ export interface Asistencia{
     pla02utilidad: number;
     pla02gratificacion: number;
 }
+
+export interface Inasistencia{
+    
+}

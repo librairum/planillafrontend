@@ -1,106 +1,129 @@
-<p-toast></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="1000"></p-confirmDialog>
+<div class="p-1 sm:p-6 lg:p-8 min-h-screen">
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
 
-<p-panel header="Asistencia personal" styleClass="main-asistencia-panel py-2" *ngIf="isMenuOpen">
+    <div *ngIf="isMenuOpen" class="max-w-7xl mx-auto">
 
-    <div class="periodo-select-row mb-4"> 
-        <div class="p-field">
-            <label for="periodoPago" class="block mb-1 text-sm font-bold text-gray-700">Periodo Pago:</label>
-            <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
-                optionValue="value" placeholder="Seleccione un periodo" [style]="{'width':'200px'}"
-                (onChange)="loadTrabajadores()" styleClass="p-inputtext-sm" appendTo="body">
-            </p-dropdown>
-        </div>
-    </div>
+        <p-card header="Asistencia de Personal" styleClass="shadow-xl rounded-lg">
 
-    <p-toolbar styleClass="custom-toolbar"> 
-        <ng-template pTemplate="left">
-            <div class="toolbar-group"> 
-                <button pButton pRipple icon="pi pi-save" class="p-button-success toolbar-button"
-                    (click)="guardar()" pTooltip="Guardar Cambios"></button>
-                <button pButton pRipple icon="pi pi-times" class="p-button-warning toolbar-button"
-                    (click)="cancelar()" pTooltip="Cancelar y Cerrar Menú"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-danger toolbar-button"
-                    (click)="eliminar()" pTooltip="Eliminar Asistencia del Empleado Seleccionado"
-                    [disabled]="!selectedTrabajador"></button>
-                <button pButton pRipple icon="pi pi-eye" class="p-button-info toolbar-button"
-                    (click)="vistaPrevia()" pTooltip="Vista Previa"></button>
+
+            <p-toolbar styleClass="mb-4 p-3 rounded-lg bg-white shadow-sm border-1 border-gray-200">
+                <div class="p-toolbar-group-start flex flex-wrap gap-3">
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-sm"
+                        (click)="eliminarEmpleado()" pTooltip="Eliminar empleado"></button>
+
+                    <button pButton pRipple icon="pi pi-save" class="p-button-success p-button-sm" (click)="guardar()"
+                        pTooltip="Guardar"></button>
+
+                    <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"
+                        (click)="cancelar()" pTooltip="Cancelar y cerrar la vista"></button>
+
+                    <button pButton pRipple icon="pi pi-eye" class="p-button-info p-button-sm" (click)="vistaPrevia()"
+                        pTooltip="Vista previa"></button>
+                </div>
+
+                <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
+                    <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
+
+                    <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
+                        optionValue="value" placeholder="Seleccionar Período" styleClass="w-64"
+                        (onChange)="loadEmpleados()" class="mr-2 dropdown-periodo-fijo">
+                    </p-dropdown>
+
+                </div>
+
+            </p-toolbar>
+
+            <div class="table-controls-header flex justify-content-end align-items-center"
+                style="padding: 0.8rem 1rem;">
+                <div class="flex align-items-center">
+                    <label for="rowsPerPageTable"
+                        style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por página:</label>
+                    <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage"
+                        appendTo="body" placeholder="Seleccionar"
+                        styleClass="p-button-sm w-12 text-center"></p-dropdown>
+                </div>
             </div>
-        </ng-template>
-    </p-toolbar>
-    
-    <div class="table-pagination-header"> 
-        <div class="flex align-items-center">
-            <label for="rowsPerPageTable" class="text-sm font-semibold mr-2 text-gray-700">Filas por página:</label>
-            <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
-                placeholder="Sel." styleClass="p-button-sm w-full text-center rows-per-page-dropdown"></p-dropdown>
-        </div>
+
+
+            <p-table #dt 
+                [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [first]="first"
+                [totalRecords]="totalRecords" (onPage)="onPageChange($event)" responsiveLayout="stack"
+                dataKey="pla01empleadocod" selectionMode="single" 
+                [(selection)]="selectedEmpleado" styleClass="p-datatable-gridlines p-datatable-sm shadow-md rounded-lg overflow-hidden">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="w-1 text-center">Código</th>
+                        <th class="w-1 text-center">DNI / Identidad</th>
+                        <th class="w-4 text-center">Apellidos y Nombres</th>
+                        <th class="w-1 text-center">F. Ingreso</th>
+                        <th class="w-1 text-center">Estado</th>
+                        <th class="w-1 text-center">
+                            {{ getDynamicColumnLabel() }}
+                        </th>
+                        <th class="w-1 text-center">Inasistencias</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-empleado> <tr [pSelectableRow]="empleado">
+                        <td class="text-center">{{ empleado.pla01empleadocod }}</td>
+                        <td class="text-center">{{ empleado.idIdentidad }}</td>
+                        <td class="text-center">{{ empleado.apellidosynombres }}</td>
+                        <td class="text-center">{{ empleado.pla01fechaingreso | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center">
+                            {{ getEstadoLabel(empleado.pla01estado) }}
+                        </td>
+
+                        <td class="w-24 text-center p-0">
+                            <div class="flex justify-center w-full">
+                                <input pInputText type="number" [min]="0" step="any" [max]="360"
+                                    class="w-16 border border-gray-300 rounded input-dias-asistencia"
+                                    *ngIf="selectedPeriodoPago === 'UTILIDADES'" [(ngModel)]="empleado.pla02utilidad"
+                                    (ngModelChange)="empleado.pla02utilidad = $event > 360 ? 360 : $event < 0 ? 0 : $event" />
+
+                                <input pInputText type="number" [min]="0" step="any" [max]="180"
+                                    class="w-16 border border-gray-300 rounded input-dias-asistencia"
+                                    *ngIf="selectedPeriodoPago === 'GRATIFICACIONES'"
+                                    [(ngModel)]="empleado.pla02gratificacion"
+                                    (ngModelChange)="empleado.pla02gratificacion = $event > 180 ? 180 : $event < 0 ? 0 : $event" />
+                            </div>
+                        </td>
+
+                        <td class="text-center">
+                            <button pButton pRipple icon="pi pi-user"
+                                class="p-button-rounded p-button-info p-button-text p-button-sm"
+                                pTooltip="Ver/Registrar Inasistencias" (click)="openInasistenciaDialog(empleado)">
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </p-card>
     </div>
 
-    <div class="table-container">
-        <p-table #dt [value]="trabajadores" [rows]="rowsPerPage" 
-            [globalFilterFields]="['pla01empleadocod', 'idIdentidad', 'apellidosynombres', 'pla01estado']" [filterDelay]="0"
-            [(selection)]="selectedTrabajador" selectionMode="single" dataKey="pla01empleadocod"
-            styleClass="p-datatable-gridlines p-datatable-sm w-full custom-table" responsiveLayout="scroll" [first]="first">
-            
-            <ng-template pTemplate="header">
-                <tr>
-                    <th class="header-cell" style="width: 2%; text-align: center;">Código</th>
-                    <th class="header-cell" style="width: 2%; text-align: center;">IdentidadNro</th>
-                    <th class="header-cell" style="width: 7%; text-align: center;">Apellidos y Nombres</th>
-                    <th class="header-cell" style="width: 2%; text-align: center;">Fecha Ingreso</th>
-                    <th class="header-cell" style="width: 1%; text-align: center;">Estado</th>
+    <div *ngIf="!isMenuOpen" class="flex items-center justify-center h-screen -mt-20">
+        <p-card header="Vista Cerrada" styleClass="shadow-lg bg-white">
+            <p class="text-lg text-gray-700">La vista ha sido cerrada. Para volver a cargarla, presione el botón.</p>
+            <button pButton label="Abrir Menú de Asistencia" icon="pi pi-folder-open" class="mt-4"
+                (click)="isMenuOpen = true"></button>
+        </p-card>
+    </div>
+</div>
 
-                    <th class="header-cell text-center" style="width: 2%;">
-                        {{ getDynamicColumnLabel() }}
-                    </th>
-                    <th class="header-cell" style="width: 1%;">Acciones</th>
-                </tr>
-            </ng-template>
-            
-            <ng-template pTemplate="body" let-trabajador>
-                <tr [pSelectableRow]="trabajador">
-                    <td class="text-center">{{ trabajador.pla01empleadocod }}</td>
-                    <td class="text-center">{{ trabajador.idIdentidad }}</td>
-                    <td class="text-center">{{ trabajador.apellidosynombres }}</td>
-                    <td class="text-center">{{ trabajador.pla01fechaingreso | date:'dd/MM/yyyy' }}</td>
-                    
-                    <td class="text-center">
-                        {{ getEstadoLabel(trabajador.pla01estado) }}
-                    </td>
+<p-dialog header="Inasistencia de Personal" [(visible)]="displayInasistenciaDialog" [modal]="true" [maximizable]="true"
+    [style]="{ width: '70vw', minWidth: '300px' }" [draggable]="true" [resizable]="true">
+    <div *ngIf="selectedInasistenciaEmpleado"> <h3 class="text-lg font-semibold mb-3">Empleado: {{ selectedInasistenciaEmpleado.apellidosynombres }} ({{
+            selectedInasistenciaEmpleado.pla01empleadocod }})</h3>
 
-                    <td class="text-center">
-                        <ng-container *ngIf="selectedPeriodoPago === 'UTILIDADES'">
-                            {{ trabajador.pla02utilidad }}
-                        </ng-container>
-                        <ng-container *ngIf="selectedPeriodoPago === 'GRATIFICACIONES'">
-                            {{ trabajador.pla02gratificacion }}
-                        </ng-container>
-                    </td>
-
-                    <td class="text-center">
-                        <button pButton pRipple icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-text p-button-sm"
-                            pTooltip="Ver Detalles"></button>
-                    </td>
-                </tr>
-            </ng-template>
-            
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="7" class="text-center p-4 empty-message">No se encontraron trabajadores.</td>
-                </tr>
-            </ng-template>
-        </p-table>
+        <p-panel header="Detalle de Inasistencias del Personal" [style]="{'margin-top':'10px'}">
+            <p>Aquí irá la tabla o formulario para registrar/editar las inasistencias (Faltas, Licencias, etc.).</p>
+        </p-panel>
     </div>
 
-    <p-paginator [rows]="rowsPerPage" [totalRecords]="totalRecords" [first]="first"
-        (onPageChange)="onPageChange($event)" styleClass="custom-paginator-external"></p-paginator>
-
-</p-panel>
-
-<p-card header="Asistencia Personal" *ngIf="!isMenuOpen">
-    <div class="text-center p-4">
-        <p class="text-lg">La ventana de Asistencia ha sido cerrada por la acción de cancelar.</p>
-        <button pButton label="Abrir Menú de Asistencia" icon="pi pi-folder-open" class="mt-4" (click)="isMenuOpen = true"></button>
-    </div>
-</p-card>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cerrar" icon="pi pi-times" (click)="displayInasistenciaDialog=false"
+            class="p-button-secondary"></button>
+    </ng-template>
+</p-dialog>

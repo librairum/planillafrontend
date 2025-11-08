@@ -1,125 +1,33 @@
-::ng-deep .custom-toolbar {
-    background-color: #f8f9fa !important;
-    border-bottom: 2px solid #e5e7eb !important;
-    padding: 1rem 1.5rem !important;
-    border-radius: 0.25rem !important; 
+
+:host ::ng-deep .input-dias-asistencia .p-inputtext {
+    padding: 0.2rem 0.4rem !important;
+    text-align: center !important; 
+    font-size: 0.8rem !important; 
+    line-height: 1.5 !important;  
 }
 
-.toolbar-group {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    border-radius: 0.75rem; 
+:host ::ng-deep .input-dias-asistencia input {
+    text-align: center !important;
 }
 
-.p-toolbar {
-    background-color: transparent !important;
-    padding: 0 !important;
-    border-radius: 0.75rem; 
+:host ::ng-deep .input-dias-asistencia {
+    display: block; 
+    margin-left: auto !important;
+    margin-right: auto !important;  
 }
 
-::ng-deep .toolbar-button {
-    width: 40px !important;
-    height: 40px !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 8px !important;
-    transition: all 0.2s ease !important;
+:host ::ng-deep .input-dias-asistencia .p-inputtext {
+    padding: 0.2rem 0.5rem !important;
+    text-align: center !important; 
+    font-size: 0.8rem !important; 
 }
 
-::ng-deep .toolbar-button:hover:not(:disabled),
-::ng-deep .toolbar-button-text:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 253, 253, 0.15);
+:host ::ng-deep .dropdown-periodo-fijo {
+    width: 16rem !important; 
+    min-width: 16rem !important;
+    max-width: 16rem !important; 
 }
 
-::ng-deep .toolbar-button-text {
-    padding: 0.75rem 1.25rem !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    transition: all 0.2s ease !important;
-}
-
-::ng-deep .toolbar-button:disabled,
-::ng-deep .toolbar-button-text:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-
-/* ================================
-  CONTENEDOR PRINCIPAL
-================================ */
-.asistencia-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-    gap: 1.5rem;
-    background-color: #f3f4f6;
-    padding: 1.5rem 1rem;
-    box-sizing: border-box;
-}
-
-.content-card-inner {
-    background-color: white;
-    border-radius: 1rem; /* rounded-xl */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
-    padding: 1.5rem;
-    flex-grow: 1; 
-}
-
-/* ================================
-  TABLA Y CONTROLES
-================================ */
-
-.controls-header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1.5rem;
-}
-
-.periodo-select-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-/* Cabecera de tabla con control de filas por página */
-.table-pagination-header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0.8rem 0; /* Padding sutil para separar de la tabla */
-}
-
-/* Fila seleccionada (específico de este componente) */
-.p-datatable .p-datatable-tbody > tr.p-highlight {
-    background-color: #c7d2fe !important; /* bg-indigo-200 */
-}
-
-/* Estilos para el encabezado de la tabla (usando clases PrimeNG) */
-.custom-table .p-datatable-thead > tr > th.header-cell {
-    background-color: #e5e7eb; /* Gris ligeramente más oscuro */
-    color: #374151; /* Texto oscuro */
-    font-weight: 600;
-    border-color: #d1d5db; /* Borde más claro */
-    padding: 0.75rem 1rem;
-}
-
-/* Estilos para el cuerpo de la tabla */
-.custom-table .p-datatable-tbody > tr > td {
-    border-color: #f3f4f6; /* Borde muy claro */
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem; 
-}
-
-/* ================================
-  RESPONSIVE ESPECÍFICO
-================================ */
-@media screen and (max-width: 1024px) {
-    .toolbar-group {
-        flex-wrap: wrap;
-    }
+:host ::ng-deep .dropdown-periodo-fijo .p-dropdown {
+    width: 100% !important; 
 }

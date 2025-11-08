@@ -244,7 +244,7 @@
 ::ng-deep .p-calendar input {
   border-radius: 4px !important;
   border: 1px solid #d1d5db !important;
-  padding: 0rem 0.5rem !important;
+  /*padding: 0.5rem 0.5rem !important;*/
   transition: all 0.2s;
 }
 
