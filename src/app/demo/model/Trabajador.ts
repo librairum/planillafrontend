@@ -40,6 +40,7 @@ export interface Trabajador {
   // tablas de seccion Principales
   remuneraciones?: Remuneracion[];
   regimenespensionarios?: RegimenPensionario[];
+  periodoslaborales?: PeriodoLaboral[];
 
 }
 
@@ -56,6 +57,13 @@ export interface RegimenPensionario {
   pla31fechaini: Date;
   pla31fechafin: Date;
   pla31flagcomisionmixta: string; // 0 o 1
+}
+
+export interface PeriodoLaboral {
+  pla30codigo: string; //necesario para editmode row
+  pla30fechaini: Date;
+  pla30fechafin: Date;
+  desmotivocese: string;
 }
 
 

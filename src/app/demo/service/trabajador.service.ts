@@ -184,7 +184,21 @@ const trabajador1: Trabajador = {
         pla31fechaini: new Date(2005, 7, 16),
         pla31fechafin: new Date(2025, 0, 15),
         pla31flagcomisionmixta: '1'
-      }]
+      }],
+
+      periodoslaborales: [{
+        pla30codigo: '0001', //falta crear un metodo para obtener codigos
+        pla30fechaini: new Date(2020, 0, 15),
+        pla30fechafin: new Date(2021, 0, 15),
+        desmotivocese: 'Renuncia voluntaria'
+      },
+      {
+        pla30codigo: '0002', //falta crear un metodo para obtener codigos
+        pla30fechaini: new Date(2020, 0, 15),
+        pla30fechafin: new Date(2021, 0, 15),
+        desmotivocese: 'Otra renuncia voluntaria'
+      }
+      ]
     }
 
 const trabajador2: Trabajador = {

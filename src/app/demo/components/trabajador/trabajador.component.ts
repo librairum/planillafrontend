@@ -3,10 +3,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormBuilder, FormGroup, FormArray, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormsModule, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { TableModule, EditableRow } from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -23,7 +23,10 @@ import { TabViewModule } from 'primeng/tabview';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-import { Trabajador } from '../../model/Trabajador';
+import { PeriodoLaboral, RegimenPensionario, Trabajador } from '../../model/Trabajador';
+
+
+import { PeriodosLaboralesComponent } from './periodos-laborales/periodos-laborales.component';
 
 
 
@@ -51,27 +54,24 @@ import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
       RadioButtonModule,
       CalendarModule,
       TabViewModule,
+      PeriodosLaboralesComponent //para que pueda ser reconocido
     ],
   templateUrl: './trabajador.component.html',
   styleUrls: ['./trabajador.component.css'],
-  providers: [MessageService, ConfirmationService, EditableRow],
+  providers: [MessageService, ConfirmationService],
 })
 export class TrabajadorComponent implements OnInit{
 
   trabajadorForm: FormGroup = this.fb.group({}); //Quitar el = luego
+
+  //remuneraciones: FormArray = this.fb.array([]); // FormArray para Remuneraciones
+  //regimenespensionarios: FormArray = this.fb.array([]); // FormArray para Regímenes Pensionarios
+  //periodoslaborales: FormArray = this.fb.array([]); // FormArray para Períodos Laborales
+
   trabajadorList: Trabajador[] = []; //Quitar el = luego
 
 
 
-  /*isEditing: boolean = false;
-  editingRowIndex: number | null = null;
-  editingConcepto: Concepto | null = null;
-  editingRows: { [s: string]: boolean } = {};
-  editingData: any = {};
-  isNew: boolean = false;
-  clonedConceptos: { [s: string]: Concepto } = {};
-  items: any[] = [];
-  isEditingAnyRow: boolean = false;*/
 
   rowsPerPage: number = 10; // Numero de filas por página
 
@@ -82,10 +82,15 @@ export class TrabajadorComponent implements OnInit{
   isNewRecord: boolean = false;
 
   // Diálogos de búsqueda en editar/crear trabajador
+
+  displayBusquedaRegLaboralDialog: boolean = false;
+
   displayTipoCalculoDialog: boolean = false;
   displayConceptoTipoDialog: boolean = false;
   displaySubTipoDialog: boolean = false;
   displayConceptoSunatDialog: boolean = false;
+
+
 
   constructor(
     private trabajadorService: TrabajadorService,
@@ -138,7 +143,13 @@ export class TrabajadorComponent implements OnInit{
 
       remuneraciones: this.fb.array([]),
       regimenespensionarios: this.fb.array([]),
-    })
+      periodoslaborales: this.fb.array([]),
+    });
+
+    // Inicializa los datos específicos
+    //this.remuneraciones = this.fb.array([]);
+    //this.regimenespensionarios = this.fb.array([]);
+    //this.periodoslaborales = this.fb.array([]);
   }
 
   cargarTrabajadores(): void {
@@ -165,7 +176,7 @@ export class TrabajadorComponent implements OnInit{
   console.log('Regímenes Pensionarios:', this.regimenespensionarios.value);
 }
 
-  cargarRegimenesPensionarios(regimenes: any[]) {
+  cargarRegimenesPensionarios(regimenes: RegimenPensionario[]) {
     const regimenArray = this.fb.array(
       regimenes.map((regimen) =>
         this.fb.group({
@@ -185,9 +196,29 @@ export class TrabajadorComponent implements OnInit{
     return this.trabajadorForm.get('regimenespensionarios') as FormArray;
   }
 
+  cargarPeriodosLaborales(periodos: PeriodoLaboral[]) {
+    const periodosArray = this.fb.array(
+      periodos.map((periodo) =>
+        this.fb.group({
+          pla30codigo: [periodo.pla30codigo],
+          pla30fechaini: [periodo.pla30fechaini ? new Date(periodo.pla30fechaini) : null],
+          pla30fechafin: [periodo.pla30fechafin ? new Date(periodo.pla30fechafin) : null],
+          desmotivocese: [periodo.desmotivocese],
+        })
+      )
+    );
+
+    this.trabajadorForm.setControl('periodoslaborales', periodosArray);
+  }
+
+  get periodoslaborales(): FormArray {
+    return this.trabajadorForm.get('periodoslaborales') as FormArray;
+  }
+
 
 
     abrirDetalleTrabajador(trabajador: Trabajador | null, modoVisualizacion: boolean = false) {
+      console.log('Datos del trabajador:', trabajador);
       if (trabajador) {
         // Si es edición o visualización, carga los datos en el formulario
         const raw = {
@@ -227,8 +258,20 @@ export class TrabajadorComponent implements OnInit{
           )
         );
 
+        const periodosArray = this.fb.array(
+          (trabajador.periodoslaborales ?? []).map((periodo) =>
+            this.fb.group({
+              pla30codigo: [periodo.pla30codigo],
+              pla30fechaini: [periodo.pla30fechaini ? new Date(periodo.pla30fechaini) : null],
+              pla30fechafin: [periodo.pla30fechafin ? new Date(periodo.pla30fechafin) : null],
+              desmotivocese: [periodo.desmotivocese],
+            })
+          )
+        );
+
         this.trabajadorForm.setControl('regimenespensionarios', regimenArray);
         this.trabajadorForm.setControl('remuneraciones', remuneracionArray);
+        this.trabajadorForm.setControl('periodoslaborales', periodosArray);
 
       } else {
         // Si es nuevo, resetea el formulario con valores por defecto
@@ -259,6 +302,7 @@ export class TrabajadorComponent implements OnInit{
         // Inicializar las listas vacías
         this.trabajadorForm.setControl('regimenespensionarios', this.fb.array([]));
         this.trabajadorForm.setControl('remuneraciones', this.fb.array([]));
+        this.trabajadorForm.setControl('periodoslaborales', this.fb.array([]));
       }
 
       this.esModoVisualizacion = modoVisualizacion;
@@ -381,10 +425,27 @@ export class TrabajadorComponent implements OnInit{
     }
 
 
+    // Búsquedas modal para regimen laboral
 
+    regimenesLaborales: { codigo: string; descripcion: string }[] = [
+      { codigo: '01', descripcion: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N°. 728' },
+      { codigo: '02', descripcion: 'PÚBLICO GENERAL -DECRETO LEGISLATIVO N°. 728' },
+      { codigo: '03', descripcion: 'PROFESORADO - LEY N°. 24029' },
+      { codigo: '04', descripcion: 'MAGISTERIO - LEY N°. 29062  ' },
+    ];
 
     abrirBusquedaRegLaboral() {
+      if (!this.esModoVisualizacion) {
+        this.displayBusquedaRegLaboralDialog = true; // Muestra el modal
+      }
+    }
 
+    seleccionarRegimenLaboral(regimen: { codigo: string; descripcion: string }) {
+      this.trabajadorForm.patchValue({
+        pla01trdatoslabregimenlaboral: regimen.codigo,
+        labregimenlaboraldes: regimen.descripcion
+      });
+      this.displayBusquedaRegLaboralDialog = false; // Cierra el modal
     }
 
     abrirBusquedaTipoDocumento() {
@@ -406,7 +467,6 @@ export class TrabajadorComponent implements OnInit{
     eliminarRemuneracion() {
 
     }
-
 
 
 

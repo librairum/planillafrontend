@@ -55,17 +55,14 @@ import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
 export class ParametrosGeneralComponent implements OnInit {
   parametroGeneralForm: FormGroup = this.fb.group({}); //Quitar el = luego
   parametroGeneralList: ParametroGeneral[] = []; //Quitar el = luego
+
   isEditing: boolean = false;
-  editingRowIndex: number | null = null;
   editingParametroGeneral: ParametroGeneral | null = null;
-  editingRows: { [s: string]: boolean } = {};
-  editingData: any = {};
-  displayDialog: boolean = false;
   isNew: boolean = false;
-  clonedParametrosGenerales: { [s: string]: ParametroGeneral } = {};
-  items: any[] = [];
   isEditingAnyRow: boolean = false;
+
   rowsPerPage: number = 10; // Numero de filas por página
+  displayDialog: boolean = false;
 
   constructor(
     private parametroGeneralService: ParametroGeneralService,
