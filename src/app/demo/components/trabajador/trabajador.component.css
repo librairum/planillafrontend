@@ -1,1 +1,26 @@
 
+.grid {
+  display: grid;
+  gap: 1rem; /* Espaciado entre elementos */
+}
+
+.col-span-1 {
+  grid-column: span 1; /* Ocupa una columna */
+}
+
+.col-span-2 {
+  grid-column: span 2; /* Ocupa dos columnas */
+}
+
+input, p-calendar {
+  height: 2.5rem; /* Ajusta la altura de los campos */
+}
+
+.flex {
+  display: flex;
+  gap: 0.5rem; /* Espaciado entre elementos flexibles */
+}
+
+.align-items-center {
+  align-items: center;
+}

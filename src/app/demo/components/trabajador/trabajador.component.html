@@ -93,93 +93,80 @@
 [draggable]="false"
 [resizable]="false"
 [closable]="false">
+
   <form [formGroup]="trabajadorForm">
     <!-- Detalles superiores -->
-    <div class="flex flex-column gap-3 mb-3">
 
-      <!-- Fila 1 -->
-      <div class="flex gap-3">
+    <div class="grid gap-3 mb-3 mt-3" style="grid-template-columns: repeat(5, 1fr); align-items: center;">
+      <!-- Código -->
+      <div class="col-span-1">
+        <label>Código :</label>
+        <input type="text" pInputText formControlName="pla01empleadocod" placeholder="Código" class="w-full" readonly />
+      </div>
 
-        <!-- Codigo -->
-        <div class="flex-1">
-          <label>Código</label>
-          <input type="text" pInputText formControlName="pla01empleadocod" placeholder="Código" class="w-full" readonly label="Código"/>
-        </div>
-
-        <!-- Doc.Tipo -->
-        <div class="flex-2">
-          <label>Doc.Tipo</label>
-          <div class="flex align-items-center gap-2">
-            <input type="text" pInputText formControlName="pla01docuidentidadtipo" readonly maxlength="2" style="width: 60px;"/>
-            <input type="text" pInputText formControlName="tipdocdesc" readonly class="w-full"/>
-            <button pButton type="button" icon="pi pi-search" class="p-button-sm"
-            [disabled]="esModoVisualizacion" (click)="abrirBusquedaTipoDocumento()"></button>
-          </div>
-        </div>
-
-        <!-- Doc.Nro -->
-        <div class="flex-1">
-          <label>Doc.Nro :</label>
-          <input type="text" pInputText formControlName="pla01docuidentidadnro" [disabled]="true" class="w-full" />
+      <!-- Doc.Tipo -->
+      <div class="col-span-2">
+        <label>Doc.Tipo :</label>
+        <div class="flex align-items-center gap-2">
+          <input type="text" pInputText formControlName="pla01docuidentidadtipo" readonly maxlength="2" style="width: 60px;" />
+          <input type="text" pInputText formControlName="tipdocdesc" readonly class="w-full" />
+          <button pButton type="button" icon="pi pi-search" class="p-button-sm" [disabled]="esModoVisualizacion" (click)="abrirBusquedaTipoDocumento()"></button>
         </div>
       </div>
 
-      <!-- Fila 2 -->
-      <div class="flex gap-3">
-        <!-- Apellido Paterno -->
-        <div class="flex-1">
-          <label>Ape.Paterno :</label>
-          <input type="text" pInputText formControlName="pla01apepaterno" class="w-full" />
-        </div>
-
-        <!-- Apellido Materno -->
-        <div class="flex-1">
-          <label>Ape.Materno :</label>
-          <input type="text" pInputText formControlName="pla01apematerno" class="w-full" />
-        </div>
-
-        <!-- Nombres -->
-        <div class="flex-2">
-          <label>Nombres :</label>
-          <input type="text" pInputText formControlName="pla01nombre1" class="w-full" />
-        </div>
-
-        <!-- Fecha Nacimiento -->
-        <div class="flex-1 mt-4">
-          <label>Fec.Nac :</label>
-          <p-calendar formControlName="pla01fechanacimiento" dateFormat="dd/mm/yy" class="w-full"></p-calendar>
-        </div>
-
-        <!-- Sexo -->
-        <div class="flex-1">
-          <label>Sexo :</label>
-          <div class="flex gap-2" style="height: 2.5rem; display: flex; align-items: center;">
-            <p-radioButton formControlName="pla01sexo" label="M" [value]="'M'"></p-radioButton>
-            <p-radioButton formControlName="pla01sexo" label="F" [value]="'F'"></p-radioButton>
-          </div>
-        </div>
-
+      <!-- Doc.Nro -->
+      <div class="col-span-1">
+        <label>Doc.Nro :</label>
+        <input type="text" pInputText formControlName="pla01docuidentidadnro" [disabled]="true" class="w-full" />
       </div>
 
-      <!-- Fila 3 -->
-      <div class="flex gap-3">
+      <div class="col-span-1"></div>
 
-        <!-- Régimen Laboral -->
-        <div class="flex-1">
-          <label>Reg.Laboral :</label>
-          <!--<input type="text" pInputText formControlName="pla01regimenlaboral" [disabled]="true" class="w-full" />-->
-          <div class="flex align-items-center gap-2">
-            <input type="text" pInputText formControlName="pla01trdatoslabregimenlaboral"
-            readonly maxlength="2" style="width: 60px" />
-            <input type="text" pInputText formControlName="labregimenlaboraldes"
-            readonly class="w-full"/>
-            <button pButton type="button" icon="pi pi-search" class="p-button-sm"
-            [disabled]="esModoVisualizacion" (click)="abrirBusquedaRegLaboral()"></button>
-          </div>
+      <!-- Apellido Paterno -->
+      <div class="col-span-1">
+        <label>Ape.Paterno :</label>
+        <input type="text" pInputText formControlName="pla01apepaterno" class="w-full" />
+      </div>
+
+      <!-- Apellido Materno -->
+      <div class="col-span-1">
+        <label>Ape.Materno :</label>
+        <input type="text" pInputText formControlName="pla01apematerno" class="w-full" />
+      </div>
+
+      <!-- Nombres -->
+      <div class="col-span-1">
+        <label>Nombres :</label>
+        <input type="text" pInputText formControlName="pla01nombre1" class="w-full" />
+      </div>
+
+      <!-- Fecha Nacimiento -->
+      <div class="col-span-1 mt-4">
+        <label>Fec.Nac :</label>
+        <p-calendar formControlName="pla01fechanacimiento" dateFormat="dd/mm/yy" class="w-full"></p-calendar>
+      </div>
+
+      <!-- Sexo -->
+      <div class="col-span-1">
+        <label>Sexo :</label>
+        <div class="flex gap-2" style="height: 2.5rem; display: flex; align-items: center;">
+          <p-radioButton formControlName="pla01sexo" label="M" [value]="'M'"></p-radioButton>
+          <p-radioButton formControlName="pla01sexo" label="F" [value]="'F'"></p-radioButton>
+        </div>
+      </div>
+
+      <!-- Régimen Laboral -->
+      <div class="col-span-2">
+        <label>Reg.Laboral :</label>
+        <div class="flex align-items-center gap-2">
+          <input type="text" pInputText formControlName="pla01trdatoslabregimenlaboral" readonly maxlength="2" style="width: 60px;" />
+          <input type="text" pInputText formControlName="labregimenlaboraldes" readonly class="w-full" />
+          <button pButton type="button" icon="pi pi-search" class="p-button-sm" [disabled]="esModoVisualizacion" (click)="abrirBusquedaRegLaboral()"></button>
         </div>
       </div>
     </div>
-  </form>
+
+
 
     <!-- Sección cambiante -->
     <p-tabView>
@@ -239,11 +226,11 @@
                   </td>
                   <td>
                     <!--
-                    <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-sm" (click)="onRowEditInit(remuneracion)"></button>
+                      <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-sm" (click)="onRowEditInit(remuneracion)"></button>
                     <button pButton icon="pi pi-check" class="p-button-rounded p-button-text p-button-sm p-button-success" (click)="onRowEditSave(remuneracion, ri)"></button>
                     <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-sm p-button-danger" (click)="onRowEditCancel(remuneracion, ri)"></button>
                     <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-sm p-button-danger" (click)="eliminarRemuneracion(ri)"></button>
-                  -->
+                    -->
                   </td>
                 </tr>
               </ng-template>
@@ -252,67 +239,16 @@
 
           <div class="col-12">
             <!-- Tabla de Regímenes Pensionarios -->
-            <p-table [value]="regimenespensionarios.controls" editable="true" styleClass="p-datatable-sm">
-              <!-- Cabecera -->
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Código Régimen</th>
-                  <th>Descripción Régimen</th>
-                  <th>Número CUPSS</th>
-                  <th>Fecha Inicio</th>
-                  <th>Fecha Fin</th>
-                  <th>Comisión Mixta</th>
-                  <th>Acciones</th>
-                </tr>
-              </ng-template>
 
-              <!-- Cuerpo -->
-              <ng-template pTemplate="body" let-regimen let-ri="rowIndex">
-                <tr [formGroup]="regimen">
-                  <!-- Código Régimen -->
-                  <td>
-                    <input type="text" pInputText formControlName="pla31regpensionariocod" readonly class="cursor-pointer text-primary" />
-                  </td>
-
-                  <!-- Descripción Régimen -->
-                  <td>
-                    <input type="text" pInputText formControlName="desregpensionario" readonly />
-                  </td>
-
-                  <!-- Número CUPSS -->
-                  <td>
-                    <input type="text" pInputText formControlName="pla31regpensionariocupss" />
-                  </td>
-
-                  <!-- Fecha Inicio -->
-                  <td>
-                    <p-calendar formControlName="pla31fechaini" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
-                  </td>
-
-                  <!-- Fecha Fin -->
-                  <td>
-                    <p-calendar formControlName="pla31fechafin" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
-                  </td>
-
-                  <!-- Comisión Mixta -->
-                  <td>
-                    <p-checkbox formControlName="pla31flagcomisionmixta" [binary]="true" [trueValue]="1" [falseValue]="0"></p-checkbox>
-                  </td>
-
-                  <!-- Botones de acción -->
-                  <td>
-
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
           </div>
 
           <!-- Segunda fila, Periodos Laborales -->
           <div class="col-12">
             <app-periodos-laborales
-              [periodoslaborales]="periodoslaborales"
-              [esModoVisualizacion]="esModoVisualizacion">
+            [periodoslaborales]="periodoslaborales"
+            [esModoVisualizacion]="esModoVisualizacion"
+            (save)="guardarTrabajador()"
+            (cancel)="cerrarTrabajador()">
             </app-periodos-laborales>
           </div>
 
@@ -362,6 +298,7 @@
 
     </p-tabView>
 
+  </form>
 
 
   <ng-template pTemplate="footer">
@@ -377,9 +314,8 @@
 <!-- Modal para seleccionar régimen laboral -->
 
 <p-dialog [(visible)]="displayBusquedaRegLaboralDialog" [header]="'Búsqueda de Régimen Laboral'" [modal]="true"
-    [style]="{width: '50vw'}" [draggable]="false" [closable]="false" [resizable]="false">
-    <p-table [value]="regimenesLaborales" [paginator]="true"
-    [rows]="5" [scrollable]="true" responsiveLayout="scroll" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+    [style]="{width: '800px'}" [draggable]="false" [closable]="false" [resizable]="false">
+    <p-table [value]="regimenesLaborales" [scrollable]="true" scrollHeight="350px" selectionMode="single">
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 30%;">Código</th>
@@ -396,5 +332,29 @@
     <ng-template pTemplate="footer">
       <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
         (click)="displayBusquedaRegLaboralDialog = false"></button>
+    </ng-template>
+</p-dialog>
+
+<!-- Modal para seleccionar tipo de documento -->
+
+<p-dialog [(visible)]="displayBusquedaTipoDocumentoDialog" [header]="'Búsqueda de Tipo de Documento'" [modal]="true"
+    [style]="{width: '800px'}" [draggable]="false" [closable]="false" [resizable]="false">
+    <p-table [value]="tiposDocumentos" [scrollable]="true" scrollHeight="350px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30%;">Código</th>
+          <th style="width: 70%;">Descripción</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tipo>
+        <tr [pSelectableRow]="tipo" (click)="seleccionarTipoDocumento(tipo)" style="cursor: pointer">
+          <td>{{ tipo.codigo }}</td>
+          <td>{{ tipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayBusquedaTipoDocumentoDialog = false"></button>
     </ng-template>
 </p-dialog>

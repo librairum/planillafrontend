@@ -2,7 +2,7 @@
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, AbstractControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
@@ -47,6 +47,29 @@ export class PeriodosLaboralesComponent {
 
   @Input() periodoslaborales!: FormArray; // Recibe el FormArray desde el componente padre
   @Input() esModoVisualizacion: boolean = false; // Estado de visualización
+  @Output() save = new EventEmitter<void>(); // Emite evento al guardar
+  @Output() cancel = new EventEmitter<void>(); // Emite evento al cancelar
+
+  constructor(private fb: FormBuilder) {}
+
+  mostrarPeriodosLaborales(): void {
+    console.log(this.periodoslaborales.controls);
+  }
+
+  agregarPeriodoLaboral(): void {
+    this.periodoslaborales.push(
+      this.fb.group({
+        pla30codigo: [''],
+        pla30fechaini: [null],
+        pla30fechafin: [null],
+        desmotivocese: ['']
+      })
+    );
+  }
+
+  eliminarPeriodoLaboral(index: number): void {
+    this.periodoslaborales.removeAt(index);
+  }
 
   clonedPeriodosLaborales: { [key: number]: any } = {}; // Clona los datos originales de las filas
 
@@ -55,14 +78,11 @@ export class PeriodosLaboralesComponent {
   isNew: boolean = false;
   isEditingAnyRow: boolean = false; // Indica si alguna fila está en edición
 
-
   onRowEditInit(rowIndex: number): void {
     const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
-    this.clonedPeriodosLaborales[rowIndex] = { ...periodo.value }; // Clona los valores del FormGroup
+    this.clonedPeriodosLaborales[rowIndex] = { ...periodo.value }; // Clona los valores originales
     this.isEditingAnyRow = true; // Indica que hay una fila en edición
     this.editingPeriodoLaboral = { ...periodo.value }; // Guarda los valores de la fila en edición
-
-    console.log('Edición iniciada para el periodo laboral:', periodo.value);
 
     // Deshabilitar las demás filas
     this.periodoslaborales.controls.forEach((control, index) => {
@@ -71,7 +91,6 @@ export class PeriodosLaboralesComponent {
       }
     });
   }
-
 
   onRowEditSave(rowIndex: number): void {
     const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
@@ -102,4 +121,5 @@ export class PeriodosLaboralesComponent {
     // Habilitar todas las filas
     this.periodoslaborales.controls.forEach((control) => control.enable());
   }
+
 }

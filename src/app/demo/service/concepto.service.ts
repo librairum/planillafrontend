@@ -161,6 +161,8 @@ export class ConceptoService {
           return throwError(() => new Error(errorMessage));
       }
 
+
+
     public GetConceptos(): Observable<Concepto[]>
     {
           return new Observable<Concepto[]>(observer => {

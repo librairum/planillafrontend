@@ -47,12 +47,14 @@ export class TrabajadorService {
     trabajador3
   ]
 
-  public GenerarNuevoCodigoTrabajador(): string {
+      public GenerarNuevoCodigoTrabajador(): string {
         const codigos = this.trabajadorList.map(t => parseInt(t.pla01empleadocod, 10));
         const max = codigos.length > 0 ? Math.max(...codigos) : 0;
         const nuevoCodigo = (max + 1).toString().padStart(6, '0');
         return nuevoCodigo;
       }
+
+
 
       public GetTrabajadores(): Observable<Trabajador[]>
       {
@@ -61,6 +63,24 @@ export class TrabajadorService {
               observer.complete();
           });
         }
+
+
+      public GetTrabajadorById(idempresa: string, idtrabajador: string): Observable<Trabajador | null> {
+        const trabajador = this.trabajadorList.find(t =>
+          t.pla01empresacod === idempresa &&
+          t.pla01empleadocod === idtrabajador
+        );
+
+        return new Observable<Trabajador | null>(observer => {
+          if (trabajador) {
+            observer.next({ ...trabajador });
+          } else {
+            observer.next(null);
+          }
+          observer.complete();
+        });
+      }
+
   public CrearTrabajador(trabajador: Trabajador): Observable<any> {
             const existe = this.trabajadorList.some(t =>
                 t.pla01empresacod === trabajador.pla01empresacod &&

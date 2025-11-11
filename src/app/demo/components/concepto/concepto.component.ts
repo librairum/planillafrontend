@@ -80,6 +80,10 @@ export class ConceptoComponent  implements OnInit{
     displayConceptoTipoDialog: boolean = false;
     displaySubTipoDialog: boolean = false;
     displayConceptoSunatDialog: boolean = false;
+    displayConceptosEstandarDialog: boolean = false; // Controla la visibilidad del modal
+    conceptosEstandar: { codigo: string; descripcion: string }[] = []; // Lista de conceptos estándar
+
+
 
     // Datos de los catálogos
     tiposCalculo: TipoCalculo[] = [
@@ -116,6 +120,7 @@ export class ConceptoComponent  implements OnInit{
       { codigoSunat: '0106', descripcion: 'TRABAJO EN SOBRETIEMPO (HORAS EXT...' },
       { codigoSunat: '0107', descripcion: 'TRABAJO EN DÍA FERIADO O DÍA DE DES...' }
     ];
+
 
     constructor(
       private conceptoService: ConceptoService,
@@ -211,14 +216,10 @@ export class ConceptoComponent  implements OnInit{
           concepto[field] = checked ? 'S' : 'N';
         }
 
-      // Mostrar ayuda sobre el concepto
-      // Solo muestra un mensaje informativo como ejemplo
-      mostrarAyuda(concepto: Concepto) {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Ayuda del Concepto',
-          detail: `Información sobre el concepto: ${concepto.pla10conceptodesc}`
-        });
+      // Mostrar guia de ayuda para el concepto
+      mostrarAyuda(): void {
+        const pdfUrl = 'assets/pdf/guia-referencia.pdf'; // Ruta relativa al archivo PDF
+        window.open(pdfUrl, '_blank'); // Abre el archivo en una nueva ventana
       }
 
       abrirModalConcepto(concepto: Concepto | null, modoVisualizacion: boolean = false) {
@@ -346,8 +347,9 @@ export class ConceptoComponent  implements OnInit{
           ]
         });
 
-        this.displayDialog = true;
-        this.conceptoForm.enable();
+        // Abre el modal de conceptos estándar
+        this.abrirBusquedaConceptosEstandar();
+
       }
 
       crearConcepto() {
@@ -539,6 +541,29 @@ export class ConceptoComponent  implements OnInit{
           conceptosunatdesc: concepto.descripcion
         })
         this.displayConceptoSunatDialog = false;
+      }
+
+
+      // Buscar y seleccionar concepto estándar
+
+      abrirBusquedaConceptosEstandar(): void {
+        this.displayConceptosEstandarDialog = true;
+
+        // Simulación de carga de datos (puedes reemplazar esto con un servicio)
+        this.conceptosEstandar = [
+          { codigo: '1006', descripcion: 'Remuneración Básica' },
+          { codigo: '1011', descripcion: 'Asignación Familiar' },
+          { codigo: '1019', descripcion: 'Rem Adicional Trab Nocturno' },
+        ];
+      }
+
+      seleccionarConceptoEstandar(concepto: { codigo: string; descripcion: string }): void {
+        this.conceptoForm.patchValue({
+          pla10conceptopadrecod: concepto.codigo,
+        });
+
+        this.displayConceptosEstandarDialog = false; // Cierra el modal
+        this.displayDialog = true; // Abre el detalle del concepto
       }
 
 
