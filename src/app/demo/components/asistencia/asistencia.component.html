@@ -5,33 +5,25 @@
     <div *ngIf="isMenuOpen" class="max-w-7xl mx-auto">
 
         <p-card header="Asistencia de Personal" styleClass="shadow-xl rounded-lg">
-
-
             <p-toolbar styleClass="mb-4 p-3 rounded-lg bg-white shadow-sm border-1 border-gray-200">
                 <div class="p-toolbar-group-start flex flex-wrap gap-3">
                     <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-sm"
                         (click)="eliminarEmpleado()" pTooltip="Eliminar empleado"></button>
-
                     <button pButton pRipple icon="pi pi-save" class="p-button-success p-button-sm" (click)="guardar()"
                         pTooltip="Guardar"></button>
-
                     <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"
                         (click)="cancelar()" pTooltip="Cancelar y cerrar la vista"></button>
-
                     <button pButton pRipple icon="pi pi-eye" class="p-button-info p-button-sm" (click)="vistaPrevia()"
                         pTooltip="Vista previa"></button>
                 </div>
 
                 <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
                     <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
-
                     <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
                         optionValue="value" placeholder="Seleccionar Período" styleClass="w-64"
                         (onChange)="loadEmpleados()" class="mr-2 dropdown-periodo-fijo">
                     </p-dropdown>
-
                 </div>
-
             </p-toolbar>
 
             <div class="table-controls-header flex justify-content-end align-items-center"
@@ -45,36 +37,32 @@
                 </div>
             </div>
 
-
             <p-table #dt 
                 [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [first]="first"
                 [totalRecords]="totalRecords" (onPage)="onPageChange($event)" responsiveLayout="stack"
                 dataKey="pla01empleadocod" selectionMode="single" 
                 [(selection)]="selectedEmpleado" styleClass="p-datatable-gridlines p-datatable-sm shadow-md rounded-lg overflow-hidden">
-
+                
                 <ng-template pTemplate="header">
                     <tr>
                         <th class="w-1 text-center">Código</th>
-                        <th class="w-1 text-center">DNI / Identidad</th>
+                        <th class="w-1 text-center">Nro. Identidad</th>
                         <th class="w-4 text-center">Apellidos y Nombres</th>
-                        <th class="w-1 text-center">F. Ingreso</th>
+                        <th class="w-1 text-center">Fecha Ingreso</th>
                         <th class="w-1 text-center">Estado</th>
-                        <th class="w-1 text-center">
-                            {{ getDynamicColumnLabel() }}
-                        </th>
+                        <th class="w-1 text-center">{{ getDynamicColumnLabel() }}</th>
                         <th class="w-1 text-center">Inasistencias</th>
                     </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-empleado> <tr [pSelectableRow]="empleado">
+                <ng-template pTemplate="body" let-empleado>
+                    <tr [pSelectableRow]="empleado">
                         <td class="text-center">{{ empleado.pla01empleadocod }}</td>
                         <td class="text-center">{{ empleado.idIdentidad }}</td>
                         <td class="text-center">{{ empleado.apellidosynombres }}</td>
                         <td class="text-center">{{ empleado.pla01fechaingreso | date: 'dd/MM/yyyy' }}</td>
-                        <td class="text-center">
-                            {{ getEstadoLabel(empleado.pla01estado) }}
-                        </td>
-
+                        <td class="text-center">{{ getEstadoLabel(empleado.pla01estado) }}</td>
+                        
                         <td class="w-24 text-center p-0">
                             <div class="flex justify-center w-full">
                                 <input pInputText type="number" [min]="0" step="any" [max]="360"
@@ -98,7 +86,6 @@
                         </td>
                     </tr>
                 </ng-template>
-
             </p-table>
         </p-card>
     </div>
@@ -113,13 +100,123 @@
 </div>
 
 <p-dialog header="Inasistencia de Personal" [(visible)]="displayInasistenciaDialog" [modal]="true" [maximizable]="true"
-    [style]="{ width: '70vw', minWidth: '300px' }" [draggable]="true" [resizable]="true">
-    <div *ngIf="selectedInasistenciaEmpleado"> <h3 class="text-lg font-semibold mb-3">Empleado: {{ selectedInasistenciaEmpleado.apellidosynombres }} ({{
-            selectedInasistenciaEmpleado.pla01empleadocod }})</h3>
+    [style]="{ width: '80vw', minWidth: '400px' }" [draggable]="true" [resizable]="true">
+    <div *ngIf="selectedInasistenciaEmpleado">
+        <h3 class="text-lg font-semibold mb-3">Empleado: {{ selectedInasistenciaEmpleado.apellidosynombres }} ({{ selectedInasistenciaEmpleado.pla01empleadocod }})</h3>
 
-        <p-panel header="Detalle de Inasistencias del Personal" [style]="{'margin-top':'10px'}">
-            <p>Aquí irá la tabla o formulario para registrar/editar las inasistencias (Faltas, Licencias, etc.).</p>
-        </p-panel>
+        <p-toolbar styleClass="mb-3 p-2 border-1 border-gray-200 rounded-md">
+            <div class="p-toolbar-group-start">
+                <button pButton pRipple icon="pi pi-plus" label="Añadir Inasistencia" (click)="addInasistencia()" [disabled]="isEditingInasistencia"
+                    class="p-button-info p-button-sm"></button>
+            </div>
+        </p-toolbar>
+
+        <p-table [value]="inasistencias" [rowHover]="true" dataKey="pla03tiposuspension" 
+                 [(selection)]="selectedInasistencia" selectionMode="single"
+                 styleClass="p-datatable-gridlines p-datatable-sm shadow-md">
+            
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="w-1 text-center">Tipo Suspensión</th>
+                    <th class="w-4 text-center">Descripción</th>
+                    <th class="w-2 text-center">Fecha Inicio</th>
+                    <th class="w-2 text-center">Fecha Fin</th>
+                    <th class="w-1 text-center">Días No Trabajado</th>
+                    <th class="w-1 text-center">Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-inasistencia let-rowIndex="rowIndex">
+                <tr>
+                    <td class="text-center">
+                        <p-dropdown 
+                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [options]="tipoSuspensionOptions" 
+                            [(ngModel)]="inasistencia.pla03tiposuspension"
+                            (click)="$event.stopPropagation()" optionLabel="name" 
+                            optionValue="code"
+                            (onChange)="onTipoSuspensionChange($event, inasistencia)"
+                            placeholder="Tipo..."
+                            appendTo="body"
+                            [filter]="true"
+                            styleClass="w-full text-sm">
+                        </p-dropdown>
+                        <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
+                            {{ inasistencia.pla03tiposuspension }}
+                        </span>
+                    </td>
+                    
+                    <td>
+                        {{ inasistencia.glo02descripcion }}
+                    </td>
+
+                    <td class="text-center">
+                        <p-calendar 
+                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [(ngModel)]="inasistencia.pla03fechainicio" 
+                            (ngModelChange)="updateDays(inasistencia)"
+                            (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" 
+                            [showIcon]="true"
+                            styleClass="w-full text-sm"
+                            appendTo="body">
+                        </p-calendar>
+                        <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
+                            {{ inasistencia.pla03fechainicio | date: 'dd/MM/yyyy' }}
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        <p-calendar 
+                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [(ngModel)]="inasistencia.pla03fechafin" 
+                            (ngModelChange)="updateDays(inasistencia)"
+                            (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" 
+                            [showIcon]="true"
+                            styleClass="w-full text-sm"
+                            appendTo="body">
+                        </p-calendar>
+                        <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
+                            {{ inasistencia.pla03fechafin | date: 'dd/MM/yyyy' }}
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        <p-inputNumber 
+                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [(ngModel)]="inasistencia.pla03diasnotrabajados"
+                            [disabled]="true"
+                            mode="decimal"
+                            [showButtons]="false"
+                            styleClass="w-12 text-center"
+                            inputStyleClass="text-center">
+                        </p-inputNumber>
+                        <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
+                            <p-badge [value]="inasistencia.pla03diasnotrabajados" severity="danger"></p-badge>
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        <div *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia" class="flex justify-center gap-1"
+                             (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-check" class="p-button-success p-button-text p-button-sm" pTooltip="Guardar" (click)="saveInasistencia(inasistencia)"></button>
+                            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-text p-button-sm" pTooltip="Cancelar" (click)="cancelEditInasistencia(inasistencia, rowIndex)"></button>
+                        </div>
+                        
+                        <div *ngIf="selectedInasistencia !== inasistencia && !isEditingInasistencia" class="flex justify-center gap-1"
+                             (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm" pTooltip="Editar" (click)="editInasistencia(inasistencia)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-text p-button-sm" pTooltip="Eliminar" (click)="deleteInasistencia(inasistencia)"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptyMessage">
+                <tr>
+                    <td colspan="6" class="text-center text-gray-500">No hay inasistencias registradas para este empleado.</td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+
     </div>
 
     <ng-template pTemplate="footer">
