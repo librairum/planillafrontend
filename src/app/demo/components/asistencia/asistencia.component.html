@@ -61,7 +61,7 @@
                         <td class="text-center">{{ empleado.idIdentidad }}</td>
                         <td class="text-center">{{ empleado.apellidosynombres }}</td>
                         <td class="text-center">{{ empleado.pla01fechaingreso | date: 'dd/MM/yyyy' }}</td>
-                        <td class="text-center">{{ getEstadoLabel(empleado.pla01estado) }}</td>
+                        <td class="text-center"><p-tag [value]="getEstadoLabel(empleado.pla01estado)" [severity]="getSeverity(empleado.pla01estado)"></p-tag></td>
                         
                         <td class="w-24 text-center p-0">
                             <div class="flex justify-center w-full">

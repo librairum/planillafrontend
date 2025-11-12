@@ -1,1 +1,103 @@
-<p>calcular works!</p>
+<div class="card p-4">
+  
+  <div class="p-d-flex p-jc-between p-ai-start p-mb-3">
+    
+    <div class="p-d-flex p-gap-2">
+      <p-button      
+        icon="pi pi-play" 
+        (onClick)="procesarDatos()"
+        pTooltip="Procesar"
+        tooltipPosition="bottom"
+        styleClass="p-button-sm">
+      </p-button>
+
+      <p-button 
+        icon="pi pi-upload" 
+        (onClick)="importarArchivos()"
+        styleClass="p-button-secondary p-button-sm"
+        pTooltip="Cargar archivos de datos">
+      </p-button>
+    </div>
+
+    <div class="p-d-flex p-ai-center button-group-right">
+      
+      <div class="p-d-inline-flex p-ai-center p-mr-2">
+        <p-checkbox [(ngModel)]="boletaChecked" [binary]="true" inputId="boleta" (onChange)="toggleBoleta()"></p-checkbox>
+        <label for="boleta" class="p-ml-1">Boleta</label>
+      </div>
+      
+      <div class="p-d-inline-flex p-ai-center p-mr-2">
+        <p-checkbox [(ngModel)]="planillaGeneralChecked" [binary]="true" inputId="planilla" (onChange)="togglePlanillaGeneral()"></p-checkbox>
+        <label for="planilla" class="p-ml-1">Planilla General</label>
+      </div>
+
+      <div class="p-d-inline-flex p-ai-center p-mr-2">
+        <p-checkbox [(ngModel)]="liquidacionChecked" [binary]="true" inputId="liquidacion" (onChange)="toggleLiquidacion()"></p-checkbox>
+        <label for="liquidacion" class="p-ml-1">Liquidación</label>
+      </div>
+
+      <p-button 
+        icon="pi pi-print" 
+        (onClick)="imprimir()"
+        styleClass="p-button-info p-button-sm"
+        pTooltip="Imprimir">
+      </p-button>
+    </div>
+  </div>
+
+  <p-table 
+    [value]="dataSource" 
+    [scrollable]="true"
+    scrollHeight="flex"
+    class="p-datatable-gridlines">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 80px;">Código empleado</th>
+        <th style="width: 80px;">Doc. Nro</th>
+        <th style="width: 250px;">Apellidos y Nombres</th>
+        <th style="width: 100px;">Fec. Ingreso</th>
+        <th style="width: 150px;">Centro Costo Des.</th>
+        <th style="width: 150px;">Puesto Des.</th>
+        <th style="width: 100px;">Estado</th>
+        <th style="width: 70px;">Ver Detalle</th>
+        <th style="width: 70px;">Ajuste</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-empleado>
+      <tr>
+        <td style="width: 80px;">{{ empleado.pla01empleadocod }}</td>
+        <td style="width: 80px;">{{ empleado.pla01docuidentidadnro }}</td>
+        <td style="width: 250px;">{{ empleado.apellidosynombres }}</td>
+        <td>{{ empleado.pla01fechaingreso | date:'dd/MM/yyyy' }}</td>
+        <td>{{ empleado.pla57descripcion }}</td>
+        <td>{{ empleado.pla51descripcion }}</td>
+        <td [class.calculated]="empleado.calculoestado === 'CALCULADA'"
+            [class.not-calculated]="empleado.calculoestado === 'SIN CALCULAR'">
+          {{ empleado.calculoestado }}
+        </td>
+        
+        <td class="p-text-center">
+          <p-button 
+            icon="pi pi-file" 
+            styleClass="p-button-sm p-button-text p-button-secondary"
+            (onClick)="verDetalle(empleado)" 
+            pTooltip="Ver Detalles"
+            tooltipPosition="bottom">
+          </p-button>
+        </td>
+        
+        <td class="p-text-center">
+          <p-button 
+            icon="pi pi-cog" 
+            styleClass="p-button-sm p-button-warning"
+            (onClick)="ajustar(empleado)" 
+            pTooltip="Ajustar"
+            tooltipPosition="bottom">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
