@@ -7,3 +7,11 @@ export interface Calcular {
     pla51descripcion: string;
     calculoestado: string;
 }
+
+export interface DetalleProceso{
+    pla10conceptocod: string;
+    pla10conceptodesc: string;
+
+    importe: number;
+    boleta: string; //SI o NO
+}
