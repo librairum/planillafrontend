@@ -1,78 +1,127 @@
 <button (click)="mostrarPeriodosLaborales()">Mostrar periodos laborales</button>
 
-<p-table [value]="periodoslaborales.controls" dataKey="pla30codigo" editMode="row" styleClass="p-datatable-sm">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Fec. Ini</th>
-      <th>Fec. Fin</th>
-      <th>Motivo Des.</th>
-      <th>Acciones</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-periodo let-ri="rowIndex" let-editing="editing">
-    <tr [pEditableRow]="periodo">
-      <!-- Fecha Inicio -->
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <p-calendar formControlName="pla30fechaini" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ periodo.get('pla30fechaini').value | date: 'dd/MM/yyyy' }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
+<p-panel header="Periodos Laborales" styleClass="shadow-xl rounded-xl mb-3">
 
-      <!-- Fecha Fin -->
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <p-calendar formControlName="pla30fechafin" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ periodo.get('pla30fechafin').value | date: 'dd/MM/yyyy' }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
+  <button type="button" pButton icon="pi pi-plus" label="Nuevo Periodo"
+                      (click)="showAddRow()" [disabled]="isEditingAnyRow || esModoVisualizacion"
+                      class="p-button-sm"></button>
 
-      <!-- Motivo Desvinculación -->
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <input type="text" pInputText formControlName="desmotivocese" />
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ periodo.get('desmotivocese').value }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
+  <p-table [value]="periodosLaboralesLista" dataKey="pla30codigo" editMode="row" styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Fec. Ini</th>
+        <th>Fec. Fin</th>
+        <th>Motivo Des.</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-periodo let-ri="rowIndex" let-editing="editing">
+      <tr [pEditableRow]="periodo">
+        <!-- Fecha Inicio -->
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="periodo.pla30fechaini" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ periodo.pla30fechaini | date: 'dd/MM/yyyy' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
 
-      <!-- Botones de acción -->
-      <td>
-        <div class="flex gap-2">
-          <button *ngIf="!editing" pButton
-                  pInitEditableRow
-                  (click)="onRowEditInit(ri)"
-                  icon="pi pi-pencil"
-                  pTooltip="Editar"
-                  [disabled]="isEditingAnyRow || esModoVisualizacion"
-                  class="p-button-rounded p-button-text p-button-sm"></button>
+        <!-- Fecha Fin -->
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="periodo.pla30fechafin" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ periodo.pla30fechafin | date: 'dd/MM/yyyy' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
 
-          <button *ngIf="editing" pButton
-                  pSaveEditableRow
-                  (click)="onRowEditSave(ri)"
-                  icon="pi pi-check"
-                  pTooltip="Guardar"
-                  class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+        <!-- Motivo Desvinculación -->
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" pInputText [(ngModel)]="periodo.desmotivocese" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ periodo.desmotivocese }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
 
-          <button *ngIf="editing" pButton
-                  pCancelEditableRow
-                  (click)="onRowEditCancel(ri)"
-                  icon="pi pi-times"
-                  pTooltip="Cancelar"
-                  class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
-        </div>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+        <!-- Botones de acción -->
+        <td>
+          <div class="flex gap-2">
+            <button *ngIf="!editing" pButton
+                    pInitEditableRow
+                    (click)="onRowEditInit(periodo)"
+                    icon="pi pi-pencil"
+                    pTooltip="Editar"
+                    [disabled]="isEditingAnyRow || esModoVisualizacion || isNew "
+                    class="p-button-rounded p-button-text p-button-sm"></button>
+
+            <button *ngIf="editing" pButton
+                    pSaveEditableRow
+                    (click)="onRowEditSave(periodo)"
+                    icon="pi pi-check"
+                    pTooltip="Guardar"
+                    class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+
+            <button *ngIf="editing" pButton
+                    pCancelEditableRow
+                    (click)="onRowEditCancel( ri)"
+                    icon="pi pi-times"
+                    pTooltip="Cancelar"
+                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+            <button *ngIf="!editing" pButton
+                    type="button"
+                    (click)="onDelete(periodo, ri)"
+                    icon="pi pi-trash"
+                    pTooltip="Eliminar"
+                    [disabled]="isEditingAnyRow || esModoVisualizacion || isNew "
+                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Footer para Nuevo Registro -->
+    <ng-template pTemplate="footer">
+      <!--
+      <tr *ngIf="isNew">
+        <td>
+          <p-calendar [(ngModel)]="newPeriodo.pla30fechaini" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
+        </td>
+        <td>
+          <p-calendar [(ngModel)]="newPeriodo.pla30fechafin" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
+        </td>
+        <td>
+          <input type="text" pInputText [(ngModel)]="newPeriodo.desmotivocese" />
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <button pButton
+                    (click)="addPeriodoLaboral()"
+                    icon="pi pi-check"
+                    pTooltip="Agregar"
+                    class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+
+            <button pButton
+                    (click)="cancelAddRow()"
+                    icon="pi pi-times"
+                    pTooltip="Cancelar"
+                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+          </div>
+        </td>
+      </tr>
+    -->
+    </ng-template>
+  </p-table>
+</p-panel>
+

@@ -1,8 +1,8 @@
 /* Milton Garriazo */
 
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, AbstractControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
@@ -36,6 +36,8 @@ import { PeriodoLaboral } from 'src/app/demo/model/Trabajador';
         PanelModule,
         BreadcrumbModule,
         ConfirmDialogModule,
+        ReactiveFormsModule,
+        FormsModule,
         DropdownModule,
         RadioButtonModule,
         CalendarModule,
@@ -43,17 +45,44 @@ import { PeriodoLaboral } from 'src/app/demo/model/Trabajador';
       ],
   styleUrls: ['./periodos-laborales.component.css']
 })
-export class PeriodosLaboralesComponent {
+export class PeriodosLaboralesComponent implements OnInit{
 
   @Input() periodoslaborales!: FormArray; // Recibe el FormArray desde el componente padre
   @Input() esModoVisualizacion: boolean = false; // Estado de visualización
   @Output() save = new EventEmitter<void>(); // Emite evento al guardar
   @Output() cancel = new EventEmitter<void>(); // Emite evento al cancelar
 
+  periodosLaboralesLista: PeriodoLaboral[] = []; // Lista para interactuar con PrimeNG
+
+
   constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+      this.periodosLaboralesLista = this.getListaDesdeFormArray();
+  }
 
   mostrarPeriodosLaborales(): void {
     console.log(this.periodoslaborales.controls);
+    console.log(this.periodosLaboralesLista);
+  }
+
+  getListaDesdeFormArray(): PeriodoLaboral[] {
+    return this.periodoslaborales.value; // Devuelve los valores del FormArray como un array
+  }
+
+  setFormArrayDesdeLista(lista: PeriodoLaboral[]): void {
+    this.periodoslaborales.clear(); // Limpia el FormArray actual
+
+    lista.forEach((periodo) => {
+      this.periodoslaborales.push(
+        this.fb.group({
+          pla30codigo: [periodo.pla30codigo],
+          pla30fechaini: [periodo.pla30fechaini],
+          pla30fechafin: [periodo.pla30fechafin],
+          desmotivocese: [periodo.desmotivocese]
+        })
+      );
+    });
   }
 
   agregarPeriodoLaboral(): void {
@@ -78,18 +107,11 @@ export class PeriodosLaboralesComponent {
   isNew: boolean = false;
   isEditingAnyRow: boolean = false; // Indica si alguna fila está en edición
 
-  onRowEditInit(rowIndex: number): void {
-    const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
-    this.clonedPeriodosLaborales[rowIndex] = { ...periodo.value }; // Clona los valores originales
-    this.isEditingAnyRow = true; // Indica que hay una fila en edición
-    this.editingPeriodoLaboral = { ...periodo.value }; // Guarda los valores de la fila en edición
 
-    // Deshabilitar las demás filas
-    this.periodoslaborales.controls.forEach((control, index) => {
-      if (index !== rowIndex) {
-        control.disable();
-      }
-    });
+
+  onRowEditInit(periodo: PeriodoLaboral): void {
+    this.editingPeriodoLaboral = { ...periodo };
+    this.isEditingAnyRow = true;
   }
 
   onRowEditSave(rowIndex: number): void {
@@ -107,7 +129,14 @@ export class PeriodosLaboralesComponent {
     console.log('Datos actualizados:', periodo.value);
   }
 
-  onRowEditCancel(rowIndex: number): void {
+
+  onRowEditCancel(/*periodo: PeriodoLaboral,*/ rowIndex: number): void {
+    /*if (this.editingPeriodoLaboral) {
+        this.parametroGeneralList[index] = { ...this.editingParametroGeneral };
+        this.editingParametroGeneral = null;
+        this.isEditingAnyRow = false;
+        this.cargarPeriodosLaborales();
+      }*/
     const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
 
     if (this.clonedPeriodosLaborales[rowIndex]) {
@@ -120,6 +149,24 @@ export class PeriodosLaboralesComponent {
 
     // Habilitar todas las filas
     this.periodoslaborales.controls.forEach((control) => control.enable());
+  }
+/*
+  onRowEditCancel(parametro: ParametroGeneral, index: number): void {
+      if (this.editingParametroGeneral) {
+        this.parametroGeneralList[index] = { ...this.editingParametroGeneral };
+        this.editingParametroGeneral = null;
+        this.isEditingAnyRow = false;
+        this.cargarParametrosGenerales();
+      }
+    }*/
+
+  onDelete(periodo: PeriodoLaboral, rowIndex: number): void {
+    this.periodoslaborales.removeAt(rowIndex);
+    console.log('Periodo laboral eliminado: ', periodo);
+  }
+
+  showAddRow() {
+
   }
 
 }

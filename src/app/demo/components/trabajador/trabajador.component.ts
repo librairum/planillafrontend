@@ -26,9 +26,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { PeriodoLaboral, RegimenPensionario, Trabajador } from '../../model/Trabajador';
 
 
-import { PeriodosLaboralesComponent } from './periodos-laborales/periodos-laborales.component';
-
-
 
 import { TrabajadorService } from '../../service/trabajador.service';
 
@@ -54,7 +51,6 @@ import { verMensajeInformativo } from '../utilities/funciones_utilitarias';
       RadioButtonModule,
       CalendarModule,
       TabViewModule,
-      PeriodosLaboralesComponent //para que pueda ser reconocido
     ],
   templateUrl: './trabajador.component.html',
   styleUrls: ['./trabajador.component.css'],
@@ -173,16 +169,6 @@ export class TrabajadorComponent implements OnInit{
     });
   }
 
-  //getters para los form arrays
-  get remuneraciones(): FormArray {
-    return this.trabajadorForm.get('remuneraciones') as FormArray;
-  }
-  get regimenespensionarios(): FormArray {
-    return this.trabajadorForm.get('regimenespensionarios') as FormArray;
-  }
-  get periodoslaborales(): FormArray {
-    return this.trabajadorForm.get('periodoslaborales') as FormArray;
-  }
 
 
   cargarTrabajadores(): void {
@@ -204,12 +190,6 @@ export class TrabajadorComponent implements OnInit{
       });
     }
 
-    verificarDatosFormulario() {
-      console.log('Datos del formulario:', this.trabajadorForm.value);
-      console.log('Regímenes Pensionarios:', this.regimenespensionarios.value);
-      console.log('Remuneraciones:', this.remuneraciones.value);
-      console.log('Periodos Laborales:', this.periodoslaborales.value);
-    }
 
 
 
@@ -316,44 +296,21 @@ export class TrabajadorComponent implements OnInit{
     }
 
     verTrabajador(trabajador: Trabajador): void {
-      this.router.navigate([`/maestros/trabajador/detalle-trabajador/${trabajador.pla01empresacod}/${trabajador.pla01empleadocod}`]); // Redirige al detalle del trabajador
+      this.router.navigate([`/home/maestros/trabajador/detalle-trabajador/${trabajador.pla01empresacod}/${trabajador.pla01empleadocod}`],
+        { queryParams: { modo: 'ver' }}
+      ); // Redirige al detalle del trabajador
+    }
+
+    editarTrabajador(trabajador: Trabajador): void {
+      this.router.navigate([`/home/maestros/trabajador/detalle-trabajador/${trabajador.pla01empresacod}/${trabajador.pla01empleadocod}`],
+        { queryParams: { modo: 'editar' }}
+      ); // Redirige al detalle del trabajador
     }
 
     nuevoTrabajador() {
-      this.router.navigate(['/home/maestros/trabajador/nuevo-trabajador']);
-      /*
-      this.isNewRecord = true;
-      this.esModoVisualizacion = false;
-      this.trabajadorActual = {} as Trabajador;
-
-      this.trabajadorForm.reset({
-        pla01empresacod: '00004',
-        pla01empleadocod: '',
-        pla01planillacod: '',
-        pla01docuidentidadtipo: '',
-        pla01docuidentidadnro: '',
-        pla01apepaterno: '',
-        pla01apematerno: '',
-        pla01nombre1: '',
-        pla01nombre2: '',
-        pla01direccion: '',
-        pla01fechanacimiento: null,
-        pla01telefono: '',
-        pla01fechaingreso: null,
-        pla01centrocostocod: '',
-        pla01fechacese: null,
-        pla01sexo: 'M',
-        pla01estado: 'A',
-        pla01puestocod: '',
-        pla01ctaremunbancocod: '',
-        pla01ctaremunumero: '',
-        pla01ctaremunmoneda: '',
-      });
-
-      // Inicializar las listas vacías
-      this.trabajadorForm.setControl('regimenespensionarios', this.fb.array([]));
-      this.trabajadorForm.setControl('remuneraciones', this.fb.array([]));
-      */
+      this.router.navigate(['/home/maestros/trabajador/nuevo-trabajador'],
+        { queryParams: { modo: 'nuevo' }}
+      );
     }
 
     guardarTrabajador() {
@@ -417,16 +374,24 @@ export class TrabajadorComponent implements OnInit{
       this.isNewRecord = false;
     }
 
-    editarTrabajador(trabajador: Trabajador) {
-      this.isNewRecord = false;
-      this.esModoVisualizacion = false;
 
-      this.trabajadorActual = { ...trabajador }; // Haz una copia para editar
-      this.abrirDetalleTrabajador(this.trabajadorActual, false); // Carga los datos en el formulario y abre el modal en modo edición
-    }
+    //Este metodo se usa en este componente
 
     eliminarTrabajador(trabajador: Trabajador) {
-
+      this.confirmationService.confirm({
+        message: `¿Está seguro de que desea eliminar al trabajador ${trabajador.pla01apepaterno} ${trabajador.pla01apematerno}?`,
+        accept: () => {
+          this.trabajadorService.EliminarTrabajador(trabajador.pla01empresacod, trabajador.pla01empleadocod).subscribe({
+            next: () => {
+              verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Trabajador eliminado correctamente');
+              this.cargarTrabajadores();
+            },
+            error: (err) => {
+              verMensajeInformativo(this.messageService, 'error', 'Error', `No se pudo eliminar el trabajador: ${err.message}`);
+            },
+          });
+        },
+      });
     }
 
 
