@@ -1,0 +1,263 @@
+/* Contenedor principal */
+.concepto-detalle-container {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header con breadcrumb */
+.page-header {
+  background: transparent;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.breadcrumb-text {
+  color: #212529;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.breadcrumb-separator {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Contenedor del formulario */
+.form-container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.concepto-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Información básica */
+.info-basica {
+  border: 1px solid #dee2e6;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-group-wide {
+  flex: 1;
+}
+
+.form-group input[type="text"] {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+}
+
+.form-group-checkbox label {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+/* Input con botón de búsqueda */
+.input-with-button {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.input-with-button input {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input-with-button button {
+  height: 32px;
+  width: 32px;
+}
+
+/* Áreas de texto */
+.text-areas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.textarea-container textarea {
+  width: 100%;
+  resize: none;
+  font-family: monospace;
+  font-size: 0.85rem;
+  background-color: #f8f9fa;
+}
+
+/* Concepto Sunat y Observación */
+.sunat-observacion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Tabs section */
+.tabs-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.tab-panel {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 0.5rem;
+  background-color: #fff;
+}
+
+.tab-panel h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* Tablas dentro de los tabs */
+::ng-deep .tab-panel .p-datatable .p-datatable-thead > tr > th {
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  background-color: #f1f3f5;
+}
+
+::ng-deep .tab-panel .p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+::ng-deep .tab-panel .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Diálogos de búsqueda */
+::ng-deep .p-dialog .p-datatable .p-datatable-tbody > tr {
+  cursor: pointer;
+}
+
+::ng-deep .p-dialog .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #e3f2fd;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+/* Estilos de campos deshabilitados y solo lectura */
+::ng-deep .p-inputtext[disabled],
+::ng-deep .p-inputtextarea[disabled] {
+  background-color: #e9ecef !important;
+  color: #495057 !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .input-with-button input[readonly] {
+  background-color: #fff3cd !important;
+  border: 1px solid #ffc107 !important;
+  cursor: pointer !important;
+}
+
+::ng-deep .input-with-button input[readonly]:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 1400px) {
+  .tabs-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tabs-section {
+    grid-template-columns: 1fr;
+  }
+
+  .text-areas {
+    grid-template-columns: 1fr;
+  }
+
+  .sunat-observacion {
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-container {
+  animation: fadeIn 0.3s ease-in-out;
+}

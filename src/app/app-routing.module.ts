@@ -1,4 +1,3 @@
-// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './demo/components/home/home.component';
@@ -167,6 +166,12 @@ const routes: Routes = [
         path: 'maestro-estandar/concepto',
         loadComponent: () => import('./demo/components/concepto-estandar/concepto-estandar.component')
           .then(m => m.ConceptoEstandarComponent)
+      },
+      // IMPORTANTE: Esta ruta debe manejar tanto nuevo como editar/visualizar
+      {
+        path: 'maestro-estandar/concepto/detalle/:codigo',
+        loadComponent: () => import('./demo/components/concepto-estandar-detalle/concepto-estandar-detalle.component')
+          .then(m => m.ConceptoEstandarDetalleComponent)
       },
       {
         path: 'maestro-estandar/config-boleta',

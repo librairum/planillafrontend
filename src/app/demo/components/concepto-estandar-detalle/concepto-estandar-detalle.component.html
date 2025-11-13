@@ -1,0 +1,318 @@
+<div class="concepto-detalle-container">
+  <p-toast></p-toast>
+
+  <!-- Header con breadcrumb -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <button pButton type="button" icon="pi pi-arrow-left" class="p-button-text p-button-sm"
+        (click)="volver()" pTooltip="Volver" tooltipPosition="bottom"></button>
+      <span class="breadcrumb-text">Concepto Estandar</span>
+      <i class="pi pi-angle-right breadcrumb-separator"></i>
+      <span class="breadcrumb-text">{{ getTitulo() }}</span>
+    </div>
+    <div class="header-actions" *ngIf="!esModoVisualizacion">
+      <button pButton type="button" label="Guardar" icon="pi pi-check"
+        class="p-button-success p-button-sm" (click)="guardarConcepto()"></button>
+      <button pButton type="button" label="Cancelar" icon="pi pi-times"
+        class="p-button-secondary p-button-sm" (click)="volver()"></button>
+    </div>
+    <div class="header-actions" *ngIf="esModoVisualizacion">
+      <button pButton type="button" label="Cerrar" icon="pi pi-times"
+        class="p-button-secondary p-button-sm" (click)="volver()"></button>
+    </div>
+  </div>
+
+  <!-- Contenido del formulario -->
+  <div class="form-container">
+    <div class="concepto-detalle">
+      <!-- Información básica -->
+      <div class="info-basica">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Codigo :</label>
+            <input type="text" pInputText [(ngModel)]="conceptoActual.codigo"
+              [disabled]="!isNewRecord || esModoVisualizacion" maxlength="10" />
+          </div>
+          <div class="form-group form-group-wide">
+            <label>Descripcion :</label>
+            <input type="text" pInputText [(ngModel)]="conceptoActual.descripcion"
+              [disabled]="esModoVisualizacion" maxlength="150" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo calculo :</label>
+            <div class="input-with-button">
+              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCalculoCod"
+                (keypress)="soloNumeros($event)" readonly maxlength="2" style="width: 50px" />
+              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCalculoDes"
+                [disabled]="true" />
+              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+                [disabled]="esModoVisualizacion" (click)="abrirBusquedaTipoCalculo()"></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tipo :</label>
+            <div class="input-with-button">
+              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoCod"
+                (keypress)="soloNumeros($event)" readonly maxlength="2" style="width: 50px" />
+              <input type="text" pInputText [(ngModel)]="conceptoActual.tipoDes"
+                [disabled]="true" />
+              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+                [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoTipo()"></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Sub.Tipo :</label>
+            <div class="input-with-button">
+              <input type="text" pInputText [(ngModel)]="conceptoActual.subTipoCod"
+                (keypress)="soloNumeros($event)" readonly maxlength="2" style="width: 50px" />
+              <input type="text" pInputText [(ngModel)]="conceptoActual.subTipoDes"
+                [disabled]="true" />
+              <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+                [disabled]="esModoVisualizacion" (click)="abrirBusquedaSubTipo()"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group-checkbox">
+            <p-checkbox [(ngModel)]="conceptoActual.imprimible" [binary]="true"
+              [disabled]="esModoVisualizacion" inputId="imprimible"></p-checkbox>
+            <label for="imprimible">Imprimible</label>
+          </div>
+          <div class="form-group-checkbox">
+            <p-checkbox [(ngModel)]="conceptoActual.configBasica" [binary]="true"
+              [disabled]="esModoVisualizacion" inputId="configBasica"></p-checkbox>
+            <label for="configBasica">Config.Basica</label>
+          </div>
+          <div class="form-group-checkbox">
+            <p-checkbox [(ngModel)]="conceptoActual.formulable" [binary]="true"
+              [disabled]="esModoVisualizacion" inputId="formulable"></p-checkbox>
+            <label for="formulable">Formulable</label>
+          </div>
+          <div class="form-group-checkbox ml-auto">
+            <p-checkbox [(ngModel)]="conceptoActual.activo" [binary]="true"
+              [disabled]="esModoVisualizacion" inputId="activo"></p-checkbox>
+            <label for="activo">Activo</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Áreas de texto -->
+      <div class="text-areas">
+        <div class="textarea-container">
+          <textarea pInputTextarea rows="8" [disabled]="true"></textarea>
+        </div>
+        <div class="textarea-container">
+          <textarea pInputTextarea rows="8" [disabled]="true"></textarea>
+        </div>
+      </div>
+
+      <!-- Concepto Sunat y Observación -->
+      <div class="sunat-observacion">
+        <div class="form-group">
+          <label>Concepto Sunat :</label>
+          <div class="input-with-button">
+            <input type="text" pInputText [(ngModel)]="conceptoActual.conceptoSunatCod"
+              (keypress)="soloNumeros($event)" readonly style="width: 100px" />
+            <input type="text" pInputText [(ngModel)]="conceptoActual.conceptoSunatDes"
+              [disabled]="true" style="flex: 1" />
+            <button pButton type="button" icon="pi pi-search" class="p-button-sm"
+              [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoSunat()"></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Observacion</label>
+        </div>
+      </div>
+
+      <!-- Tabs section -->
+      <div class="tabs-section">
+        <div class="tab-panel">
+          <h4>Afectaciones Sunat</h4>
+          <p-table [value]="conceptoActual.afectacionesSunat" [scrollable]="true" scrollHeight="150px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">Cod...</th>
+                <th>Descripcion</th>
+                <th style="width: 80px; text-align: center">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <p-checkbox [(ngModel)]="item.valor" [binary]="true"
+                    [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="tab-panel">
+          <h4>Afectacion otros</h4>
+          <p-table [value]="conceptoActual.afectacionOtros" [scrollable]="true" scrollHeight="150px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">Cod...</th>
+                <th>Descripcion</th>
+                <th style="width: 80px; text-align: center">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <p-checkbox [(ngModel)]="item.valor" [binary]="true"
+                    [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="tab-panel">
+          <h4>Plantilla asignada</h4>
+          <p-table [value]="conceptoActual.planillasAsignadas" [scrollable]="true" scrollHeight="150px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">Cod...</th>
+                <th>Descripcion</th>
+                <th style="width: 80px; text-align: center">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <p-checkbox [(ngModel)]="item.valor" [binary]="true"
+                    [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="tab-panel">
+          <h4>Regimen Laboral</h4>
+          <p-table [value]="conceptoActual.regimenesLaborales" [scrollable]="true" scrollHeight="150px">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">Codigo</th>
+                <th>Descri...</th>
+                <th style="width: 80px; text-align: center">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td class="text-center">
+                  <p-checkbox [(ngModel)]="item.valor" [binary]="true"
+                    [disabled]="esModoVisualizacion"></p-checkbox>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diálogos de búsqueda -->
+  <p-dialog [(visible)]="displayTipoCalculoDialog" header="Tipo de calculo" [modal]="true"
+    [style]="{width: '600px'}" [draggable]="false">
+    <p-table [value]="tiposCalculo" [scrollable]="true" scrollHeight="300px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tipo>
+        <tr [pSelectableRow]="tipo" (click)="seleccionarTipoCalculo(tipo)" style="cursor: pointer">
+          <td>{{ tipo.codigo }}</td>
+          <td>{{ tipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayTipoCalculoDialog = false"></button>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="displayConceptoTipoDialog" header="Concepto Tipo" [modal]="true"
+    [style]="{width: '500px'}" [draggable]="false">
+    <p-table [value]="conceptosTipo" [scrollable]="true" scrollHeight="250px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tipo>
+        <tr [pSelectableRow]="tipo" (click)="seleccionarConceptoTipo(tipo)" style="cursor: pointer">
+          <td>{{ tipo.codigo }}</td>
+          <td>{{ tipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayConceptoTipoDialog = false"></button>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="displaySubTipoDialog" header="Subtipo de Concepto Tipo" [modal]="true"
+    [style]="{width: '700px'}" [draggable]="false">
+    <p-table [value]="subTiposConcepto" [scrollable]="true" scrollHeight="300px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 150px">Concepto Tipo Cod.</th>
+          <th style="width: 100px">Codigo</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-subTipo>
+        <tr [pSelectableRow]="subTipo" (click)="seleccionarSubTipo(subTipo)" style="cursor: pointer">
+          <td>{{ subTipo.conceptoTipoCod }}</td>
+          <td>{{ subTipo.codigo }}</td>
+          <td>{{ subTipo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displaySubTipoDialog = false"></button>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="displayConceptoSunatDialog" header="Concepto Sunat" [modal]="true"
+    [style]="{width: '800px'}" [draggable]="false">
+    <p-table [value]="conceptosSunat" [scrollable]="true" scrollHeight="350px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 120px">CodigoSunat</th>
+          <th>Descripcion</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-concepto>
+        <tr [pSelectableRow]="concepto" (click)="seleccionarConceptoSunat(concepto)" style="cursor: pointer">
+          <td>{{ concepto.codigoSunat }}</td>
+          <td>{{ concepto.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="displayConceptoSunatDialog = false"></button>
+    </ng-template>
+  </p-dialog>
+</div>
