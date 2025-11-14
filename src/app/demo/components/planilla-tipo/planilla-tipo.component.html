@@ -1,27 +1,26 @@
 <div class="planilla-tipo-container">
   <!-- Toast para notificaciones -->
   <p-toast></p-toast>
-  
+
   <!-- Confirm Dialog -->
   <p-confirmDialog></p-confirmDialog>
 
-  <!-- Header con botón de agregar -->
-  <div class="page-header">
-    <div class="header-content">
-      <span class="header-title">Planilla tipo</span>
-      <button pButton type="button" 
-              icon="pi pi-plus" 
-              class="p-button-sm add-button"
-              (click)="agregarNuevo()"
-              pTooltip="Agregar nueva planilla tipo"
-              tooltipPosition="bottom"></button>
-    </div>
-  </div>
 
-  <!-- Tabla de planillas tipo -->
-  <div class="table-wrapper">
-    <p-table 
-      [value]="planillasTipo" 
+  <p-panel header="Planilla tipo" styleClass="shadow-xl rounded-xl mb-3">
+
+    <div class="flex justify-content-between align-items-center mb-3">
+      <button pButton type="button"
+                icon="pi pi-plus"
+                class="p-button-sm add-button"
+                (click)="agregarNuevo()"
+                label="Nueva Planilla"
+                pTooltip="Agregar nueva planilla tipo"
+                tooltipPosition="bottom"></button>
+    </div>
+
+
+    <p-table
+      [value]="planillasTipo"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[5, 10, 20, 50]"
@@ -29,8 +28,8 @@
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} planillas"
       [globalFilterFields]="['codigo', 'descripcion']"
       [tableStyle]="{ 'min-width': '100%' }"
-      styleClass="planilla-tipo-table">
-      
+      styleClass="planilla-tipo-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
+
       <!-- Columnas -->
       <ng-template pTemplate="header">
         <tr>
@@ -45,10 +44,10 @@
         <tr>
           <!-- Código -->
           <td>
-            <input 
-              *ngIf="planilla.isEditing" 
-              type="text" 
-              pInputText 
+            <input
+              *ngIf="planilla.isEditing"
+              type="text"
+              pInputText
               [(ngModel)]="planilla.codigo"
               [disabled]="!planilla.isNew"
               class="table-input"
@@ -58,10 +57,10 @@
 
           <!-- Descripción -->
           <td>
-            <input 
-              *ngIf="planilla.isEditing" 
-              type="text" 
-              pInputText 
+            <input
+              *ngIf="planilla.isEditing"
+              type="text"
+              pInputText
               [(ngModel)]="planilla.descripcion"
               class="table-input"
               maxlength="100" />
@@ -72,10 +71,10 @@
           <td class="actions-cell">
             <div class="action-buttons">
               <!-- Botón Editar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-pencil" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
                 class="p-button-rounded p-button-text p-button-sm"
                 (click)="editar(planilla)"
                 pTooltip="Editar"
@@ -83,10 +82,10 @@
               </button>
 
               <!-- Botón Eliminar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-trash" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-trash"
                 class="p-button-rounded p-button-text p-button-sm p-button-danger"
                 (click)="eliminar(planilla, rowIndex)"
                 pTooltip="Eliminar"
@@ -94,10 +93,10 @@
               </button>
 
               <!-- Botón Cancelar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-undo" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-undo"
                 class="p-button-rounded p-button-text p-button-sm p-button-secondary"
                 (click)="cancelar(planilla, rowIndex)"
                 [disabled]="!planilla.isEditing"
@@ -106,10 +105,10 @@
               </button>
 
               <!-- Botón Guardar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-save" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-save"
                 class="p-button-rounded p-button-text p-button-sm p-button-success"
                 (click)="guardar(planilla, rowIndex)"
                 [disabled]="!planilla.isEditing"
@@ -131,5 +130,7 @@
         </tr>
       </ng-template>
     </p-table>
-  </div>
+
+  </p-panel>
+
 </div>

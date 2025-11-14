@@ -1,28 +1,24 @@
 <div class="banco-container">
   <!-- Toast para notificaciones -->
   <p-toast></p-toast>
-  
+
   <!-- Confirm Dialog -->
   <p-confirmDialog></p-confirmDialog>
 
-  <!-- Header con botón de agregar -->
-  <div class="page-header">
-    <div class="header-content">
-      <span class="header-title">Banco</span>
-      <button pButton type="button" 
-              icon="pi pi-plus" 
-              class="p-button-sm add-button"
-              (click)="agregarNuevo()"
-              pTooltip="Agregar nuevo banco"
-              tooltipPosition="bottom"></button>
+  <p-panel header="Banco" styleClass="shadow-xl rounded-xl mb-3">
+    <div class="flex justify-content-between align-items-center mb-3">
+      <button pButton type="button"
+                icon="pi pi-plus"
+                class="p-button-sm add-button"
+                (click)="agregarNuevo()"
+                label="Nuevo Banco"
+                pTooltip="Agregar nuevo banco"
+                tooltipPosition="bottom"></button>
     </div>
-  </div>
 
-  <!-- Tabla de bancos -->
-  <div class="table-wrapper">
-    <p-table 
+    <p-table
       #dt
-      [value]="bancos" 
+      [value]="bancos"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[5, 10, 20, 50]"
@@ -30,8 +26,8 @@
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} bancos"
       [globalFilterFields]="['codigo', 'descripcion']"
       [tableStyle]="{ 'min-width': '100%' }"
-      styleClass="banco-table">
-      
+      styleClass="banco-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
+
       <!-- Columnas -->
       <ng-template pTemplate="header">
         <tr>
@@ -47,10 +43,10 @@
         <tr>
           <!-- Código -->
           <td>
-            <input 
-              *ngIf="banco.isEditing" 
-              type="text" 
-              pInputText 
+            <input
+              *ngIf="banco.isEditing"
+              type="text"
+              pInputText
               [(ngModel)]="banco.codigo"
               [disabled]="!banco.isNew"
               class="table-input"
@@ -60,10 +56,10 @@
 
           <!-- Descripción -->
           <td>
-            <input 
-              *ngIf="banco.isEditing" 
-              type="text" 
-              pInputText 
+            <input
+              *ngIf="banco.isEditing"
+              type="text"
+              pInputText
               [(ngModel)]="banco.descripcion"
               class="table-input"
               maxlength="100" />
@@ -72,8 +68,8 @@
 
           <!-- Activo (checkbox) -->
           <td class="text-center">
-            <p-checkbox 
-              [(ngModel)]="banco.activo" 
+            <p-checkbox
+              [(ngModel)]="banco.activo"
               [binary]="true"
               [disabled]="!banco.isEditing"
               inputId="activo-{{rowIndex}}">
@@ -84,10 +80,10 @@
           <td class="actions-cell">
             <div class="action-buttons">
               <!-- Botón Editar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-pencil" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
                 class="p-button-rounded p-button-text p-button-sm"
                 (click)="editar(banco)"
                 pTooltip="Editar"
@@ -95,10 +91,10 @@
               </button>
 
               <!-- Botón Eliminar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-trash" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-trash"
                 class="p-button-rounded p-button-text p-button-sm p-button-danger"
                 (click)="eliminar(banco, rowIndex)"
                 pTooltip="Eliminar"
@@ -106,10 +102,10 @@
               </button>
 
               <!-- Botón Cancelar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-undo" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-undo"
                 class="p-button-rounded p-button-text p-button-sm p-button-secondary"
                 (click)="cancelar(banco, rowIndex)"
                 [disabled]="!banco.isEditing"
@@ -118,10 +114,10 @@
               </button>
 
               <!-- Botón Guardar -->
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-save" 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-save"
                 class="p-button-rounded p-button-text p-button-sm p-button-success"
                 (click)="guardar(banco, rowIndex)"
                 [disabled]="!banco.isEditing"
@@ -143,5 +139,7 @@
         </tr>
       </ng-template>
     </p-table>
-  </div>
+
+  </p-panel>
+
 </div>

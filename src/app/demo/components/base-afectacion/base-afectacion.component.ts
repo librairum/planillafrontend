@@ -10,6 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { PanelModule } from 'primeng/panel';
 
 interface BaseAfectacion {
   codigo: string;
@@ -34,7 +35,8 @@ interface BaseAfectacion {
     TooltipModule,
     CheckboxModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    PanelModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './base-afectacion.component.html',
@@ -42,7 +44,7 @@ interface BaseAfectacion {
 })
 export class BaseAfectacionComponent implements OnInit {
   @ViewChild('dt') table!: Table;
-  
+
   basesAfectacion: BaseAfectacion[] = [];
   originalBase: BaseAfectacion | null = null;
 
@@ -102,10 +104,10 @@ export class BaseAfectacionComponent implements OnInit {
       isEditing: true,
       isNew: true
     };
-    
+
     // Agregar al inicio del array en lugar del final
     this.basesAfectacion.unshift(nuevaBase);
-    
+
     // Ir a la primera página
     if (this.table) {
       this.table.first = 0;
@@ -192,7 +194,7 @@ export class BaseAfectacionComponent implements OnInit {
 
     // Si es nuevo, verificar código duplicado
     if (base.isNew) {
-      const existe = this.basesAfectacion.find((b, i) => 
+      const existe = this.basesAfectacion.find((b, i) =>
         i !== index && b.codigo === base.codigo
       );
       if (existe) {
@@ -209,13 +211,13 @@ export class BaseAfectacionComponent implements OnInit {
     base.isEditing = false;
     base.isNew = false;
     this.originalBase = null;
-    
+
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',
       detail: 'Base de afectación guardada correctamente'
     });
-    
+
     // Reordenar: mover la base guardada al final
     const baseGuardada = this.basesAfectacion.splice(index, 1)[0];
     this.basesAfectacion.push(baseGuardada);

@@ -254,7 +254,7 @@ export class TrabajadorDetalleComponent implements OnInit{
                   pla31regpensionariocupss: [regimen.pla31regpensionariocupss],
                   pla31fechaini: [regimen.pla31fechaini ? new Date(regimen.pla31fechaini) : null],
                   pla31fechafin: [regimen.pla31fechafin ? new Date(regimen.pla31fechafin) : null],
-                  pla31flagcomisionmixta: [regimen.pla31flagcomisionmixta === '1' ? 1 : 0],
+                  pla31flagcomisionmixta: [regimen.pla31flagcomisionmixta === '1' ? '1' : '0'],
                 })
               )
             )

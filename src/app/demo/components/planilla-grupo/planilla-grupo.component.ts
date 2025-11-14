@@ -9,6 +9,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { PanelModule } from 'primeng/panel';
 
 interface PlanillaGrupo {
   codigo: string;
@@ -37,7 +38,8 @@ interface DropdownOption {
     TooltipModule,
     DropdownModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    PanelModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './planilla-grupo.component.html',
@@ -77,23 +79,23 @@ export class PlanillaGrupoComponent implements OnInit {
 
   loadPlanillasGrupo() {
     this.planillasGrupo = [
-      { 
-        codigo: '01', 
-        descripcion: 'PLANILLA EMPLEADOS', 
+      {
+        codigo: '01',
+        descripcion: 'PLANILLA EMPLEADOS',
         tipoSueldoDes: 'Sueldo Mensual',
         frecuenciaPago: 'Pago Mensual',
         controlAsistencia: 'Por Dias'
       },
-      { 
-        codigo: '02', 
-        descripcion: 'PLANILLA OBREROS', 
+      {
+        codigo: '02',
+        descripcion: 'PLANILLA OBREROS',
         tipoSueldoDes: 'Jornal Diario',
         frecuenciaPago: 'Pago Mensual',
         controlAsistencia: 'Por Horas'
       },
-      { 
-        codigo: '03', 
-        descripcion: 'PRACTICANTES', 
+      {
+        codigo: '03',
+        descripcion: 'PRACTICANTES',
         tipoSueldoDes: 'Sueldo Mensual',
         frecuenciaPago: 'Pago Mensual',
         controlAsistencia: 'Por Dias'
@@ -205,7 +207,7 @@ export class PlanillaGrupoComponent implements OnInit {
 
     // Si es nuevo, verificar código duplicado
     if (planilla.isNew) {
-      const existe = this.planillasGrupo.find((p, i) => 
+      const existe = this.planillasGrupo.find((p, i) =>
         i !== index && p.codigo === planilla.codigo
       );
       if (existe) {
@@ -222,7 +224,7 @@ export class PlanillaGrupoComponent implements OnInit {
     planilla.isEditing = false;
     planilla.isNew = false;
     this.originalPlanilla = null;
-    
+
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',

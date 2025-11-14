@@ -2,5 +2,260 @@
 <p-confirmDialog></p-confirmDialog>
 
 <p-panel header="Regimenes Pensionarios" styleClass="shadow-xl rounded-xl mb-3">
+  <button type="button" pButton icon="pi pi-plus" label="Nuevo Régimen"
+  (click)="showAddRow()" [disabled]="isEditingAnyRow || esModoVisualizacion"
+  class="p-button-sm"></button>
 
+  <button (click)="mostrarRegimenesPensionarios()">Mostrar</button>
+
+  <p-table [value]="regimenesPensionariosLista" dataKey="pla31regpensionariocod" editMode="row" styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 10%;">Régimen</th>
+        <th style="width: 20%;">Desc Régimen</th>
+        <th style="width: 20%;">CUPSS</th>
+        <th style="width: 15%;">Fecha Inicio</th>
+        <th style="width: 15%;">Fecha Fin</th>
+        <th style="width: 10%;">Comisión Mixta</th>
+        <th style="width: 10%; text-align: center;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-regimen let-ri="rowIndex" let-editing="editing">
+      <tr [pEditableRow]="regimen">
+
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="flex align-items-center gap-2">
+                <input
+                  type="text"
+                  pInputText
+                  [(ngModel)]="regimen.pla31regpensionariocod"
+                  placeholder="Seleccionar Tipo"
+                  readonly
+                  class="w-full"
+                />
+                <button
+                  pButton
+                  icon="pi pi-search"
+                  class="p-button-sm p-button-secondary"
+                  (click)="abrirModalTiposRegimenPensionario()"
+                  pTooltip="Seleccionar Tipo"
+                ></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ regimen.pla31regpensionariocod }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" pInputText [(ngModel)]="regimen.desregpensionario" class="w-full" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ regimen.desregpensionario }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" pInputText [(ngModel)]="regimen.pla31regpensionariocupss" class="w-full" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ regimen.pla31regpensionariocupss }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="regimen.pla31fechaini" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ regimen.pla31fechaini | date: 'dd/MM/yyyy' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="regimen.pla31fechafin" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ regimen.pla31fechafin | date: 'dd/MM/yyyy' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td style="text-align: center;">
+          <p-checkbox
+          [(ngModel)]="regimen.pla31flagcomisionmixta"
+          [binary]="true"
+          [trueValue]="'1'"
+          [falseValue]="'0'"
+          [disabled]="!editing || esModoVisualizacion">
+          </p-checkbox>
+        </td>
+
+        <td style="text-align: center;">
+          <div class="flex justify-content-center gap-2">
+            <button *ngIf="!editing" pButton
+                      pInitEditableRow
+                      (click)="onRowEditInit(regimen, ri)"
+                      icon="pi pi-pencil"
+                      pTooltip="Editar"
+                      [disabled]="isEditingAnyRow || esModoVisualizacion || isNew "
+                      class="p-button-rounded p-button-text p-button-sm"></button>
+
+              <button *ngIf="editing" pButton
+                      pSaveEditableRow
+                      (click)="onRowEditSave(ri)"
+                      icon="pi pi-check"
+                      pTooltip="Guardar"
+                      class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+
+              <button *ngIf="editing" pButton
+                      pCancelEditableRow
+                      (click)="onRowEditCancel(regimen)"
+                      icon="pi pi-times"
+                      pTooltip="Cancelar"
+                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+              <button *ngIf="!editing" pButton
+                      type="button"
+                      (click)="onDelete(regimen, ri)"
+                      icon="pi pi-trash"
+                      pTooltip="Eliminar"
+                      [disabled]="isEditingAnyRow || esModoVisualizacion || isNew "
+                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+          </div>
+        </td>
+
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <tr *ngIf="isEditing">
+        <td colspan="7">
+          <form [formGroup]="nuevoRegimenForm" class="grid p-fluid">
+
+            <div class="col-1" style="width: 10%;">
+              <span class="w-full">
+                <input
+                  pInputText
+                  type="text"
+                  formControlName="pla31regpensionariocupss"
+                  class="w-full"
+                  placeholder="Ingrese CUPSS"
+                />
+              </span>
+            </div>
+
+            <div class="col-1" style="width: 20%;">
+              <span class="w-full">
+                <input
+                  pInputText
+                  type="text"
+                  formControlName="pla31regpensionariocupss"
+                  class="w-full"
+                  placeholder="Ingrese CUPSS"
+                />
+              </span>
+            </div>
+
+            <div class="col-1" style="width: 20%;">
+              <span class="w-full">
+                <input
+                  pInputText
+                  type="text"
+                  formControlName="pla31regpensionariocupss"
+                  class="w-full"
+                  placeholder="Ingrese CUPSS"
+                />
+              </span>
+            </div>
+
+            <div class="col-1" style="width: 15%;">
+              <span class="w-full">
+                <p-calendar
+                formControlName="pla31fechaini"
+                dateFormat="dd/mm/yy"
+                class="w-full"
+                [appendTo]="'body'"
+                placeholder="Fecha de Inicio"></p-calendar>
+              </span>
+            </div>
+
+            <div class="col-1" style="width: 15%;">
+              <span class="w-full">
+                <p-calendar
+                formControlName="pla31fechafin"
+                dateFormat="dd/mm/yy"
+                class="w-full"
+                [appendTo]="'body'"
+                placeholder="Fecha de Fin"></p-calendar>
+              </span>
+            </div>
+
+            <div class="col-1" style="width: 10%; text-align: center;">
+              <span class="w-full">
+                <p-checkbox
+                formControlName="pla31flagcomisionmixta"
+                [binary]="true"
+                ></p-checkbox>
+              </span>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="col-1" style="width: 10%; text-align: center;">
+              <div class="flex gap-2 justify-content-center">
+                <p-button icon="pi pi-check"
+                styleClass="p-button-success p-button-sm" [text]="true"
+                (onClick)="onSave()" pTooltip="Guardar"></p-button>
+                <p-button icon="pi pi-times"
+                styleClass="p-button-danger p-button-sm" [text]="true"
+                (onClick)="onCancel()" pTooltip="Cancelar"></p-button>
+              </div>
+            </div>
+
+          </form>
+        </td>
+
+      </tr>
+    </ng-template>
+
+  </p-table>
 </p-panel>
+
+<p-dialog [(visible)]="mostrarModalRegimenPensionario" [header]="'Regimen Pensionario'" [modal]="true"
+[style]="{width: '1000px'}" [draggable]="false" [closable]="false" [resizable]="false">
+  <p-table [value]="tiposRegimenesPensionarios" [scrollable]="true" scrollHeight="350px" selectionMode="single">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 15%;">Código</th>
+        <th style="width: 50%;">Descripción</th>
+        <th style="width: 20%;">Clase</th>
+        <th style="width: 15%;">AFP Cod</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-regimen>
+      <tr [pSelectableRow]="regimen" (click)="seleccionarTipoRegimenPensionario(regimen)" style="cursor: pointer;">
+        <td>{{ regimen.codigo }}</td>
+        <td>{{ regimen.descripcion }}</td>
+        <td>{{ regimen.clase }}</td>
+        <td>{{ regimen.afpcod }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="mostrarModalRegimenPensionario = false"></button>
+  </ng-template>
+</p-dialog>

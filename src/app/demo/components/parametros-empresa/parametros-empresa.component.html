@@ -10,10 +10,6 @@
               <button type="button" pButton icon="pi pi-plus" label="Nuevo Parámetro"
                       (click)="showAddRow()" [disabled]="isEditingAnyRow"
                       class="p-button-sm"></button>
-              <div class="flex align-items-center">
-                  <label for="rowsPerPage" class="mr-2">Filas por página:</label>
-                  <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
-              </div>
           </div>
 
           <!-- Tabla Principal -->
@@ -23,6 +19,10 @@
                    [paginator]="true"
                    [rows]="rowsPerPage"
                    responsiveLayout="scroll"
+                   [showCurrentPageReport]="true"
+                   [rowsPerPageOptions]="[5, 10, 20, 50]"
+                   [tableStyle]="{ 'min-width': '100%' }"
+                   currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} parámetros"
                    styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
               <!-- Cabecera de Tabla -->
               <ng-template pTemplate="header">

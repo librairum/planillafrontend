@@ -8,6 +8,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { PanelModule } from 'primeng/panel';
 
 interface PlanillaTipo {
   codigo: string;
@@ -27,7 +28,8 @@ interface PlanillaTipo {
     InputTextModule,
     TooltipModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    PanelModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './planilla-tipo.component.html',
@@ -146,7 +148,7 @@ export class PlanillaTipoComponent implements OnInit {
 
     // Si es nuevo, verificar código duplicado
     if (planilla.isNew) {
-      const existe = this.planillasTipo.find((p, i) => 
+      const existe = this.planillasTipo.find((p, i) =>
         i !== index && p.codigo === planilla.codigo
       );
       if (existe) {
@@ -163,7 +165,7 @@ export class PlanillaTipoComponent implements OnInit {
     planilla.isEditing = false;
     planilla.isNew = false;
     this.originalPlanilla = null;
-    
+
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',

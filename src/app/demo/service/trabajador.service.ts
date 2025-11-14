@@ -198,13 +198,22 @@ const trabajador1: Trabajador = {
       }],
 
       regimenespensionarios: [{
-        pla31regpensionariocod: '21',
-        desregpensionario: 'SPP INTEGRA',
-        pla31regpensionariocupss: '551781MBCAV8',
-        pla31fechaini: new Date(2005, 7, 16),
-        pla31fechafin: new Date(2025, 0, 15),
-        pla31flagcomisionmixta: '1'
-      }],
+          pla31regpensionariocod: '21',
+          desregpensionario: 'SPP INTEGRA',
+          pla31regpensionariocupss: '551781MBCAV8',
+          pla31fechaini: new Date(2005, 7, 16),
+          pla31fechafin: new Date(2025, 0, 15),
+          pla31flagcomisionmixta: '1'
+        },
+        {
+          pla31regpensionariocod: '22',
+          desregpensionario: 'SPP PRIMA',
+          pla31regpensionariocupss: '552781MBCAV9',
+          pla31fechaini: new Date(2010, 5, 10),
+          pla31fechafin: new Date(2030, 0, 10),
+          pla31flagcomisionmixta: '0'
+        }
+      ],
 
       periodoslaborales: [{
         pla30codigo: '0001', //falta crear un metodo para obtener codigos

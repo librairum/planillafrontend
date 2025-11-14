@@ -89,11 +89,12 @@ export class RegimenesPensionariosComponent implements OnInit {
 
     ngOnInit(): void {
         this.regimenesPensionariosLista = this.getListaDesdeFormArray();
+        console.log('Regímenes Pensionarios cargados:', this.regimenesPensionariosLista);
     }
 
 
     getListaDesdeFormArray(): RegimenPensionario[] {
-      return this.regimenespensionarios.value; // Devuelve los valores del FormArray como un array
+      return this.regimenespensionarios.value;
     }
 
 
@@ -115,23 +116,24 @@ export class RegimenesPensionariosComponent implements OnInit {
     }
 
 
-
-
-
-    onRowEditInit(regimen: RegimenPensionario): void {
-      this.editingRegimenPensionario = { ...regimen };
-      this.isEditingAnyRow = true;
+    cargarTabla() {
+      this.setFormArrayDesdeLista(this.regimenesPensionariosLista);
     }
 
-    /*
-    onRowEditSave(rowIndex: number): void {
-      const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
 
-      console.log(periodo.value);
+    onRowEditInit(regimen: RegimenPensionario, rowIndex: number): void {
+      // Guardar los valores originales en clonedRegimenesPensionarios
+      this.editingRegimenPensionario = { ...regimen }; // Guarda una copia del régimen en edición
+      this.isEditingAnyRow = true; // Indica que hay una fila en edición
+      console.log('Edición iniciada. Valores originales guardados:', this.clonedRegimenesPensionarios[rowIndex]);
+    }
+
+    onRowEditSave(rowIndex: number): void {
+      const regimen = this.regimenespensionarios.at(rowIndex) as FormGroup;
 
       // Confirmar la acción antes de guardar
       this.confirmationService.confirm({
-        message: '¿Está seguro que desea guardar los cambios en este período laboral?',
+        message: '¿Está seguro que desea guardar los cambios en este régimen pensionario?',
         header: 'Confirmar Cambios',
         icon: 'pi pi-question-circle',
         acceptLabel: 'Sí',
@@ -140,23 +142,27 @@ export class RegimenesPensionariosComponent implements OnInit {
         rejectButtonStyleClass: 'p-button-danger',
         accept: () => {
           // Actualizar el FormArray y la lista en el índice correspondiente
-          const periodoActualizado: PeriodoLaboral = periodo.value;
+          const regimenActualizado: RegimenPensionario = regimen.value;
+
+          console.log('Valor actualizado:', regimenActualizado.pla31flagcomisionmixta);
+
+
 
           // Actualizar el FormArray
-          this.periodoslaborales.at(rowIndex).patchValue(periodoActualizado);
+          this.regimenespensionarios.at(rowIndex).patchValue(regimenActualizado);
 
           // Actualizar la lista
-          this.periodosLaboralesLista[rowIndex] = { ...periodoActualizado };
+          this.setFormArrayDesdeLista(this.regimenesPensionariosLista);
 
           // Eliminar el clon y desactivar el modo de edición
-          delete this.clonedPeriodosLaborales[rowIndex];
+          delete this.clonedRegimenesPensionarios[rowIndex];
           this.isEditingAnyRow = false;
-          this.editingPeriodoLaboral = null;
+          this.editingRegimenPensionario = null;
 
           // Habilitar todas las filas
-          this.periodoslaborales.controls.forEach((control) => control.enable());
+          this.regimenespensionarios.controls.forEach((control) => control.enable());
 
-          this.editingPeriodoLaboral = null;
+          this.editingRegimenPensionario = null;
           this.isEditingAnyRow = false;
 
           // Mostrar mensaje de éxito
@@ -167,16 +173,16 @@ export class RegimenesPensionariosComponent implements OnInit {
             'Período laboral actualizado correctamente'
           );
 
-          console.log('Cambios guardados para el período laboral en la fila:', rowIndex);
-          console.log('Datos actualizados:', periodo.value);
+          console.log('Cambios guardados para el régimen pensionario en la fila:', rowIndex);
+          console.log('Datos actualizados:', regimen.value);
         },
         reject: () => {
           // Restaurar el estado de edición y habilitar las filas
           this.isEditingAnyRow = false;
-          this.editingPeriodoLaboral = null;
+          this.editingRegimenPensionario = null;
 
           // Habilitar todas las filas
-          this.periodoslaborales.controls.forEach((control) => control.enable());
+          this.regimenespensionarios.controls.forEach((control) => control.enable());
 
           // Mostrar mensaje de cancelación
           verMensajeInformativo(
@@ -185,29 +191,34 @@ export class RegimenesPensionariosComponent implements OnInit {
             'Cancelado',
             'Los cambios no fueron guardados'
           );
-
-          console.log('Edición cancelada para la fila:', rowIndex);
         }
       });
     }
 
 
     onRowEditCancel(rowIndex: number): void {
-      const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
 
-      if (this.clonedPeriodosLaborales[rowIndex]) {
-        periodo.setValue(this.clonedPeriodosLaborales[rowIndex]); // Restaura los valores originales
-        delete this.clonedPeriodosLaborales[rowIndex]; // Elimina el clon
+      console.log(this.editingRegimenPensionario)
+      if (this.editingRegimenPensionario) {
+      this.regimenesPensionariosLista[rowIndex] = { ...this.editingRegimenPensionario };
+
+      // Restaurar los valores originales en el FormArray
+      const regimen = this.regimenespensionarios.at(rowIndex) as FormGroup;
+      regimen.setValue(this.editingRegimenPensionario);
+
+      console.log('Restaurando valores a:', this.editingRegimenPensionario);
+      this.editingRegimenPensionario = null;
+      this.isEditingAnyRow = false;
+
       }
 
-      this.isEditingAnyRow = false; // Indica que no hay filas en edición
-      this.editingPeriodoLaboral = null; // Limpia la fila en edición
     }
 
-    onDelete(periodo: PeriodoLaboral, rowIndex: number): void {
+
+    onDelete(regimen: RegimenPensionario, rowIndex: number): void {
 
       this.confirmationService.confirm({
-        message: '¿Está seguro que desea eliminar este período laboral?',
+        message: '¿Está seguro que desea eliminar este régimen pensionario?',
         header: 'Confirmar Eliminación',
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sí',
@@ -216,15 +227,15 @@ export class RegimenesPensionariosComponent implements OnInit {
         rejectButtonStyleClass: 'p-button-danger',
         accept: () => {
           // Eliminar del FormArray
-          this.periodoslaborales.removeAt(rowIndex);
+          this.regimenespensionarios.removeAt(rowIndex);
 
           // Eliminar de la lista sincronizada
-          if (rowIndex >= 0 && rowIndex < this.periodosLaboralesLista.length) {
-            this.periodosLaboralesLista.splice(rowIndex, 1);
+          if (rowIndex >= 0 && rowIndex < this.regimenesPensionariosLista.length) {
+            this.regimenesPensionariosLista.splice(rowIndex, 1);
           } else {
             // Fallback por coincidencia de código si los índices no coinciden
-            this.periodosLaboralesLista = this.periodosLaboralesLista.filter(
-              (p) => p.pla30codigo !== periodo.pla30codigo
+            this.regimenesPensionariosLista = this.regimenesPensionariosLista.filter(
+              (p) => p.pla31regpensionariocod !== regimen.pla31regpensionariocod
             );
           }
 
@@ -235,7 +246,7 @@ export class RegimenesPensionariosComponent implements OnInit {
             'Período laboral eliminado correctamente'
           );
 
-          console.log('Periodo laboral eliminado: ', periodo);
+          console.log('Régimen pensionario eliminado: ', regimen);
 
         },
         reject: () => {
@@ -243,44 +254,47 @@ export class RegimenesPensionariosComponent implements OnInit {
             this.messageService,
             'info',
             'Cancelado',
-            'La eliminación del período laboral fue cancelada'
+            'La eliminación del régimen pensionario fue cancelada'
           );
         }
       });
     }
 
-    showAddRow() {
-      const nuevoCodigo = this.GenerarNuevoCodigoPeriodo();
 
+    showAddRow() {
       // Inicializar el formulario para el nuevo período laboral
-      this.nuevoPeriodoForm.reset({
-        pla30codigo: nuevoCodigo, // Asignar el nuevo código generado
-        pla30fechaini: null,
-        pla30fechafin: null,
-        desmotivocese: ''
+
+      this.nuevoRegimenForm.reset({
+        pla31regpensionariocod: '',
+        desregpensionario: '',
+        pla31regpensionariocupss: '',
+        pla31fechaini: null,
+        pla31fechafin: null,
+        pla31flagcomisionmixta: '0',
       });
 
       this.isEditing = true;
       this.isNew = true;
     }
 
+
     onSave() {
-      if (this.nuevoPeriodoForm.valid) {
+      if (this.nuevoRegimenForm.valid) {
 
         this.confirmationService.confirm({
-          message: '¿Está seguro que desea guardar este nuevo periodo?',
-          header: 'Confirmar Periodo',
+          message: '¿Está seguro que desea guardar este nuevo régimen?',
+          header: 'Confirmar Régimen',
           icon: 'pi pi-question-circle',
           acceptLabel: 'Sí',
           rejectLabel: 'No',
           acceptButtonStyleClass: 'p-button',
           rejectButtonStyleClass: 'p-button-danger',
           accept: () => {
-            const nuevoPeriodo: PeriodoLaboral = this.nuevoPeriodoForm.value;
+            const nuevoRegimen: RegimenPensionario = this.nuevoRegimenForm.value;
 
-            // Verificar si ya existe un período laboral con el mismo código
-            const existe = this.periodosLaboralesLista.some(
-              (p) => p.pla30codigo === nuevoPeriodo.pla30codigo
+            // Verificar si ya existe un régimen pensionario con el mismo código
+            const existe = this.regimenesPensionariosLista.some(
+              (p) => p.pla31regpensionariocod === nuevoRegimen.pla31regpensionariocod
             );
 
             if (existe) {
@@ -288,24 +302,26 @@ export class RegimenesPensionariosComponent implements OnInit {
                 this.messageService,
                 'error',
                 'Error',
-                'Ya existe un período laboral con ese código'
+                'Ya existe un régimen pensionario con ese código'
               );
               return;
             }
 
             // Agregar el nuevo período al FormArray
-            this.periodoslaborales.push(
+            this.regimenespensionarios.push(
               this.fb.group({
-                pla30codigo: [nuevoPeriodo.pla30codigo],
-                pla30fechaini: [nuevoPeriodo.pla30fechaini],
-                pla30fechafin: [nuevoPeriodo.pla30fechafin],
-                desmotivocese: [nuevoPeriodo.desmotivocese]
+                pla31regpensionariocod: [nuevoRegimen.pla31regpensionariocod],
+                desregpensionario: [nuevoRegimen.desregpensionario],
+                pla31regpensionariocupss: [nuevoRegimen.pla31regpensionariocupss],
+                pla31fechaini: [nuevoRegimen.pla31fechaini],
+                pla31fechafin: [nuevoRegimen.pla31fechafin],
+                pla31flagcomisionmixta: [nuevoRegimen.pla31flagcomisionmixta]
               })
             );
 
             // Actualizar la lista y limpiar el formulario
-            this.periodosLaboralesLista = this.getListaDesdeFormArray();
-            this.nuevoPeriodoForm.reset();
+            this.regimenesPensionariosLista = this.getListaDesdeFormArray();
+            this.nuevoRegimenForm.reset();
             this.isEditing = false;
             this.isNew = false;
             verMensajeInformativo(
@@ -315,7 +331,7 @@ export class RegimenesPensionariosComponent implements OnInit {
                 'Nuevo período laboral guardado correctamente'
             );
 
-            console.log('Nuevo período laboral guardado:', nuevoPeriodo);
+            console.log('Nuevo régimen pensionario guardado:', nuevoRegimen);
         },
       });
     } else {
@@ -331,68 +347,64 @@ export class RegimenesPensionariosComponent implements OnInit {
     onCancel() {
       this.isEditing = false;
       this.isNew = false;
-      this.nuevoPeriodoForm.reset();
-    }
-
-
-    public GenerarNuevoCodigoPeriodo(): string {
-      // Obtener todos los códigos existentes y convertirlos a números
-      const codigos = this.periodosLaboralesLista.map((p) => parseInt(p.pla30codigo, 10));
-
-      // Encontrar el código máximo, si no hay códigos, el máximo será 0
-      const max = codigos.length > 0 ? Math.max(...codigos) : 0;
-
-      // Generar el nuevo código incrementando el máximo en 1, y rellenarlo con ceros
-      const nuevoCodigo = (max + 1).toString().padStart(4, '0'); // Código de 4 dígitos
-      return nuevoCodigo;
+      this.nuevoRegimenForm.reset();
     }
 
 
     // Abrir el modal
-    abrirModalMotivoCese(): void {
-      this.mostrarModalMotivoCese = true;
+    abrirModalTiposRegimenPensionario(): void {
+      this.mostrarModalRegimenPensionario = true;
 
       // Cargar los motivos de cese (puedes reemplazar esto con datos reales)
-      this.motivosCese = [
-        { codigo: '01', descripcion: 'RENUNCIA' },
-        { codigo: '02', descripcion: 'RENUNCIA CON INCENTIVOS' },
-        { codigo: '03', descripcion: 'DESPIDO O DESTITUCIÓN' },
-        { codigo: '04', descripcion: 'CESE COLECTIVO' }
-      ];
-    }
+      this.tiposRegimenesPensionarios = [
+        { codigo: '02', descripcion: 'DL 19990 SIST NAC DE PENS - ONP', clase: 'ONP', afpcod: '00' },
+        { codigo: '12', descripcion: 'OTROS REGIMENES PENSIONARIOS', clase: 'SRP', afpcod: '' },
+        { codigo: '21', descripcion: 'SPP INTEGRA', clase: 'SPP', afpcod: '01' },
+        { codigo: '22', descripcion: 'SPP HORIZONTE', clase: 'SPP', afpcod: '02' },
+        ];
+        }
+
 
     // Seleccionar un motivo de cese
-    seleccionarMotivoCese(motivo: { codigo: string; descripcion: string }) {
+    //falta corregir
+    seleccionarTipoRegimenPensionario(tiporegimen: { codigo: string; descripcion: string, clase: string, afpcod: string }) {
 
       if (this.isNew) {
         // Si se está creando un nuevo período, actualizar el formulario del nuevo período
-        this.nuevoPeriodoForm.patchValue({
-          desmotivocese: motivo.descripcion
+        this.nuevoRegimenForm.patchValue({
+          pla31regpensionariocod: tiporegimen.codigo,
+          desregpensionario: tiporegimen.descripcion
         });
-      } else if (this.isEditingAnyRow && this.editingPeriodoLaboral) {
+      } else if (this.isEditingAnyRow && this.editingRegimenPensionario) {
         // Si se está editando un período existente, actualizar el FormArray y la lista
-        const rowIndex = this.periodosLaboralesLista.findIndex(
-          (p) => p.pla30codigo === this.editingPeriodoLaboral?.pla30codigo
+        const rowIndex = this.regimenesPensionariosLista.findIndex(
+          (r) => r.pla31regpensionariocod === this.editingRegimenPensionario?.pla31regpensionariocod
         );
 
         if (rowIndex !== -1) {
-          const periodo = this.periodoslaborales.at(rowIndex) as FormGroup;
-          periodo.patchValue({
-            desmotivocese: motivo.descripcion
+          const regimen = this.regimenespensionarios.at(rowIndex) as FormGroup;
+          regimen.patchValue({
+            pla31regpensionariocod: tiporegimen.codigo,
+            desregpensionario: tiporegimen.descripcion
           });
 
           // Actualizar la lista sincronizada
-          this.periodosLaboralesLista[rowIndex].desmotivocese = motivo.descripcion;
+          this.regimenesPensionariosLista[rowIndex].pla31regpensionariocod = tiporegimen.codigo;
+          this.regimenesPensionariosLista[rowIndex].desregpensionario = tiporegimen.descripcion;
+
+          this.editingRegimenPensionario.pla31regpensionariocod = tiporegimen.codigo;
+          this.editingRegimenPensionario.desregpensionario = tiporegimen.descripcion
         }
       }
 
       // Cerrar el modal
-      this.mostrarModalMotivoCese = false;
-    }*/
+      this.mostrarModalRegimenPensionario = false;
+    }
 
 
-    /*mostrarRegimenesPensionarios(): void {
+    mostrarRegimenesPensionarios(): void {
       console.log(this.regimenespensionarios.controls);
-      console.log(this.regimenesPensionariosLista);
-    }*/
+      console.log('FormArray:', this.regimenespensionarios.value);
+      console.log('Lista:', this.regimenesPensionariosLista);
+    }
 }

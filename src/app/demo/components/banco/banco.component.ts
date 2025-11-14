@@ -10,6 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { PanelModule } from 'primeng/panel';
 
 interface Banco {
   codigo: string;
@@ -31,7 +32,8 @@ interface Banco {
     TooltipModule,
     CheckboxModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    PanelModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './banco.component.html',
@@ -39,7 +41,7 @@ interface Banco {
 })
 export class BancoComponent implements OnInit {
   @ViewChild('dt') table!: Table;
-  
+
   bancos: Banco[] = [];
   originalBanco: Banco | null = null;
   globalFilterValue: string = '';
@@ -92,10 +94,10 @@ export class BancoComponent implements OnInit {
       isEditing: true,
       isNew: true
     };
-    
+
     // Agregar al inicio del array en lugar del final
     this.bancos.unshift(nuevoBanco);
-    
+
     // Ir a la primera página
     if (this.table) {
       this.table.first = 0;
@@ -170,7 +172,7 @@ export class BancoComponent implements OnInit {
 
     // Si es nuevo, verificar código duplicado
     if (banco.isNew) {
-      const existe = this.bancos.find((b, i) => 
+      const existe = this.bancos.find((b, i) =>
         i !== index && b.codigo === banco.codigo
       );
       if (existe) {
@@ -187,13 +189,13 @@ export class BancoComponent implements OnInit {
     banco.isEditing = false;
     banco.isNew = false;
     this.originalBanco = null;
-    
+
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',
       detail: 'Banco guardado correctamente'
     });
-    
+
     // Reordenar: mover el banco guardado al final
     const bancoGuardado = this.bancos.splice(index, 1)[0];
     this.bancos.push(bancoGuardado);
