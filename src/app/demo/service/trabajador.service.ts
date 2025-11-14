@@ -210,13 +210,13 @@ const trabajador1: Trabajador = {
         pla30codigo: '0001', //falta crear un metodo para obtener codigos
         pla30fechaini: new Date(2020, 0, 15),
         pla30fechafin: new Date(2021, 0, 15),
-        desmotivocese: 'Renuncia voluntaria'
+        desmotivocese: 'RENUNCIA'
       },
       {
         pla30codigo: '0002', //falta crear un metodo para obtener codigos
         pla30fechaini: new Date(2020, 0, 15),
         pla30fechafin: new Date(2021, 0, 15),
-        desmotivocese: 'Otra renuncia voluntaria'
+        desmotivocese: 'RENUNCIA CON INCENTIVOS'
       }
       ]
     }

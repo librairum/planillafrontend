@@ -27,6 +27,7 @@ import { PeriodosLaboralesComponent } from '../periodos-laborales/periodos-labor
 import { TrabajadorService } from 'src/app/demo/service/trabajador.service';
 
 import { verMensajeInformativo } from '../../utilities/funciones_utilitarias';
+import { RegimenesPensionariosComponent } from '../regimenes-pensionarios/regimenes-pensionarios.component';
 
 @Component({
   standalone: true,
@@ -52,6 +53,7 @@ import { verMensajeInformativo } from '../../utilities/funciones_utilitarias';
     CalendarModule,
     TabViewModule,
     PeriodosLaboralesComponent,
+    RegimenesPensionariosComponent,
   ],
   providers: [MessageService, ConfirmationService]
 })

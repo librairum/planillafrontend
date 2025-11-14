@@ -1,4 +1,5 @@
-<button (click)="mostrarPeriodosLaborales()">Mostrar periodos laborales</button>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 
 <p-panel header="Periodos Laborales" styleClass="shadow-xl rounded-xl mb-3">
 
@@ -9,10 +10,10 @@
   <p-table [value]="periodosLaboralesLista" dataKey="pla30codigo" editMode="row" styleClass="p-datatable-sm">
     <ng-template pTemplate="header">
       <tr>
-        <th>Fec. Ini</th>
-        <th>Fec. Fin</th>
-        <th>Motivo Des.</th>
-        <th>Acciones</th>
+        <th style="width: 25%;">Fec. Ini</th>
+        <th style="width: 25%;">Fec. Fin</th>
+        <th style="width: 25%;">Motivo Des.</th>
+        <th style="width: 25%; text-align: center;">Acciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-periodo let-ri="rowIndex" let-editing="editing">
@@ -45,7 +46,23 @@
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input type="text" pInputText [(ngModel)]="periodo.desmotivocese" />
+              <div class="flex align-items-center gap-2">
+                <input
+                  type="text"
+                  pInputText
+                  [(ngModel)]="periodo.desmotivocese"
+                  placeholder="Seleccionar Motivo"
+                  readonly
+                  class="w-full"
+                />
+                <button
+                  pButton
+                  icon="pi pi-search"
+                  class="p-button-sm p-button-secondary"
+                  (click)="abrirModalMotivoCese()"
+                  pTooltip="Seleccionar Motivo"
+                ></button>
+              </div>
             </ng-template>
             <ng-template pTemplate="output">
               {{ periodo.desmotivocese }}
@@ -54,8 +71,8 @@
         </td>
 
         <!-- Botones de acción -->
-        <td>
-          <div class="flex gap-2">
+        <td style="text-align: center;">
+          <div class="flex justify-content-center gap-2">
             <button *ngIf="!editing" pButton
                     pInitEditableRow
                     (click)="onRowEditInit(periodo)"
@@ -66,7 +83,7 @@
 
             <button *ngIf="editing" pButton
                     pSaveEditableRow
-                    (click)="onRowEditSave(periodo)"
+                    (click)="onRowEditSave(ri)"
                     icon="pi pi-check"
                     pTooltip="Guardar"
                     class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
@@ -93,35 +110,81 @@
 
     <!-- Footer para Nuevo Registro -->
     <ng-template pTemplate="footer">
-      <!--
-      <tr *ngIf="isNew">
-        <td>
-          <p-calendar [(ngModel)]="newPeriodo.pla30fechaini" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
-        </td>
-        <td>
-          <p-calendar [(ngModel)]="newPeriodo.pla30fechafin" dateFormat="dd/mm/yy" class="w-full" [appendTo]="'body'"></p-calendar>
-        </td>
-        <td>
-          <input type="text" pInputText [(ngModel)]="newPeriodo.desmotivocese" />
-        </td>
-        <td>
-          <div class="flex gap-2">
-            <button pButton
-                    (click)="addPeriodoLaboral()"
-                    icon="pi pi-check"
-                    pTooltip="Agregar"
-                    class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+      <tr *ngIf="isEditing">
+        <td colspan="4">
+          <form [formGroup]="nuevoPeriodoForm" class="grid p-fluid">
 
-            <button pButton
-                    (click)="cancelAddRow()"
-                    icon="pi pi-times"
-                    pTooltip="Cancelar"
-                    class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
-          </div>
+            <div class="col-2" style="width: 25%;">
+              <span class="w-full">
+                <p-calendar
+                formControlName="pla30fechaini"
+                dateFormat="dd/mm/yy"
+                class="w-full"
+                [appendTo]="'body'"
+                placeholder="Fecha de Inicio"></p-calendar>
+              </span>
+            </div>
+
+            <div class="col-2" style="width: 25%;">
+              <span class="w-full">
+                <p-calendar
+                formControlName="pla30fechafin"
+                dateFormat="dd/mm/yy"
+                class="w-full"
+                [appendTo]="'body'"
+                placeholder="Fecha de Fin"></p-calendar>
+              </span>
+            </div>
+
+            <div class="col-2" style="width: 25%; text-align: center;">
+              <span class="w-full">
+                <p-button
+                  label="{{ nuevoPeriodoForm.get('desmotivocese')?.value || 'Seleccionar Motivo' }}"
+                  icon="pi pi-search"
+                  class="p-button-sm w-full"
+                  (click)="abrirModalMotivoCese()"
+                ></p-button>
+              </span>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="col-2" style="width: 25%; text-align: center;">
+              <div class="flex gap-2 justify-content-center">
+                <p-button icon="pi pi-check"
+                styleClass="p-button-success p-button-sm" [text]="true"
+                (onClick)="onSave()" pTooltip="Guardar"></p-button>
+                <p-button icon="pi pi-times"
+                styleClass="p-button-danger p-button-sm" [text]="true"
+                (onClick)="onCancel()" pTooltip="Cancelar"></p-button>
+              </div>
+            </div>
+          </form>
         </td>
       </tr>
-    -->
     </ng-template>
   </p-table>
 </p-panel>
 
+<!-- Modal motivos de cese -->
+
+<p-dialog [(visible)]="mostrarModalMotivoCese" [header]="'Motivo de Cese'" [modal]="true"
+    [style]="{width: '800px'}" [draggable]="false" [closable]="false" [resizable]="false">
+    <p-table [value]="motivosCese" [scrollable]="true" scrollHeight="350px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30%;">Código</th>
+          <th style="width: 70%;">Descripción</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-motivo>
+        <tr [pSelectableRow]="motivo" (click)="seleccionarMotivoCese(motivo)" style="cursor: pointer">
+          <td>{{ motivo.codigo }}</td>
+          <td>{{ motivo.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="mostrarModalMotivoCese = false"></button>
+    </ng-template>
+</p-dialog>
