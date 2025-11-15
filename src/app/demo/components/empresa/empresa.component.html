@@ -7,37 +7,33 @@
 
             <p-toolbar styleClass="mb-4 surface-card border-none px-4">
                 <div class="p-toolbar-group-start flex flex-wrap gap-3">
-                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Agregar empresa" icon="pi pi-plus" class="p-button-success "
-                        (click)="agregarEmpresa()" [disabled]="!isViewMode">
-                    </button>
-                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Modificar empresa" icon="pi pi-pencil" class="p-button-warning"
-                        (click)="editarEmpresa()" [disabled]="!isViewMode || !selectedEmpresa">
-                    </button>
-                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Eliminar empresa" icon="pi pi-trash" class="p-button-danger"
-                        (click)="eliminarEmpresa()" [disabled]="!isViewMode || !selectedEmpresa">
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Agregar empresa"
+                        icon="pi pi-plus" class="p-button-info" (click)="agregarEmpresa()" [disabled]="!isViewMode">
                     </button>
 
-                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Ver empresa" icon="pi pi-search" class="p-button-info"
-                        (click)="verEmpresa()" [disabled]="true">
-                    </button>
-                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Refrescar la lista" icon="pi pi-refresh"
-                        class="p-button-secondary" (click)="refrescarEmpresa()" [disabled]="!isViewMode">
+                    <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Refrescar la lista"
+                        icon="pi pi-refresh" class="p-button-info" (click)="refrescarEmpresa()"
+                        [disabled]="!isViewMode">
                     </button>
                 </div>
 
-                <div class="p-toolbar-group-start flex flex-wrap gap-3">
-                    <div class="p-toolbar-group-start flex flex-wrap gap-2 pr-1" *ngIf="isAddMode || isEditMode">
+                <div class="p-toolbar-group-end flex flex-wrap gap-3">
+                    <div class="p-toolbar-group-start flex flex-wrap gap-2 pr-1" *ngIf="!isViewMode">
+
                         <button pButton pRipple type="button" icon="pi pi-save" class="p-button-primary"
-                            (click)="guardar()" tooltipPosition="bottom" pTooltip="Guardar">
+                            (click)="guardar()" tooltipPosition="bottom" pTooltip="Guardar"
+                            [disabled]="!(isAddMode || isEditMode)">
                         </button>
+
                         <button pButton pRipple type="button" icon="pi pi-times" class="p-button-secondary"
-                            (click)="cancelar()" tooltipPosition="bottom" pTooltip="Cancelar">
+                            (click)="cancelar()" tooltipPosition="bottom" pTooltip="Cerrar detalles/Volver a la lista">
                         </button>
                     </div>
 
                     <div class="p-toolbar-group-end">
                         <div class="flex align-items-center">
-                            <label style="margin-right: 0.5rem; font-size: 15px;" for="rowsPerPageTable">Filas por página:</label>
+                            <label style="margin-right: 0.5rem; font-size: 15px;" for="rowsPerPageTable">Filas por
+                                página:</label>
                             <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage"
                                 appendTo="body" placeholder="Seleccionar" styleClass="p-button-sm w-16 text-center">
                             </p-dropdown>
@@ -48,42 +44,74 @@
 
             <div *ngIf="isViewMode" class="px-4">
                 <div class="relative">
-                    <p-table [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa"
-                        dataKey="empresacod" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines" [paginator]="true" [rows]="rowsPerPage"
-                        responsiveLayout="scroll">
+                    <p-table #dt [value]="empresas" selectionMode="single" [(selection)]="selectedEmpresa"
+                        dataKey="empresacod" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                        [paginator]="true" [rows]="rowsPerPage" responsiveLayout="scroll">
 
                         <ng-template pTemplate="paginatorcenter" let-state>
                         </ng-template>
 
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width:15%; text-align: center;">Código</th>
-                                <th style="width:15%; text-align: center;">RUC</th>
-                                <th style="width:35%; text-align: center;">Razón Social</th>
-                                <th style="width:45%; text-align: center;">Dirección</th>
+                                <th style="width:10%; text-align: center;">Código</th>
+
+                                <th style="width:20%; text-align: center;">
+                                    RUC
+                                    <div class="mt-1 flex justify-content-center">
+                                        <p-columnFilter type="text" field="ruc" matchMode="contains"
+                                            placeholder="Buscar RUC" [showMenu]="false"
+                                            styleClass="p-inputtext-sm w-15rem">
+                                        </p-columnFilter>
+                                    </div>
+                                </th>
+
+                                <th style="width:30%; text-align: center;">Razón Social</th>
+                                <th style="width:35%; text-align: center;">Dirección</th>
+                                <th style="width:20%; text-align: center;">Acciones</th>
                             </tr>
                         </ng-template>
 
                         <ng-template pTemplate="body" let-empresa>
-                            <tr [pSelectableRow]="empresa">
+                            <tr [pSelectableRow]="empresa" (click)="selectedEmpresa = empresa">
                                 <td class="text-center">{{ empresa.empresacod }}</td>
                                 <td class="text-center">{{ empresa.ruc }}</td>
-                                <td class="text-center">{{ empresa.razonsocial }}</td>
-                                <td class="text-center">{{ empresa.direccion }}</td>
+                                <td class="text-left">{{ empresa.razonsocial }}</td>
+                                <td class="text-left">{{ empresa.direccion }}</td>
+                                <td class="text-center">
+                                    <div class="flex justify-content-center gap-2">
+                                        <button pButton pRipple icon="pi pi-eye"
+                                            class="p-button-rounded p-button-info p-button-text p-button-sm"
+                                            (click)="vistaPrevia(empresa)" pTooltip="Ver detalles"
+                                            tooltipPosition="bottom">
+                                        </button>
+
+                                        <button pButton pRipple icon="pi pi-pencil"
+                                            class="p-button-rounded p-button-warning p-button-text p-button-sm"
+                                            (click)="editarEmpresa(empresa)" pTooltip="Editar" tooltipPosition="bottom"
+                                            [disabled]="!isViewMode">
+                                        </button>
+
+                                        <button pButton pRipple type="button" icon="pi pi-trash"
+                                            class="p-button-rounded p-button-danger p-button-text p-button-sm"
+                                            (click)="eliminarEmpresa(empresa); $event.stopPropagation()"
+                                            pTooltip="Eliminar empresa" tooltipPosition="bottom"
+                                            [disabled]="!isViewMode">
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                         </ng-template>
 
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="4" class="text-center">No se encontraron empresas.</td>
+                                <td colspan="5" class="text-center">No se encontraron empresas.</td>
                             </tr>
                         </ng-template>
                     </p-table>
                 </div>
             </div>
 
-            <div *ngIf="isAddMode || isEditMode">
-
+            <div *ngIf="!isViewMode">
                 <div class="grid gap-2 justify-content-center py-1 px-4">
                     <div class="col-12 md:col-12 justify-content-center ">
                         <p-panel header="Datos de la Empresa" [toggleable]="false" styleClass="border-round">
@@ -143,8 +171,7 @@
                                             <p-dropdown [options]="docTipos" optionLabel="label" optionValue="value"
                                                 [(ngModel)]="empresa.representanteLegal.replegaldoctip"
                                                 placeholder="Seleccione Tipo Doc" [filter]="true" [showClear]="true"
-                                                styleClass="w-full"
-                                                appendTo="body"
+                                                styleClass="w-full" appendTo="body"
                                                 [class.p-filled]="empresa.representanteLegal.replegaldoctip"
                                                 id="docTipoRL" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="docTipoRL">Tipo Documento</label>
@@ -204,8 +231,7 @@
                                             <p-dropdown [options]="docTipos" optionLabel="label" optionValue="value"
                                                 [(ngModel)]="empresa.responsablePlanilla.encargadoplanilladoctip"
                                                 placeholder="Seleccione Tipo Doc" [filter]="true" [showClear]="true"
-                                                styleClass="w-full"
-                                                appendTo="body"
+                                                styleClass="w-full" appendTo="body"
                                                 [class.p-filled]="empresa.responsablePlanilla.encargadoplanilladoctip"
                                                 id="docTipoRP" [disabled]="isDisabled()"></p-dropdown>
                                             <label for="docTipoRP">Doc. Tipo</label>
@@ -303,7 +329,7 @@
                                             <input pInputText id="ctaDolares"
                                                 [(ngModel)]="empresa.bancos.ctadolarespagonumero" class="w-full"
                                                 [disabled]="isDisabled()" />
-                                            <label for="ctadolares">Nro. Cuenta Dólares</label>
+                                            <label for="ctaDolares">Nro. Cuenta Dólares</label>
                                         </span>
                                     </div>
                                 </div>

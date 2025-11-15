@@ -5,17 +5,10 @@
     <div *ngIf="isMenuOpen" class="max-w-7xl mx-auto">
 
         <p-card header="Asistencia de Personal" styleClass="shadow-xl rounded-lg">
+            
             <p-toolbar styleClass="mb-4">
                 <div class="p-toolbar-group-start flex flex-wrap gap-3">
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-sm"
-                        (click)="eliminarEmpleado()" pTooltip="Eliminar empleado"></button>
-                    <button pButton pRipple icon="pi pi-save" class="p-button-success p-button-sm" (click)="guardar()"
-                        pTooltip="Guardar"></button>
-                    <button pButton pRipple icon="pi pi-times" class="p-button-secondary p-button-sm"
-                        (click)="cancelar()" pTooltip="Cancelar y cerrar la vista"></button>
-                    <button pButton pRipple icon="pi pi-eye" class="p-button-info p-button-sm" (click)="vistaPrevia()"
-                        pTooltip="Vista previa"></button>
-                </div>
+                    </div>
 
                 <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
                     <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
@@ -46,11 +39,33 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th class="w-1 text-center">Código</th>
-                        <th class="w-1 text-center">Nro. Identidad</th>
-                        <th class="w-4 text-center">Apellidos y Nombres</th>
+                        
+                        <th class="w-3 text-center">
+                            Nro. Identidad
+                            <div class="mt-1 flex justify-content-center">
+                                <p-columnFilter type="text" field="idIdentidad" matchMode="contains"
+                                    placeholder="Buscar Nro. Identidad" [showMenu]="false"
+                                    styleClass="p-inputtext-sm w-10rem">
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        
+                        <th class="w-4 text-center">
+                            Apellidos y Nombres
+                            <div class="mt-1 flex justify-content-center">
+                                <p-columnFilter type="text" field="apellidosynombres" matchMode="contains"
+                                    placeholder="Buscar Personal" [showMenu]="false"
+                                    styleClass="p-inputtext-sm w-full">
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        
                         <th class="w-1 text-center">Fecha Ingreso</th>
                         <th class="w-1 text-center">Estado</th>
                         <th class="w-1 text-center">{{ getDynamicColumnLabel() }}</th>
+                        
+                        <th class="w-1 text-center">Acciones</th> 
+                        
                         <th class="w-1 text-center">Inasistencias</th>
                     </tr>
                 </ng-template>
@@ -61,20 +76,33 @@
                         <td class="text-center">{{ empleado.idIdentidad }}</td>
                         <td class="text-center">{{ empleado.apellidosynombres }}</td>
                         <td class="text-center">{{ empleado.pla01fechaingreso | date: 'dd/MM/yyyy' }}</td>
-                        <td class="text-center"><p-tag [value]="getEstadoLabel(empleado.pla01estado)" [severity]="getSeverity(empleado.pla01estado)"></p-tag></td>
+                        <td class="text-center">{{ getEstadoLabel(empleado.pla01estado) }}</td>
                         
-                        <td class="w-24 text-center p-0">
+                        <td class="w-24 text-center p-3">
                             <div class="flex justify-center w-full">
                                 <input pInputText type="number" [min]="0" step="any" [max]="360"
-                                    class="w-16 border border-gray-300 rounded input-dias-asistencia"
+                                    class="w-14 border text-center border-gray-300 rounded input-dias-asistencia"
                                     *ngIf="selectedPeriodoPago === 'UTILIDADES'" [(ngModel)]="empleado.pla02utilidad"
                                     (ngModelChange)="empleado.pla02utilidad = $event > 360 ? 360 : $event < 0 ? 0 : $event" />
 
                                 <input pInputText type="number" [min]="0" step="any" [max]="180"
-                                    class="w-16 border border-gray-300 rounded input-dias-asistencia"
+                                    class="w-14 border text-center border-gray-300 rounded input-dias-asistencia"
                                     *ngIf="selectedPeriodoPago === 'GRATIFICACIONES'"
                                     [(ngModel)]="empleado.pla02gratificacion"
                                     (ngModelChange)="empleado.pla02gratificacion = $event > 180 ? 180 : $event < 0 ? 0 : $event" />
+                            </div>
+                        </td>
+
+                        <td class="text-center">
+                            <div class="flex justify-center gap-1">
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text p-button-sm"
+                                    (click)="eliminarEmpleado(empleado)" pTooltip="Eliminar" tooltipPosition="bottom"></button>
+                                <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-info p-button-text p-button-sm" 
+                                    (click)="guardar(empleado)" pTooltip="Guardar" tooltipPosition="bottom" ></button>
+                                <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text p-button-sm"
+                                    (click)="cancelar(empleado)" pTooltip="Cancelar" tooltipPosition="bottom"></button>
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info p-button-text p-button-sm" 
+                                    (click)="vistaPrevia(empleado)" pTooltip="Vista previa" tooltipPosition="bottom" ></button>
                             </div>
                         </td>
 
@@ -84,6 +112,12 @@
                                 pTooltip="Ver/Registrar Inasistencias" (click)="openInasistenciaDialog(empleado)">
                             </button>
                         </td>
+                    </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="9" class="text-center">No se encontraron empleados.</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -112,8 +146,8 @@
         </p-toolbar>
 
         <p-table [value]="inasistencias" [rowHover]="true" dataKey="pla03tiposuspension" 
-                 [(selection)]="selectedInasistencia" selectionMode="single"
-                 styleClass="p-datatable-gridlines p-datatable-sm shadow-md">
+                [(selection)]="selectedInasistencia" selectionMode="single"
+                styleClass="p-datatable-gridlines p-datatable-sm shadow-md">
             
             <ng-template pTemplate="header">
                 <tr>
@@ -197,12 +231,12 @@
 
                     <td class="text-center">
                         <div *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia" class="flex justify-center gap-1"
-                             (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-check" class="p-button-success p-button-text p-button-sm" pTooltip="Guardar" (click)="saveInasistencia(inasistencia)"></button>
+                            (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-check" class="p-button-success p-button-text p-button-sm" pTooltip="Guardar" (click)="saveInasistencia(inasistencia)"></button>
                             <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-text p-button-sm" pTooltip="Cancelar" (click)="cancelEditInasistencia(inasistencia, rowIndex)"></button>
                         </div>
                         
                         <div *ngIf="selectedInasistencia !== inasistencia && !isEditingInasistencia" class="flex justify-center gap-1"
-                             (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm" pTooltip="Editar" (click)="editInasistencia(inasistencia)"></button>
+                            (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm" pTooltip="Editar" (click)="editInasistencia(inasistencia)"></button>
                             <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-text p-button-sm" pTooltip="Eliminar" (click)="deleteInasistencia(inasistencia)"></button>
                         </div>
                     </td>

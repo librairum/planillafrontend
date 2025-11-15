@@ -1,27 +1,3 @@
 
-/*:host ::ng-deep .p-button .p-button-icon {
-    font-size: 0.8rem !important;
-}
-
-:host ::ng-deep .p-button-icon-only .p-button-icon {
-    padding: 0.4rem 0 !important;
-}*/
-
-.p-datatable .p-paginator.p-paginator-bottom {
-    justify-content: flex-end; 
-}
-
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    padding: 0.6rem 0.6rem !important; 
-}
-
-:host ::ng-deep .p-datatable {
-    font-size: 1.0rem !important;
-}
-
-:host ::ng-deep .p-button-icon {
-    color: white !important;
-}
 
 

@@ -15,3 +15,10 @@ export interface DetalleProceso{
     importe: number;
     boleta: string; //SI o NO
 }
+
+export interface Ajuste{
+    pla10conceptocod: string;
+    pla10conceptodesc: string;
+
+    importe: number;
+}

@@ -118,7 +118,6 @@ export class AsistenciaComponent implements OnInit {
     }
 
     loadEmpleados() {
-        // ... (Simulación de datos) ...
         const fullData: AsistenciaView[] = [
             { pla01empleadocod: '000001', idIdentidad: '08680851', apellidosynombres: 'MARTINEZ GARCIA Joel alberto', pla01fechaingreso: new Date(2006, 7, 16), pla01estado: 'A', pla02utilidad: 180, pla02gratificacion: 150 },
             { pla01empleadocod: '000002', idIdentidad: '07271641', apellidosynombres: 'CALDERON PEREZ PYME', pla01fechaingreso: new Date(2006, 0, 1), pla01estado: 'A', pla02utilidad: 180, pla02gratificacion: 180 },
@@ -148,14 +147,14 @@ export class AsistenciaComponent implements OnInit {
                     pla03tiposuspension: '07',
                     glo02descripcion: 'S.P. FALTA NO JUSTIFICADA',
                     pla03fechainicio: new Date(2025, 6, 15), 
-                    pla03fechafin: new Date(2025, 6, 17),   
+                    pla03fechafin: new Date(2025, 6, 17),  
                     pla03diasnotrabajados: 3
                 },
                 {
                     pla03tiposuspension: '05',
                     glo02descripcion: 'S.P. PERMISO O LICENCIA CONCEDIDOS POR EL EMPLEADOR',
                     pla03fechainicio: new Date(2025, 9, 5), 
-                    pla03fechafin: new Date(2025, 9, 5),   
+                    pla03fechafin: new Date(2025, 9, 5),  
                     pla03diasnotrabajados: 1
                 }
             ];
@@ -185,8 +184,8 @@ export class AsistenciaComponent implements OnInit {
 
     saveInasistencia(inasistencia: Inasistencia) {
         if (!inasistencia.pla03tiposuspension) {
-             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Tipo de Suspensión.');
-             return;
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Tipo de Suspensión.');
+            return;
         }
         // Lógica de guardado (API call aquí)
         this.isEditingInasistencia = false;
@@ -259,7 +258,8 @@ export class AsistenciaComponent implements OnInit {
         return this.selectedPeriodoPago === 'UTILIDADES' ? 'Días Utilidad' : 'Días Gratificación';
     }
 
-    guardar() {
+   
+    guardar(empleado: AsistenciaView) {
         this.confirmationService.confirm({
             message: '¿Está seguro que desea guardar los cambios de asistencia?',
             header: 'Confirmar Guardado',
@@ -269,19 +269,17 @@ export class AsistenciaComponent implements OnInit {
             acceptButtonStyleClass: 'p-button-danger',
             rejectButtonStyleClass: 'p-button',
             accept: () => {
+                // Tu lógica original de "Guardar Todo"
                 verMensajeInformativo(this.messageService, 'success', 'Éxito', `Se guardaron los datos de ${this.empleados.length} empleados correctamente`);
             }
         });
     }
 
-    eliminarEmpleado() {
-        if (!this.selectedEmpleado) { 
-            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un empleado de la lista.');
-            return;
-        }
 
+    eliminarEmpleado(empleado: AsistenciaView) {
+        // Ya no se comprueba this.selectedEmpleado, se usa el empleado de la fila
         this.confirmationService.confirm({
-            message: `¿Está seguro que desea eliminar a ${this.selectedEmpleado.apellidosynombres} del listado de asistencia?`, 
+            message: `¿Está seguro que desea eliminar a ${empleado.apellidosynombres} del listado de asistencia?`, 
             header: 'Confirmar Eliminación',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
@@ -289,15 +287,20 @@ export class AsistenciaComponent implements OnInit {
             acceptButtonStyleClass: 'p-button-danger',
             rejectButtonStyleClass: 'p-button',
             accept: () => {
-                this.empleados = this.empleados.filter(e => e.pla01empleadocod !== this.selectedEmpleado?.pla01empleadocod); 
+                this.empleados = this.empleados.filter(e => e.pla01empleadocod !== empleado.pla01empleadocod); 
                 this.totalRecords = this.empleados.length;
-                this.selectedEmpleado = null;
+                
+                // Si el empleado eliminado era el que estaba seleccionado, lo deseleccionamos
+                if (this.selectedEmpleado && this.selectedEmpleado.pla01empleadocod === empleado.pla01empleadocod) {
+                    this.selectedEmpleado = null;
+                }
+                
                 verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Empleado eliminado del listado de asistencia.');
             }
         });
     }
 
-    cancelar() {
+    cancelar(empleado: AsistenciaView) {
         this.confirmationService.confirm({
             message: '¿Está seguro que desea cancelar? Se cerrará la vista.',
             header: 'Confirmar Cancelación',
@@ -315,8 +318,8 @@ export class AsistenciaComponent implements OnInit {
         });
     }
 
-    vistaPrevia() {
-        verMensajeInformativo(this.messageService, 'info', 'Vista Previa', 'Generando vista previa del reporte de asistencia...');
+    vistaPrevia(empleado: AsistenciaView) {
+        verMensajeInformativo(this.messageService, 'info', 'Vista Previa', `Generando vista previa para: ${empleado.apellidosynombres}`);
     }
 
     getFechaIngresoFormateada(fecha: Date): string {
