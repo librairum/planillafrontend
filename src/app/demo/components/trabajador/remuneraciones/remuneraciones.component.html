@@ -1,1 +1,79 @@
-<p>remuneraciones works!</p>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<p-panel header="Trabajador Detalle" styleClass="shadow-xl rounded-xl mb-3">
+  <button type="button" pButton icon="pi pi-plus" label="Nueva Remuneración"
+  (click)="showAddRow()" [disabled]="isEditingAnyRow || esModoVisualizacion"
+  class="p-button-sm"></button>
+
+  <p-table [value]="remuneracionesLista" dataKey="pla05conceptocod" editMode="row" styleClass="p-datatable-sm">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 20%;">Concepto Cod.</th>
+        <th style="width: 40%;">Concepto Desc.</th>
+        <th style="width: 20%;">Importe</th>
+        <th style="width: 20%; text-align: center;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-remuneracion let-ri="rowIndex" let-editing="editing">
+      <tr [pEditableRow]="remuneracion">
+        <td>
+
+        </td>
+
+        <td>
+          {{ remuneracion.conceptodesc }}
+        </td>
+
+        <td>
+
+        </td>
+
+        <td style="text-align: center;">
+          <div class="flex justify-content-center gap-2">
+            <button *ngIf="!editing" pButton
+                      pInitEditableRow
+                      (click)="onRowEditInit(remuneracion, ri)"
+                      icon="pi pi-pencil"
+                      pTooltip="Editar"
+                      [disabled]="isEditingAnyRow || esModoVisualizacion || isNew "
+                      class="p-button-rounded p-button-text p-button-sm"></button>
+
+              <button *ngIf="editing" pButton
+                      pSaveEditableRow
+                      (click)="onRowEditSave(ri)"
+                      icon="pi pi-check"
+                      pTooltip="Guardar"
+                      class="p-button-rounded p-button-text p-button-sm p-button-success"></button>
+
+              <button *ngIf="editing" pButton
+                      pCancelEditableRow
+                      (click)="onRowEditCancel(remuneracion)"
+                      icon="pi pi-times"
+                      pTooltip="Cancelar"
+                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+
+              <button *ngIf="!editing" pButton
+                      type="button"
+                      (click)="onDelete(remuneracion, ri)"
+                      icon="pi pi-trash"
+                      pTooltip="Eliminar"
+                      [disabled]="isEditingAnyRow || esModoVisualizacion || isNew "
+                      class="p-button-rounded p-button-text p-button-sm p-button-danger"></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <tr *ngIf="isEditing">
+        <td colspan="4">
+          
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</p-panel>

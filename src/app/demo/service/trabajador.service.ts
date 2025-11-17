@@ -198,6 +198,7 @@ const trabajador1: Trabajador = {
       }],
 
       regimenespensionarios: [{
+          id: 1,
           pla31regpensionariocod: '21',
           desregpensionario: 'SPP INTEGRA',
           pla31regpensionariocupss: '551781MBCAV8',
@@ -206,6 +207,7 @@ const trabajador1: Trabajador = {
           pla31flagcomisionmixta: '1'
         },
         {
+          id: 2,
           pla31regpensionariocod: '22',
           desregpensionario: 'SPP PRIMA',
           pla31regpensionariocupss: '552781MBCAV9',

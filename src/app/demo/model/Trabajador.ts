@@ -51,6 +51,7 @@ export interface Remuneracion {
 }
 
 export interface RegimenPensionario {
+  id: number; // Identificador único interno
   pla31regpensionariocod: string;
   desregpensionario: string;
   pla31regpensionariocupss: string;

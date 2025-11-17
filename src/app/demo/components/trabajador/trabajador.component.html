@@ -4,14 +4,11 @@
 <div class="p-1 py-5 max-h-screen">
   <div class="mb-2">
     <p-panel header="Trabajador" styleClass="shadow-xl rounded-xl mb-3">
+
       <div class="flex justify-content-between align-items-center mb-3">
         <button type="button" pButton icon="pi pi-plus" label="Nuevo Trabajador"
         (click)="nuevoTrabajador()"
         class="p-button-sm"></button>
-        <div class="flex align-items-center">
-          <label for="rowsPerPage" class="mr-2">Filas por página:</label>
-          <p-dropdown id="rowsPerPage" [options]="[10, 20, 40]" [(ngModel)]="rowsPerPage" placeholder="Seleccionar" class="p-button-sm"></p-dropdown>
-        </div>
       </div>
 
       <p-table
@@ -19,8 +16,14 @@
       dataKey="pla01empresacod"
       [paginator]="true"
       [rows]="rowsPerPage"
+      [rowsPerPageOptions]="[5, 10, 20, 50]"
+      [showCurrentPageReport]="true"
       responsiveLayout="scroll"
-      styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} trabajadores"
+      [tableStyle]="{ 'min-width': '100%' }"
+      styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+      class="table-trabajador"
+      >
         <!-- Cabecera-->
         <ng-template pTemplate="header">
           <tr>

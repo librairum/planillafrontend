@@ -1,1 +1,12 @@
-  
+  ::ng-deep .table-parametros-general {
+  width: fit-content;
+  max-width: 100%;
+
+}
+
+::ng-deep .table-parametros-general {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}

@@ -96,6 +96,10 @@
 
           <!-- Primera fila -->
           <div class="col-12">
+            <app-remuneraciones
+            [remuneraciones]="remuneraciones"
+            [esModoVisualizacion]="esModoVisualizacion"
+            ></app-remuneraciones>
 
             <!-- Tabla de Remuneraciones -->
             <p-table [value]="trabajadorForm.value.remuneraciones" editable="true" styleClass="p-datatable-sm">

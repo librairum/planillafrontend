@@ -58,6 +58,7 @@ export class RegimenesPensionariosComponent implements OnInit {
 
     regimenesPensionariosLista: RegimenPensionario[] = []; // Lista para interactuar con PrimeNG
     nuevoRegimenForm: FormGroup = this.fb.group({
+      id: [0],
       pla31regpensionariocod: [''],
       desregpensionario: [''],
       pla31regpensionariocupss: [''],
@@ -104,6 +105,7 @@ export class RegimenesPensionariosComponent implements OnInit {
       lista.forEach((regimen) => {
         this.regimenespensionarios.push(
           this.fb.group({
+            id: [regimen.id],
             pla31regpensionariocod: [regimen.pla31regpensionariocod],
             desregpensionario: [regimen.desregpensionario],
             pla31regpensionariocupss: [regimen.pla31regpensionariocupss],
@@ -115,6 +117,16 @@ export class RegimenesPensionariosComponent implements OnInit {
       });
     }
 
+    getNextId(): number {
+      if (this.regimenesPensionariosLista.length === 0) {
+        return 1; // Si la lista está vacía, el primer ID será 1
+      }
+
+      // Obtener el ID máximo actual y sumarle 1
+      const maxId = Math.max(...this.regimenesPensionariosLista.map((regimen) => regimen.id || 0));
+      return maxId + 1;
+    }
+
 
     cargarTabla() {
       this.setFormArrayDesdeLista(this.regimenesPensionariosLista);
@@ -123,8 +135,12 @@ export class RegimenesPensionariosComponent implements OnInit {
 
     onRowEditInit(regimen: RegimenPensionario, rowIndex: number): void {
       // Guardar los valores originales en clonedRegimenesPensionarios
-      this.editingRegimenPensionario = { ...regimen }; // Guarda una copia del régimen en edición
-      this.isEditingAnyRow = true; // Indica que hay una fila en edición
+      this.clonedRegimenesPensionarios[rowIndex] = { ...regimen };
+
+      // Establecer el estado de edición
+      this.editingRegimenPensionario = { ...regimen };
+      this.isEditingAnyRow = true;
+
       console.log('Edición iniciada. Valores originales guardados:', this.clonedRegimenesPensionarios[rowIndex]);
     }
 
@@ -142,7 +158,10 @@ export class RegimenesPensionariosComponent implements OnInit {
         rejectButtonStyleClass: 'p-button-danger',
         accept: () => {
           // Actualizar el FormArray y la lista en el índice correspondiente
-          const regimenActualizado: RegimenPensionario = regimen.value;
+          const regimenActualizado: RegimenPensionario = {
+            id: this.regimenesPensionariosLista[rowIndex].id, // Mantener el mismo ID
+            ...regimen.value
+          };
 
           console.log('Valor actualizado:', regimenActualizado.pla31flagcomisionmixta);
 
@@ -152,7 +171,9 @@ export class RegimenesPensionariosComponent implements OnInit {
           this.regimenespensionarios.at(rowIndex).patchValue(regimenActualizado);
 
           // Actualizar la lista
-          this.setFormArrayDesdeLista(this.regimenesPensionariosLista);
+          //this.setFormArrayDesdeLista(this.regimenesPensionariosLista);
+          this.regimenesPensionariosLista[rowIndex] = { ...regimenActualizado };
+
 
           // Eliminar el clon y desactivar el modo de edición
           delete this.clonedRegimenesPensionarios[rowIndex];
@@ -170,7 +191,7 @@ export class RegimenesPensionariosComponent implements OnInit {
             this.messageService,
             'success',
             'Éxito',
-            'Período laboral actualizado correctamente'
+            'Regimen pensionario actualizado correctamente'
           );
 
           console.log('Cambios guardados para el régimen pensionario en la fila:', rowIndex);
@@ -197,21 +218,29 @@ export class RegimenesPensionariosComponent implements OnInit {
 
 
     onRowEditCancel(rowIndex: number): void {
+      console.log('Cancelando edición. Valores originales:', this.clonedRegimenesPensionarios[rowIndex]);
 
-      console.log(this.editingRegimenPensionario)
-      if (this.editingRegimenPensionario) {
-      this.regimenesPensionariosLista[rowIndex] = { ...this.editingRegimenPensionario };
-
-      // Restaurar los valores originales en el FormArray
       const regimen = this.regimenespensionarios.at(rowIndex) as FormGroup;
-      regimen.setValue(this.editingRegimenPensionario);
 
-      console.log('Restaurando valores a:', this.editingRegimenPensionario);
-      this.editingRegimenPensionario = null;
-      this.isEditingAnyRow = false;
+      if (this.clonedRegimenesPensionarios[rowIndex]) {
+        // Restaurar los valores originales desde el clon
+        regimen.setValue(this.clonedRegimenesPensionarios[rowIndex]);
 
+        // Restaurar los valores en la lista sincronizada
+        this.regimenesPensionariosLista[rowIndex] = { ...this.clonedRegimenesPensionarios[rowIndex] };
+
+        // Eliminar el clon
+        delete this.clonedRegimenesPensionarios[rowIndex];
       }
 
+      // Restablecer el estado de edición
+      this.isEditingAnyRow = false;
+      this.editingRegimenPensionario = null;
+
+      // Habilitar todas las filas
+      this.regimenespensionarios.controls.forEach((control) => control.enable());
+
+      console.log('Edición cancelada. Fila restaurada:', this.regimenespensionarios.at(rowIndex).value);
     }
 
 
@@ -243,7 +272,7 @@ export class RegimenesPensionariosComponent implements OnInit {
             this.messageService,
             'success',
             'Éxito',
-            'Período laboral eliminado correctamente'
+            'Régimen pensionario eliminado correctamente'
           );
 
           console.log('Régimen pensionario eliminado: ', regimen);
@@ -262,9 +291,9 @@ export class RegimenesPensionariosComponent implements OnInit {
 
 
     showAddRow() {
-      // Inicializar el formulario para el nuevo período laboral
 
       this.nuevoRegimenForm.reset({
+        id: this.getNextId(),
         pla31regpensionariocod: '',
         desregpensionario: '',
         pla31regpensionariocupss: '',
@@ -290,7 +319,10 @@ export class RegimenesPensionariosComponent implements OnInit {
           acceptButtonStyleClass: 'p-button',
           rejectButtonStyleClass: 'p-button-danger',
           accept: () => {
-            const nuevoRegimen: RegimenPensionario = this.nuevoRegimenForm.value;
+            const nuevoRegimen: RegimenPensionario = {
+              id: this.nuevoRegimenForm.value.idbanco || this.getNextId(),
+              ...this.nuevoRegimenForm.value,
+            };
 
             // Verificar si ya existe un régimen pensionario con el mismo código
             const existe = this.regimenesPensionariosLista.some(
@@ -310,6 +342,7 @@ export class RegimenesPensionariosComponent implements OnInit {
             // Agregar el nuevo período al FormArray
             this.regimenespensionarios.push(
               this.fb.group({
+                id: [nuevoRegimen.id],
                 pla31regpensionariocod: [nuevoRegimen.pla31regpensionariocod],
                 desregpensionario: [nuevoRegimen.desregpensionario],
                 pla31regpensionariocupss: [nuevoRegimen.pla31regpensionariocupss],
@@ -328,7 +361,7 @@ export class RegimenesPensionariosComponent implements OnInit {
               this.messageService,
                 'success',
                 'Éxito',
-                'Nuevo período laboral guardado correctamente'
+                'Nuevo régimen pensionario guardado correctamente'
             );
 
             console.log('Nuevo régimen pensionario guardado:', nuevoRegimen);
@@ -348,6 +381,8 @@ export class RegimenesPensionariosComponent implements OnInit {
       this.isEditing = false;
       this.isNew = false;
       this.nuevoRegimenForm.reset();
+
+      this.regimenespensionarios.controls.forEach((control) => control.enable());
     }
 
 
@@ -361,8 +396,10 @@ export class RegimenesPensionariosComponent implements OnInit {
         { codigo: '12', descripcion: 'OTROS REGIMENES PENSIONARIOS', clase: 'SRP', afpcod: '' },
         { codigo: '21', descripcion: 'SPP INTEGRA', clase: 'SPP', afpcod: '01' },
         { codigo: '22', descripcion: 'SPP HORIZONTE', clase: 'SPP', afpcod: '02' },
-        ];
-        }
+      ];
+
+      console.log('Modal abierto para seleccionar tipo de régimen pensionario.');
+    }
 
 
     // Seleccionar un motivo de cese
@@ -383,6 +420,7 @@ export class RegimenesPensionariosComponent implements OnInit {
 
         if (rowIndex !== -1) {
           const regimen = this.regimenespensionarios.at(rowIndex) as FormGroup;
+
           regimen.patchValue({
             pla31regpensionariocod: tiporegimen.codigo,
             desregpensionario: tiporegimen.descripcion

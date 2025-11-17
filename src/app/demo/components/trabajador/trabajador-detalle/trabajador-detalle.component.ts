@@ -28,6 +28,7 @@ import { TrabajadorService } from 'src/app/demo/service/trabajador.service';
 
 import { verMensajeInformativo } from '../../utilities/funciones_utilitarias';
 import { RegimenesPensionariosComponent } from '../regimenes-pensionarios/regimenes-pensionarios.component';
+import { RemuneracionesComponent } from '../remuneraciones/remuneraciones.component';
 
 @Component({
   standalone: true,
@@ -54,6 +55,7 @@ import { RegimenesPensionariosComponent } from '../regimenes-pensionarios/regime
     TabViewModule,
     PeriodosLaboralesComponent,
     RegimenesPensionariosComponent,
+    RemuneracionesComponent,
   ],
   providers: [MessageService, ConfirmationService]
 })

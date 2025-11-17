@@ -6,9 +6,7 @@
   (click)="showAddRow()" [disabled]="isEditingAnyRow || esModoVisualizacion"
   class="p-button-sm"></button>
 
-  <button (click)="mostrarRegimenesPensionarios()">Mostrar</button>
-
-  <p-table [value]="regimenesPensionariosLista" dataKey="pla31regpensionariocod" editMode="row" styleClass="p-datatable-sm">
+  <p-table [value]="regimenesPensionariosLista" dataKey="id" editMode="row" styleClass="p-datatable-sm">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 10%;">Régimen</th>
@@ -52,14 +50,7 @@
         </td>
 
         <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input type="text" pInputText [(ngModel)]="regimen.desregpensionario" class="w-full" />
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ regimen.desregpensionario }}
-            </ng-template>
-          </p-cellEditor>
+          {{ regimen.desregpensionario }}
         </td>
 
         <td>
@@ -148,13 +139,12 @@
 
             <div class="col-1" style="width: 10%;">
               <span class="w-full">
-                <input
-                  pInputText
-                  type="text"
-                  formControlName="pla31regpensionariocupss"
-                  class="w-full"
-                  placeholder="Ingrese CUPSS"
-                />
+                <p-button
+                  label="{{ nuevoRegimenForm.get('pla31regpensionariocod')?.value || 'Buscar' }}"
+                  icon="pi pi-search"
+                  class="p-button-sm w-full"
+                  (click)="abrirModalTiposRegimenPensionario()"
+                ></p-button>
               </span>
             </div>
 
@@ -163,9 +153,10 @@
                 <input
                   pInputText
                   type="text"
-                  formControlName="pla31regpensionariocupss"
+                  formControlName="desregpensionario"
                   class="w-full"
-                  placeholder="Ingrese CUPSS"
+                  placeholder="Descripción"
+                  readonly
                 />
               </span>
             </div>
@@ -209,6 +200,8 @@
                 <p-checkbox
                 formControlName="pla31flagcomisionmixta"
                 [binary]="true"
+                [trueValue]="'1'"
+                [falseValue]="'0'"
                 ></p-checkbox>
               </span>
             </div>

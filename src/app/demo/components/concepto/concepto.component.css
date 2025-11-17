@@ -1,0 +1,10 @@
+::ng-deep .table-concepto {
+  width: fit-content;
+  max-width: 100%;
+}
+
+::ng-deep .table-concepto {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+}
