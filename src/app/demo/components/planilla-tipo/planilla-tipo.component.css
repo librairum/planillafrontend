@@ -16,4 +16,18 @@
   max-width: 120px;
 }
 
-/* La mayoría de componentes NO necesitarán nada aquí */
+/* ================================
+   TABLA
+================================ */
+::ng-deep .planilla-tipo-table {
+  width: fit-content;
+  max-width: 100%;
+
+}
+
+::ng-deep .banco-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}

@@ -27,3 +27,18 @@
     font-size: 0.8rem;
   }
 }
+/* ================================
+   TABLA
+================================ */
+::ng-deep .base-afectacion-table {
+  width: fit-content;
+  max-width: 100%;
+
+}
+
+::ng-deep .banco-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}

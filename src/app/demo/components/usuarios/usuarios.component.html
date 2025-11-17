@@ -1,13 +1,13 @@
 <div class="usuarios-container">
   <p-toast></p-toast>
-  
+
   <p-confirmDialog></p-confirmDialog>
 
   <div class="page-header">
     <div class="header-content">
       <span class="header-title">Usuarios</span>
-      <button pButton type="button" 
-              icon="pi pi-plus" 
+      <button pButton type="button"
+              icon="pi pi-plus"
               class="p-button-sm add-button"
               (click)="agregarNuevo()"
               pTooltip="Agregar nuevo usuario"
@@ -16,24 +16,24 @@
   </div>
 
   <div class="table-wrapper">
-    <p-table 
-      [value]="usuarios" 
+    <p-table
+      [value]="usuarios"
       [paginator]="true"
       [rows]="5"
       [rowsPerPageOptions]="[5, 10, 20]"
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios"
-      selectionMode="single" 
-      [(selection)]="selectedUsuario" 
+      selectionMode="single"
+      [(selection)]="selectedUsuario"
       (onRowSelect)="onUsuarioSelect($event)"
       dataKey="id"
       styleClass="usuarios-table">
-      
+
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 150px">Id</th>
-          <th style="width: 300px">Nombre</th>
-          <th style="width: 150px">Clave</th>
+          <th style="width: auto">Id</th>
+          <th style="width: auto">Nombre</th>
+          <th style="width: auto">Clave</th>
           <th>Perfil</th>
           <th style="width: 200px; text-align: center">Acciones</th>
         </tr>
@@ -42,10 +42,10 @@
       <ng-template pTemplate="body" let-usuario let-rowIndex="rowIndex">
         <tr [pSelectableRow]="usuario" [pSelectableRowDisabled]="usuario.isEditing">
           <td>
-            <input 
-              *ngIf="usuario.isEditing" 
-              type="text" 
-              pInputText 
+            <input
+              *ngIf="usuario.isEditing"
+              type="text"
+              pInputText
               [(ngModel)]="usuario.id"
               [disabled]="!usuario.isNew"
               class="table-input"
@@ -54,10 +54,10 @@
           </td>
 
           <td>
-            <input 
-              *ngIf="usuario.isEditing" 
-              type="text" 
-              pInputText 
+            <input
+              *ngIf="usuario.isEditing"
+              type="text"
+              pInputText
               [(ngModel)]="usuario.nombre"
               class="table-input"
               maxlength="100" />
@@ -65,7 +65,7 @@
           </td>
 
           <td>
-            <p-password 
+            <p-password
               *ngIf="usuario.isEditing"
               [(ngModel)]="usuario.clave"
               [feedback]="false"
@@ -80,9 +80,9 @@
           </td>
 
           <td>
-            <p-dropdown 
+            <p-dropdown
               *ngIf="usuario.isEditing"
-              [options]="perfiles" 
+              [options]="perfiles"
               [(ngModel)]="usuario.perfil"
               optionLabel="label"
               optionValue="value"
@@ -96,28 +96,28 @@
           <td class="actions-cell">
             <div class="action-buttons">
               <button *ngIf="!usuario.isEditing"
-                pButton type="button" icon="pi pi-pencil" 
+                pButton type="button" icon="pi pi-pencil"
                 class="p-button-rounded p-button-text p-button-sm p-button-warning"
                 (click)="editar(usuario)"
                 pTooltip="Editar" tooltipPosition="top">
               </button>
 
               <button *ngIf="!usuario.isEditing"
-                pButton type="button" icon="pi pi-trash" 
+                pButton type="button" icon="pi pi-trash"
                 class="p-button-rounded p-button-text p-button-sm p-button-danger"
                 (click)="eliminar(usuario, rowIndex)"
                 pTooltip="Eliminar" tooltipPosition="top">
               </button>
 
               <button *ngIf="usuario.isEditing"
-                pButton type="button" icon="pi pi-undo" 
+                pButton type="button" icon="pi pi-undo"
                 class="p-button-rounded p-button-text p-button-sm p-button-secondary"
                 (click)="cancelar(usuario, rowIndex)"
                 pTooltip="Cancelar" tooltipPosition="top">
               </button>
 
               <button *ngIf="usuario.isEditing"
-                pButton type="button" icon="pi pi-save" 
+                pButton type="button" icon="pi pi-save"
                 class="p-button-rounded p-button-text p-button-sm p-button-success"
                 (click)="guardar(usuario, rowIndex)"
                 pTooltip="Guardar" tooltipPosition="top">
@@ -138,19 +138,19 @@
   <h3 class="detail-title">Empresas por usuario</h3>
 
   <div class="table-wrapper">
-    <p-table 
-      [value]="empresasUsuario" 
+    <p-table
+      [value]="empresasUsuario"
       [paginator]="true"
       [rows]="5"
       [tableStyle]="{ 'min-width': '100%' }">
-      
+
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 100px">Empresa</th>
-          <th style="width: 300px">Razón Social</th>
-          <th style="width: 150px">Ruc</th>
+          <th style="width: auto">Empresa</th>
+          <th style="width: auto">Razón Social</th>
+          <th style="width: auto">Ruc</th>
           <th>Dirección</th>
-          <th style="width: 120px; text-align: center">FlagEstado</th>
+          <th style="width: auto">FlagEstado</th>
         </tr>
       </ng-template>
 

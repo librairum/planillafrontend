@@ -339,3 +339,18 @@
 ::ng-deep .input-with-button input[readonly]:focus {
   box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important; /* Sombra de foco amarilla */
 }
+/* ================================
+   TABLA
+================================ */
+::ng-deep .concepto-estandar-table {
+  width: fit-content;
+  max-width: 100%;
+
+}
+
+::ng-deep .banco-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}
