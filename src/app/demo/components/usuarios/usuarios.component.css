@@ -92,3 +92,18 @@
   background-color: var(--blue-50) !important;
   color: var(--primary-color) !important;
 }
+/* ================================
+   TABLA
+================================ */
+::ng-deep .usuarios-container {
+  width: fit-content;
+  max-width: 100%;
+
+}
+
+::ng-deep .banco-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}

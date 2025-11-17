@@ -24,16 +24,16 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 80px">Codigo</th>
-          <th style="width: 280px">Descripcion</th>
-          <th style="width: 100px; text-align: center">Impresion</th>
-          <th style="width: 80px; text-align: center">Activo</th>
-          <th style="width: 120px; text-align: center">Configurable</th>
-          <th style="width: 150px">Concepto Sunat</th>
-          <th style="width: 150px">ConceptoTipoDesc</th>
-          <th style="width: 150px">Concepto SubTipoc</th>
-          <th style="width: 100px">Tipo</th>
-          <th style="width: 180px; text-align: center">Acciones</th>
+          <th style="width: auto">Codigo</th>
+          <th style="width: auto">Descripcion</th>
+          <th style="width: auto">Impresion</th>
+          <th style="width: auto">Activo</th>
+         <th style="width: auto">Configurable</th>
+          <th style="width: auto">Concepto Sunat</th>
+          <th style="width: auto">ConceptoTipoDesc</th>
+        <th style="width: auto">Concepto SubTipoc</th>
+          <th style="width: auto">Tipo</th>
+          <th style="width: auto">Acciones</th>
         </tr>
       </ng-template>
 
@@ -58,12 +58,12 @@
               class="p-button-rounded p-button-info p-button-text p-button-sm action-btn"
               (click)="mostrarAyuda(concepto)" pTooltip="Ayuda Local" tooltipPosition="top">
             </button>
-            
+
             <button pButton type="button" icon="pi pi-pencil"
               class="p-button-rounded p-button-warning p-button-text p-button-sm action-btn"
               (click)="editarConcepto(concepto)" pTooltip="Editar" tooltipPosition="top">
             </button>
-            
+
             <button pButton type="button" icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text p-button-sm action-btn"
               (click)="eliminarConcepto(concepto)" pTooltip="Eliminar" tooltipPosition="top">

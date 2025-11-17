@@ -7,7 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
@@ -49,7 +49,7 @@ interface AfectacionItem {
     CheckboxModule,
     InputTextareaModule,
     TableModule,
-    DialogModule,
+    DropdownModule,
     ToastModule
   ],
   providers: [MessageService],
@@ -65,11 +65,11 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
   // Modelo del concepto
   conceptoActual: any = {};
 
-  // Diálogos auxiliares
-  displayTipoCalculoDialog: boolean = false;
-  displayConceptoTipoDialog: boolean = false;
-  displaySubTipoDialog: boolean = false;
-  displayConceptoSunatDialog: boolean = false;
+  // Selecciones para los dropdowns
+  tipoCalculoSeleccionado: TipoCalculo | null = null;
+  conceptoTipoSeleccionado: ConceptoTipo | null = null;
+  subTipoSeleccionado: SubTipoConcepto | null = null;
+  conceptoSunatSeleccionado: ConceptoSunat | null = null;
 
   // Catálogos
   tiposCalculo: TipoCalculo[] = [
@@ -150,14 +150,12 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener el código del concepto de la ruta
     this.route.params.subscribe(params => {
       this.codigoConcepto = params['codigo'];
-      
-      // Obtener el modo de operación
+
       this.route.queryParams.subscribe(queryParams => {
         const modo = queryParams['modo'];
-        
+
         if (this.codigoConcepto === 'nuevo') {
           this.isNewRecord = true;
           this.esModoVisualizacion = false;
@@ -175,18 +173,10 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
     this.conceptoActual = {
       codigo: '',
       descripcion: '',
-      tipoCalculoCod: '',
-      tipoCalculoDes: '',
-      tipoCod: '',
-      tipoDes: '',
-      subTipoCod: '',
-      subTipoDes: '',
       imprimible: false,
       configBasica: true,
       formulable: false,
       activo: true,
-      conceptoSunatCod: '',
-      conceptoSunatDes: '',
       observacion: '',
       afectacionesSunat: JSON.parse(JSON.stringify(this.afectacionesSunat)),
       afectacionOtros: JSON.parse(JSON.stringify(this.afectacionOtros)),
@@ -196,82 +186,43 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
   }
 
   cargarConcepto(codigo: string) {
-    // Aquí normalmente llamarías a un servicio
-    // Por ahora, simulamos la carga con datos hardcodeados
     this.conceptoActual = {
       codigo: codigo,
       descripcion: 'Sueldo Mensual Basico',
-      tipoCalculoCod: '01',
-      tipoCalculoDes: 'Calculo Planillas',
-      tipoCod: '04',
-      tipoDes: 'Otros',
-      subTipoCod: '01',
-      subTipoDes: 'Conceptos Fijos',
       imprimible: false,
       configBasica: true,
       formulable: false,
       activo: true,
-      conceptoSunatCod: '',
-      conceptoSunatDes: 'Otros',
       observacion: '',
       afectacionesSunat: JSON.parse(JSON.stringify(this.afectacionesSunat)),
       afectacionOtros: JSON.parse(JSON.stringify(this.afectacionOtros)),
       planillasAsignadas: JSON.parse(JSON.stringify(this.planillasAsignadas)),
       regimenesLaborales: JSON.parse(JSON.stringify(this.regimenesLaborales))
     };
+
+    // Establecer valores iniciales para los dropdowns
+    this.tipoCalculoSeleccionado = this.tiposCalculo[0];
+    this.conceptoTipoSeleccionado = this.conceptosTipo[3];
+    this.subTipoSeleccionado = this.subTiposConcepto[0];
   }
 
-  // Métodos para abrir diálogos de búsqueda
-  abrirBusquedaTipoCalculo() {
-    if (!this.esModoVisualizacion) {
-      this.displayTipoCalculoDialog = true;
-    }
+  // Eventos de cambio de los dropdowns
+  onTipoCalculoChange(event: any) {
+    // Puedes agregar lógica adicional aquí si es necesario
   }
 
-  abrirBusquedaConceptoTipo() {
-    if (!this.esModoVisualizacion) {
-      this.displayConceptoTipoDialog = true;
-    }
+  onConceptoTipoChange(event: any) {
+    // Puedes agregar lógica adicional aquí si es necesario
   }
 
-  abrirBusquedaSubTipo() {
-    if (!this.esModoVisualizacion) {
-      this.displaySubTipoDialog = true;
-    }
+  onSubTipoChange(event: any) {
+    // Puedes agregar lógica adicional aquí si es necesario
   }
 
-  abrirBusquedaConceptoSunat() {
-    if (!this.esModoVisualizacion) {
-      this.displayConceptoSunatDialog = true;
-    }
+  onConceptoSunatChange(event: any) {
+    // Puedes agregar lógica adicional aquí si es necesario
   }
 
-  // Métodos de selección
-  seleccionarTipoCalculo(tipo: TipoCalculo) {
-    this.conceptoActual.tipoCalculoCod = tipo.codigo;
-    this.conceptoActual.tipoCalculoDes = tipo.descripcion;
-    this.displayTipoCalculoDialog = false;
-  }
-
-  seleccionarConceptoTipo(tipo: ConceptoTipo) {
-    this.conceptoActual.tipoCod = tipo.codigo;
-    this.conceptoActual.tipoDes = tipo.descripcion;
-    this.displayConceptoTipoDialog = false;
-  }
-
-  seleccionarSubTipo(subTipo: SubTipoConcepto) {
-    this.conceptoActual.subTipoCod = subTipo.codigo;
-    this.conceptoActual.subTipoDes = subTipo.descripcion;
-    this.displaySubTipoDialog = false;
-  }
-
-  seleccionarConceptoSunat(concepto: ConceptoSunat) {
-    this.conceptoActual.conceptoSunatCod = concepto.codigoSunat;
-    this.conceptoActual.conceptoSunatDes = concepto.descripcion;
-    this.displayConceptoSunatDialog = false;
-  }
-
-  // Guardar concepto
   guardarConcepto() {
     if (!this.conceptoActual.codigo || !this.conceptoActual.descripcion) {
       this.messageService.add({
@@ -282,39 +233,35 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
       return;
     }
 
-    // Aquí normalmente llamarías a un servicio para guardar
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',
       detail: this.isNewRecord ? 'Concepto creado correctamente' : 'Concepto actualizado correctamente'
     });
 
-    // Regresar a la lista después de guardar
     setTimeout(() => {
       this.volver();
     }, 1000);
   }
 
-  // Volver a la lista
   volver() {
-  this.router.navigate(['/home/maestro-estandar/concepto']);
-}
-
-  // Validar solo números
-  soloNumeros(event: KeyboardEvent): boolean {
-    const charCode = event.which ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      event.preventDefault();
-      return false;
-    }
-    return true;
+    this.router.navigate(['/home/maestro-estandar/concepto']);
   }
 
-  // Obtener título del formulario
   getTitulo(): string {
     if (this.isNewRecord) {
       return 'Nuevo Concepto';
     }
     return this.esModoVisualizacion ? 'Visualización de Concepto' : 'Editar Concepto';
+  }
+
+  // Obtener subtipos filtrados según el concepto tipo seleccionado
+  get subTiposFiltrados(): SubTipoConcepto[] {
+    if (!this.conceptoTipoSeleccionado) {
+      return this.subTiposConcepto;
+    }
+    return this.subTiposConcepto.filter(
+      st => st.conceptoTipoCod === this.conceptoTipoSeleccionado!.codigo
+    );
   }
 }

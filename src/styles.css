@@ -15,48 +15,48 @@
   --primary-dark: #0b5ed7;
   --primary-light: #6ea8fe;
   --primary-lighter: #cfe2ff;
-  
+
   /* Colores de estado - Bootstrap estándar */
   --success-color: #198754;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
   --info-color: #0dcaf0;
   --secondary-color: #6c757d;
-  
+
   /* Colores de fondo */
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
   --bg-tertiary: #e9ecef;
   --bg-quaternary: #dee2e6;
-  
+
   /* Colores de texto */
   --text-primary: #212529;
   --text-secondary: #495057;
   --text-tertiary: #6c757d;
   --text-quaternary: #adb5bd;
-  
+
   /* Bordes */
   --border-color: #dee2e6;
   --border-color-light: #e9ecef;
   --border-color-dark: #adb5bd;
-  
+
   /* Sombras sutiles */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.10);
-  
+
   /* Espaciado */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  
+
   /* Bordes redondeados mínimos */
   --radius-sm: 2px;
   --radius-md: 4px;
   --radius-lg: 6px;
-  
+
   /* Tamaños de fuente */
   --font-xs: 0.75rem;
   --font-sm: 0.875rem;
@@ -64,7 +64,7 @@
   --font-lg: 1.125rem;
   --font-xl: 1.25rem;
   --font-2xl: 1.5rem;
-  
+
   /* Transiciones suaves */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.2s ease;
@@ -830,7 +830,7 @@ html, body {
   .form-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .form-field.full-width {
     grid-column: 1;
   }
@@ -841,25 +841,25 @@ html, body {
     --spacing-lg: 1rem;
     --spacing-xl: 1.5rem;
   }
-  
+
   .page-header,
   .section-header {
     padding: var(--spacing-sm) var(--spacing-md);
   }
-  
+
   .page-header h2,
   .section-header h2 {
     font-size: var(--font-lg);
   }
-  
+
   ::ng-deep .p-dialog .p-dialog-content {
     padding: var(--spacing-md) !important;
   }
-  
+
   ::ng-deep .p-card .p-card-body {
     padding: var(--spacing-md) !important;
   }
-  
+
   ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
     padding: 0.35rem !important;
     font-size: 0.8rem !important;
@@ -1491,4 +1491,44 @@ html, body {
   color: #adb5bd !important;
   opacity: 0.5 !important;
   cursor: not-allowed !important;
+}
+/* =====================================================
+   TABLAS CENTRADAS Y AUTOAJUSTABLES - UNIVERSAL
+   Aplica automáticamente a todas las tablas PrimeNG
+   ===================================================== */
+
+/* Centrar contenedor de tabla */
+::ng-deep .p-datatable-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* Tabla con ancho automático centrada */
+::ng-deep .p-datatable table {
+  width: auto !important;
+  margin: 0 auto;
+  table-layout: auto;
+}
+
+/* Headers con ancho automático */
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  white-space: nowrap;
+  padding: 0.5rem 0.75rem !important;
+}
+
+/* Celdas con ancho automático */
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  white-space: nowrap;
+  padding: 0.4rem 0.75rem !important;
+}
+
+/* Columna de acciones más compacta */
+::ng-deep .p-datatable .actions-cell {
+  padding: 0.4rem 0.5rem !important;
+  white-space: nowrap;
+}
+
+/* Ajustar gap de botones de acción */
+.action-buttons {
+  gap: 0.35rem;
 }

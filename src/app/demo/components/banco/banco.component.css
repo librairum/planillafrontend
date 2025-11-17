@@ -371,3 +371,18 @@
 ::ng-deep .p-datepicker {
   z-index: 1000 !important;
 }
+/* ================================
+   TABLA
+================================ */
+::ng-deep .banco-table {
+  width: fit-content;
+  max-width: 100%;
+
+}
+
+::ng-deep .banco-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}
