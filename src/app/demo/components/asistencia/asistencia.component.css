@@ -32,3 +32,21 @@
     width: 100% !important; 
 }
 
+ ::ng-deep .asistencia-table {
+  width: fit-content;
+  max-width: 100%;
+}
+
+:host ::ng-deep .align-to-table {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    width: 100%; 
+}
+
+:host ::ng-deep .content-wrapper {
+    overflow-x: auto;
+    width: fit-content; 
+    max-width: 100%;
+}
+
+

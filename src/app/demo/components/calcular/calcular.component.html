@@ -1,135 +1,138 @@
-<p-card header="Procesar" [style]="{'margin-top': '10px'}" styleClass="shadow-2">
+<p-panel header="PROCESAR" styleClass="shadow-xl rounded-xl py-2 header-large">
     <p-toast></p-toast>
 
-    <p-toolbar styleClass="mb-4 surface-200 border-round-lg shadow-1">
-        <ng-template pTemplate="left">
-            <div class="flex gap-2">
-                <p-button icon="pi pi-play" (onClick)="procesarDatos()" pTooltip="Procesar" tooltipPosition="bottom"
-                    styleClass="p-button-sm p-button-info"></p-button>
+    <div class="content-wrapper"> 
+        
+        <p-toolbar styleClass="mb-4 surface-200 border-round-lg shadow-1 align-to-table">
+            <ng-template pTemplate="left">
+                <div class="flex gap-2">
+                    <p-button icon="pi pi-play" (onClick)="procesarDatos()" pTooltip="Procesar" tooltipPosition="bottom"
+                        styleClass="p-button-sm p-button-info"></p-button>
 
-                <p-button icon="pi pi-upload" (onClick)="importarArchivos()" styleClass="p-button-info p-button-sm"
-                    pTooltip="Importar Archivos" tooltipPosition="bottom"></p-button>
+                    <p-button icon="pi pi-upload" (onClick)="importarArchivos()" styleClass="p-button-info p-button-sm"
+                        pTooltip="Importar Archivos" tooltipPosition="bottom"></p-button>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="right">
+                <div class="flex align-items-center gap-3 mr-3 p-2 border-round-md bg-white shadow-1">
+                    <div class="flex align-items-center">
+                        <p-radioButton [(ngModel)]="boletaChecked" [value]="true" name="reporteTipo"
+                            (onClick)="toggleBoleta()" inputId="boleta"></p-radioButton>
+                        <label for="boleta" class="ml-2 font-medium">Boleta</label>
+                    </div>
+
+                    <div class="flex align-items-center">
+                        <p-radioButton [(ngModel)]="planillaGeneralChecked" [value]="true" name="reporteTipo"
+                            (onClick)="togglePlanillaGeneral()" inputId="planilla"></p-radioButton>
+                        <label for="planilla" class="ml-2 font-medium">Planilla General</label>
+                    </div>
+
+                    <div class="flex align-items-center">
+                        <p-radioButton [(ngModel)]="liquidacionChecked" [value]="true" name="reporteTipo"
+                            (onClick)="toggleLiquidacion()" inputId="liquidacion"></p-radioButton>
+                        <label for="liquidacion" class="ml-2 font-medium">Liquidación</label>
+                    </div>
+
+                </div>
+
+                <p-button icon="pi pi-print" (onClick)="imprimir()" styleClass="p-button-info p-button-sm"
+                    pTooltip="Imprimir Reporte" tooltipPosition="bottom"></p-button>
+            </ng-template>
+        </p-toolbar>
+
+        <div class="table-controls-header flex justify-content-end align-items-center mb-3 align-to-table">
+            <div class="flex align-items-center">
+                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por
+                    página:</label>
+                <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
+                    placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center"></p-dropdown>
             </div>
-        </ng-template>
-
-        <ng-template pTemplate="right">
-            <div class="flex align-items-center gap-3 mr-3 p-2 border-round-md bg-white shadow-1">
-                <div class="flex align-items-center">
-                    <p-radioButton [(ngModel)]="boletaChecked" [value]="true" name="reporteTipo"
-                        (onClick)="toggleBoleta()" inputId="boleta"></p-radioButton>
-                    <label for="boleta" class="ml-2 font-medium">Boleta</label>
-                </div>
-
-                <div class="flex align-items-center">
-                    <p-radioButton [(ngModel)]="planillaGeneralChecked" [value]="true" name="reporteTipo"
-                        (onClick)="togglePlanillaGeneral()" inputId="planilla"></p-radioButton>
-                    <label for="planilla" class="ml-2 font-medium">Planilla General</label>
-                </div>
-
-                <div class="flex align-items-center">
-                    <p-radioButton [(ngModel)]="liquidacionChecked" [value]="true" name="reporteTipo"
-                        (onClick)="toggleLiquidacion()" inputId="liquidacion"></p-radioButton>
-                    <label for="liquidacion" class="ml-2 font-medium">Liquidación</label>
-                </div>
-
-            </div>
-
-            <p-button icon="pi pi-print" (onClick)="imprimir()" styleClass="p-button-info p-button-sm"
-                pTooltip="Imprimir Reporte" tooltipPosition="bottom"></p-button>
-        </ng-template>
-    </p-toolbar>
-
-    <div class="table-controls-header flex justify-content-end align-items-center mb-3">
-        <div class="flex align-items-center">
-            <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por
-                página:</label>
-            <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
-                placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center"></p-dropdown>
         </div>
-    </div>
 
-    <p-table #dt [value]="procesar" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '50rem'}"
-        class="p-datatable-gridlines"
-        styleClass="p-datatable-gridlines p-datatable-sm shadow-md rounded-lg overflow-hidden" [paginator]="true"
-        [rows]="rowsPerPage">
+        <p-table #dt [value]="procesar" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '70rem'}"
+            class="p-datatable-gridlines"
+            styleClass="calcular-table p-datatable-sm p-datatable-striped p-datatable-gridlines" [paginator]="true"
+            [rows]="rowsPerPage">
 
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 8rem; text-align: center;">Código empleado</th>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: auto; text-align: center;">Código empleado</th>
 
-                <th style="width: 15rem; text-align: center;">
-                    Doc. Nro
-                    <div class="mt-1 flex justify-content-center">
-                        <p-columnFilter type="text" field="pla01docuidentidadnro" matchMode="contains"
-                            placeholder="Doc. Nro" [showMenu]="false" styleClass="p-inputtext-sm w-8rem">
-                        </p-columnFilter>
-                    </div>
-                </th>
+                    <th style="width: auto; text-align: center;">
+                        Doc. Nro
+                        <div class="mt-1 flex justify-content-center">
+                            <p-columnFilter type="text" field="pla01docuidentidadnro" matchMode="contains"
+                                placeholder="Buscar Doc. Nro" [showMenu]="false" styleClass="p-inputtext-sm w-8rem">
+                            </p-columnFilter>
+                        </div>
+                    </th>
 
-                <th style="width: 27rem; text-align: center;">
-                    Apellidos y Nombres
-                    <div class="mt-1 flex justify-content-center">
-                        <p-columnFilter type="text" field="apellidosynombres" matchMode="contains"
-                            placeholder="Buscar Apellidos" [showMenu]="false" styleClass="p-inputtext-sm w-10rem">
-                        </p-columnFilter>
-                    </div>
-                </th>
+                    <th style="width: auto; text-align: center;">
+                        Apellidos y Nombres
+                        <div class="mt-1 flex justify-content-center">
+                            <p-columnFilter type="text" field="apellidosynombres" matchMode="contains"
+                                placeholder="Buscar Apellidos" [showMenu]="false" styleClass="p-inputtext-sm w-10rem">
+                            </p-columnFilter>
+                        </div>
+                    </th>
 
-                <th style="width: 10rem; text-align: center;">Fec. Ingreso</th>
-                <th style="width: 15rem; text-align: center;">Centro Costo Des.</th>
-                <th style="width: 15rem; text-align: center;">Puesto Des.</th>
-                <th style="width: 10rem; text-align: center;">Estado</th>
-                <th style="width: 6rem; text-align: center;">Ver Detalle</th>
-                <th style="width: 6rem; text-align: center;">Ajuste</th>
-            </tr>
-        </ng-template>
+                    <th style="width: auto; text-align: center;">Fec. Ingreso</th>
+                    <th style="width: auto; text-align: center;">Centro Costo Des.</th>
+                    <th style="width: auto; text-align: center;">Puesto Des.</th>
+                    <th style="width: auto; text-align: center;">Estado</th>
+                    <th style="width: auto; text-align: center;">Ver Detalle</th>
+                    <th style="width: auto; text-align: center;">Ajuste</th>
+                </tr>
+            </ng-template>
 
-        <ng-template pTemplate="body" let-empleado>
-            <tr>
-                <td style="text-align: center;">{{ empleado.pla01empleadocod }}</td>
-                <td style="text-align: center;">{{ empleado.pla01docuidentidadnro }}</td>
-                <td style="text-align: left;">{{ empleado.apellidosynombres }}</td>
-                <td style="text-align: center;">{{ empleado.pla01fechaingreso | date:'dd/MM/yyyy' }}</td>
-                <td style="text-align: center;">{{ empleado.pla57descripcion }}</td>
-                <td style="text-align: center;">{{ empleado.pla51descripcion }}</td>
-                <td class="text-center">
-                    {{ empleado.calculoestado }}
-                </td>
+            <ng-template pTemplate="body" let-empleado>
+                <tr>
+                    <td style="text-align: center;">{{ empleado.pla01empleadocod }}</td>
+                    <td style="text-align: center;">{{ empleado.pla01docuidentidadnro }}</td>
+                    <td style="text-align: left;">{{ empleado.apellidosynombres }}</td>
+                    <td style="text-align: center;">{{ empleado.pla01fechaingreso | date:'dd/MM/yyyy' }}</td>
+                    <td style="text-align: center;">{{ empleado.pla57descripcion }}</td>
+                    <td style="text-align: center;">{{ empleado.pla51descripcion }}</td>
+                    <td class="text-center">
+                        {{ empleado.calculoestado }}
+                    </td>
 
-                <td class="text-center">
-                    <p-button icon="pi pi-file" styleClass="p-button-sm p-button-text p-button-info"
-                        (onClick)="verDetalle(empleado)" pTooltip="Ver Detalles" tooltipPosition="bottom"
-                        [text]="true"></p-button>
-                </td>
+                    <td class="text-center">
+                        <p-button icon="pi pi-file" styleClass="p-button-sm p-button-text p-button-info"
+                            (onClick)="verDetalle(empleado)" pTooltip="Ver Detalles" tooltipPosition="bottom"
+                            [text]="true"></p-button>
+                    </td>
 
-                <td class="text-center">
-                    <p-button icon="pi pi-cog" styleClass="p-button-sm p-button-info" (onClick)="ajustar(empleado)"
-                        pTooltip="Ajustar" tooltipPosition="bottom" [text]="true"></p-button>
-                </td>
-            </tr>
-        </ng-template>
+                    <td class="text-center">
+                        <p-button icon="pi pi-cog" styleClass="p-button-sm p-button-info" (onClick)="ajustar(empleado)"
+                            pTooltip="Ajustar" tooltipPosition="bottom" [text]="true"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
 
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="9" class="text-center">No hay datos de cálculo para mostrar.</td>
-            </tr>
-        </ng-template>
-    </p-table>
-</p-card>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="9" class="text-center">No hay datos de cálculo para mostrar.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+</p-panel>
 
 
 <p-dialog [(visible)]="displayDetalleDialog"
     [header]="'DETALLE DE PROCESO - ' + selectedEmpleadoDetalle?.apellidosynombres" [modal]="true"
-    [style]="{width: '1000px'}" styleClass="p-fluid" [draggable]="false">
+    [style]="{width: '1200px'}" styleClass="p-fluid" [draggable]="false">
     <ng-template pTemplate="content">
         <p-table [value]="detalleProcesoData" [tableStyle]="{'min-width': '50px'}" [scrollable]="true"
-            scrollHeight="400px" styleClass="p-datatable-gridlines p-datatable-sm shadow-md rounded-lg overflow-hidden">
+            scrollHeight="400px" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 3rem; text-align: center;">Concepto Cod.</th>
-                    <th style="width: 3rem; text-align: center;">Concepto Desc.</th>
-                    <th style="width: 2rem; text-align: center;">Importe</th>
-                    <th style="width: 2rem; text-align: center;">Boleta</th>
+                    <th style="width: auto; text-align: center;">Concepto Cod.</th>
+                    <th style="width: auto; text-align: center;">Concepto Desc.</th>
+                    <th style="width: auto; text-align: center;">Importe</th>
+                    <th style="width: auto; text-align: center;">Boleta</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-detalle>
@@ -151,11 +154,10 @@
     </ng-template>
 </p-dialog>
 
----
-
+ 
 <p-dialog header="Ajuste de Ingresos" [(visible)]="displayAjusteDialog" [modal]="true" [style]="{width: '60vw'}"
-    [draggable]="false" [resizable]="false" styleClass="shadow-2"
-    [closable]="ajusteDialogClosable"  
+    [draggable]="false" [resizable]="false" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+    [closable]="ajusteDialogClosable"  
     (onHide)="onAjusteDialogHide()"> 
     <p class="font-semibold mb-3 text-lg">
         Ajustando valores para: <span class="text-primary">{{ selectedEmpleadoAjuste?.apellidosynombres }}</span>
@@ -172,10 +174,10 @@
         styleClass="p-datatable-gridlines p-datatable-sm shadow-md rounded-lg overflow-hidden">
         <ng-template pTemplate="header" scrollHeight="400px" [tableStyle]="{'min-width': '50px'}">
             <tr>
-                <th style="width: 15rem; text-align: center;">{{ 'Concepto Cod' | uppercase }}</th>
-                <th style="width: 25rem; text-align: center;">Descripción</th>
-                <th style="width: 10rem; text-align: center;">{{ 'Importe' | uppercase }}</th>
-                <th style="width: 10rem; text-align: center;">Acciones</th>
+                <th style="width: auto; text-align: center;">{{ 'Concepto Cod' | uppercase }}</th>
+                <th style="width: auto; text-align: center;">Descripción</th>
+                <th style="width: auto; text-align: center;">{{ 'Importe' | uppercase }}</th>
+                <th style="width: auto; text-align: center;">Acciones</th>
             </tr>
         </ng-template>
 
@@ -199,14 +201,15 @@
                     <span class="text-700">{{ ajuste.pla10conceptodesc }}</span>
                 </td>
 
-                <td class="text-right" pEditableColumn>
+                <td class="text-right justify-content-center" pEditableColumn>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
                             <p-inputNumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"
-                                [(ngModel)]="ajuste.importe" styleClass="w-full text-right"
+                                [(ngModel)]="ajuste.importe" styleClass="text-right"
                                 [inputStyle]="{'text-align': 'right'}"></p-inputNumber>
                         </ng-template>
-                        <ng-template pTemplate="output">
+                        
+                        <ng-template styleClass="w-full" pTemplate="output">
                             {{ ajuste.importe | number: '1.2-2' }}
                         </ng-template>
                     </p-cellEditor>
@@ -227,7 +230,7 @@
                         <ng-container *ngIf="editing">
                             <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
                                 (click)="onRowEditSave(ajuste, ri)"
-                                class="p-button-rounded p-button-text p-button-success mr-2" pTooltip="Guardar"
+                                [disabled]="!ajuste.pla10conceptocod" class="p-button-rounded p-button-text p-button-success mr-2" pTooltip="Guardar"
                                 tooltipPosition="bottom"></button>
                             <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
                                 (click)="onRowEditCancel(ajuste, ri)"

@@ -57,15 +57,13 @@ import {
 
 export class EmpresaComponent implements OnInit {
 
-    // 🔑 SOLUCIÓN: DECORADOR @ViewChild PARA ACCEDER A LA REFERENCIA #dt
+    //Para 
     @ViewChild('dt') dt: Table | undefined;
 
     empresa: Empresa = this.initForm();
 
-    // Nota: 'loading' se mantiene para el método guardar(), pero se ignora en refrescarEmpresa.
     loading: boolean = false; 
 
-    // Array para almacenar las empresas
     empresas: Empresa[] = [];
     rowsPerPage: number = 10;
 

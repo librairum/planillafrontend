@@ -1,50 +1,99 @@
-/* ---------------------------------------------------------------------------------- */
-/* ESTILOS ESPECÍFICOS PARA EL COMPONENTE DE CÁLCULO */
-/* ---------------------------------------------------------------------------------- */
+/* Estilo original de la tabla */
+:host ::ng-deep .calcular-table {
+    width: fit-content;
+    max-width: 100%;
+}
 
-/* Estilo para el contenedor de la tabla principal para asegurar un mejor scroll */
+::ng-deep .calcular-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
+}
+
+/* Estilos para el Panel principal */
+:host ::ng-deep .calcular-panel.header-large .p-panel-title {
+    font-size: 1.4rem; 
+    font-weight: 700; 
+}
+
+/*  Wrapper para el Contenido del Panel (Toolbar, Controles, Tabla) */
+:host ::ng-deep .content-wrapper {
+    overflow-x: auto;
+    width: fit-content; 
+    max-width: 100%;
+}
+
+/* Estilos para alinear el Toolbar y los Controles de Página con la Tabla */
+:host ::ng-deep .align-to-table {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    width: 100%; 
+}
+
+
 :host ::ng-deep .p-datatable-scrollable-body {
     overflow-x: auto !important;
 }
 
-/* --- ESTILOS PARA EL DIÁLOGO DE AJUSTES (TABLA EDITABLE) --- */
+/* ESTILOS PARA EL DIÁLOGO DE AJUSTES (TABLA EDITABLE)  */
 
-/* Asegura que los campos de entrada/dropdown en modo edición ocupen todo el ancho de la celda */
 :host ::ng-deep .p-celleditor-input,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-inputtext {
     width: 100% !important;
 }
 
-/* Alineación de texto en celdas de tabla editable */
 :host ::ng-deep .p-datatable-tbody td {
     vertical-align: middle;
 }
 
-/* Asegura que el botón de Concepto Desc. no se vea como un campo de entrada */
 :host ::ng-deep .p-cell-editing .p-dropdown .p-dropdown-label {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-/* Fija la alineación de la columna de Concepto Desc (que no es editable directamente) */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(1) {
+    text-align: center;
+}
+
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) {
+    text-align: left; 
+    padding-left: 1rem;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) {
+    text-align: right; 
+}
+
+:host ::ng-deep .p-row-editor-actions button {
+    margin: 0 0.25rem;
+}
+
+/* ESTILOS PARA MANEJAR ANCHOS DE LOS COMBOBOX */
+
+:host ::ng-deep .p-celleditor-input,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-inputtext {
+    width: 100% !important;
+}
+
+:host ::ng-deep .p-dialog .p-datatable-gridlines table {
+    table-layout: fixed; 
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(1){
+    text-align: center;
+}
+
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) {
     text-align: left;
     padding-left: 1rem;
 }
 
-/* Fija la alineación de la columna de Importe */
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) {
-    text-align: right;
-}
-
-/* Fija la alineación de la columna de Concepto Cod */
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(1) {
     text-align: center;
 }
 
-/* Estilo para los botones de acción dentro del diálogo de ajuste */
-:host ::ng-deep .p-row-editor-actions button {
-    margin: 0 0.25rem;
-}

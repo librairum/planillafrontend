@@ -32,6 +32,7 @@ import { DialogModule } from 'primeng/dialog';
 import { Asistencia } from 'src/app/demo/model/Asistencia';
 import { Inasistencia } from 'src/app/demo/model/Inasistencia'; // Importamos la nueva interfaz
 
+//Interface para Asistenciaview
 export interface AsistenciaView extends Asistencia {
     idIdentidad: string;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core'; // <-- Se añade ViewChild
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -17,11 +17,11 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { PanelModule } from 'primeng/panel';
 
-import { MessageService } from 'primeng/api';
-import { Table } from 'primeng/table'; // <-- Se importa la clase Table
+import { MessageService, ConfirmationService } from 'primeng/api'; // Añadido ConfirmationService si lo fueras a usar
+import { Table } from 'primeng/table';
 
-// Importaciones externas (asumiendo que existen en tu proyecto)
 import { verMensajeInformativo, aMayusculas } from 'src/app/demo/components/utilities/funciones_utilitarias';
 import { Calcular } from '../../model/Calcular';
 import { DetalleProceso } from 'src/app/demo/model/Calcular'
@@ -34,6 +34,8 @@ interface ConceptoAjustable {
 }
 
 interface Ajuste {
+    // Se añade un ID temporal para diferenciar las filas nuevas
+    id: number;
     pla10conceptocod: string | null;
     pla10conceptodesc: string; // Nombre completo del concepto
     importe: number | null;
@@ -60,8 +62,10 @@ interface Ajuste {
         DialogModule,
         InputTextModule,
         RadioButtonModule,
+        PanelModule,
     ],
-    providers: [MessageService],
+    // Mantenemos MessageService, no añadimos ConfirmationService si no está en el HTML
+    providers: [MessageService], 
     templateUrl: './calcular.component.html',
     styleUrls: ['./calcular.component.css']
 })
@@ -97,12 +101,19 @@ export class CalcularComponent implements OnInit {
     selectedEmpleadoAjuste: Calcular | null = null;
     ajustesData: Ajuste[] = []; // Datos mostrados en la tabla de ajustes
 
-    clonedAjustes: { [key: string]: Ajuste } = {};
+    // Se mantiene, aunque el manejo de la edición ahora es más centralizado
+    clonedAjustes: { [key: string]: Ajuste } = {}; 
+    
+    // Almacena el ajuste que se está editando para manejar la cancelación
+    ajusteEnEdicion: Ajuste | null = null; 
 
     isEditing: boolean = false;
     ajusteDialogClosable: boolean = true; 
 
     conceptosAjustables: ConceptoAjustable[] = [];
+
+    // Contador para IDs temporales de nuevas filas
+    private nextTempId: number = -1;
 
 
     constructor(private messageService: MessageService) { }
@@ -181,6 +192,14 @@ export class CalcularComponent implements OnInit {
     simularAjustes(empleadoCod: string): Ajuste[] {
         let ajustes: Ajuste[] = [];
 
+        // Simulamos algunos ajustes con IDs temporales para las pruebas
+        if (empleadoCod === '000013') {
+            ajustes = [
+                { id: 1, pla10conceptocod: '0501', pla10conceptodesc: '', importe: 2.00 },
+                { id: 2, pla10conceptocod: '0901', pla10conceptodesc: '', importe: 150.00 },
+            ];
+        }
+        
         // Asigna la descripción real a cada ajuste al cargarlos
         return ajustes.map(ajuste => {
             const concepto = this.conceptosAjustables.find(c => c.code === ajuste.pla10conceptocod);
@@ -196,6 +215,7 @@ export class CalcularComponent implements OnInit {
         }
         this.selectedEmpleadoAjuste = empleado;
         this.ajustesData = this.simularAjustes(empleado.pla01empleadocod);
+        this.nextTempId = -1; // Resetear el contador de ID temporal
         this.displayAjusteDialog = true;
         this.isEditing = false;
         this.ajusteDialogClosable = true; // Aseguramos que se puede cerrar al abrir
@@ -209,7 +229,7 @@ export class CalcularComponent implements OnInit {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe guardar o cancelar la edición actual antes de cerrar la ventana de ajustes.');
         } else {
             // Si no está editando, permite el cierre
-            this.displayAjusteDialog = false; 
+            this.displayAjusteDialog = false;
         }
     }
 
@@ -221,73 +241,102 @@ export class CalcularComponent implements OnInit {
         }
 
         const newAjuste: Ajuste = {
+            id: this.nextTempId--, // ID temporal negativo
             pla10conceptocod: null,
             pla10conceptodesc: 'Seleccione Concepto',
-            importe: 0.00 
+            importe: 0.00
         };
 
         this.ajustesData = [...this.ajustesData, newAjuste];
+        this.ajusteEnEdicion = newAjuste; // Marcamos el ajuste que se está editando
 
         // Retraso ligero para permitir que Angular renderice la fila
         setTimeout(() => {
             if (this.ajustesTable) {
                 // Iniciar la edición en la nueva fila
-                this.ajustesTable.initRowEdit(newAjuste); 
+                this.ajustesTable.initRowEdit(newAjuste);
+                this.isEditing = true;
+                this.ajusteDialogClosable = false;
             }
         }, 0);
-
     }
 
 
+    // --- Confirmación de Eliminación ---
     deleteRow(ajuste: Ajuste, index: number): void {
         if (this.isEditing) {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'No se puede eliminar mientras editas otra fila.');
             return;
         }
-        this.ajustesData.splice(index, 1);
-        this.ajustesData = [...this.ajustesData]; // Refrescar el arreglo
-        verMensajeInformativo(this.messageService, 'success', 'Eliminado', 'Ajuste eliminado.');
+
+        // Usamos la función nativa confirm para simplificar la implementación
+        const confirmMsg = `¿Está seguro de eliminar el ajuste para el concepto con código: ${ajuste.pla10conceptocod || 'PENDIENTE'}?`;
+
+        if (confirm(confirmMsg)) {
+            this.ajustesData.splice(index, 1);
+            this.ajustesData = [...this.ajustesData]; // Refrescar el arreglo
+            verMensajeInformativo(this.messageService, 'success', 'Eliminado', 'Ajuste eliminado correctamente.');
+        }
     }
 
 
     onRowEditInit(ajuste: Ajuste) {
+        if (this.isEditing) {
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'Ya hay una fila en edición, guarde o cancele primero.');
+            return;
+        }
+        
         // Clonar la fila para poder revertir cambios
-        this.isEditing = true; 
-        this.ajusteDialogClosable = false; 
+        this.clonedAjustes[ajuste.id] = { ...ajuste };
+        this.ajusteEnEdicion = ajuste;
+        this.isEditing = true;
+        this.ajusteDialogClosable = false;
         verMensajeInformativo(this.messageService, 'info', 'Edición', `Editando concepto: ${ajuste.pla10conceptocod || 'nueva fila'}`);
     }
 
 
-    onRowEditSave(ajuste: Ajuste, index: number) {
-        // 1. Validación: El código de concepto es obligatorio (no nulo)
+   onRowEditSave(ajuste: Ajuste, index: number) {
+        
+        // 1. VALIDACIÓN OBLIGATORIA: El código de concepto DEBE estar seleccionado (no nulo).
         if (!ajuste.pla10conceptocod) {
-            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Concepto.');
-            this.onRowEditCancel(ajuste, index); // Revierte o elimina la fila
-            return;
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'El Código Concepto es obligatorio. No se puede guardar vacío.');
+            
+            // ¡IMPORTANTE! Simplemente hacemos 'return'. 
+            // Esto detiene el guardado, pero PrimeNG mantendrá la fila en modo de edición 
+            // hasta que el usuario corrija o presione Cancelar.
+            return; 
         }
 
-        // 2. Validación: El importe debe ser un número válido
-        if (ajuste.importe === null || typeof ajuste.importe !== 'number' || isNaN(ajuste.importe)) {
-            verMensajeInformativo(this.messageService, 'error', 'Error', 'El importe debe ser un número válido.');
-            this.onRowEditCancel(ajuste, index); // Revierte o elimina la fila
+        // 2. Validación Combinada: Importe (debe ser válido y distinto de cero)
+        if (ajuste.importe === null || typeof ajuste.importe !== 'number' || isNaN(ajuste.importe) || ajuste.importe < 0) {
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe ingresar un importe válido');
             return;
         }
-
-        // 3. Guardado Exitoso
-        this.isEditing = false; 
-        this.ajusteDialogClosable = true; // ACTIVA el cierre del diálogo
+        
+        // 3. Guardado Exitoso (Solo si pasó todas las validaciones)
+        delete this.clonedAjustes[ajuste.id];
+        this.ajusteEnEdicion = null;
+        this.isEditing = false; // Permite editar otras filas/cerrar el diálogo
+        this.ajusteDialogClosable = true;
         verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Ajuste guardado correctamente.');
     }
 
-
     onRowEditCancel(ajuste: Ajuste, index: number) {
+        
+        // Si el ajuste tiene un ID temporal (negativo), es una fila nueva, la eliminamos.
+        if (ajuste.id < 0) {
+            this.ajustesData.splice(index, 1);
+            this.ajustesData = [...this.ajustesData]; // Refrescar el arreglo
+        } 
+        // Si no es una fila nueva, restauramos el valor clonado (solo si existe)
+        else if (this.clonedAjustes[ajuste.id]) {
+            this.ajustesData[index] = this.clonedAjustes[ajuste.id];
+            delete this.clonedAjustes[ajuste.id];
+        }
 
-        // Si el ID es temporal (fila nueva), la eliminamos.
-    
-
-        this.isEditing = false; 
-        this.ajusteDialogClosable = true; // ACTIVA el cierre del diálogo
-        verMensajeInformativo(this.messageService, 'warn', 'Advertencia', 'Edición cancelada.');
+        this.ajusteEnEdicion = null;
+        this.isEditing = false;
+        this.ajusteDialogClosable = true; 
     }
 
     // --- MÉTODOS DE ACCIÓN RESTANTES ---
@@ -296,22 +345,27 @@ export class CalcularComponent implements OnInit {
     importarArchivos(): void { verMensajeInformativo(this.messageService, 'info', 'Importar', 'Abriendo diálogo para importar archivos...'); }
     imprimir(): void { verMensajeInformativo(this.messageService, 'info', 'Imprimir', 'Generando reporte de impresión...'); }
 
+    //Metodo para alternar la selección de boleta
     toggleBoleta(): void {
         if (this.boletaChecked) {
-            this.planillaGeneralChecked = false;
+            this.planillaGeneralChecked = false; 
             this.liquidacionChecked = false;
         }
     }
+
+    //Metodo para alternar la selección de planilla general
     togglePlanillaGeneral(): void {
         if (this.planillaGeneralChecked) {
             this.boletaChecked = false;
             this.liquidacionChecked = false;
         }
     }
+
+    //Metodo para alternar la selección de liquidacion
     toggleLiquidacion(): void {
         if (this.liquidacionChecked) {
-            this.boletaChecked = false;
-            this.planillaGeneralChecked = false;
+            this.boletaChecked = false; //false para deseleccionar boleta
+            this.planillaGeneralChecked = false; //false para deseleccionar planilla general    
         }
     }
 }

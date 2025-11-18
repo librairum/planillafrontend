@@ -1,47 +1,29 @@
-<div class="periodo-pago-container">
+<p-panel header="Periodo Pago" styleClass="shadow-xl rounded-xl py-2 header-large">
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
 
-    <div class="page-header">
-        <div class="header-content">
-            <i class="pi pi-calendar-plus header-icon" style="color: white;"></i>
-            <h2 style="color: white;">Periodo Pago</h2>
-        </div>
-    </div>
-
-    <div class="content-card">
-        <p-toolbar styleClass="custom-toolbar">
+    <div class="content-wrapper">
+        <p-toolbar styleClass="mb-4 surface-200 border-round-lg shadow-1 align-to-table">
             <ng-template pTemplate="left">
                 <div class="toolbar-group">
-                    <button pButton type="button" icon="pi pi-plus" class="p-button-success toolbar-button" (click)="agregar()"
-                        pTooltip="Agregar nuevo periodo" tooltipPosition="bottom"></button>
+                    <button pButton type="button" icon="pi pi-plus" label="Agregar" class="p-button-info toolbar-button"
+                        (click)="agregar()" pTooltip="Agregar nuevo periodo" tooltipPosition="bottom"></button>
 
-                    <button pButton type="button" icon="pi pi-pencil" class="p-button-warning toolbar-button"
-                        (click)="modificar()" [disabled]="!selectedPeriodo" pTooltip="Modificar periodo"
+                    <button pButton type="button" icon="pi pi-refresh" label="Refrescar"
+                        class="p-button-secondary toolbar-button" (click)="refrescar()" pTooltip="Refrescar datos"
                         tooltipPosition="bottom"></button>
-
-                    <button pButton type="button" icon="pi pi-trash" class="p-button-danger toolbar-button" (click)="eliminar()"
-                        [disabled]="!selectedPeriodo" pTooltip="Eliminar periodo" tooltipPosition="bottom"></button>
-
-                    <button pButton type="button" icon="pi pi-search" class="p-button-info toolbar-button" (click)="ver()"
-                        [disabled]="!selectedPeriodo" pTooltip="Ver detalles del periodo" tooltipPosition="bottom"></button>
-
-                    <button pButton type="button" icon="pi pi-refresh" class="p-button-secondary toolbar-button"
-                        (click)="refrescar()" pTooltip="Refrescar datos" tooltipPosition="bottom"></button>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="right">
                 <div class="toolbar-group flex align-items-center gap-3">
-                    <button pButton type="button" icon="pi pi-lock-open" label="Abrir Periodo"
-                        class="p-button-help toolbar-button-text" (click)="abrirPeriodo()"
-                        [disabled]="!selectedPeriodo || !selectedPeriodo.pla01flagperiodocerrado"
-                        pTooltip="Abrir periodo seleccionado" tooltipPosition="bottom"></button>
-
-                    <button pButton type="button" icon="pi pi-lock" label="Cerrar Periodo"
-                        class="p-button-danger toolbar-button-text" (click)="cerrarPeriodo()"
-                        [disabled]="!selectedPeriodo || selectedPeriodo.pla01flagperiodocerrado"
-                        pTooltip="Cerrar periodo seleccionado" tooltipPosition="bottom"></button>
+                    <button pButton type="button"
+                        [icon]="selectedPeriodo?.pla01flagperiodocerrado === true ? 'pi pi-lock-open' : 'pi pi-lock'"
+                        [label]="selectedPeriodo 
+                                    ? (selectedPeriodo.pla01flagperiodocerrado ? 'Abrir Periodo' : 'Cerrar Periodo')
+                                    : 'Abrir/Cerrar Periodo'" class="p-button-help toolbar-button-text"
+                        (click)="togglePeriodoEstado()" [disabled]="!selectedPeriodo"
+                        pTooltip="Cambiar estado del periodo seleccionado" tooltipPosition="bottom"></button>
                 </div>
             </ng-template>
         </p-toolbar>
@@ -49,7 +31,8 @@
         <div class="table-controls-header flex justify-content-end align-items-center"
             style="padding: 0.8rem 1rem; border-top: 1px solid #dee2e6;">
             <div class="flex align-items-center px-2">
-                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por página:</label>
+                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas
+                    por página:</label>
                 <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
                     placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center"></p-dropdown>
             </div>
@@ -59,7 +42,8 @@
             <p-table #dt [value]="periodos" [(selection)]="selectedPeriodo" selectionMode="single" [paginator]="true"
                 [rows]="rowsPerPage" responsiveLayout="scroll" [showCurrentPageReport]="false"
                 [globalFilterFields]="['pla01periodocod', 'pla01descripcion', 'Pla55Descripcion']"
-                [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-striped p-datatable-gridlines">
+                [tableStyle]="{ 'min-width': '100%' }"
+                styleClass="periodopago-table p-datatable-striped p-datatable-gridlines">
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -96,6 +80,8 @@
                         <th style="text-align: center;" pSortableColumn="pla01tipocambio">
                             Tipo Cambio
                         </th>
+                        <th style="text-align: center;">
+                            Acciones </th>
                     </tr>
                 </ng-template>
 
@@ -117,7 +103,8 @@
                         <td class="text-center">{{ periodo.pla01fechapago | date:'dd/MM/yyyy' }}</td>
 
                         <td class="text-center">
-                            <span [ngClass]="{'status-closed': periodo.pla01flagperiodocerrado, 'status-active': !periodo.pla01flagperiodocerrado}">
+                            <span
+                                [ngClass]="{'status-closed': periodo.pla01flagperiodocerrado, 'status-active': !periodo.pla01flagperiodocerrado}">
                                 {{ getPeriodoEstado(periodo.pla01flagperiodocerrado, periodo.Pla55Descripcion) }}
                             </span>
                         </td>
@@ -125,12 +112,28 @@
                         <td class="text-center">{{ periodo.pla01fechaproceso | date:'dd/MM/yyyy' }}</td>
                         <td class="text-center">{{ periodo.Pla55Descripcion }}</td>
                         <td class="text-center">{{ periodo.pla01tipocambio | number:'1.2-2' }}</td>
+
+                        <td class="text-center action-buttons">
+                            <button pButton type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-warning p-button-text p-button-sm mr-1"
+                                (click)="onEdit(periodo)" pTooltip="Modificar periodo"
+                                tooltipPosition="bottom"></button>
+
+                            <button pButton type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger p-button-text p-button-sm mr-1"
+                                (click)="onDelete(periodo)" pTooltip="Eliminar periodo"
+                                tooltipPosition="bottom"></button>
+
+                            <button pButton type="button" icon="pi pi-search"
+                                class="p-button-rounded p-button-info p-button-text p-button-sm"
+                                (click)="onView(periodo)" pTooltip="Ver detalles" tooltipPosition="bottom"></button>
+                        </td>
                     </tr>
                 </ng-template>
 
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="11" class="text-center empty-message">
+                        <td colspan="12" class="text-center empty-message">
                             <i class="pi pi-info-circle"></i>
                             <p>No se encontraron periodos</p>
                         </td>
@@ -141,15 +144,15 @@
     </div>
 
     <p-dialog [(visible)]="displayDialog"
-        [header]="isViewing ? 'Ver Periodo' : (isEditing ? 'Modificar Periodo' : 'Nuevo Periodo')"
-        [modal]="true" [style]="{width: '800px'}" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
+        [header]="isViewing ? 'Ver Periodo' : (isEditing ? 'Modificar Periodo' : 'Nuevo Periodo')" [modal]="true"
+        [style]="{width: '800px'}" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
 
         <div class="dialog-content">
             <div class="form-grid">
                 <div class="form-field">
                     <label for="periodo" class="form-label">Periodo: <span class="required">*</span></label>
-                    <input id="periodo" type="text" pInputText [(ngModel)]="periodoForm.pla01periodocod" [disabled]="isViewing || isEditing"
-                        class="w-full" placeholder="Ej: 202001" />
+                    <input id="periodo" type="text" pInputText [(ngModel)]="periodoForm.pla01periodocod"
+                        [disabled]="isViewing || isEditing" class="w-full" placeholder="Ej: 202001" />
                 </div>
 
                 <div class="form-field full-width">
@@ -160,32 +163,36 @@
 
                 <div class="form-field">
                     <label for="fecIni" class="form-label">Fecha Inicio: <span class="required">*</span></label>
-                    <p-calendar id="fecIni" [(ngModel)]="periodoForm.pla01fechainicio" dateFormat="dd/mm/yy" [showIcon]="true"
-                        [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full" placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
+                    <p-calendar id="fecIni" [(ngModel)]="periodoForm.pla01fechainicio" dateFormat="dd/mm/yy"
+                        [showIcon]="true" [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"
+                        placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
                 </div>
 
                 <div class="form-field">
                     <label for="fecFin" class="form-label">Fecha Final: <span class="required">*</span></label>
-                    <p-calendar id="fecFin" [(ngModel)]="periodoForm.pla01fechafin" dateFormat="dd/mm/yy" [showIcon]="true"
-                        [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full" placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
+                    <p-calendar id="fecFin" [(ngModel)]="periodoForm.pla01fechafin" dateFormat="dd/mm/yy"
+                        [showIcon]="true" [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"
+                        placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
                 </div>
 
                 <div class="form-field">
                     <label for="fecPago" class="form-label">Fecha Pago: <span class="required">*</span></label>
-                    <p-calendar id="fecPago" [(ngModel)]="periodoForm.pla01fechapago" dateFormat="dd/mm/yy" [showIcon]="true"
-                        [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full" placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
+                    <p-calendar id="fecPago" [(ngModel)]="periodoForm.pla01fechapago" dateFormat="dd/mm/yy"
+                        [showIcon]="true" [disabled]="isViewing" inputStyleClass="w-full" styleClass="w-full"
+                        placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
                 </div>
 
                 <div class="form-field">
                     <label for="estado" class="form-label">Estado: <span class="required">*</span></label>
-                    <p-dropdown id="estado" [(ngModel)]="periodoForm.pla01flagperiodocerrado" [options]="estadoOptions" optionLabel="label"
-                        [disabled]="isViewing" optionValue="value" placeholder="Seleccione estado" styleClass="w-full" appendTo="body"></p-dropdown>
+                    <p-dropdown id="estado" [(ngModel)]="periodoForm.pla01flagperiodocerrado" [options]="estadoOptions"
+                        optionLabel="label" [disabled]="isViewing" optionValue="value" placeholder="Seleccione estado"
+                        styleClass="w-full" appendTo="body"></p-dropdown>
                 </div>
 
                 <div class="form-field">
                     <label for="tipoCambio" class="form-label">Tipo de Cambio:</label>
-                    <input id="tipoCambio" type="number" pInputText [(ngModel)]="periodoForm.pla01tipocambio" class="w-full"
-                        step="0.01" placeholder="0.00" [disabled]="isViewing" />
+                    <input id="tipoCambio" type="number" pInputText [(ngModel)]="periodoForm.pla01tipocambio"
+                        class="w-full" step="0.01" placeholder="0.00" [disabled]="isViewing" />
                 </div>
 
                 <div class="form-field">
@@ -213,8 +220,8 @@
                 class="p-button-secondary p-button-outlined"
                 (click)="displayDialog = false; isViewing = false"></button>
 
-            <button pButton type="button" label="Guardar" icon="pi pi-check"
-                (click)="guardarPeriodo()" *ngIf="!isViewing"></button>
+            <button pButton type="button" label="Guardar" icon="pi pi-check" (click)="guardarPeriodo()"
+                *ngIf="!isViewing"></button>
         </ng-template>
     </p-dialog>
-</div>
+</p-panel>
