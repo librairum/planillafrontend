@@ -115,12 +115,13 @@ export class RemuneracionesComponent implements OnInit {
 
   onRowEditInit(remuneracion: Remuneracion, rowIndex: number): void {
     // Guardar los valores originales en clonedRegimenesPensionarios
-    this.editingRemuneracion = { ...remuneracion }; // Guarda una copia del régimen en edición
-    this.isEditingAnyRow = true; // Indica que hay una fila en edición
-    console.log(
-      'Edición iniciada. Valores originales guardados:',
-      this.clonedRemuneraciones[rowIndex]
-    );
+      this.clonedRemuneraciones[rowIndex] = { ...remuneracion };
+
+      // Establecer el estado de edición
+      this.editingRemuneracion = { ...remuneracion };
+      this.isEditingAnyRow = true;
+
+      console.log('Edición iniciada. Valores originales guardados:', this.clonedRemuneraciones[rowIndex]);
   }
 
   onRowEditSave(rowIndex: number): void {
@@ -192,20 +193,29 @@ export class RemuneracionesComponent implements OnInit {
   }
 
   onRowEditCancel(rowIndex: number): void {
-    console.log(this.editingRemuneracion);
-    if (this.editingRemuneracion) {
-      this.remuneracionesLista[rowIndex] = {
-        ...this.editingRemuneracion,
-      };
+    console.log('Cancelando edición. Valores originales:', this.clonedRemuneraciones[rowIndex]);
 
-      // Restaurar los valores originales en el FormArray
       const remuneracion = this.remuneraciones.at(rowIndex) as FormGroup;
-      remuneracion.setValue(this.editingRemuneracion);
 
-      console.log('Restaurando valores a:', this.editingRemuneracion);
-      this.editingRemuneracion = null;
+      if (this.clonedRemuneraciones[rowIndex]) {
+        // Restaurar los valores originales desde el clon
+        remuneracion.setValue(this.clonedRemuneraciones[rowIndex]);
+
+        // Restaurar los valores en la lista sincronizada
+        this.remuneracionesLista[rowIndex] = { ...this.clonedRemuneraciones[rowIndex] };
+
+        // Eliminar el clon
+        delete this.clonedRemuneraciones[rowIndex];
+      }
+
+      // Restablecer el estado de edición
       this.isEditingAnyRow = false;
-    }
+      this.editingRemuneracion = null;
+
+      // Habilitar todas las filas
+      this.remuneraciones.controls.forEach((control) => control.enable());
+
+      console.log('Edición cancelada. Fila restaurada:', this.remuneraciones.at(rowIndex).value);
   }
 
   onDelete(remuneracion: Remuneracion, rowIndex: number): void {
@@ -255,7 +265,7 @@ export class RemuneracionesComponent implements OnInit {
     // Inicializar el formulario para el nuevo período laboral
 
     this.nuevaRemuneracionForm.reset({
-      pla05conceptocod: [''],
+      pla05conceptocod: null,
       conceptodesc: [''],
       pla05importe: [0.0],
     });
@@ -331,6 +341,8 @@ export class RemuneracionesComponent implements OnInit {
     this.isEditing = false;
     this.isNew = false;
     this.nuevaRemuneracionForm.reset();
+
+    this.remuneraciones.controls.forEach((control) => control.enable());
   }
 
   // Abrir el modal
@@ -367,6 +379,7 @@ export class RemuneracionesComponent implements OnInit {
       // Si se está creando un nuevo período, actualizar el formulario del nuevo período
       this.nuevaRemuneracionForm.patchValue({
         pla05conceptocod: tipoconcepto.codigo,
+        conceptodesc: tipoconcepto.descripcion,
       });
     } else if (this.isEditingAnyRow && this.editingRemuneracion) {
       // Si se está editando un período existente, actualizar el FormArray y la lista

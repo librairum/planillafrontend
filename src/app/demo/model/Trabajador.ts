@@ -15,7 +15,6 @@ export interface Trabajador {
   pla01fechanacimiento: Date; //fecha
   pla01telefono: string;
   pla01fechaingreso: Date; //fecha
-  pla01centrocostocod: string;
 
   //ocultos
 
@@ -23,10 +22,11 @@ export interface Trabajador {
   pla01sexo: string;
   pla01estado: string;
 
-  pla01puestocod: string;
+  //pla01centrocostocod: string;
+  /*pla01puestocod: string;
   pla01ctaremunbancocod: string;
   pla01ctaremunumero: string;
-  pla01ctaremunmoneda: string;
+  pla01ctaremunmoneda: string;*/
 
   // Reg laboral codigo y descripcion
   pla01trdatoslabregimenlaboral?: string;
@@ -42,6 +42,55 @@ export interface Trabajador {
   regimenespensionarios?: RegimenPensionario[];
   periodoslaborales?: PeriodoLaboral[];
 
+  //
+  //Empresa
+  //
+
+  //-- Centro de costos
+  pla01centrocostocod?: string;
+  pla57descripcion?: string;
+  //-- Puesto / Cargo
+  pla01puestocod?: string;
+  pla51descripcion?: string;
+  //-- Banco remuneracion
+  pla01ctaremubancocod?: string;
+  desbancorem?: string;
+  //-- Numero cuenta Remuneracion
+  pla01ctaremunumero?: string;
+  //-- Moneda Remuneracion
+  pla01ctaremumoneda?: string;
+  desremumoneda?: string;
+  //-- Banco deposito CTS
+  pla01ctactsbancocod?: string;
+  desbancocts?: string;
+  //-- Numero cuenta CTS
+  pla01ctactsnumero?: string;
+  //-- Moneda deposito CTS
+  pla01ctactsmoneda?: string;
+  desctsmoneda?: string;
+
+
+  //Seguro Social
+
+  pla01trdatossegsocialregsaludcod?: string;
+  segsocialregsaluddes?: string;
+
+  pla01trdatossegsocialregsaludfechainicio?: Date;
+
+  pla01trdatossegsocialcoberturasalud?: string;
+  pla01trdatossegsocialcoberturasaludfechainicio?: Date;
+
+  pla01trdatossegsocialflagaportascrt?: string;
+  pla01trdatossegsocialcoberturapension?: string;
+  pla01trdatossegsocialflagaseguratupension?: string,
+  pla01trdatossegsocialflagessaludmasvida?: string;
+
+
+
+  // Tributarios
+  pla01trdatostribflagquintaotrosingresos?: string;
+  pla01trdatostribflagquintaexonerada?: string;
+
 }
 
 export interface Remuneracion {
@@ -51,7 +100,6 @@ export interface Remuneracion {
 }
 
 export interface RegimenPensionario {
-  id: number; // Identificador único interno
   pla31regpensionariocod: string;
   desregpensionario: string;
   pla31regpensionariocupss: string;
@@ -66,6 +114,7 @@ export interface PeriodoLaboral {
   pla30fechafin: Date;
   desmotivocese: string;
 }
+
 
 
 /*

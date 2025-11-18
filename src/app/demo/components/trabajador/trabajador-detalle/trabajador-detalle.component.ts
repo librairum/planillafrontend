@@ -75,7 +75,6 @@ export class TrabajadorDetalleComponent implements OnInit{
     pla01fechanacimiento: null,
     pla01telefono: [''],
     pla01fechaingreso: null,
-    pla01centrocostocod: [''],
 
     //ocultos
 
@@ -83,15 +82,56 @@ export class TrabajadorDetalleComponent implements OnInit{
     pla01sexo: [''],
     pla01estado: [''],
 
-    pla01puestocod: [''],
-    pla01ctaremunbancocod: [''],
-    pla01ctaremunumero: [''],
-    pla01ctaremunmoneda: [''],
-
     pla01trdatoslabregimenlaboral: [''],
     labregimenlaboraldes: [''],
 
     tipdocdesc: [''],
+
+    //
+    //Empresa
+    //
+
+    //-- Centro de costos
+    pla01centrocostocod: [''],
+    pla57descripcion: [''],
+    //-- Puesto / Cargo
+    pla01puestocod: [''],
+    pla51descripcion: [''],
+    //-- Banco remuneracion
+    pla01ctaremubancocod: [''],
+    desbancorem: [''],
+    //-- Numero cuenta Remuneracion
+    pla01ctaremunumero: [''],
+    //-- Moneda Remuneracion
+    pla01ctaremumoneda: [''],
+    desremumoneda: [''],
+    //-- Banco deposito CTS
+    pla01ctactsbancocod: [''],
+    desbancocts: [''],
+    //-- Numero cuenta CTS
+    pla01ctactsnumero: [''],
+    //-- Moneda deposito CTS
+    pla01ctactsmoneda: [''],
+    desctsmoneda: [''],
+
+    //Seguro Social
+
+    pla01trdatossegsocialregsaludcod: [''],
+    segsocialregsaluddes: [''],
+
+    pla01trdatossegsocialregsaludfechainicio: null,
+
+    pla01trdatossegsocialcoberturasalud: [''],
+    pla01trdatossegsocialcoberturasaludfechainicio: null,
+
+    pla01trdatossegsocialflagaportascrt: [''],
+    pla01trdatossegsocialcoberturapension: [''],
+    pla01trdatossegsocialflagaseguratupension: [''],
+    pla01trdatossegsocialflagessaludmasvida: [''],
+
+    // Tributarios
+    pla01trdatostribflagquintaotrosingresos: [''],
+    pla01trdatostribflagquintaexonerada: [''],
   });
 
 
@@ -129,7 +169,6 @@ export class TrabajadorDetalleComponent implements OnInit{
           pla01fechanacimiento: null,
           pla01telefono: [''],
           pla01fechaingreso: null,
-          pla01centrocostocod: [''],
 
           //ocultos
 
@@ -137,19 +176,63 @@ export class TrabajadorDetalleComponent implements OnInit{
           pla01sexo: [''],
           pla01estado: [''],
 
-          pla01puestocod: [''],
-          pla01ctaremunbancocod: [''],
-          pla01ctaremunumero: [''],
-          pla01ctaremunmoneda: [''],
-
           pla01trdatoslabregimenlaboral: [''],
           labregimenlaboraldes: [''],
 
           tipdocdesc: [''],
 
+          // Seguro Social
+
+          pla01trdatossegsocialregsaludcod: [''],
+          segsocialregsaluddes: [''],
+
+          pla01trdatossegsocialregsaludfechainicio: null,
+
+          pla01trdatossegsocialcoberturasalud: [''],
+          pla01trdatossegsocialcoberturasaludfechainicio: null,
+
+          pla01trdatossegsocialflagaportascrt: [''],
+          pla01trdatossegsocialcoberturapension: [''],
+          pla01trdatossegsocialflagaseguratupension: [''],
+          pla01trdatossegsocialflagessaludmasvida: [''],
+
+          //
+          //Empresa
+          //
+
+          //-- Centro de costos
+          pla01centrocostocod: [''],
+          pla57descripcion: [''],
+          //-- Puesto / Cargo
+          pla01puestocod: [''],
+          pla51descripcion: [''],
+          //-- Banco remuneracion
+          pla01ctaremubancocod: [''],
+          desbancorem: [''],
+          //-- Numero cuenta Remuneracion
+          pla01ctaremunumero: [''],
+          //-- Moneda Remuneracion
+          pla01ctaremumoneda: [''],
+          desremumoneda: [''],
+          //-- Banco deposito CTS
+          pla01ctactsbancocod: [''],
+          desbancocts: [''],
+          //-- Numero cuenta CTS
+          pla01ctactsnumero: [''],
+          //-- Moneda deposito CTS
+          pla01ctactsmoneda: [''],
+          desctsmoneda: [''],
+
+          // Tributarios
+          pla01trdatostribflagquintaotrosingresos: [''],
+          pla01trdatostribflagquintaexonerada: [''],
+
+          // Principales
+
           remuneraciones: this.fb.array([]),
           regimenespensionarios: this.fb.array([]),
           periodoslaborales: this.fb.array([]),
+
     });
   }
 
@@ -163,6 +246,8 @@ export class TrabajadorDetalleComponent implements OnInit{
   get periodoslaborales(): FormArray {
     return this.trabajadorForm.get('periodoslaborales') as FormArray;
   }
+
+
 
   ngOnInit(): void {
     this.initForm();
@@ -224,6 +309,25 @@ export class TrabajadorDetalleComponent implements OnInit{
             pla01fechacese: trabajador.pla01fechacese || null,
             pla01sexo: trabajador.pla01sexo === 'M' ? 'M' : 'F', // Mapear sexo
             pla01estado: trabajador.pla01estado === 'A' ? 'Activo' : 'Inactivo', // Mapear estado
+
+
+            // Seguro Social
+            pla01trdatossegsocialregsaludfechainicio: trabajador.pla01trdatossegsocialcoberturasaludfechainicio || null,
+
+            //corregir luego el manejo de 1 o 2
+            pla01trdatossegsocialcoberturasalud: trabajador.pla01trdatossegsocialcoberturasalud || '',
+            pla01trdatossegsocialcoberturasaludfechainicio: trabajador.pla01trdatossegsocialcoberturasaludfechainicio || null,
+
+            pla01trdatossegsocialflagaportascrt: trabajador.pla01trdatossegsocialflagaportascrt === 'S' ? 'S' : 'N',
+            pla01trdatossegsocialcoberturapension: trabajador.pla01trdatossegsocialcoberturapension || '',
+            pla01trdatossegsocialflagaseguratupension: trabajador.pla01trdatossegsocialflagaseguratupension === 'S' ? 'S' : 'N',
+            pla01trdatossegsocialflagessaludmasvida: trabajador.pla01trdatossegsocialflagessaludmasvida === 'S' ? 'S' : 'N',
+
+            // Tributarios
+
+            pla01trdatostribflagquintaotrosingresos : trabajador.pla01trdatostribflagquintaotrosingresos || 'N',
+            pla01trdatostribflagquintaexonerada : trabajador.pla01trdatostribflagquintaexonerada || 'N',
+
           }
 
           this.trabajadorForm.reset(raw);
@@ -278,6 +382,7 @@ export class TrabajadorDetalleComponent implements OnInit{
             )
           );
         }
+
         //console.log('Trabajador cargado:', trabajador);
       },
       error: (error) => {
@@ -305,6 +410,23 @@ export class TrabajadorDetalleComponent implements OnInit{
         pla01fechacese: raw.pla01fechacese || null,
         pla01sexo: raw.pla01sexo === 'M' ? 'M' : 'F', // Mapear sexo
         pla01estado: raw.pla01estado === 'Activo' ? 'A' : 'I', // Mapear estado
+
+        // Seguro Social
+        pla01trdatossegsocialregsaludfechainicio: raw.pla01trdatossegsocialcoberturasaludfechainicio || null,
+
+        //corregir luego el manejo de 1 o 2
+        pla01trdatossegsocialcoberturasalud: raw.pla01trdatossegsocialcoberturasalud || '',
+        pla01trdatossegsocialcoberturasaludfechainicio: raw.pla01trdatossegsocialcoberturasaludfechainicio || null,
+
+        pla01trdatossegsocialflagaportascrt: raw.pla01trdatossegsocialflagaportascrt === 'S' ? 'S' : 'N',
+        pla01trdatossegsocialcoberturapension: raw.pla01trdatossegsocialcoberturapension || '',
+        pla01trdatossegsocialflagaseguratupension: raw.pla01trdatossegsocialflagaseguratupension === 'S' ? 'S' : 'N',
+        pla01trdatossegsocialflagessaludmasvida: raw.pla01trdatossegsocialflagessaludmasvida === 'S' ? 'S' : 'N',
+
+        // Tributarios
+
+        pla01trdatostribflagquintaotrosingresos: raw.pla01trdatostribflagquintaotrosingresos === 'S' ? 'S' : 'N',
+        pla01trdatostribflagquintaexonerada: raw.pla01trdatostribflagquintaexonerada === 'S' ? 'S' : 'N',
       };
 
 
@@ -340,6 +462,23 @@ export class TrabajadorDetalleComponent implements OnInit{
         pla01fechacese: raw.pla01fechacese || null,
         pla01sexo: raw.pla01sexo === 'M' ? 'M' : 'F', // Mapear sexo
         pla01estado: raw.pla01estado === 'Activo' ? 'A' : 'I', // Mapear estado
+
+        // Seguro Social
+        pla01trdatossegsocialregsaludfechainicio: raw.pla01trdatossegsocialcoberturasaludfechainicio || null,
+
+        //corregir luego el manejo de 1 o 2
+        pla01trdatossegsocialcoberturasalud: raw.pla01trdatossegsocialcoberturasalud || '',
+        pla01trdatossegsocialcoberturasaludfechainicio: raw.pla01trdatossegsocialcoberturasaludfechainicio || null,
+
+        pla01trdatossegsocialflagaportascrt: raw.pla01trdatossegsocialflagaportascrt === 'S' ? 'S' : 'N',
+        pla01trdatossegsocialcoberturapension: raw.pla01trdatossegsocialcoberturapension || '',
+        pla01trdatossegsocialflagaseguratupension: raw.pla01trdatossegsocialflagaseguratupension === 'S' ? 'S' : 'N',
+        pla01trdatossegsocialflagessaludmasvida: raw.pla01trdatossegsocialflagessaludmasvida === 'S' ? 'S' : 'N',
+
+        // Tributarios
+
+        pla01trdatostribflagquintaotrosingresos: raw.pla01trdatostribflagquintaotrosingresos === 'S' ? 'S' : 'N',
+        pla01trdatostribflagquintaexonerada: raw.pla01trdatostribflagquintaexonerada === 'S' ? 'S' : 'N',
       }
 
       console.log('Guardando nuevo trabajador:', nuevoTrabajador);
@@ -418,4 +557,36 @@ export class TrabajadorDetalleComponent implements OnInit{
       });
       this.displayBusquedaTipoDocumentoDialog = false; // Cierra el modal
     }
+
+
+
+
+
+
+  mostrarModalRegimenSalud: boolean = false;
+  regimenesSalud: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalRegimenSalud(): void {
+    this.mostrarModalRegimenSalud = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.regimenesSalud = [
+      { codigo: '00', descripcion: 'ESSALUD REGULAR (Exclusivamente)' },
+      { codigo: '01', descripcion: 'ESSALUD REGULAR Y EPS/SERV. PROP.' },
+    ];
+  }
+
+  seleccionarRegimenSalud(regimen: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01trdatossegsocialregsaludcod: regimen.codigo,
+      segsocialregsaluddes: regimen.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarModalRegimenSalud = false;
+
+    console.log('Régimen de salud seleccionado:', regimen);
+  }
+
 }

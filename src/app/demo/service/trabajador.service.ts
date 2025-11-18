@@ -166,7 +166,6 @@ const trabajador1: Trabajador = {
       pla01fechanacimiento: new Date(1990, 0, 15),
       pla01telefono: '987654321',
       pla01fechaingreso: new Date(2020, 0, 15),
-      pla01centrocostocod: '',
 
       //ocultos
 
@@ -174,17 +173,61 @@ const trabajador1: Trabajador = {
       pla01sexo: 'M',
       pla01estado: 'A',
 
-      pla01puestocod: '',
-      pla01ctaremunbancocod: '',
-      pla01ctaremunumero: '',
-      pla01ctaremunmoneda: '',
-
       // Reg laboral codigo y descripcion
       pla01trdatoslabregimenlaboral: '01',
       labregimenlaboraldes: 'PRIVADO GENERAL -DECRETO LEGISLATIVO N.° 728',
 
       // Descripcion tipo documento
       tipdocdesc: 'DOC. NACIONAL DE IDENTIDAD',
+
+      //
+      // Empresa
+      //
+
+      //-- Centro de costos
+      pla01centrocostocod: '001',
+      pla57descripcion: 'por defecto',
+      //-- Puesto / Cargo
+      pla01puestocod: '002',
+      pla51descripcion: 'por defecto',
+      //-- Banco remuneracion
+      pla01ctaremubancocod: '02',
+      desbancorem: 'BANCO DE CREDITO BCP',
+      //-- Numero cuenta Remuneracion
+      pla01ctaremunumero: 'xxx',
+      //-- Moneda Remuneracion
+      pla01ctaremumoneda: 'S',
+      desremumoneda: 'NUEVOS SOLES',
+      //-- Banco deposito CTS
+      pla01ctactsbancocod: '02',
+      desbancocts: 'BANCO DE CREDITO BCP',
+      //-- Numero cuenta CTS
+      pla01ctactsnumero: 'xxx',
+      //-- Moneda deposito CTS
+      pla01ctactsmoneda: 'D',
+      desctsmoneda: 'DOLARES',
+
+      // Seguro Social
+
+      pla01trdatossegsocialregsaludcod: '00',
+      segsocialregsaluddes: 'ESSALUD REGULAR',
+
+      pla01trdatossegsocialregsaludfechainicio: new Date(2020, 0, 15),
+
+      pla01trdatossegsocialcoberturasalud: '1',
+      pla01trdatossegsocialcoberturasaludfechainicio: new Date(2020, 0, 15),
+
+      pla01trdatossegsocialflagaportascrt: 'S',
+      pla01trdatossegsocialcoberturapension: '2',
+      pla01trdatossegsocialflagaseguratupension: 'N',
+      pla01trdatossegsocialflagessaludmasvida: 'S',
+
+      // Tributarios
+
+      pla01trdatostribflagquintaotrosingresos: 'N',
+      pla01trdatostribflagquintaexonerada: 'N',
+
+      // Remuneraciones
 
       remuneraciones: [{
         pla05conceptocod: '0001',
@@ -198,7 +241,6 @@ const trabajador1: Trabajador = {
       }],
 
       regimenespensionarios: [{
-          id: 1,
           pla31regpensionariocod: '21',
           desregpensionario: 'SPP INTEGRA',
           pla31regpensionariocupss: '551781MBCAV8',
@@ -207,7 +249,6 @@ const trabajador1: Trabajador = {
           pla31flagcomisionmixta: '1'
         },
         {
-          id: 2,
           pla31regpensionariocod: '22',
           desregpensionario: 'SPP PRIMA',
           pla31regpensionariocupss: '552781MBCAV9',
@@ -256,9 +297,9 @@ const trabajador2: Trabajador = {
       pla01estado: 'A',
 
       pla01puestocod: '',
-      pla01ctaremunbancocod: '',
+      pla01ctaremubancocod: '',
       pla01ctaremunumero: '',
-      pla01ctaremunmoneda: '',
+      pla01ctaremumoneda: '',
 
       // Reg laboral codigo y descripcion
       pla01trdatoslabregimenlaboral: '01',
@@ -266,6 +307,10 @@ const trabajador2: Trabajador = {
 
       // Descripcion tipo documento
       tipdocdesc: 'DOC. NACIONAL DE IDENTIDAD',
+
+      // Tributarios
+      pla01trdatostribflagquintaotrosingresos: 'N',
+      pla01trdatostribflagquintaexonerada: 'N',
 
       remuneraciones: []
     }
@@ -294,9 +339,9 @@ const trabajador3: Trabajador = {
       pla01estado: 'A',
 
       pla01puestocod: '',
-      pla01ctaremunbancocod: '',
+      pla01ctaremubancocod: '',
       pla01ctaremunumero: '',
-      pla01ctaremunmoneda: '',
+      pla01ctaremumoneda: '',
 
       // Reg laboral codigo y descripcion
       pla01trdatoslabregimenlaboral: '01',
@@ -304,6 +349,16 @@ const trabajador3: Trabajador = {
 
       // Descripcion tipo documento
       tipdocdesc: 'DOC. NACIONAL DE IDENTIDAD',
+
+
+      // Seguro Social
+
+      pla01trdatossegsocialflagaseguratupension: 'N',
+      pla01trdatossegsocialflagessaludmasvida: 'S',
+
+      // Tributarios
+      pla01trdatostribflagquintaotrosingresos: 'S',
+      pla01trdatostribflagquintaexonerada: 'N',
 
       remuneraciones: []
     }

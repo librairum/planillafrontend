@@ -100,63 +100,6 @@
             [remuneraciones]="remuneraciones"
             [esModoVisualizacion]="esModoVisualizacion"
             ></app-remuneraciones>
-
-            <!-- Tabla de Remuneraciones -->
-            <p-table [value]="trabajadorForm.value.remuneraciones" editable="true" styleClass="p-datatable-sm">
-              <!-- Cabecera -->
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Concepto cod.</th>
-                  <th>Concepto desc.</th>
-                  <th>Importe</th>
-                  <th>Acciones</th>
-                </tr>
-              </ng-template>
-
-              <!-- Cuerpo -->
-              <ng-template pTemplate="body" let-remuneracion let-ri="rowIndex">
-                <tr>
-                  <td>
-                    <p-cellEditor>
-                      <ng-template pTemplate="input">
-                        <input type="text" pInputText [(ngModel)]="remuneracion.pla05conceptocod" />
-                      </ng-template>
-                      <ng-template pTemplate="output">
-                        {{ remuneracion.pla05conceptocod }}
-                      </ng-template>
-                    </p-cellEditor>
-                  </td>
-                  <td>
-                    <p-cellEditor>
-                      <ng-template pTemplate="input">
-                        <input type="text" pInputText [(ngModel)]="remuneracion.conceptodesc" />
-                      </ng-template>
-                      <ng-template pTemplate="output">
-                        {{ remuneracion.conceptodesc }}
-                      </ng-template>
-                    </p-cellEditor>
-                  </td>
-                  <td>
-                    <p-cellEditor>
-                      <ng-template pTemplate="input">
-                        <input type="number" pInputText [(ngModel)]="remuneracion.pla05importe" />
-                      </ng-template>
-                      <ng-template pTemplate="output">
-                        {{ remuneracion.pla05importe | number: '1.2-2' }}
-                      </ng-template>
-                    </p-cellEditor>
-                  </td>
-                  <td>
-                    <!--
-                      <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-sm" (click)="onRowEditInit(remuneracion)"></button>
-                    <button pButton icon="pi pi-check" class="p-button-rounded p-button-text p-button-sm p-button-success" (click)="onRowEditSave(remuneracion, ri)"></button>
-                    <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-sm p-button-danger" (click)="onRowEditCancel(remuneracion, ri)"></button>
-                    <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-sm p-button-danger" (click)="eliminarRemuneracion(ri)"></button>
-                    -->
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
           </div>
 
           <div class="col-12">
@@ -186,9 +129,163 @@
 
       <!-- Empresa -->
       <p-tabPanel header="Empresa">
-        <button pButton label="Verificar Datos" (click)="verificarDatosFormulario()"></button>
+        <div class="grid gap-3">
+          <!-- Centro de Costos -->
+          <div class="col-12">
+            <label>Centro de Costos:</label>
+            <div class="flex align-items-center gap-2">
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01centrocostocod"
+                placeholder="Código"
+                style="width: 120px;"
+              />
+              <input
+                type="text"
+                pInputText
+                formControlName="pla57descripcion"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+            </div>
+          </div>
 
-        <!-- No hay datos -->
+          <!-- Puesto / Cargo -->
+          <div class="col-12">
+            <label>Puesto / Cargo:</label>
+            <div class="flex align-items-center gap-2">
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01puestocod"
+                placeholder="Código"
+                style="width: 120px;"
+              />
+              <input
+                type="text"
+                pInputText
+                formControlName="pla51descripcion"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Banco Remuneración -->
+          <div class="col-12">
+            <label>Banco Remuneración:</label>
+            <div class="flex align-items-center gap-2">
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01ctaremubancocod"
+                placeholder="Código"
+                style="width: 120px;"
+              />
+              <input
+                type="text"
+                pInputText
+                formControlName="desbancorem"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Número de Cuenta Remuneración -->
+          <div class="col-12">
+            <label>Número de Cuenta Remuneración:</label>
+            <input
+              type="text"
+              pInputText
+              formControlName="pla01ctaremunumero"
+              placeholder="Número de Cuenta"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Moneda Remuneración -->
+          <div class="col-12">
+            <label>Moneda Remuneración:</label>
+            <div class="flex align-items-center gap-2">
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01ctaremumoneda"
+                placeholder="Código"
+                style="width: 120px;"
+              />
+              <input
+                type="text"
+                pInputText
+                formControlName="desremumoneda"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Banco Depósito CTS -->
+          <div class="col-12">
+            <label>Banco Depósito CTS:</label>
+            <div class="flex align-items-center gap-2">
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01ctactsbancocod"
+                placeholder="Código"
+                style="width: 120px;"
+              />
+              <input
+                type="text"
+                pInputText
+                formControlName="desbancocts"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Número de Cuenta CTS -->
+          <div class="col-12">
+            <label>Número de Cuenta CTS:</label>
+            <input
+              type="text"
+              pInputText
+              formControlName="pla01ctactsnumero"
+              placeholder="Número de Cuenta"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Moneda Depósito CTS -->
+          <div class="col-12">
+            <label>Moneda Depósito CTS:</label>
+            <div class="flex align-items-center gap-2">
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01ctactsmoneda"
+                placeholder="Código"
+                style="width: 120px;"
+              />
+              <input
+                type="text"
+                pInputText
+                formControlName="desctsmoneda"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
 
       </p-tabPanel>
 
@@ -214,11 +311,177 @@
       <!-- Seguro social -->
       <p-tabPanel header="Seguro social">
 
+        <div class="grid gap-3">
+
+          <!-- Primera fila: Código y Fecha de Inicio -->
+          <div class="col-12">
+            <label>Código:</label>
+            <div class="flex align-items-center gap-2">
+              <!-- En la aplicacion de escritorio, esto no es editable -->
+              <input
+                type="text"
+                pInputText
+                formControlName="pla01trdatossegsocialregsaludcod"
+                placeholder="Código"
+                style="width: 60px;"
+                readonly
+              />
+              <button
+                pButton
+                type="button"
+                icon="pi pi-search"
+                class="p-button-sm"
+                (click)="abrirModalRegimenSalud()"
+              ></button>
+              <input
+                type="text"
+                pInputText
+                formControlName="segsocialregsaluddes"
+                placeholder="Descripción"
+                class="w-full"
+                readonly
+              />
+              <p-calendar
+                formControlName="pla01trdatossegsocialregsaludfechainicio"
+                dateFormat="dd/mm/yy"
+                placeholder="Fecha de inicio"
+                class="w-full"
+              ></p-calendar>
+            </div>
+          </div>
+
+          <!-- Segunda fila: Cobertura de Salud y Fecha de Inicio -->
+          <div class="col-12">
+            <label>Cobertura de Salud:</label>
+            <div class="flex align-items-center gap-2">
+              <p-radioButton
+                formControlName="pla01trdatossegsocialcoberturasalud"
+                [value]="'1'"
+                label="EsSalud"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatossegsocialcoberturasalud"
+                [value]="'2'"
+                label="EPS"
+              ></p-radioButton>
+              <p-calendar
+                formControlName="pla01trdatossegsocialcoberturasaludfechainicio"
+                dateFormat="dd/mm/yy"
+                placeholder="Fecha de inicio"
+                class="w-full"
+              ></p-calendar>
+            </div>
+          </div>
+
+          <!-- Tercera fila: Aporta SCRT -->
+          <div class="col-12">
+            <label>¿Aporta SCRT?</label>
+            <div class="flex gap-3">
+              <p-radioButton
+                formControlName="pla01trdatossegsocialflagaportascrt"
+                [value]="'S'"
+                label="Sí"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatossegsocialflagaportascrt"
+                [value]="'N'"
+                label="No"
+              ></p-radioButton>
+            </div>
+          </div>
+
+          <!-- Cuarta fila: Cobertura de Pensión -->
+          <div class="col-12">
+            <label>Cobertura de Pensión:</label>
+            <div class="flex gap-3">
+              <p-radioButton
+                formControlName="pla01trdatossegsocialcoberturapension"
+                [value]="'1'"
+                label="ONP"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatossegsocialcoberturapension"
+                [value]="'2'"
+                label="Seguro Privado"
+              ></p-radioButton>
+            </div>
+          </div>
+
+          <!-- Quinta fila: Asegura tu Pensión -->
+          <div class="col-12">
+            <label>¿Asegura tu Pensión?</label>
+            <div class="flex gap-3">
+              <p-radioButton
+                formControlName="pla01trdatossegsocialflagaseguratupension"
+                [value]="'S'"
+                label="Sí"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatossegsocialflagaseguratupension"
+                [value]="'N'"
+                label="No"
+              ></p-radioButton>
+            </div>
+          </div>
+
+          <!-- Sexta fila: EsSalud Más Vida -->
+          <div class="col-12">
+            <label>¿EsSalud Más Vida?</label>
+            <div class="flex gap-3">
+              <p-radioButton
+                formControlName="pla01trdatossegsocialflagessaludmasvida"
+                [value]="'S'"
+                label="Sí"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatossegsocialflagessaludmasvida"
+                [value]="'N'"
+                label="No"
+              ></p-radioButton>
+            </div>
+          </div>
+
+        </div>
+
       </p-tabPanel>
 
       <!-- Tributarios -->
       <p-tabPanel header="Tributarios">
+        <div class="grid gap-3">
+          <!-- Radio Button: Otros Ingresos -->
+          <div class="col-12">
+            <label>¿Percibe rentas de 5ta exoneradas?</label>
+            <div class="flex gap-3">
+              <p-radioButton
+                formControlName="pla01trdatostribflagquintaotrosingresos"
+                [value]="'S'"
+                label="Sí"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatostribflagquintaotrosingresos"
+                [value]="'N'"
+                label="No"
+              ></p-radioButton>
+            </div>
+          </div>
 
+          <!-- Radio Button: Exonerada -->
+          <div class="col-12">
+            <label>¿Aplica convenio para aplicar doble imposición?</label>
+            <div class="flex gap-3">
+              <p-radioButton
+                formControlName="pla01trdatostribflagquintaexonerada"
+                [value]="'S'"
+                label="Sí"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="pla01trdatostribflagquintaexonerada"
+                [value]="'N'"
+                label="No"
+              ></p-radioButton>
+            </div>
+          </div>
+        </div>
       </p-tabPanel>
 
 
@@ -272,5 +535,30 @@
     <ng-template pTemplate="footer">
       <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
         (click)="displayBusquedaTipoDocumentoDialog = false"></button>
+    </ng-template>
+</p-dialog>
+
+
+
+<!-- Modal Seguro Social -->
+<p-dialog [(visible)]="mostrarModalRegimenSalud" [header]="'Regimen Salud'" [modal]="true"
+    [style]="{width: '800px'}" [draggable]="false" [closable]="false" [resizable]="false">
+    <p-table [value]="regimenesSalud" [scrollable]="true" scrollHeight="350px" selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30%;">Código</th>
+          <th style="width: 70%;">Descripción</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-salud>
+        <tr [pSelectableRow]="salud" (click)="seleccionarRegimenSalud(salud)" style="cursor: pointer">
+          <td>{{ salud.codigo }}</td>
+          <td>{{ salud.descripcion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
+        (click)="mostrarModalRegimenSalud = false"></button>
     </ng-template>
 </p-dialog>

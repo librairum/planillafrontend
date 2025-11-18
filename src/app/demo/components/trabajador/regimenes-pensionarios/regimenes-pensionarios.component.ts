@@ -58,7 +58,7 @@ export class RegimenesPensionariosComponent implements OnInit {
 
     regimenesPensionariosLista: RegimenPensionario[] = []; // Lista para interactuar con PrimeNG
     nuevoRegimenForm: FormGroup = this.fb.group({
-      id: [0],
+      id: [null],
       pla31regpensionariocod: [''],
       desregpensionario: [''],
       pla31regpensionariocupss: [''],
@@ -105,7 +105,6 @@ export class RegimenesPensionariosComponent implements OnInit {
       lista.forEach((regimen) => {
         this.regimenespensionarios.push(
           this.fb.group({
-            id: [regimen.id],
             pla31regpensionariocod: [regimen.pla31regpensionariocod],
             desregpensionario: [regimen.desregpensionario],
             pla31regpensionariocupss: [regimen.pla31regpensionariocupss],
@@ -115,16 +114,6 @@ export class RegimenesPensionariosComponent implements OnInit {
           })
         );
       });
-    }
-
-    getNextId(): number {
-      if (this.regimenesPensionariosLista.length === 0) {
-        return 1; // Si la lista está vacía, el primer ID será 1
-      }
-
-      // Obtener el ID máximo actual y sumarle 1
-      const maxId = Math.max(...this.regimenesPensionariosLista.map((regimen) => regimen.id || 0));
-      return maxId + 1;
     }
 
 
@@ -159,7 +148,6 @@ export class RegimenesPensionariosComponent implements OnInit {
         accept: () => {
           // Actualizar el FormArray y la lista en el índice correspondiente
           const regimenActualizado: RegimenPensionario = {
-            id: this.regimenesPensionariosLista[rowIndex].id, // Mantener el mismo ID
             ...regimen.value
           };
 
@@ -293,7 +281,6 @@ export class RegimenesPensionariosComponent implements OnInit {
     showAddRow() {
 
       this.nuevoRegimenForm.reset({
-        id: this.getNextId(),
         pla31regpensionariocod: '',
         desregpensionario: '',
         pla31regpensionariocupss: '',
@@ -320,7 +307,6 @@ export class RegimenesPensionariosComponent implements OnInit {
           rejectButtonStyleClass: 'p-button-danger',
           accept: () => {
             const nuevoRegimen: RegimenPensionario = {
-              id: this.nuevoRegimenForm.value.idbanco || this.getNextId(),
               ...this.nuevoRegimenForm.value,
             };
 
@@ -342,7 +328,6 @@ export class RegimenesPensionariosComponent implements OnInit {
             // Agregar el nuevo período al FormArray
             this.regimenespensionarios.push(
               this.fb.group({
-                id: [nuevoRegimen.id],
                 pla31regpensionariocod: [nuevoRegimen.pla31regpensionariocod],
                 desregpensionario: [nuevoRegimen.desregpensionario],
                 pla31regpensionariocupss: [nuevoRegimen.pla31regpensionariocupss],

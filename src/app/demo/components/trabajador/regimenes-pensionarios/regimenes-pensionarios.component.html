@@ -6,7 +6,7 @@
   (click)="showAddRow()" [disabled]="isEditingAnyRow || esModoVisualizacion"
   class="p-button-sm"></button>
 
-  <p-table [value]="regimenesPensionariosLista" dataKey="id" editMode="row" styleClass="p-datatable-sm">
+  <p-table [value]="regimenesPensionariosLista" dataKey="pla31regpensionariocod" editMode="row" styleClass="p-datatable-sm">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 10%;">Régimen</th>
@@ -23,7 +23,11 @@
       <tr [pEditableRow]="regimen">
 
         <td>
+          <!-- El codigo no es modificable en el programa de escritorio-->
+          {{ regimen.pla31regpensionariocod }}
+          <!--
           <p-cellEditor>
+
             <ng-template pTemplate="input">
               <div class="flex align-items-center gap-2">
                 <input
@@ -47,6 +51,7 @@
               {{ regimen.pla31regpensionariocod }}
             </ng-template>
           </p-cellEditor>
+          -->
         </td>
 
         <td>
