@@ -1,198 +1,184 @@
-<div class="p-1 sm:p-6 lg:p-8 min-h-screen">
-    <p-toast></p-toast>
-    <p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 
-    <div *ngIf="isMenuOpen" class="max-w-7xl mx-auto">
+<p-panel header="Asistencia de Personal" styleClass="shadow-xl rounded-lg">
+    <div class="content-wrapper">
+        <p-toolbar styleClass="mb-4 surface-200 border-round-lg shadow-1 align-to-table">
+            <div class="flex justify-center gap-3">
+                <button pButton pRipple icon="pi pi-trash" class="p-button-info p-button-sm" (click)="limpiarDias()"
+                    pTooltip="Limpiar" tooltipPosition="bottom">
+                </button>
 
-        <p-panel header="Asistencia de Personal" styleClass="shadow-xl rounded-lg">
-            
-            <p-toolbar styleClass="mb-4 surface-200 border-round-lg shadow-1 align-to-table">
-                <div class="p-toolbar-group-start flex flex-wrap gap-3 ">
-                    </div>
+                <button pButton pRipple icon="pi pi-save" class="p-button-info p-button-sm"
+                    (click)="guardarTodosLosCambios()" pTooltip="Guardar" tooltipPosition="bottom">
+                </button>
 
-                <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
-                    <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
-                    <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
-                        optionValue="value" placeholder="Seleccionar Período" styleClass="w-64"
-                        (onChange)="loadEmpleados()" class="mr-2 dropdown-periodo-fijo">
-                    </p-dropdown>
-                </div>
-            </p-toolbar>
+                <button pButton pRipple icon="pi pi-times" class="p-button-info p-button-sm" (click)="cerrarVista()"
+                    pTooltip="Cancelar" tooltipPosition="bottom">
+                </button>
 
-            <div class="table-controls-header flex justify-content-end align-items-center align-to-table"
-                style="padding: 0.8rem 1rem;">
-                <div class="flex align-items-center">
-                    <label for="rowsPerPageTable"
-                        style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas por página:</label>
-                    <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage"
-                        appendTo="body" placeholder="Seleccionar"
-                        styleClass="p-button-sm w-12 text-center "></p-dropdown>
-                </div>
+                <button pButton pRipple icon="pi pi-search" class="p-button-sm" (click)="vistaPreviaGeneral()"
+                    pTooltip="Vista Previa" tooltipPosition="bottom">
+                </button>
+            </div>
+            <div class="p-toolbar-group-start flex flex-wrap gap-3 ">
             </div>
 
-            <p-table #dt 
-                [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [first]="first"
-                [totalRecords]="totalRecords" (onPage)="onPageChange($event)" responsiveLayout="stack"
-                dataKey="pla01empleadocod" selectionMode="single" 
-                [(selection)]="selectedEmpleado" styleClass="asistencia-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th class="w-1 text-center">Código</th>
-                        
-                        <th class="w-3 text-center">
-                            Nro. Identidad
-                            <div class="mt-1 flex justify-content-center">
-                                <p-columnFilter type="text" field="idIdentidad" matchMode="contains"
-                                    placeholder="Buscar Nro. Identidad" [showMenu]="false"
-                                    styleClass="p-inputtext-sm w-10rem">
-                                </p-columnFilter>
-                            </div>
-                        </th>
-                        
-                        <th class="w-4 text-center">
-                            Apellidos y Nombres
-                            <div class="mt-1 flex justify-content-center">
-                                <p-columnFilter type="text" field="apellidosynombres" matchMode="contains"
-                                    placeholder="Buscar Personal" [showMenu]="false"
-                                    styleClass="p-inputtext-sm w-full">
-                                </p-columnFilter>
-                            </div>
-                        </th>
-                        
-                        <th class="w-1 text-center">Fecha Ingreso</th>
-                        <th class="w-1 text-center">Estado</th>
-                        <th class="w-1 text-center">{{ getDynamicColumnLabel() }}</th>
-                        
-                        <th class="w-1 text-center">Acciones</th> 
-                        
-                        <th class="w-1 text-center">Inasistencias</th>
-                    </tr>
-                </ng-template>
+            <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
+                <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
+                <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
+                    optionValue="value" placeholder="Seleccionar Período" styleClass="w-64" (onChange)="loadEmpleados()"
+                    class="mr-2 dropdown-periodo-fijo">
+                </p-dropdown>
+            </div>
+        </p-toolbar>
 
-                <ng-template pTemplate="body" let-empleado>
-                    <tr [pSelectableRow]="empleado">
-                        <td class="text-center">{{ empleado.pla01empleadocod }}</td>
-                        <td class="text-center">{{ empleado.idIdentidad }}</td>
-                        <td class="text-center">{{ empleado.apellidosynombres }}</td>
-                        <td class="text-center">{{ empleado.pla01fechaingreso | date: 'dd/MM/yyyy' }}</td>
-                        <td class="text-center">{{ getEstadoLabel(empleado.pla01estado) }}</td>
-                        
-                        <td class="w-24 text-center p-3">
-                            <div class="flex justify-center w-full">
-                                <input pInputText type="number" [min]="0" step="any" [max]="360"
-                                    class="w-14 border text-center border-gray-300 rounded input-dias-asistencia"
-                                    *ngIf="selectedPeriodoPago === 'UTILIDADES'" [(ngModel)]="empleado.pla02utilidad"
-                                    (ngModelChange)="empleado.pla02utilidad = $event > 360 ? 360 : $event < 0 ? 0 : $event" />
+        <div class="table-controls-header flex justify-content-end align-items-center align-to-table"
+            style="padding: 0.8rem 1rem;">
+            <div class="flex align-items-center">
+                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas
+                    por página:</label>
+                <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
+                    placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center "></p-dropdown>
+            </div>
+        </div>
 
-                                <input pInputText type="number" [min]="0" step="any" [max]="180"
-                                    class="w-14 border text-center border-gray-300 rounded input-dias-asistencia"
-                                    *ngIf="selectedPeriodoPago === 'GRATIFICACIONES'"
-                                    [(ngModel)]="empleado.pla02gratificacion"
-                                    (ngModelChange)="empleado.pla02gratificacion = $event > 180 ? 180 : $event < 0 ? 0 : $event" />
-                            </div>
-                        </td>
+        <p-table #dt [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [first]="first"
+            [totalRecords]="totalRecords" (onPage)="onPageChange($event)" responsiveLayout="stack"
+            dataKey="pla01empleadocod"  styleClass="asistencia-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
 
-                        <td class="text-center">
-                            <div class="flex justify-center gap-1">
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text p-button-sm"
-                                    (click)="eliminarEmpleado(empleado)" pTooltip="Eliminar" tooltipPosition="bottom"></button>
-                                <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-info p-button-text p-button-sm" 
-                                    (click)="guardar(empleado)" pTooltip="Guardar" tooltipPosition="bottom" ></button>
-                                <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text p-button-sm"
-                                    (click)="cancelar(empleado)" pTooltip="Cancelar" tooltipPosition="bottom"></button>
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info p-button-text p-button-sm" 
-                                    (click)="vistaPrevia(empleado)" pTooltip="Vista previa" tooltipPosition="bottom" ></button>
-                            </div>
-                        </td>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: auto;">Código</th>
 
-                        <td class="text-center">
-                            <button pButton pRipple icon="pi pi-user"
-                                class="p-button-rounded p-button-info p-button-text p-button-sm"
-                                pTooltip="Ver/Registrar Inasistencias" (click)="openInasistenciaDialog(empleado)">
-                            </button>
-                        </td>
-                    </tr>
-                </ng-template>
-                
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="9" class="text-center">No se encontraron empleados.</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </p-panel>
+                    <th style="width: auto;">
+                        Nro. Identidad
+                        <div class="mt-1 flex justify-content-center">
+                            <p-columnFilter type="text" field="idIdentidad" matchMode="contains"
+                                placeholder="Buscar Nro. Identidad" [showMenu]="false"
+                                styleClass="p-inputtext-sm w-10rem">
+                            </p-columnFilter>
+                        </div>
+                    </th>
+
+                    <th style="width: auto;">
+                        Apellidos y Nombres
+                        <div class="mt-1 flex justify-content-center">
+                            <p-columnFilter type="text" field="apellidosynombres" matchMode="contains"
+                                placeholder="Buscar Personal" [showMenu]="false" styleClass="p-inputtext-sm w-full">
+                            </p-columnFilter>
+                        </div>
+                    </th>
+
+                    <th style="width: auto;">Fecha Ingreso</th>
+                    <th style="width: auto;" class="text-center">Estado</th>
+                    <th style="width: auto;" class="text-center">{{ getDynamicColumnLabel() }}</th>
+                    <th style="width: auto;" class="text-center">Inasistencias</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-empleado>
+                <tr>
+                    <td class="text-center">{{ empleado.pla01empleadocod }}</td>
+                    <td class="text-center">{{ empleado.idIdentidad }}</td>
+                    <td class="text-center">{{ empleado.apellidosynombres }}</td>
+                    <td class="text-center">{{ empleado.pla01fechaingreso | date: 'dd/MM/yyyy' }}</td>
+                    <td class="text-center">{{ getEstadoLabel(empleado.pla01estado) }}</td>
+
+                    <td class="w-24 text-center p-3">
+                        <div class="flex justify-center w-full">
+                            <input pInputText type="number" [min]="0" step="any" [max]="360"
+                                class="w-14 border text-center border-gray-300 rounded input-dias-asistencia"
+                                *ngIf="selectedPeriodoPago === 'UTILIDADES'" [(ngModel)]="empleado.pla02utilidad"
+                                (ngModelChange)="empleado.pla02utilidad = $event > 360 ? 360 : $event < 0 ? 0 : $event" />
+
+                            <input pInputText type="number" [min]="0" step="any" [max]="180"
+                                class="w-14 border text-center border-gray-300 rounded input-dias-asistencia"
+                                *ngIf="selectedPeriodoPago === 'GRATIFICACIONES'"
+                                [(ngModel)]="empleado.pla02gratificacion"
+                                (ngModelChange)="empleado.pla02gratificacion = $event > 180 ? 180 : $event < 0 ? 0 : $event" />
+                        </div>
+                    </td>
+
+                    <td class="text-center">
+                        <button pButton pRipple icon="pi pi-user"
+                            class="p-button-rounded p-button-info p-button-text p-button-sm"
+                            pTooltip="Ver/Registrar Inasistencias" (click)="openInasistenciaDialog(empleado)">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="9" class="text-center">No se encontraron empleados.</td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
+</p-panel>
 
-    <div *ngIf="!isMenuOpen" class="flex items-center justify-center h-screen -mt-20">
-        <p-card header="Vista Cerrada" styleClass="shadow-lg bg-white">
-            <p class="text-lg text-gray-700">La vista ha sido cerrada. Para volver a cargarla, presione el botón.</p>
-            <button pButton label="Abrir Menú de Asistencia" icon="pi pi-folder-open" class="mt-4"
-                (click)="isMenuOpen = true"></button>
-        </p-card>
-    </div>
+<div *ngIf="!isMenuOpen" class="flex items-center justify-center h-screen -mt-20">
+    <p-card header="Vista Cerrada" styleClass="shadow-lg bg-white">
+        <p class="text-lg text-gray-700">La vista ha sido cerrada. Para volver a cargarla, presione el botón.</p>
+        <button pButton label="Abrir Menú de Asistencia" icon="pi pi-folder-open" class="mt-4"
+            (click)="isMenuOpen = true"></button>
+    </p-card>
 </div>
+
+
 
 <p-dialog header="Inasistencia de Personal" [(visible)]="displayInasistenciaDialog" [modal]="true" [maximizable]="true"
     [style]="{ width: '80vw', minWidth: '400px' }" [draggable]="true" [resizable]="true">
     <div *ngIf="selectedInasistenciaEmpleado">
-        <h3 class="text-lg font-semibold mb-3">Empleado: {{ selectedInasistenciaEmpleado.apellidosynombres }} ({{ selectedInasistenciaEmpleado.pla01empleadocod }})</h3>
+        <h3 class="text-lg font-semibold mb-3">Empleado: {{ selectedInasistenciaEmpleado.apellidosynombres }} ({{
+            selectedInasistenciaEmpleado.pla01empleadocod }})</h3>
 
         <p-toolbar styleClass="mb-3 p-2 border-1 border-gray-200 rounded-md">
             <div class="p-toolbar-group-start">
-                <button pButton pRipple icon="pi pi-plus" label="Añadir Inasistencia" (click)="addInasistencia()" [disabled]="isEditingInasistencia"
-                    class="p-button-info p-button-sm"></button>
+                <button pButton pRipple icon="pi pi-plus" label="Añadir Inasistencia" (click)="addInasistencia()"
+                    [disabled]="isEditingInasistencia" class="p-button-info p-button-sm"></button>
             </div>
         </p-toolbar>
 
-        <p-table [value]="inasistencias" [rowHover]="true" dataKey="pla03tiposuspension" 
-                [(selection)]="selectedInasistencia" selectionMode="single"
-                styleClass="p-datatable-gridlines p-datatable-sm shadow-md">
-            
+        <p-table [value]="inasistencias" [rowHover]="true" dataKey="pla03tiposuspension"
+            [(selection)]="selectedInasistencia" selectionMode="single"
+            styleClass="p-datatable-gridlines p-datatable-sm shadow-md">
+
             <ng-template pTemplate="header">
                 <tr>
-                    <th class="w-1 text-center">Tipo Suspensión</th>
-                    <th class="w-4 text-center">Descripción</th>
-                    <th class="w-2 text-center">Fecha Inicio</th>
-                    <th class="w-2 text-center">Fecha Fin</th>
-                    <th class="w-1 text-center">Días No Trabajado</th>
-                    <th class="w-1 text-center">Acciones</th>
+                    <th style="width: auto;">Tipo Suspensión</th>
+                    <th style="width: auto;" class="text-center">Descripción</th>
+                    <th style="width: auto;" class="text-center">Fecha Inicio</th>
+                    <th style="width: auto;" class="text-center">Fecha Fin</th>
+                    <th style="width: auto;" class="text-center">Días No Trabajado</th>
+                    <th style="width: auto;" class="text-center">Acciones</th>
                 </tr>
             </ng-template>
 
             <ng-template pTemplate="body" let-inasistencia let-rowIndex="rowIndex">
                 <tr>
                     <td class="text-center">
-                        <p-dropdown 
-                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
-                            [options]="tipoSuspensionOptions" 
-                            [(ngModel)]="inasistencia.pla03tiposuspension"
-                            (click)="$event.stopPropagation()" optionLabel="name" 
-                            optionValue="code"
-                            (onChange)="onTipoSuspensionChange($event, inasistencia)"
-                            placeholder="Tipo..."
-                            appendTo="body"
-                            [filter]="true"
-                            styleClass="w-full text-sm">
+                        <p-dropdown *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [options]="tipoSuspensionOptions" [(ngModel)]="inasistencia.pla03tiposuspension"
+                            (click)="$event.stopPropagation()" optionLabel="name" optionValue="code"
+                            (onChange)="onTipoSuspensionChange($event, inasistencia)" placeholder="Tipo Suspensión"
+                            appendTo="body" [filter]="true" styleClass="text-sm dropdown-inasistencia">
                         </p-dropdown>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             {{ inasistencia.pla03tiposuspension }}
                         </span>
                     </td>
-                    
+
                     <td>
                         {{ inasistencia.glo02descripcion }}
                     </td>
 
                     <td class="text-center">
-                        <p-calendar 
-                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
-                            [(ngModel)]="inasistencia.pla03fechainicio" 
-                            (ngModelChange)="updateDays(inasistencia)"
-                            (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" 
-                            [showIcon]="true"
-                            styleClass="w-full text-sm"
-                            appendTo="body">
+                        <p-calendar *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [(ngModel)]="inasistencia.pla03fechainicio" (ngModelChange)="updateDays(inasistencia)"
+                            (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" [showIcon]="true"
+                            styleClass="w-full text-sm" appendTo="body">
                         </p-calendar>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             {{ inasistencia.pla03fechainicio | date: 'dd/MM/yyyy' }}
@@ -200,14 +186,10 @@
                     </td>
 
                     <td class="text-center">
-                        <p-calendar 
-                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
-                            [(ngModel)]="inasistencia.pla03fechafin" 
-                            (ngModelChange)="updateDays(inasistencia)"
-                            (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" 
-                            [showIcon]="true"
-                            styleClass="w-full text-sm"
-                            appendTo="body">
+                        <p-calendar *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [(ngModel)]="inasistencia.pla03fechafin" (ngModelChange)="updateDays(inasistencia)"
+                            (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" [showIcon]="true"
+                            styleClass="w-full text-sm" appendTo="body">
                         </p-calendar>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             {{ inasistencia.pla03fechafin | date: 'dd/MM/yyyy' }}
@@ -215,14 +197,9 @@
                     </td>
 
                     <td class="text-center">
-                        <p-inputNumber 
-                            *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
-                            [(ngModel)]="inasistencia.pla03diasnotrabajados"
-                            [disabled]="true"
-                            mode="decimal"
-                            [showButtons]="false"
-                            styleClass="w-12 text-center"
-                            inputStyleClass="text-center">
+                        <p-inputNumber *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            [(ngModel)]="inasistencia.pla03diasnotrabajados" [disabled]="true" mode="decimal"
+                            [showButtons]="false" styleClass="w-12 text-center" inputStyleClass="text-center">
                         </p-inputNumber>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             <p-badge [value]="inasistencia.pla03diasnotrabajados" severity="danger"></p-badge>
@@ -230,14 +207,21 @@
                     </td>
 
                     <td class="text-center">
-                        <div *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia" class="flex justify-center gap-1"
-                            (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-check" class="p-button-success p-button-text p-button-sm" pTooltip="Guardar" (click)="saveInasistencia(inasistencia)"></button>
-                            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-text p-button-sm" pTooltip="Cancelar" (click)="cancelEditInasistencia(inasistencia, rowIndex)"></button>
+                        <div *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
+                            class="flex justify-content-between gap-1" (click)="$event.stopPropagation()">
+                            <button pButton pRipple icon="pi pi-check"
+                                class="p-button-success p-button-text p-button-sm" pTooltip="Guardar"
+                                (click)="saveInasistencia(inasistencia)"></button>
+                            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-text p-button-sm"
+                                pTooltip="Cancelar" (click)="cancelEditInasistencia(inasistencia, rowIndex)"></button>
                         </div>
-                        
-                        <div *ngIf="selectedInasistencia !== inasistencia && !isEditingInasistencia" class="flex justify-center gap-1"
-                            (click)="$event.stopPropagation()"> <button pButton pRipple icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm" pTooltip="Editar" (click)="editInasistencia(inasistencia)"></button>
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-text p-button-sm" pTooltip="Eliminar" (click)="deleteInasistencia(inasistencia)"></button>
+
+                        <div *ngIf="selectedInasistencia !== inasistencia && !isEditingInasistencia"
+                            class="flex justify-center gap-1" (click)="$event.stopPropagation()">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm"
+                                pTooltip="Editar" (click)="editInasistencia(inasistencia)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger p-button-text p-button-sm"
+                                pTooltip="Eliminar" (click)="deleteInasistencia(inasistencia)"></button>
                         </div>
                     </td>
                 </tr>
@@ -245,16 +229,12 @@
 
             <ng-template pTemplate="emptyMessage">
                 <tr>
-                    <td colspan="6" class="text-center text-gray-500">No hay inasistencias registradas para este empleado.</td>
+                    <td colspan="6" class="text-center text-gray-500">No hay inasistencias registradas para este
+                        empleado.</td>
                 </tr>
             </ng-template>
 
         </p-table>
 
     </div>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cerrar" icon="pi pi-times" (click)="displayInasistenciaDialog=false"
-            class="p-button-secondary"></button>
-    </ng-template>
 </p-dialog>

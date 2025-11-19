@@ -1,40 +1,14 @@
 
-:host ::ng-deep .input-dias-asistencia .p-inputtext {
-    padding: 0.2rem 0.4rem !important;
-    text-align: center !important; 
-    font-size: 0.8rem !important; 
-    line-height: 1.5 !important;  
-}
-
-:host ::ng-deep .input-dias-asistencia input {
-    text-align: center !important;
-}
-
-:host ::ng-deep .input-dias-asistencia {
-    display: block; 
-    margin-left: auto !important;
-    margin-right: auto !important;  
-}
-
-:host ::ng-deep .input-dias-asistencia .p-inputtext {
-    padding: 0.2rem 0.5rem !important;
-    text-align: center !important; 
-    font-size: 0.8rem !important; 
-}
-
-:host ::ng-deep .dropdown-periodo-fijo {
-    width: 16rem !important; 
-    min-width: 16rem !important;
-    max-width: 16rem !important; 
-}
-
-:host ::ng-deep .dropdown-periodo-fijo .p-dropdown {
-    width: 100% !important; 
-}
-
  ::ng-deep .asistencia-table {
   width: fit-content;
   max-width: 100%;
+}
+
+::ng-deep .asistencia-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: auto;
+
 }
 
 :host ::ng-deep .align-to-table {
@@ -47,6 +21,44 @@
     overflow-x: auto;
     width: fit-content; 
     max-width: 100%;
+}
+
+/* Selecciona la tabla dentro del diálogo por su clase */
+:host ::ng-deep .p-dialog .p-datatable-gridlines {
+    width: 100% !important; 
+    table-layout: fixed; 
+}
+
+:host ::ng-deep .p-dialog .p-datatable-gridlines tr th:nth-child(1) {
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
+}
+
+/* Celda (td) de Tipo Suspensión */
+:host ::ng-deep .p-dialog .p-datatable-gridlines tr td:nth-child(1) {
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
+    overflow: hidden; 
+}
+
+
+:host ::ng-deep .dropdown-inasistencia .p-dropdown-panel {
+    min-width: 350px !important; 
+    max-width: 400px !important;
+    left: auto !important; 
+}
+
+:host ::ng-deep .dropdown-inasistencia {
+    width: 100% !important; 
+    min-width: 100% !important;
+}
+
+:host ::ng-deep .dropdown-inasistencia .p-dropdown-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 

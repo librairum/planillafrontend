@@ -16,9 +16,15 @@ export interface DetalleProceso{
     boleta: string; //SI o NO
 }
 
-export interface Ajuste{
-    pla10conceptocod: string;
-    pla10conceptodesc: string;
+export interface Ajuste {
+    // Se añade un ID temporal para diferenciar las filas nuevas
+    id: number;
+    pla10conceptocod: string | null;
+    pla10conceptodesc: string; 
+    importe: number | null;
+}
 
-    importe: number;
+export interface ConceptoAjustable {
+    code: string;
+    name: string;
 }

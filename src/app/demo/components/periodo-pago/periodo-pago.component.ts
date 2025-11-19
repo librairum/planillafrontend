@@ -8,6 +8,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
@@ -41,14 +42,14 @@ import { verMensajeInformativo, aMayusculas, esVacio, esFechaValida } from '../u
     ConfirmDialogModule,
     ToastModule,
     TagModule,
-    PanelModule
+    PanelModule,
+    InputNumberModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './periodo-pago.component.html',
   styleUrls: ['./periodo-pago.component.css']
 })
 export class PeriodoPagoComponent implements OnInit {
-  // Se usa la interfaz del modelo
   periodos: PeriodoPago[] = [];
   rowsPerPage: number = 10;
   selectedPeriodo: PeriodoPago | null = null;
@@ -76,8 +77,6 @@ export class PeriodoPagoComponent implements OnInit {
   }
 
   createEmptyPeriodo(): PeriodoPago {
-    // Inicializa las fechas y el estado en NULL para que los campos no estén seleccionados
-    // y para activar la validación de obligatorio.
     return {
       pla01periodocod: '',
       pla01descripcion: '',
@@ -86,7 +85,7 @@ export class PeriodoPagoComponent implements OnInit {
       pla01flagperiodocalculado: false,
       pla01flagfindemes: false,
       pla01fechapago: null,
-      pla01flagperiodocerrado: null, // Null para forzar la selección con placeholder
+      pla01flagperiodocerrado: null, 
       pla01fechaproceso: new Date(),
       Pla55Descripcion: '',
       pla01tipocambio: 0

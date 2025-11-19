@@ -1,7 +1,33 @@
-:host ::ng-deep .p-button-success {
-    color: white !important;
+
+
+:host ::ng-deep .cargo-table {
+    width: fit-content;
+    max-width: 100%;
 }
 
-::ng-deep .custom-panel-header .ui-panel-titlebar {
-  font-size: 24px;
+::ng-deep .cargo-table table {
+    border-collapse: collapse;
+    width: auto !important;
+    table-layout: auto;
 }
+
+:host ::ng-deep .content-wrapper {
+    overflow-x: auto;
+    width: fit-content;
+    max-width: 100%;
+}
+
+:host ::ng-deep .align-to-table {
+    width: auto;
+    padding-left: 1.25rem;
+    padding-right: 0rem; 
+}
+
+:host ::ng-deep .aligned-content-container {
+    width: fit-content; 
+    max-width: 100%; 
+    margin-right: auto; 
+}
+
+
+

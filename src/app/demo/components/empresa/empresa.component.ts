@@ -17,12 +17,10 @@ import { TooltipModule } from 'primeng/tooltip';
 
 
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Table } from 'primeng/table'; // IMPORTACIÓN NECESARIA
+import { Table } from 'primeng/table';
 
-// Importación de modelos
 import { Empresa, RepresentanteLegal, ResponsablePlanilla, Banco } from 'src/app/demo/model/Empresa';
 
-// Importación de Funciones Utilitarias
 import {
     verMensajeInformativo,
     esVacio,
@@ -57,7 +55,6 @@ import {
 
 export class EmpresaComponent implements OnInit {
 
-    //Para 
     @ViewChild('dt') dt: Table | undefined;
 
     empresa: Empresa = this.initForm();
@@ -264,11 +261,9 @@ export class EmpresaComponent implements OnInit {
             accept: () => {
                 const empresaAeliminar = empresa;
 
-                // Lógica de eliminación (simulación)
                 this.currentEmpresas = this.currentEmpresas.filter(e => e.empresacod !== empresaAeliminar.empresacod);
-                this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); // Actualiza la tabla
+                this.empresas = JSON.parse(JSON.stringify(this.currentEmpresas)); 
 
-                // Uso de verMensajeInformativo
                 verMensajeInformativo(this.messageService, 'success', 'Éxito', `Empresa ${empresaAeliminar.empresacod} eliminada.`);
 
                 this.selectedEmpresa = null;

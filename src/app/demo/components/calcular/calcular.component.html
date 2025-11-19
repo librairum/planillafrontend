@@ -1,16 +1,18 @@
 <p-panel header="PROCESAR" styleClass="shadow-xl rounded-xl py-2 header-large">
     <p-toast></p-toast>
-
+    <p-confirmDialog></p-confirmDialog>
     <div class="content-wrapper"> 
         
         <p-toolbar styleClass="mb-4 surface-200 border-round-lg shadow-1 align-to-table">
             <ng-template pTemplate="left">
-                <div class="flex gap-2">
-                    <p-button icon="pi pi-play" (onClick)="procesarDatos()" pTooltip="Procesar" tooltipPosition="bottom"
-                        styleClass="p-button-sm p-button-info"></p-button>
+                <div class="flex justify-center gap-3">
+                    <button pButton pRipple icon="pi pi-play" (click)="procesarDatos()" pTooltip="Procesar" tooltipPosition="bottom"
+                        class="p-button p-button-sm p-button-info">
+                    </button>
 
-                    <p-button icon="pi pi-upload" (onClick)="importarArchivos()" styleClass="p-button-info p-button-sm"
-                        pTooltip="Importar Archivos" tooltipPosition="bottom"></p-button>
+                    <button pButton pRipple icon="pi pi-upload" (click)="importarArchivos()" class="p-button p-button-sm p-button-info"
+                        pTooltip="Importar Archivos" tooltipPosition="bottom">
+                    </button>
                 </div>
             </ng-template>
 
@@ -18,26 +20,27 @@
                 <div class="flex align-items-center gap-3 mr-3 p-2 border-round-md bg-white shadow-1">
                     <div class="flex align-items-center">
                         <p-radioButton [(ngModel)]="boletaChecked" [value]="true" name="reporteTipo"
-                            (onClick)="toggleBoleta()" inputId="boleta"></p-radioButton>
+                            (click)="toggleBoleta()" inputId="boleta"></p-radioButton>
                         <label for="boleta" class="ml-2 font-medium">Boleta</label>
                     </div>
 
                     <div class="flex align-items-center">
                         <p-radioButton [(ngModel)]="planillaGeneralChecked" [value]="true" name="reporteTipo"
-                            (onClick)="togglePlanillaGeneral()" inputId="planilla"></p-radioButton>
+                            (click)="togglePlanillaGeneral()" inputId="planilla"></p-radioButton>
                         <label for="planilla" class="ml-2 font-medium">Planilla General</label>
                     </div>
 
                     <div class="flex align-items-center">
                         <p-radioButton [(ngModel)]="liquidacionChecked" [value]="true" name="reporteTipo"
-                            (onClick)="toggleLiquidacion()" inputId="liquidacion"></p-radioButton>
+                            (click)="toggleLiquidacion()" inputId="liquidacion"></p-radioButton>
                         <label for="liquidacion" class="ml-2 font-medium">Liquidación</label>
                     </div>
 
                 </div>
 
-                <p-button icon="pi pi-print" (onClick)="imprimir()" styleClass="p-button-info p-button-sm"
-                    pTooltip="Imprimir Reporte" tooltipPosition="bottom"></p-button>
+                <button pButton pRipple icon="pi pi-print" (click)="imprimir()" class="p-button p-button-sm p-button-info"
+                    pTooltip="Imprimir Reporte" tooltipPosition="bottom">
+                </button>
             </ng-template>
         </p-toolbar>
 
@@ -57,7 +60,7 @@
 
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: auto; text-align: center;">Código empleado</th>
+                    <th style="width: auto; text-align: center;">Código</th>
 
                     <th style="width: auto; text-align: center;">
                         Doc. Nro
@@ -99,14 +102,15 @@
                     </td>
 
                     <td class="text-center">
-                        <p-button icon="pi pi-file" styleClass="p-button-sm p-button-text p-button-info"
-                            (onClick)="verDetalle(empleado)" pTooltip="Ver Detalles" tooltipPosition="bottom"
-                            [text]="true"></p-button>
+                        <button pButton pRipple icon="pi pi-file" class="p-button p-button-sm p-button-text p-button-info"
+                            (click)="verDetalle(empleado)" pTooltip="Ver Detalles" tooltipPosition="bottom">
+                        </button>
                     </td>
 
                     <td class="text-center">
-                        <p-button icon="pi pi-cog" styleClass="p-button-sm p-button-info" (onClick)="ajustar(empleado)"
-                            pTooltip="Ajustar" tooltipPosition="bottom" [text]="true"></p-button>
+                        <button pButton pRipple icon="pi pi-cog" class="p-button p-button-text p-button-sm p-button-info" (click)="ajustar(empleado)"
+                            pTooltip="Ajustar" tooltipPosition="bottom">
+                        </button>
                     </td>
                 </tr>
             </ng-template>
@@ -157,7 +161,7 @@
  
 <p-dialog header="Ajuste de Ingresos" [(visible)]="displayAjusteDialog" [modal]="true" [style]="{width: '60vw'}"
     [draggable]="false" [resizable]="false" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-    [closable]="ajusteDialogClosable"  
+    [closable]="ajusteDialogClosable"  
     (onHide)="onAjusteDialogHide()"> 
     <p class="font-semibold mb-3 text-lg">
         Ajustando valores para: <span class="text-primary">{{ selectedEmpleadoAjuste?.apellidosynombres }}</span>
@@ -165,8 +169,9 @@
 
     <p-toolbar styleClass="mb-3 p-2 surface-100 border-round-md justify-content-end">
         <ng-template pTemplate="left">
-            <p-button icon="pi pi-plus" (onClick)="addNewRow()" styleClass="p-button-sm p-button-info"
-                pTooltip="Agregar Ajuste" tooltipPosition="bottom" [disabled]="isEditing"></p-button>
+            <button pButton pRipple icon="pi pi-plus" (click)="addNewRow()" class="p-button-sm p-button-info"
+                pTooltip="Agregar Ajuste" tooltipPosition="bottom" [disabled]="isEditing">
+            </button>
         </ng-template>
     </p-toolbar>
 
@@ -183,7 +188,7 @@
 
         <ng-template pTemplate="body" let-ajuste let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="ajuste">
-                <td pEditableColumn>
+                <td pEditableColumn style="text-align: center;">
                     <p-cellEditor>
                         <ng-template pTemplate="input">
                             <p-dropdown [(ngModel)]="ajuste.pla10conceptocod" [options]="conceptosAjustables"
@@ -220,22 +225,27 @@
 
                         <ng-container *ngIf="!editing">
                             <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                                (click)="onRowEditInit(ajuste)" class="p-button-rounded p-button-text p-button-sm mr-2"
-                                pTooltip="Editar" tooltipPosition="bottom" [disabled]="isEditing"></button>
+                                (click)="onRowEditInit(ajuste)" class="p-button p-button-rounded p-button-text p-button-sm mr-2"
+                                pTooltip="Editar" tooltipPosition="bottom" [disabled]="isEditing">
+                            </button>
                             <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteRow(ajuste, ri)"
-                                class="p-button-rounded p-button-text p-button-danger" pTooltip="Eliminar"
-                                tooltipPosition="bottom" [disabled]="isEditing"></button>
+                                class="p-button p-button-rounded p-button-text p-button-danger" pTooltip="Eliminar"
+                                tooltipPosition="bottom" [disabled]="isEditing">
+                            </button>
                         </ng-container>
 
                         <ng-container *ngIf="editing">
                             <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
                                 (click)="onRowEditSave(ajuste, ri)"
-                                [disabled]="!ajuste.pla10conceptocod" class="p-button-rounded p-button-text p-button-success mr-2" pTooltip="Guardar"
-                                tooltipPosition="bottom"></button>
+                                [disabled]="!ajuste.pla10conceptocod" 
+                                class="p-button p-button-rounded p-button-text p-button-success mr-2" pTooltip="Guardar"
+                                tooltipPosition="bottom">
+                            </button>
                             <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
                                 (click)="onRowEditCancel(ajuste, ri)"
-                                class="p-button-rounded p-button-text p-button-danger mr-2" pTooltip="Cancelar"
-                                tooltipPosition="bottom"></button>
+                                class="p-button p-button-rounded p-button-text p-button-danger mr-2" pTooltip="Cancelar"
+                                tooltipPosition="bottom">
+                            </button>
                         </ng-container>
 
                     </div>

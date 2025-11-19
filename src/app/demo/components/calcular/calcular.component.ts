@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // Importaciones de PrimeNG
-import { TableModule } from 'primeng/table';
+import { TableModule, Table } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -18,28 +18,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { PanelModule } from 'primeng/panel';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-import { MessageService, ConfirmationService } from 'primeng/api'; // Añadido ConfirmationService si lo fueras a usar
-import { Table } from 'primeng/table';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { verMensajeInformativo, aMayusculas } from 'src/app/demo/components/utilities/funciones_utilitarias';
-import { Calcular } from '../../model/Calcular';
-import { DetalleProceso } from 'src/app/demo/model/Calcular'
 
-// --- INTERFACES ADICIONALES ---
+import { Calcular, DetalleProceso, Ajuste, ConceptoAjustable } from 'src/app/demo/model/Calcular' 
 
-interface ConceptoAjustable {
-    code: string;
-    name: string;
-}
-
-interface Ajuste {
-    // Se añade un ID temporal para diferenciar las filas nuevas
-    id: number;
-    pla10conceptocod: string | null;
-    pla10conceptodesc: string; // Nombre completo del concepto
-    importe: number | null;
-}
 
 @Component({
     selector: 'app-calcular',
@@ -63,9 +49,9 @@ interface Ajuste {
         InputTextModule,
         RadioButtonModule,
         PanelModule,
+        ConfirmDialogModule
     ],
-    // Mantenemos MessageService, no añadimos ConfirmationService si no está en el HTML
-    providers: [MessageService], 
+    providers: [MessageService, ConfirmationService],
     templateUrl: './calcular.component.html',
     styleUrls: ['./calcular.component.css']
 })
@@ -102,13 +88,13 @@ export class CalcularComponent implements OnInit {
     ajustesData: Ajuste[] = []; // Datos mostrados en la tabla de ajustes
 
     // Se mantiene, aunque el manejo de la edición ahora es más centralizado
-    clonedAjustes: { [key: string]: Ajuste } = {}; 
-    
+    clonedAjustes: { [key: string]: Ajuste } = {};
+
     // Almacena el ajuste que se está editando para manejar la cancelación
-    ajusteEnEdicion: Ajuste | null = null; 
+    ajusteEnEdicion: Ajuste | null = null;
 
     isEditing: boolean = false;
-    ajusteDialogClosable: boolean = true; 
+    ajusteDialogClosable: boolean = true;
 
     conceptosAjustables: ConceptoAjustable[] = [];
 
@@ -116,7 +102,7 @@ export class CalcularComponent implements OnInit {
     private nextTempId: number = -1;
 
 
-    constructor(private messageService: MessageService) { }
+    constructor(private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
     ngOnInit(): void {
         this.loadConceptosAjustables();
@@ -136,6 +122,7 @@ export class CalcularComponent implements OnInit {
         ];
     }
 
+  
     public onConceptoSelect(ajuste: Ajuste, selectedCode: string | null): void {
         if (selectedCode) {
             const concepto = this.conceptosAjustables.find(c => c.code === selectedCode);
@@ -143,7 +130,7 @@ export class CalcularComponent implements OnInit {
                 ajuste.pla10conceptodesc = concepto.name;
             }
         } else {
-            // Si se limpia la selección
+            // Si se limpia la selección, limpiamos también la descripción
             ajuste.pla10conceptodesc = 'Seleccione Concepto';
         }
     }
@@ -199,7 +186,7 @@ export class CalcularComponent implements OnInit {
                 { id: 2, pla10conceptocod: '0901', pla10conceptodesc: '', importe: 150.00 },
             ];
         }
-        
+
         // Asigna la descripción real a cada ajuste al cargarlos
         return ajustes.map(ajuste => {
             const concepto = this.conceptosAjustables.find(c => c.code === ajuste.pla10conceptocod);
@@ -248,15 +235,14 @@ export class CalcularComponent implements OnInit {
         };
 
         this.ajustesData = [...this.ajustesData, newAjuste];
-        this.ajusteEnEdicion = newAjuste; // Marcamos el ajuste que se está editando
+        this.ajusteEnEdicion = newAjuste; 
 
-        // Retraso ligero para permitir que Angular renderice la fila
+        // Retraso ligero para permitir que Angular renderice la fila e iniciar la edición en ella
         setTimeout(() => {
             if (this.ajustesTable) {
-                // Iniciar la edición en la nueva fila
                 this.ajustesTable.initRowEdit(newAjuste);
                 this.isEditing = true;
-                this.ajusteDialogClosable = false;
+                this.ajusteDialogClosable = false; // Bloquea el cierre del diálogo mientras se edita la fila
             }
         }, 0);
     }
@@ -269,14 +255,23 @@ export class CalcularComponent implements OnInit {
             return;
         }
 
-        // Usamos la función nativa confirm para simplificar la implementación
-        const confirmMsg = `¿Está seguro de eliminar el ajuste para el concepto con código: ${ajuste.pla10conceptocod || 'PENDIENTE'}?`;
+        const conceptodsc = ajuste.pla10conceptodesc === 'Seleccione Concepto' ? 'PENDIENTE' : ajuste.pla10conceptodesc;
 
-        if (confirm(confirmMsg)) {
-            this.ajustesData.splice(index, 1);
-            this.ajustesData = [...this.ajustesData]; // Refrescar el arreglo
-            verMensajeInformativo(this.messageService, 'success', 'Eliminado', 'Ajuste eliminado correctamente.');
-        }
+        this.confirmationService.confirm({
+            message: `¿Está seguro de eliminar el ajuste para el concepto: ${conceptodsc}?`,
+            header: 'Confirmación de Eliminación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button',
+            
+            accept: () => {
+                this.ajustesData.splice(index, 1);
+                this.ajustesData = [...this.ajustesData]; 
+                verMensajeInformativo(this.messageService, 'success', 'Eliminado', 'Ajuste eliminado correctamente.');
+            },
+        });
     }
 
 
@@ -285,50 +280,47 @@ export class CalcularComponent implements OnInit {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Ya hay una fila en edición, guarde o cancele primero.');
             return;
         }
-        
+
         // Clonar la fila para poder revertir cambios
         this.clonedAjustes[ajuste.id] = { ...ajuste };
         this.ajusteEnEdicion = ajuste;
         this.isEditing = true;
-        this.ajusteDialogClosable = false;
-        verMensajeInformativo(this.messageService, 'info', 'Edición', `Editando concepto: ${ajuste.pla10conceptocod || 'nueva fila'}`);
+        this.ajusteDialogClosable = false; 
+        verMensajeInformativo(this.messageService, 'info', 'Edición', `Editando concepto: ${ajuste.pla10conceptodesc}`);
     }
 
 
-   onRowEditSave(ajuste: Ajuste, index: number) {
-        
+    onRowEditSave(ajuste: Ajuste, index: number) {
+
         // 1. VALIDACIÓN OBLIGATORIA: El código de concepto DEBE estar seleccionado (no nulo).
         if (!ajuste.pla10conceptocod) {
-            verMensajeInformativo(this.messageService, 'error', 'Error', 'El Código Concepto es obligatorio. No se puede guardar vacío.');
-            
-            // ¡IMPORTANTE! Simplemente hacemos 'return'. 
-            // Esto detiene el guardado, pero PrimeNG mantendrá la fila en modo de edición 
-            // hasta que el usuario corrija o presione Cancelar.
-            return; 
-        }
-
-        // 2. Validación Combinada: Importe (debe ser válido y distinto de cero)
-        if (ajuste.importe === null || typeof ajuste.importe !== 'number' || isNaN(ajuste.importe) || ajuste.importe < 0) {
-            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe ingresar un importe válido');
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Código Concepto para guardar el registro.');
             return;
         }
-        
+
+        // 2. Validación Combinada: Importe (debe ser válido, se permite cero o negativo)
+        if (ajuste.importe === null || typeof ajuste.importe !== 'number' || isNaN(ajuste.importe)) {
+            verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe ingresar un importe válido.');
+            return;
+        }
+
         // 3. Guardado Exitoso (Solo si pasó todas las validaciones)
         delete this.clonedAjustes[ajuste.id];
         this.ajusteEnEdicion = null;
-        this.isEditing = false; // Permite editar otras filas/cerrar el diálogo
-        this.ajusteDialogClosable = true;
+        this.isEditing = false;
+        this.ajusteDialogClosable = true; // Permite el cierre del diálogo
+
+        this.onConceptoSelect(ajuste, ajuste.pla10conceptocod);
+
         verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Ajuste guardado correctamente.');
     }
 
     onRowEditCancel(ajuste: Ajuste, index: number) {
-        
-        // Si el ajuste tiene un ID temporal (negativo), es una fila nueva, la eliminamos.
+
         if (ajuste.id < 0) {
             this.ajustesData.splice(index, 1);
-            this.ajustesData = [...this.ajustesData]; // Refrescar el arreglo
-        } 
-        // Si no es una fila nueva, restauramos el valor clonado (solo si existe)
+            this.ajustesData = [...this.ajustesData]; 
+        }
         else if (this.clonedAjustes[ajuste.id]) {
             this.ajustesData[index] = this.clonedAjustes[ajuste.id];
             delete this.clonedAjustes[ajuste.id];
@@ -348,7 +340,7 @@ export class CalcularComponent implements OnInit {
     //Metodo para alternar la selección de boleta
     toggleBoleta(): void {
         if (this.boletaChecked) {
-            this.planillaGeneralChecked = false; 
+            this.planillaGeneralChecked = false;
             this.liquidacionChecked = false;
         }
     }
@@ -364,8 +356,8 @@ export class CalcularComponent implements OnInit {
     //Metodo para alternar la selección de liquidacion
     toggleLiquidacion(): void {
         if (this.liquidacionChecked) {
-            this.boletaChecked = false; //false para deseleccionar boleta
-            this.planillaGeneralChecked = false; //false para deseleccionar planilla general    
+            this.boletaChecked = false;
+            this.planillaGeneralChecked = false;
         }
     }
 }

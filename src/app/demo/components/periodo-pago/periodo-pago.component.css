@@ -1,10 +1,4 @@
 
-/* Estilo original de la tabla */
-:host ::ng-deep .periodopago-table {
-    width: fit-content;
-    max-width: 100%;
-}
-
 ::ng-deep .periodopago-table table {
   border-collapse: collapse;
   width: auto !important;
@@ -17,3 +11,19 @@
     padding-right: 1.25rem;
     width: 100%; 
 }
+
+:host ::ng-deep .content-wrapper {
+    overflow-x: auto;
+    width: fit-content; 
+    max-width: 100%;
+}
+
+:host ::ng-deep .periodopago-table {
+    width: fit-content;
+    max-width: 100%;
+}
+
+
+
+
+

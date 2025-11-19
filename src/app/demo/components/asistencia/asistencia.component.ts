@@ -4,17 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 
-// Agregamos CalendarModule, BadgeModule y las nuevas interfaces si aún no están
+// Módulos de PrimeNG
 import { CalendarModule } from 'primeng/calendar';
 import { BadgeModule } from 'primeng/badge';
-import { InputNumberModule } from 'primeng/inputnumber'; // Agregamos si lo usaremos para los días
-
-import { 
-    verMensajeInformativo, 
-    esFechaValida, 
-    formatearFecha 
-} from 'src/app/demo/components/utilities/funciones_utilitarias'; 
-
+import { InputNumberModule } from 'primeng/inputnumber'; 
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,11 +21,19 @@ import { CardModule } from 'primeng/card';
 import { PaginatorModule } from 'primeng/paginator';
 import { DialogModule } from 'primeng/dialog';
 
-// Importación de interfaces de modelo
-import { Asistencia } from 'src/app/demo/model/Asistencia';
-import { Inasistencia } from 'src/app/demo/model/Inasistencia'; // Importamos la nueva interfaz
 
-//Interface para Asistenciaview
+// Importación de utilitarios (asumo que están definidos en tu proyecto)
+import { 
+    verMensajeInformativo, 
+    esFechaValida, 
+    formatearFecha 
+} from 'src/app/demo/components/utilities/funciones_utilitarias'; 
+
+// Importación de interfaces de modelo (asumo que están definidas en tu proyecto)
+import { Asistencia } from 'src/app/demo/model/Asistencia';
+import { Inasistencia } from 'src/app/demo/model/Inasistencia'; 
+
+
 export interface AsistenciaView extends Asistencia {
     idIdentidad: string;
 }
@@ -67,9 +68,9 @@ interface TipoSuspension {
         TagModule,
         PaginatorModule,
         DialogModule,
-        CalendarModule, // Añadido
-        BadgeModule,    // Añadido
-        InputNumberModule // Añadido
+        CalendarModule,
+        BadgeModule, 
+        InputNumberModule 
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './asistencia.component.html',
@@ -119,6 +120,7 @@ export class AsistenciaComponent implements OnInit {
     }
 
     loadEmpleados() {
+        // Simulación de carga de datos
         const fullData: AsistenciaView[] = [
             { pla01empleadocod: '000001', idIdentidad: '08680851', apellidosynombres: 'MARTINEZ GARCIA Joel alberto', pla01fechaingreso: new Date(2006, 7, 16), pla01estado: 'A', pla02utilidad: 180, pla02gratificacion: 150 },
             { pla01empleadocod: '000002', idIdentidad: '07271641', apellidosynombres: 'CALDERON PEREZ PYME', pla01fechaingreso: new Date(2006, 0, 1), pla01estado: 'A', pla02utilidad: 180, pla02gratificacion: 180 },
@@ -130,11 +132,69 @@ export class AsistenciaComponent implements OnInit {
         this.empleados = fullData;
     }
 
-    // --- Lógica de Inasistencias ---
+    limpiarDias() {
+        this.confirmationService.confirm({
+            message: `¿Está seguro que desea eliminar los días de ${this.getDynamicColumnLabel()} para todos los empleados?`,
+            header: 'Confirmar Limpieza',
+            icon: 'pi pi-trash',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button',
+            accept: () => {
+                if (this.selectedPeriodoPago === 'UTILIDADES') {
+                    this.empleados.forEach(e => e.pla02utilidad = 0);
+                } else if (this.selectedPeriodoPago === 'GRATIFICACIONES') {
+                    this.empleados.forEach(e => e.pla02gratificacion = 0);
+                }
+                this.selectedEmpleado = null;
+            }
+        });
+    }
+
+  
+    guardarTodosLosCambios() {
+        this.confirmationService.confirm({
+            message: '¿Está seguro que desea guardar los cambios de asistencia de **TODOS** los empleados?',
+            header: 'Confirmar Guardado Global',
+            icon: 'pi pi-save',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button',
+            accept: () => {
+                this.selectedEmpleado = null;
+                verMensajeInformativo(this.messageService, 'success', 'Guardado Global', `Se guardaron los datos de ${this.empleados.length} empleados correctamente.`);
+            }
+        });
+    }
+
+    vistaPreviaGeneral() {
+        // Lógica para generar el reporte general (la tabla completa) para impresión
+        verMensajeInformativo(this.messageService, 'info', 'Vista Previa', `Generando reporte de asistencia para ${this.empleados.length} empleados para impresión.`);
+    }
+
+    cerrarVista() {
+        this.confirmationService.confirm({
+            message: '¿Está seguro que desea cancelar? Se cerrará la vista y se descartarán los cambios no guardados.',
+            header: 'Confirmar Cancelación',
+            icon: 'pi pi-times',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button',
+            accept: () => {
+                this.loadEmpleados(); // Recargar los datos originales para descartar cambios
+                this.selectedEmpleado = null;
+                this.isMenuOpen = false;
+                verMensajeInformativo(this.messageService, 'info', 'Cerrando', 'Vista cerrada y cambios descartados.');
+            }
+        });
+    }
 
     openInasistenciaDialog(empleado: AsistenciaView) { 
         this.selectedInasistenciaEmpleado = empleado;
-        this.loadInasistencias(empleado.pla01empleadocod); // Cargar datos reales o simulados
+        this.loadInasistencias(empleado.pla01empleadocod); 
         this.isEditingInasistencia = false;
         this.selectedInasistencia = null;
         this.displayInasistenciaDialog = true;
@@ -148,14 +208,14 @@ export class AsistenciaComponent implements OnInit {
                     pla03tiposuspension: '07',
                     glo02descripcion: 'S.P. FALTA NO JUSTIFICADA',
                     pla03fechainicio: new Date(2025, 6, 15), 
-                    pla03fechafin: new Date(2025, 6, 17),  
+                    pla03fechafin: new Date(2025, 6, 17), 
                     pla03diasnotrabajados: 3
                 },
                 {
                     pla03tiposuspension: '05',
                     glo02descripcion: 'S.P. PERMISO O LICENCIA CONCEDIDOS POR EL EMPLEADOR',
                     pla03fechainicio: new Date(2025, 9, 5), 
-                    pla03fechafin: new Date(2025, 9, 5),  
+                    pla03fechafin: new Date(2025, 9, 5), 
                     pla03diasnotrabajados: 1
                 }
             ];
@@ -165,7 +225,6 @@ export class AsistenciaComponent implements OnInit {
     }
 
     addInasistencia() {
-
         const newInasistencia: Inasistencia = {
             pla03tiposuspension: '',
             glo02descripcion: 'Seleccione un tipo de suspensión',
@@ -188,7 +247,7 @@ export class AsistenciaComponent implements OnInit {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Tipo de Suspensión.');
             return;
         }
-        // Lógica de guardado (API call aquí)
+        // Lógica de guardado de inasistencia (API call aquí)
         this.isEditingInasistencia = false;
         this.selectedInasistencia = null;
         verMensajeInformativo(this.messageService, 'success', 'Guardado', 'Registro de inasistencia guardado correctamente.');
@@ -202,13 +261,12 @@ export class AsistenciaComponent implements OnInit {
         if (!inasistencia.pla03tiposuspension) {
             this.inasistencias.splice(index, 1);
         } else {
-            // Lógica para recargar/deshacer cambios si no es nueva (requiere guardar el estado original)
-            this.loadInasistencias(this.selectedInasistenciaEmpleado!.pla01empleadocod); // Simulación de deshacer
+            // Lógica para recargar/deshacer cambios si no es nueva
+            this.loadInasistencias(this.selectedInasistenciaEmpleado!.pla01empleadocod); 
         }
     }
 
     deleteInasistencia(inasistencia: Inasistencia) {
-
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar la inasistencia por ${inasistencia.glo02descripcion}?`,
             header: 'Confirmar Eliminación',
@@ -259,26 +317,8 @@ export class AsistenciaComponent implements OnInit {
         return this.selectedPeriodoPago === 'UTILIDADES' ? 'Días Utilidad' : 'Días Gratificación';
     }
 
-   
-    guardar(empleado: AsistenciaView) {
-        this.confirmationService.confirm({
-            message: '¿Está seguro que desea guardar los cambios de asistencia?',
-            header: 'Confirmar Guardado',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Sí',
-            rejectLabel: 'No',
-            acceptButtonStyleClass: 'p-button-danger',
-            rejectButtonStyleClass: 'p-button',
-            accept: () => {
-                // Tu lógica original de "Guardar Todo"
-                verMensajeInformativo(this.messageService, 'success', 'Éxito', `Se guardaron los datos de ${this.empleados.length} empleados correctamente`);
-            }
-        });
-    }
-
-
     eliminarEmpleado(empleado: AsistenciaView) {
-        // Ya no se comprueba this.selectedEmpleado, se usa el empleado de la fila
+        // Función de eliminación por fila (si se usara en la tabla)
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar a ${empleado.apellidosynombres} del listado de asistencia?`, 
             header: 'Confirmar Eliminación',
@@ -290,37 +330,12 @@ export class AsistenciaComponent implements OnInit {
             accept: () => {
                 this.empleados = this.empleados.filter(e => e.pla01empleadocod !== empleado.pla01empleadocod); 
                 this.totalRecords = this.empleados.length;
-                
-                // Si el empleado eliminado era el que estaba seleccionado, lo deseleccionamos
                 if (this.selectedEmpleado && this.selectedEmpleado.pla01empleadocod === empleado.pla01empleadocod) {
                     this.selectedEmpleado = null;
                 }
-                
                 verMensajeInformativo(this.messageService, 'success', 'Éxito', 'Empleado eliminado del listado de asistencia.');
             }
         });
-    }
-
-    cancelar(empleado: AsistenciaView) {
-        this.confirmationService.confirm({
-            message: '¿Está seguro que desea cancelar? Se cerrará la vista.',
-            header: 'Confirmar Cancelación',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Sí',
-            rejectLabel: 'No',
-            acceptButtonStyleClass: 'p-button-danger',
-            rejectButtonStyleClass: 'p-button',
-            accept: () => {
-                this.loadEmpleados(); 
-                this.selectedEmpleado = null;
-                this.isMenuOpen = false;
-                verMensajeInformativo(this.messageService, 'info', 'Cerrando', 'Vista cerrada.');
-            }
-        });
-    }
-
-    vistaPrevia(empleado: AsistenciaView) {
-        verMensajeInformativo(this.messageService, 'info', 'Vista Previa', `Generando vista previa para: ${empleado.apellidosynombres}`);
     }
 
     getFechaIngresoFormateada(fecha: Date): string {
