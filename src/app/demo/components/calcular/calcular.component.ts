@@ -24,7 +24,8 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { verMensajeInformativo, aMayusculas } from 'src/app/demo/components/utilities/funciones_utilitarias';
 
-import { Calcular, DetalleProceso, Ajuste, ConceptoAjustable } from 'src/app/demo/model/Calcular' 
+import { Calcular, DetalleProceso, Ajuste, ConceptoAjustable, ImpIngDesc } from 'src/app/demo/model/Calcular' 
+
 
 
 @Component({

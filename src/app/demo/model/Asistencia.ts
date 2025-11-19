@@ -7,3 +7,8 @@ export interface Asistencia{
     pla02gratificacion: number;
 }
 
+export interface AsistenciaView extends Asistencia {
+    idIdentidad: string;
+}
+
+

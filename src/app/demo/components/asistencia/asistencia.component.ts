@@ -21,8 +21,6 @@ import { CardModule } from 'primeng/card';
 import { PaginatorModule } from 'primeng/paginator';
 import { DialogModule } from 'primeng/dialog';
 
-
-// Importación de utilitarios (asumo que están definidos en tu proyecto)
 import { 
     verMensajeInformativo, 
     esFechaValida, 
@@ -30,24 +28,8 @@ import {
 } from 'src/app/demo/components/utilities/funciones_utilitarias'; 
 
 // Importación de interfaces de modelo (asumo que están definidas en tu proyecto)
-import { Asistencia } from 'src/app/demo/model/Asistencia';
-import { Inasistencia } from 'src/app/demo/model/Inasistencia'; 
-
-
-export interface AsistenciaView extends Asistencia {
-    idIdentidad: string;
-}
-
-interface PeriodoPago {
-    label: string;
-    value: string;
-}
-
-// Nueva interfaz para el Dropdown de Tipo de Suspensión
-interface TipoSuspension {
-    code: string;
-    name: string;
-}
+import { Asistencia, AsistenciaView  } from 'src/app/demo/model/Asistencia';
+import { Inasistencia, PeriodoPago, TipoSuspension } from 'src/app/demo/model/Inasistencia'; 
 
 @Component({
     selector: 'app-asistencia',
@@ -136,7 +118,7 @@ export class AsistenciaComponent implements OnInit {
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar los días de ${this.getDynamicColumnLabel()} para todos los empleados?`,
             header: 'Confirmar Limpieza',
-            icon: 'pi pi-trash',
+            icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
             acceptButtonStyleClass: 'p-button-danger',
@@ -155,9 +137,9 @@ export class AsistenciaComponent implements OnInit {
   
     guardarTodosLosCambios() {
         this.confirmationService.confirm({
-            message: '¿Está seguro que desea guardar los cambios de asistencia de **TODOS** los empleados?',
+            message: '¿Está seguro que desea guardar los cambios de asistencia de todos los empleados?',
             header: 'Confirmar Guardado Global',
-            icon: 'pi pi-save',
+            icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
             acceptButtonStyleClass: 'p-button-danger',

@@ -23,7 +23,7 @@
             </div>
             <div class="p-toolbar-group-start flex flex-wrap gap-3 ">
             </div>
-
+            
             <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
                 <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
                 <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
@@ -45,7 +45,8 @@
 
         <p-table #dt [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [first]="first"
             [totalRecords]="totalRecords" (onPage)="onPageChange($event)" responsiveLayout="stack"
-            dataKey="pla01empleadocod"  styleClass="asistencia-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
+            dataKey="pla01empleadocod"
+            styleClass="asistencia-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
 
             <ng-template pTemplate="header">
                 <tr>
@@ -127,7 +128,6 @@
 </div>
 
 
-
 <p-dialog header="Inasistencia de Personal" [(visible)]="displayInasistenciaDialog" [modal]="true" [maximizable]="true"
     [style]="{ width: '80vw', minWidth: '400px' }" [draggable]="true" [resizable]="true">
     <div *ngIf="selectedInasistenciaEmpleado">
@@ -136,7 +136,7 @@
 
         <p-toolbar styleClass="mb-3 p-2 border-1 border-gray-200 rounded-md">
             <div class="p-toolbar-group-start">
-                <button pButton pRipple icon="pi pi-plus" label="Añadir Inasistencia" (click)="addInasistencia()"
+                <button pButton pRipple icon="pi pi-plus" label="Nuevo" (click)="addInasistencia()"
                     [disabled]="isEditingInasistencia" class="p-button-info p-button-sm"></button>
             </div>
         </p-toolbar>
@@ -170,15 +170,18 @@
                         </span>
                     </td>
 
-                    <td>
-                        {{ inasistencia.glo02descripcion }}
+                    <td class="text-left">
+                        <span
+                            class="inline-block max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap align-middle">
+                            {{ inasistencia.glo02descripcion }}
+                        </span>
                     </td>
 
                     <td class="text-center">
                         <p-calendar *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
                             [(ngModel)]="inasistencia.pla03fechainicio" (ngModelChange)="updateDays(inasistencia)"
                             (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" [showIcon]="true"
-                            styleClass="w-full text-sm" appendTo="body">
+                            styleClass="p-inputtext-sm w-10rem" appendTo="body">
                         </p-calendar>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             {{ inasistencia.pla03fechainicio | date: 'dd/MM/yyyy' }}
@@ -189,7 +192,7 @@
                         <p-calendar *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
                             [(ngModel)]="inasistencia.pla03fechafin" (ngModelChange)="updateDays(inasistencia)"
                             (click)="$event.stopPropagation()" dateFormat="dd/mm/yy" [showIcon]="true"
-                            styleClass="w-full text-sm" appendTo="body">
+                            styleClass="p-inputtext-sm w-10rem" appendTo="body">
                         </p-calendar>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             {{ inasistencia.pla03fechafin | date: 'dd/MM/yyyy' }}
@@ -199,7 +202,7 @@
                     <td class="text-center">
                         <p-inputNumber *ngIf="selectedInasistencia === inasistencia && isEditingInasistencia"
                             [(ngModel)]="inasistencia.pla03diasnotrabajados" [disabled]="true" mode="decimal"
-                            [showButtons]="false" styleClass="w-12 text-center" inputStyleClass="text-center">
+                            [showButtons]="false" styleClass="text-center" inputStyleClass="text-center">
                         </p-inputNumber>
                         <span *ngIf="selectedInasistencia !== inasistencia || !isEditingInasistencia">
                             <p-badge [value]="inasistencia.pla03diasnotrabajados" severity="danger"></p-badge>

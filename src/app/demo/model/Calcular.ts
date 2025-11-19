@@ -28,3 +28,16 @@ export interface ConceptoAjustable {
     code: string;
     name: string;
 }
+
+export interface ImpIngDesc{
+    pla01empleadocod: string;
+    apellidosynombres: string;
+    pla10conceptocod: string | null;
+    pla10conceptodesc: string; 
+
+    importe: number | null;
+    orden: number | null;
+
+    fila: number | null;
+    mensaje: string | null;
+}

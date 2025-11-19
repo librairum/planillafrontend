@@ -3,7 +3,6 @@
   border-collapse: collapse;
   width: auto !important;
   table-layout: auto;
-
 }
 
 :host ::ng-deep .align-to-table {

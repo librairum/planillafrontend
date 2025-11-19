@@ -5,14 +5,12 @@
 
     <p-panel header="Empresas" styleClass="shadow-xl rounded-xl">
         <div class="content-wrapper"></div>
-
         <div class="aligned-content-container">
-
             <div class="toolbar-controls-wrapper flex justify-content-between align-items-center">
 
                 <p-toolbar styleClass="mb-4 surface-card border-none px-4 align-to-table">
                     <div class="p-toolbar-group-start flex flex-wrap gap-2">
-                        <button pButton pRipple type="button" tooltipPosition="bottom" pTooltip="Agregar empresa"
+                        <button pButton pRipple type="button" label="Nuevo" tooltipPosition="bottom" pTooltip="Nueva empresa"
                             icon="pi pi-plus" class="p-button-info" (click)="agregarEmpresa()" [disabled]="!isViewMode">
                         </button>
 
@@ -24,7 +22,7 @@
                     <div class="p-toolbar-group-end flex flex-wrap gap-4" *ngIf="!isViewMode">
                         <div class="p-toolbar-group-start flex flex-wrap gap-2 pr-1">
 
-                            <button pButton pRipple type="button" icon="pi pi-save" class="p-button-primary" (click)="guardar()"
+                            <button pButton pRipple type="button" icon="pi pi-save" class="p-button-info" (click)="guardar()"
                                 tooltipPosition="bottom" pTooltip="Guardar" [disabled]="!(isAddMode || isEditMode)">
                             </button>
 
@@ -87,7 +85,7 @@
                                         </button>
 
                                         <button pButton pRipple icon="pi pi-pencil"
-                                            class="p-button-rounded p-button-warning p-button-text p-button-sm"
+                                            class="p-button-rounded p-button-info p-button-text p-button-sm"
                                             (click)="editarEmpresa(empresa)" pTooltip="Editar" tooltipPosition="bottom"
                                             [disabled]="!isViewMode">
                                         </button>
