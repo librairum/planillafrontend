@@ -70,7 +70,56 @@ export interface Trabajador {
   desctsmoneda?: string;
 
 
-  //Seguro Social
+
+  //
+  // Laborales
+  //
+
+  // Tipo de trabajador
+  Pla01TRDatosLabTipoTrabajador?: string;
+  LabTipoTrabajadorDes?: string;
+  //Fechas de inicio y fin, pero no son mostradas cuando se arranca el programa
+  //dtpFechaIni
+  //dtpFechaFin
+  // Nivel educativo
+  Pla01TRDatosLabNivelEducativo?: string;
+  LabNivelEducativoDes?: string;
+  // Categoria Ocupacional
+  Pla01TRDatosLabCategoriaOcupacional?: string;
+  LabCategoriaOcupacionalDes?: string;
+  // Tipo de contrato
+  Pla01TRDatosLabContratoTrabajoTipo?: string;
+  LabContratoTrabajoTipoDes?: string;
+  // Ocupacion
+  Pla01TRDatosLabOcupacion?: string;
+  LabOcupacionDes?: string;
+  // Tipo de pago
+  Pla01TRDatosLabTipoPago?: string;
+  LabTipoPagoDes?: string;
+  // Perioridad de ingreso
+  Pla01TRDatosLabPeriodoIngreso?: string;
+  LabPeriodoIngresoDes?: string;
+  // Establecimiento laboral
+  Pla01TRDatosLabEstablecimientoLaboral?: string;
+  LabEstablecimientoDes?: string;
+  // Jornada laboral I
+  Pla01TRDatosLabJornadaLaboralTrabajoMax?: string; // 'S' O 'N'
+  Pla01TRDatosLabJornadaLaboralJornadaAtipica?: string; // 'S' O 'N'
+  Pla01TRDatosLabJornadaLaboralHorarioNocturno?: string; // 'S' O 'N'
+  // Situacion especial
+  Pla01TRDatosLabSituacionEspecial?: string; // '1' , '2' O '3'
+  // Discapacitado
+  Pla01TRDatosLabFlagDiscapacitado?: string; // 'S' O 'N'
+  // Sindicalizado
+  Pla01TRDatosLabFlagSindicalizado?: string; // 'S' O 'N'
+  // Situacion
+  Pla01TRDatosLabSituacion?: string;
+  LabSituacionDes?: string;
+
+
+  //
+  // Seguro Social
+  //
 
   pla01trdatossegsocialregsaludcod?: string;
   segsocialregsaluddes?: string;

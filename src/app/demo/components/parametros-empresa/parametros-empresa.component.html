@@ -14,18 +14,18 @@
 
           <!-- Tabla Principal -->
           <p-table [value]="parametroxEmpresaList"
-                   dataKey="pla41empresacod"
-                   editMode="row"
-                   [paginator]="true"
-                   [rows]="rowsPerPage"
-                   responsiveLayout="scroll"
-                   [showCurrentPageReport]="true"
-                   [rowsPerPageOptions]="[5, 10, 20, 50]"
-                   [tableStyle]="{ 'min-width': '100%' }"
-                   currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} parámetros"
-                   styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                   class="table-parametros-empresa"
-                   >
+                  dataKey="pla41empresacod"
+                  editMode="row"
+                  [paginator]="true"
+                  [rows]="rowsPerPage"
+                  responsiveLayout="scroll"
+                  [showCurrentPageReport]="true"
+                  [rowsPerPageOptions]="[5, 10, 20, 50]"
+                  [tableStyle]="{ 'width': '1500px' }"
+                  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} parámetros"
+                  styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                  class="table-parametros-empresa"
+                  >
               <!-- Cabecera de Tabla -->
               <ng-template pTemplate="header">
                   <tr>
@@ -105,7 +105,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4101}}
+                                  {{ parametro.pla4101 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -117,7 +117,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4102}}
+                                  {{ parametro.pla4102 | number:'1.2-2'}}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -129,7 +129,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4103}}
+                                  {{ parametro.pla4103 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -141,7 +141,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4104}}
+                                  {{ parametro.pla4104 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -153,7 +153,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4105}}
+                                  {{ parametro.pla4105 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -165,7 +165,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4106}}
+                                  {{ parametro.pla4106 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -177,7 +177,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4107}}
+                                  {{ parametro.pla4107 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -189,7 +189,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4108}}
+                                  {{ parametro.pla4108 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -201,7 +201,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4109}}
+                                  {{ parametro.pla4109 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -213,7 +213,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4110}}
+                                  {{ parametro.pla4110 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -225,7 +225,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4111}}
+                                  {{ parametro.pla4111 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>
@@ -237,7 +237,7 @@
                                          class="p-inputtext-sm w-full" required>
                               </ng-template>
                               <ng-template pTemplate="output">
-                                  {{parametro.pla4112}}
+                                  {{ parametro.pla4112 | number:'1.2-2' }}
                               </ng-template>
                           </p-cellEditor>
                       </td>

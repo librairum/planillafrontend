@@ -559,9 +559,175 @@ export class TrabajadorDetalleComponent implements OnInit{
     }
 
 
+  // Empresa modals
+
+  // Centro de costos
+
+  mostrarModalCentroCostos: boolean = false;
+  centroCostos: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalCentroCostos(): void{
+    this.mostrarModalCentroCostos = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.centroCostos = [
+      { codigo: '001', descripcion: 'por defecto' },
+    ];
+  }
+
+  seleccionarCentroCosto(centroCosto: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01ctaremubancocod: centroCosto.codigo,
+      pla01ctaremunumero: centroCosto.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarModalCentroCostos = false;
+
+  }
+
+  // Cargos
+
+  mostrarModalCargos: boolean = false;
+  cargos: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalCargos(): void{
+    this.mostrarModalCargos = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.cargos = [
+      { codigo: '002', descripcion: 'por defecto' },
+    ];
+  }
+
+  seleccionarCargo(cargo: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01puestocod: cargo.codigo,
+      pla51descripcion: cargo.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarModalCargos = false;
+
+  }
+
+  // Bancos Remuneracion
+
+  mostrarBancosRemuneracion: boolean = false;
+  bancosRemuneracion: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalBancosRemuneracion(): void{
+    this.mostrarBancosRemuneracion = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.bancosRemuneracion = [
+      { codigo: '01', descripcion: 'BANCO CENTRAL DE RESERVA' },
+      { codigo: '02', descripcion: 'BANCO DE CREDITO BCP' },
+      { codigo: '03', descripcion: 'BANCO CONTINENTAL' },
+    ];
+  }
+
+  seleccionarBancoRemuneracion(banco: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01ctaremubancocod: banco.codigo,
+      desbancorem: banco.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarBancosRemuneracion = false;
+
+  }
+
+  // Monedas Remuneracion
+
+  mostrarMonedasRemuneracion: boolean = false;
+  monedasRemuneracion: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalMonedasRemuneracion(): void{
+    this.mostrarMonedasRemuneracion = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.monedasRemuneracion = [
+      { codigo: 'D', descripcion: 'DOLARES' },
+      { codigo: 'E', descripcion: 'EUROS' },
+      { codigo: 'S', descripcion: 'NUEVOS SOLES' },
+    ];
+  }
+
+  seleccionarMonedaRemuneracion(moneda: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01ctaremumoneda: moneda.codigo,
+      desremumoneda: moneda.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarMonedasRemuneracion = false;
+
+  }
 
 
+  // Bancos CTS
 
+  mostrarBancosCTS: boolean = false;
+  bancosCTS: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalBancosCTS(): void{
+    this.mostrarBancosCTS = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.bancosCTS = [
+      { codigo: '01', descripcion: 'BANCO CENTRAL DE RESERVA' },
+      { codigo: '02', descripcion: 'BANCO DE CREDITO BCP' },
+      { codigo: '03', descripcion: 'BANCO CONTINENTAL' },
+    ];
+  }
+
+  seleccionarBancoCTS(banco: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01ctactsbancocod: banco.codigo,
+      desbancocts: banco.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarBancosCTS = false;
+
+  }
+
+  // Monedas CTS
+
+  mostrarMonedasCTS: boolean = false;
+  monedasCTS: Array<{ codigo: string; descripcion: string }> = [];
+
+  abrirModalMonedasCTS(): void{
+    this.mostrarMonedasCTS = true;
+
+    // Cargar los datos del modal (puedes reemplazar esto con datos reales)
+    this.monedasCTS = [
+      { codigo: 'D', descripcion: 'DOLARES' },
+      { codigo: 'E', descripcion: 'EUROS' },
+      { codigo: 'S', descripcion: 'NUEVOS SOLES' },
+    ];
+  }
+
+  seleccionarMonedaCTS(moneda: { codigo: string; descripcion: string }): void {
+    // Actualizar los valores en el formulario reactivo
+    this.trabajadorForm.patchValue({
+      pla01ctactsmoneda: moneda.codigo,
+      desctsmoneda: moneda.descripcion,
+    });
+
+    // Cerrar el modal
+    this.mostrarMonedasCTS = false;
+
+  }
+
+
+  // Seguro Social modal
 
   mostrarModalRegimenSalud: boolean = false;
   regimenesSalud: Array<{ codigo: string; descripcion: string }> = [];
