@@ -1,20 +1,24 @@
-export interface Usuario{
-    codigo:string;
-    nombreUsuario:string;
-    claveUsuario:string;
-    codigoperfil:string;
-    nomPerfil: string;
+export interface Usuario {
+  id: string;
+  nombre: string;
+  clave: string;
+  perfil: string;
 }
-export interface UsuarioCrear{
-    codigo:string,
-    cuentaCod:string,
-    nombreUsuario:string,
-    claveUsuario:string,
-    codigoPerfil:string,
-    codigoempresa:string
+
+export interface UsuarioView extends Usuario {
+  isEditing?: boolean;
+  isNew?: boolean;
 }
-export interface ListarPerfil{
-    codigo:string,
-    nombre: string,
-    descripcion: string
+
+export interface EmpresaUsuario {
+  empresaCod: string;
+  razonSocial: string;
+  ruc: string;
+  direccion: string;
+  flagEstado: boolean;
+}
+
+export interface DropdownOption {
+  label: string;
+  value: string;
 }

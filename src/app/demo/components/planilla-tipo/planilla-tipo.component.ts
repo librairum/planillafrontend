@@ -10,12 +10,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PanelModule } from 'primeng/panel';
 
-interface PlanillaTipo {
-  codigo: string;
-  descripcion: string;
-  isEditing?: boolean;
-  isNew?: boolean;
-}
+// Importar las interfaces desde el archivo de modelo
+import { PlanillaTipo, PlanillaTipoView } from 'src/app/demo/model/PlanillaTipo';
 
 @Component({
   selector: 'app-planilla-tipo',
@@ -36,8 +32,8 @@ interface PlanillaTipo {
   styleUrls: ['./planilla-tipo.component.css']
 })
 export class PlanillaTipoComponent implements OnInit {
-  planillasTipo: PlanillaTipo[] = [];
-  originalPlanilla: PlanillaTipo | null = null;
+  planillasTipo: PlanillaTipoView[] = [];
+  originalPlanilla: PlanillaTipoView | null = null;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -59,9 +55,7 @@ export class PlanillaTipoComponent implements OnInit {
     ];
   }
 
-  // Agregar nueva planilla tipo
   agregarNuevo() {
-    // Verificar si ya hay una fila en edición
     const editing = this.planillasTipo.find(p => p.isEditing || p.isNew);
     if (editing) {
       this.messageService.add({
@@ -72,7 +66,7 @@ export class PlanillaTipoComponent implements OnInit {
       return;
     }
 
-    const nuevaPlanilla: PlanillaTipo = {
+    const nuevaPlanilla: PlanillaTipoView = {
       codigo: '',
       descripcion: '',
       isEditing: true,
@@ -81,9 +75,7 @@ export class PlanillaTipoComponent implements OnInit {
     this.planillasTipo.push(nuevaPlanilla);
   }
 
-  // Editar planilla tipo
-  editar(planilla: PlanillaTipo) {
-    // Verificar si ya hay una fila en edición
+  editar(planilla: PlanillaTipoView) {
     const editing = this.planillasTipo.find(p => p.isEditing);
     if (editing && editing !== planilla) {
       this.messageService.add({
@@ -94,13 +86,11 @@ export class PlanillaTipoComponent implements OnInit {
       return;
     }
 
-    // Guardar copia original
     this.originalPlanilla = { ...planilla };
     planilla.isEditing = true;
   }
 
-  // Eliminar planilla tipo
-  eliminar(planilla: PlanillaTipo, index: number) {
+  eliminar(planilla: PlanillaTipoView, index: number) {
     this.confirmationService.confirm({
       message: '¿Está seguro que desea eliminar esta planilla tipo?',
       header: 'Confirmar Eliminación',
@@ -118,13 +108,10 @@ export class PlanillaTipoComponent implements OnInit {
     });
   }
 
-  // Cancelar edición
-  cancelar(planilla: PlanillaTipo, index: number) {
+  cancelar(planilla: PlanillaTipoView, index: number) {
     if (planilla.isNew) {
-      // Si es nuevo, eliminarlo de la lista
       this.planillasTipo.splice(index, 1);
     } else {
-      // Si es edición, restaurar valores originales
       if (this.originalPlanilla) {
         planilla.codigo = this.originalPlanilla.codigo;
         planilla.descripcion = this.originalPlanilla.descripcion;
@@ -134,9 +121,7 @@ export class PlanillaTipoComponent implements OnInit {
     }
   }
 
-  // Guardar planilla tipo
-  guardar(planilla: PlanillaTipo, index: number) {
-    // Validaciones
+  guardar(planilla: PlanillaTipoView, index: number) {
     if (!planilla.codigo || !planilla.descripcion) {
       this.messageService.add({
         severity: 'error',
@@ -146,7 +131,6 @@ export class PlanillaTipoComponent implements OnInit {
       return;
     }
 
-    // Si es nuevo, verificar código duplicado
     if (planilla.isNew) {
       const existe = this.planillasTipo.find((p, i) =>
         i !== index && p.codigo === planilla.codigo
@@ -161,7 +145,6 @@ export class PlanillaTipoComponent implements OnInit {
       }
     }
 
-    // Guardar
     planilla.isEditing = false;
     planilla.isNew = false;
     this.originalPlanilla = null;

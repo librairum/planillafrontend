@@ -12,13 +12,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PanelModule } from 'primeng/panel';
 
-interface Banco {
-  codigo: string;
-  descripcion: string;
-  activo: boolean;
-  isEditing?: boolean;
-  isNew?: boolean;
-}
+// Importar las interfaces desde el archivo de modelo
+import { Banco, BancoView } from 'src/app/demo/model/Banco';
 
 @Component({
   selector: 'app-banco',
@@ -42,8 +37,8 @@ interface Banco {
 export class BancoComponent implements OnInit {
   @ViewChild('dt') table!: Table;
 
-  bancos: Banco[] = [];
-  originalBanco: Banco | null = null;
+  bancos: BancoView[] = [];
+  originalBanco: BancoView | null = null;
   globalFilterValue: string = '';
 
   constructor(
@@ -74,9 +69,7 @@ export class BancoComponent implements OnInit {
     ];
   }
 
-  // Agregar nuevo banco
   agregarNuevo() {
-    // Verificar si ya hay una fila en edición
     const editing = this.bancos.find(b => b.isEditing || b.isNew);
     if (editing) {
       this.messageService.add({
@@ -87,7 +80,7 @@ export class BancoComponent implements OnInit {
       return;
     }
 
-    const nuevoBanco: Banco = {
+    const nuevoBanco: BancoView = {
       codigo: '',
       descripcion: '',
       activo: true,
@@ -95,18 +88,14 @@ export class BancoComponent implements OnInit {
       isNew: true
     };
 
-    // Agregar al inicio del array en lugar del final
     this.bancos.unshift(nuevoBanco);
 
-    // Ir a la primera página
     if (this.table) {
       this.table.first = 0;
     }
   }
 
-  // Editar banco
-  editar(banco: Banco) {
-    // Verificar si ya hay una fila en edición
+  editar(banco: BancoView) {
     const editing = this.bancos.find(b => b.isEditing);
     if (editing && editing !== banco) {
       this.messageService.add({
@@ -117,13 +106,11 @@ export class BancoComponent implements OnInit {
       return;
     }
 
-    // Guardar copia original
     this.originalBanco = { ...banco };
     banco.isEditing = true;
   }
 
-  // Eliminar banco
-  eliminar(banco: Banco, index: number) {
+  eliminar(banco: BancoView, index: number) {
     this.confirmationService.confirm({
       message: '¿Está seguro que desea eliminar este banco?',
       header: 'Confirmar Eliminación',
@@ -141,13 +128,10 @@ export class BancoComponent implements OnInit {
     });
   }
 
-  // Cancelar edición
-  cancelar(banco: Banco, index: number) {
+  cancelar(banco: BancoView, index: number) {
     if (banco.isNew) {
-      // Si es nuevo, eliminarlo de la lista
       this.bancos.splice(index, 1);
     } else {
-      // Si es edición, restaurar valores originales
       if (this.originalBanco) {
         banco.codigo = this.originalBanco.codigo;
         banco.descripcion = this.originalBanco.descripcion;
@@ -158,9 +142,7 @@ export class BancoComponent implements OnInit {
     }
   }
 
-  // Guardar banco
-  guardar(banco: Banco, index: number) {
-    // Validaciones
+  guardar(banco: BancoView, index: number) {
     if (!banco.codigo || !banco.descripcion) {
       this.messageService.add({
         severity: 'error',
@@ -170,7 +152,6 @@ export class BancoComponent implements OnInit {
       return;
     }
 
-    // Si es nuevo, verificar código duplicado
     if (banco.isNew) {
       const existe = this.bancos.find((b, i) =>
         i !== index && b.codigo === banco.codigo
@@ -185,7 +166,6 @@ export class BancoComponent implements OnInit {
       }
     }
 
-    // Guardar
     banco.isEditing = false;
     banco.isNew = false;
     this.originalBanco = null;
@@ -196,12 +176,10 @@ export class BancoComponent implements OnInit {
       detail: 'Banco guardado correctamente'
     });
 
-    // Reordenar: mover el banco guardado al final
     const bancoGuardado = this.bancos.splice(index, 1)[0];
     this.bancos.push(bancoGuardado);
   }
 
-  // Filtro global
   onGlobalFilter(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.globalFilterValue = value;

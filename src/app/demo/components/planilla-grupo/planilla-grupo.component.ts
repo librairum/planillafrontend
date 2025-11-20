@@ -11,20 +11,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PanelModule } from 'primeng/panel';
 
-interface PlanillaGrupo {
-  codigo: string;
-  descripcion: string;
-  tipoSueldoDes: string;
-  frecuenciaPago: string;
-  controlAsistencia: string;
-  isEditing?: boolean;
-  isNew?: boolean;
-}
-
-interface DropdownOption {
-  label: string;
-  value: string;
-}
+// Importar las interfaces desde el archivo de modelo
+import { PlanillaGrupo, PlanillaGrupoView, DropdownOption } from 'src/app/demo/model/PlanillaGrupo';
 
 @Component({
   selector: 'app-planilla-grupo',
@@ -46,8 +34,8 @@ interface DropdownOption {
   styleUrls: ['./planilla-grupo.component.css']
 })
 export class PlanillaGrupoComponent implements OnInit {
-  planillasGrupo: PlanillaGrupo[] = [];
-  originalPlanilla: PlanillaGrupo | null = null;
+  planillasGrupo: PlanillaGrupoView[] = [];
+  originalPlanilla: PlanillaGrupoView | null = null;
 
   // Opciones para los dropdowns
   tiposSueldo: DropdownOption[] = [
@@ -103,9 +91,7 @@ export class PlanillaGrupoComponent implements OnInit {
     ];
   }
 
-  // Agregar nueva planilla grupo
   agregarNuevo() {
-    // Verificar si ya hay una fila en edición
     const editing = this.planillasGrupo.find(p => p.isEditing || p.isNew);
     if (editing) {
       this.messageService.add({
@@ -116,7 +102,7 @@ export class PlanillaGrupoComponent implements OnInit {
       return;
     }
 
-    const nuevaPlanilla: PlanillaGrupo = {
+    const nuevaPlanilla: PlanillaGrupoView = {
       codigo: '',
       descripcion: '',
       tipoSueldoDes: '',
@@ -128,9 +114,7 @@ export class PlanillaGrupoComponent implements OnInit {
     this.planillasGrupo.push(nuevaPlanilla);
   }
 
-  // Editar planilla grupo
-  editar(planilla: PlanillaGrupo) {
-    // Verificar si ya hay una fila en edición
+  editar(planilla: PlanillaGrupoView) {
     const editing = this.planillasGrupo.find(p => p.isEditing);
     if (editing && editing !== planilla) {
       this.messageService.add({
@@ -141,13 +125,11 @@ export class PlanillaGrupoComponent implements OnInit {
       return;
     }
 
-    // Guardar copia original
     this.originalPlanilla = { ...planilla };
     planilla.isEditing = true;
   }
 
-  // Eliminar planilla grupo
-  eliminar(planilla: PlanillaGrupo, index: number) {
+  eliminar(planilla: PlanillaGrupoView, index: number) {
     this.confirmationService.confirm({
       message: '¿Está seguro que desea eliminar esta planilla grupo?',
       header: 'Confirmar Eliminación',
@@ -165,13 +147,10 @@ export class PlanillaGrupoComponent implements OnInit {
     });
   }
 
-  // Cancelar edición
-  cancelar(planilla: PlanillaGrupo, index: number) {
+  cancelar(planilla: PlanillaGrupoView, index: number) {
     if (planilla.isNew) {
-      // Si es nuevo, eliminarlo de la lista
       this.planillasGrupo.splice(index, 1);
     } else {
-      // Si es edición, restaurar valores originales
       if (this.originalPlanilla) {
         planilla.codigo = this.originalPlanilla.codigo;
         planilla.descripcion = this.originalPlanilla.descripcion;
@@ -184,9 +163,7 @@ export class PlanillaGrupoComponent implements OnInit {
     }
   }
 
-  // Guardar planilla grupo
-  guardar(planilla: PlanillaGrupo, index: number) {
-    // Validaciones
+  guardar(planilla: PlanillaGrupoView, index: number) {
     if (!planilla.codigo || !planilla.descripcion) {
       this.messageService.add({
         severity: 'error',
@@ -205,7 +182,6 @@ export class PlanillaGrupoComponent implements OnInit {
       return;
     }
 
-    // Si es nuevo, verificar código duplicado
     if (planilla.isNew) {
       const existe = this.planillasGrupo.find((p, i) =>
         i !== index && p.codigo === planilla.codigo
@@ -220,7 +196,6 @@ export class PlanillaGrupoComponent implements OnInit {
       }
     }
 
-    // Guardar
     planilla.isEditing = false;
     planilla.isNew = false;
     this.originalPlanilla = null;

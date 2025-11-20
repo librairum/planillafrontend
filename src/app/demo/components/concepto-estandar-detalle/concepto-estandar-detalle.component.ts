@@ -11,32 +11,15 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
-interface TipoCalculo {
-  codigo: string;
-  descripcion: string;
-}
-
-interface ConceptoTipo {
-  codigo: string;
-  descripcion: string;
-}
-
-interface SubTipoConcepto {
-  conceptoTipoCod: string;
-  codigo: string;
-  descripcion: string;
-}
-
-interface ConceptoSunat {
-  codigoSunat: string;
-  descripcion: string;
-}
-
-interface AfectacionItem {
-  codigo: string;
-  descripcion: string;
-  valor: boolean;
-}
+// Importar las interfaces desde el archivo de modelo
+import {
+  TipoCalculo,
+  ConceptoTipo,
+  SubTipoConcepto,
+  ConceptoSunat,
+  AfectacionItem,
+  ConceptoEstandarDetalle
+} from 'src/app/demo/model/ConceptoEstandar';
 
 @Component({
   selector: 'app-concepto-estandar-detalle',
@@ -63,7 +46,7 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
   codigoConcepto: string = '';
 
   // Modelo del concepto
-  conceptoActual: any = {};
+  conceptoActual: ConceptoEstandarDetalle = {} as ConceptoEstandarDetalle;
 
   // Selecciones para los dropdowns
   tipoCalculoSeleccionado: TipoCalculo | null = null;
@@ -200,27 +183,25 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
       regimenesLaborales: JSON.parse(JSON.stringify(this.regimenesLaborales))
     };
 
-    // Establecer valores iniciales para los dropdowns
     this.tipoCalculoSeleccionado = this.tiposCalculo[0];
     this.conceptoTipoSeleccionado = this.conceptosTipo[3];
     this.subTipoSeleccionado = this.subTiposConcepto[0];
   }
 
-  // Eventos de cambio de los dropdowns
   onTipoCalculoChange(event: any) {
-    // Puedes agregar lógica adicional aquí si es necesario
+    // Lógica adicional si es necesario
   }
 
   onConceptoTipoChange(event: any) {
-    // Puedes agregar lógica adicional aquí si es necesario
+    // Lógica adicional si es necesario
   }
 
   onSubTipoChange(event: any) {
-    // Puedes agregar lógica adicional aquí si es necesario
+    // Lógica adicional si es necesario
   }
 
   onConceptoSunatChange(event: any) {
-    // Puedes agregar lógica adicional aquí si es necesario
+    // Lógica adicional si es necesario
   }
 
   guardarConcepto() {
@@ -255,7 +236,6 @@ export class ConceptoEstandarDetalleComponent implements OnInit {
     return this.esModoVisualizacion ? 'Visualización de Concepto' : 'Editar Concepto';
   }
 
-  // Obtener subtipos filtrados según el concepto tipo seleccionado
   get subTiposFiltrados(): SubTipoConcepto[] {
     if (!this.conceptoTipoSeleccionado) {
       return this.subTiposConcepto;

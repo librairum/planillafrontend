@@ -1,6 +1,11 @@
+
 export interface Banco {
-  ban01Empresa: string;
-  ban01IdBanco: string;
-  ban01Descripcion: string;
-  ban01Prefijo: string;
-  }
+  codigo: string;
+  descripcion: string;
+  activo: boolean;
+}
+
+export interface BancoView extends Banco {
+  isEditing?: boolean;
+  isNew?: boolean;
+}

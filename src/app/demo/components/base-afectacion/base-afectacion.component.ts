@@ -12,16 +12,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PanelModule } from 'primeng/panel';
 
-interface BaseAfectacion {
-  codigo: string;
-  descripcion: string;
-  posicion: number;
-  alias: string;
-  activo: boolean;
-  sunat: boolean;
-  isEditing?: boolean;
-  isNew?: boolean;
-}
+// Importar las interfaces desde el archivo de modelo
+import { BaseAfectacion, BaseAfectacionView } from 'src/app/demo/model/BaseAfectacion';
 
 @Component({
   selector: 'app-base-afectacion',
@@ -45,8 +37,8 @@ interface BaseAfectacion {
 export class BaseAfectacionComponent implements OnInit {
   @ViewChild('dt') table!: Table;
 
-  basesAfectacion: BaseAfectacion[] = [];
-  originalBase: BaseAfectacion | null = null;
+  basesAfectacion: BaseAfectacionView[] = [];
+  originalBase: BaseAfectacionView | null = null;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -81,9 +73,7 @@ export class BaseAfectacionComponent implements OnInit {
     ];
   }
 
-  // Agregar nueva base de afectación
   agregarNuevo() {
-    // Verificar si ya hay una fila en edición
     const editing = this.basesAfectacion.find(b => b.isEditing || b.isNew);
     if (editing) {
       this.messageService.add({
@@ -94,7 +84,7 @@ export class BaseAfectacionComponent implements OnInit {
       return;
     }
 
-    const nuevaBase: BaseAfectacion = {
+    const nuevaBase: BaseAfectacionView = {
       codigo: '',
       descripcion: '',
       posicion: 1,
@@ -105,18 +95,14 @@ export class BaseAfectacionComponent implements OnInit {
       isNew: true
     };
 
-    // Agregar al inicio del array en lugar del final
     this.basesAfectacion.unshift(nuevaBase);
 
-    // Ir a la primera página
     if (this.table) {
       this.table.first = 0;
     }
   }
 
-  // Editar base de afectación
-  editar(base: BaseAfectacion) {
-    // Verificar si ya hay una fila en edición
+  editar(base: BaseAfectacionView) {
     const editing = this.basesAfectacion.find(b => b.isEditing);
     if (editing && editing !== base) {
       this.messageService.add({
@@ -127,13 +113,11 @@ export class BaseAfectacionComponent implements OnInit {
       return;
     }
 
-    // Guardar copia original
     this.originalBase = { ...base };
     base.isEditing = true;
   }
 
-  // Eliminar base de afectación
-  eliminar(base: BaseAfectacion, index: number) {
+  eliminar(base: BaseAfectacionView, index: number) {
     this.confirmationService.confirm({
       message: '¿Está seguro que desea eliminar esta base de afectación?',
       header: 'Confirmar Eliminación',
@@ -151,13 +135,10 @@ export class BaseAfectacionComponent implements OnInit {
     });
   }
 
-  // Cancelar edición
-  cancelar(base: BaseAfectacion, index: number) {
+  cancelar(base: BaseAfectacionView, index: number) {
     if (base.isNew) {
-      // Si es nuevo, eliminarlo de la lista
       this.basesAfectacion.splice(index, 1);
     } else {
-      // Si es edición, restaurar valores originales
       if (this.originalBase) {
         base.codigo = this.originalBase.codigo;
         base.descripcion = this.originalBase.descripcion;
@@ -171,9 +152,7 @@ export class BaseAfectacionComponent implements OnInit {
     }
   }
 
-  // Guardar base de afectación
-  guardar(base: BaseAfectacion, index: number) {
-    // Validaciones
+  guardar(base: BaseAfectacionView, index: number) {
     if (!base.codigo || !base.descripcion || !base.alias) {
       this.messageService.add({
         severity: 'error',
@@ -192,7 +171,6 @@ export class BaseAfectacionComponent implements OnInit {
       return;
     }
 
-    // Si es nuevo, verificar código duplicado
     if (base.isNew) {
       const existe = this.basesAfectacion.find((b, i) =>
         i !== index && b.codigo === base.codigo
@@ -207,7 +185,6 @@ export class BaseAfectacionComponent implements OnInit {
       }
     }
 
-    // Guardar
     base.isEditing = false;
     base.isNew = false;
     this.originalBase = null;
@@ -218,7 +195,6 @@ export class BaseAfectacionComponent implements OnInit {
       detail: 'Base de afectación guardada correctamente'
     });
 
-    // Reordenar: mover la base guardada al final
     const baseGuardada = this.basesAfectacion.splice(index, 1)[0];
     this.basesAfectacion.push(baseGuardada);
   }

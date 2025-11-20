@@ -12,28 +12,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-// Interfaces
-interface Usuario {
-  id: string;
-  nombre: string;
-  clave: string;
-  perfil: string;
-  isEditing?: boolean;
-  isNew?: boolean;
-}
-
-interface EmpresaUsuario {
-  empresaCod: string;
-  razonSocial: string;
-  ruc: string;
-  direccion: string;
-  flagEstado: boolean;
-}
-
-interface DropdownOption {
-  label: string;
-  value: string;
-}
+// Importar las interfaces desde el archivo de modelo
+import { Usuario, UsuarioView, EmpresaUsuario, DropdownOption } from 'src/app/demo/model/Usuario';
 
 @Component({
   selector: 'app-usuarios',
@@ -56,16 +36,16 @@ interface DropdownOption {
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-  
+
   // --- Tabla Maestra ---
-  usuarios: Usuario[] = [];
-  selectedUsuario: Usuario | null = null;
-  originalUsuario: Usuario | null = null;
+  usuarios: UsuarioView[] = [];
+  selectedUsuario: UsuarioView | null = null;
+  originalUsuario: UsuarioView | null = null;
   perfiles: DropdownOption[] = [];
 
   // --- Tabla Detalle ---
   empresasUsuario: EmpresaUsuario[] = [];
-  private allEmpresasMap: Map<string, EmpresaUsuario[]> = new Map(); // Mapa para simular la data
+  private allEmpresasMap: Map<string, EmpresaUsuario[]> = new Map();
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -74,29 +54,26 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     this.loadPerfiles();
-    this.loadAllEmpresasData(); // Cargar data de simulación
+    this.loadAllEmpresasData();
     this.loadUsuarios();
   }
 
-  // --- Carga de Datos (Simulación) ---
-
   loadUsuarios() {
     this.usuarios = [
-      { 
-        id: 'admin', 
-        nombre: 'Administrador Master', 
+      {
+        id: 'admin',
+        nombre: 'Administrador Master',
         clave: 'admn$1',
         perfil: 'Administrador General'
       },
-      { 
-        id: 'melissa', 
-        nombre: 'Usuario de Consulta', 
+      {
+        id: 'melissa',
+        nombre: 'Usuario de Consulta',
         clave: 'melissa',
         perfil: 'Usuario Consulta'
       }
     ];
-    
-    // Seleccionar el primer usuario y cargar sus empresas
+
     if (this.usuarios.length > 0) {
       this.selectedUsuario = this.usuarios[0];
       this.empresasUsuario = this.allEmpresasMap.get(this.selectedUsuario.id) || [];
@@ -112,7 +89,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   loadAllEmpresasData() {
-    // Simula la data de empresas para cada usuario
     this.allEmpresasMap.set('admin', [
       { empresaCod: '00004', razonSocial: 'ADMINISTRAR Y CONFIGURAR MASTERPLA', ruc: '20602193676', direccion: 'AV. ALFREDO MALDONADO NRO 654', flagEstado: true }
     ]);
@@ -122,29 +98,21 @@ export class UsuariosComponent implements OnInit {
     ]);
   }
 
-  // --- Lógica Maestro-Detalle ---
-
   onUsuarioSelect(event: any) {
     if (this.usuarios.find(u => u.isEditing)) {
-      // Si hay una fila en edición, no permitir cambiar de selección
-      this.selectedUsuario = event.previousValue; 
+      this.selectedUsuario = event.previousValue;
       this.messageService.add({
         severity: 'warn',
         summary: 'Advertencia',
         detail: 'Guarde o cancele la edición actual antes de cambiar de usuario'
       });
-      // Forzar que la selección de la tabla vuelva a la fila en edición
       setTimeout(() => {
         this.selectedUsuario = this.usuarios.find(u => u.isEditing) || event.previousValue;
       }, 0);
       return;
     }
-    // Cargar las empresas del usuario seleccionado
     this.empresasUsuario = this.allEmpresasMap.get(event.data.id) || [];
   }
-
-
-  // --- Lógica de Edición (Tabla Maestra) ---
 
   agregarNuevo() {
     const editing = this.usuarios.find(u => u.isEditing || u.isNew);
@@ -157,7 +125,7 @@ export class UsuariosComponent implements OnInit {
       return;
     }
 
-    const nuevoUsuario: Usuario = {
+    const nuevoUsuario: UsuarioView = {
       id: '',
       nombre: '',
       clave: '',
@@ -166,11 +134,11 @@ export class UsuariosComponent implements OnInit {
       isNew: true
     };
     this.usuarios.push(nuevoUsuario);
-    this.selectedUsuario = nuevoUsuario; // Seleccionar la nueva fila
-    this.empresasUsuario = []; // Limpiar la tabla de detalle
+    this.selectedUsuario = nuevoUsuario;
+    this.empresasUsuario = [];
   }
 
-  editar(usuario: Usuario) {
+  editar(usuario: UsuarioView) {
     const editing = this.usuarios.find(u => u.isEditing);
     if (editing && editing !== usuario) {
       this.messageService.add({
@@ -185,7 +153,7 @@ export class UsuariosComponent implements OnInit {
     usuario.isEditing = true;
   }
 
-  eliminar(usuario: Usuario, index: number) {
+  eliminar(usuario: UsuarioView, index: number) {
     this.confirmationService.confirm({
       message: `¿Está seguro que desea eliminar al usuario '${usuario.nombre}'?`,
       header: 'Confirmar Eliminación',
@@ -199,7 +167,6 @@ export class UsuariosComponent implements OnInit {
           summary: 'Éxito',
           detail: 'Usuario eliminado correctamente'
         });
-        // Limpiar detalle si el usuario eliminado era el seleccionado
         if (this.selectedUsuario === usuario) {
           this.selectedUsuario = null;
           this.empresasUsuario = [];
@@ -208,10 +175,10 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  cancelar(usuario: Usuario, index: number) {
+  cancelar(usuario: UsuarioView, index: number) {
     if (usuario.isNew) {
       this.usuarios.splice(index, 1);
-      this.selectedUsuario = this.usuarios.length > 0 ? this.usuarios[0] : null; // Volver al primer usuario
+      this.selectedUsuario = this.usuarios.length > 0 ? this.usuarios[0] : null;
     } else {
       if (this.originalUsuario) {
         this.usuarios[index] = { ...this.originalUsuario };
@@ -219,15 +186,14 @@ export class UsuariosComponent implements OnInit {
       this.usuarios[index].isEditing = false;
       this.originalUsuario = null;
     }
-    // Recargar empresas del usuario seleccionado
-    if(this.selectedUsuario) {
+    if (this.selectedUsuario) {
       this.empresasUsuario = this.allEmpresasMap.get(this.selectedUsuario.id) || [];
     } else {
       this.empresasUsuario = [];
     }
   }
 
-  guardar(usuario: Usuario, index: number) {
+  guardar(usuario: UsuarioView, index: number) {
     if (!usuario.id || !usuario.nombre || !usuario.clave || !usuario.perfil) {
       this.messageService.add({
         severity: 'error',
@@ -247,14 +213,13 @@ export class UsuariosComponent implements OnInit {
         });
         return;
       }
-      // Simular la adición de data de empresas para el nuevo usuario
       this.allEmpresasMap.set(usuario.id, []);
     }
 
     usuario.isEditing = false;
     usuario.isNew = false;
     this.originalUsuario = null;
-    
+
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',

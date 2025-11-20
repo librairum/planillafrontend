@@ -9,17 +9,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-interface ConceptoEstandar {
-  codigo: string;
-  descripcion: string;
-  impresion: string;
-  activo: string;
-  configurable: string;
-  conceptoSunat: string;
-  conceptoTipoDesc: string;
-  conceptoSubTipoc: string;
-  tipo: string;
-}
+// Importar la interface desde el archivo de modelo
+import { ConceptoEstandar } from 'src/app/demo/model/ConceptoEstandar';
 
 @Component({
   selector: 'app-concepto-estandar',
@@ -111,19 +102,16 @@ export class ConceptoEstandarComponent implements OnInit {
   }
 
   agregarNuevo() {
-    // Navegar a la ruta de detalle con el parámetro 'nuevo'
     this.router.navigate(['/home/maestro-estandar/concepto/detalle', 'nuevo']);
   }
 
   editarConcepto(concepto: ConceptoEstandar) {
-    // Navegar a la ruta de detalle con el código y modo editar
     this.router.navigate(['/home/maestro-estandar/concepto/detalle', concepto.codigo], {
       queryParams: { modo: 'editar' }
     });
   }
 
   mostrarDetalleConcepto(concepto: ConceptoEstandar) {
-    // Navegar a la ruta de detalle con el código y modo visualizar
     this.router.navigate(['/home/maestro-estandar/concepto/detalle', concepto.codigo], {
       queryParams: { modo: 'visualizar' }
     });
