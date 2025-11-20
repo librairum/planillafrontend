@@ -223,7 +223,7 @@ export class EmpresaComponent implements OnInit {
 
             // Carga la empresa seleccionada al formulario (clonación profunda)
             this.empresa = JSON.parse(JSON.stringify(empresa));
-            this.selectedEmpresa = empresa; // Se actualiza la selección para mantener el contexto visual
+            this.selectedEmpresa = empresa; 
         }
     }
     

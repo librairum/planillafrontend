@@ -27,7 +27,6 @@ import {
     formatearFecha 
 } from 'src/app/demo/components/utilities/funciones_utilitarias'; 
 
-// Importación de interfaces de modelo (asumo que están definidas en tu proyecto)
 import { Asistencia, AsistenciaView  } from 'src/app/demo/model/Asistencia';
 import { Inasistencia, PeriodoPago, TipoSuspension } from 'src/app/demo/model/Inasistencia'; 
 
@@ -152,7 +151,6 @@ export class AsistenciaComponent implements OnInit {
     }
 
     vistaPreviaGeneral() {
-        // Lógica para generar el reporte general (la tabla completa) para impresión
         verMensajeInformativo(this.messageService, 'info', 'Vista Previa', `Generando reporte de asistencia para ${this.empleados.length} empleados para impresión.`);
     }
 

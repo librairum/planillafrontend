@@ -61,7 +61,6 @@ export class PeriodoPagoComponent implements OnInit {
   // Formulario usa la interfaz del modelo
   periodoForm: PeriodoPago = this.createEmptyPeriodo();
 
-  // Opciones de estado (false=Activo, true=Cerrado. Null se usa para placeholder)
   estadoOptions = [
     { label: 'Activo', value: false },
     { label: 'Cerrado', value: true }
@@ -129,7 +128,7 @@ export class PeriodoPagoComponent implements OnInit {
         pla01flagperiodocalculado: false,
         pla01flagfindemes: false,
         pla01fechapago: new Date(2020, 3, 5),
-        pla01flagperiodocerrado: false, // Activo
+        pla01flagperiodocerrado: false, 
         pla01fechaproceso: new Date(),
         Pla55Descripcion: 'Empleados',
         pla01tipocambio: 3.42
@@ -210,7 +209,6 @@ export class PeriodoPagoComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button',
       accept: () => {
-        // Alternar el estado
         this.selectedPeriodo!.pla01flagperiodocerrado = !isCerrado;
         verMensajeInformativo(this.messageService, 'success', 'Éxito', `Periodo ${isCerrado ? 'abierto' : 'cerrado'} correctamente`);
       }
@@ -222,15 +220,14 @@ export class PeriodoPagoComponent implements OnInit {
     // 1. VALIDACIÓN DE CAMPOS OBLIGATORIOS
     let errorMsg = '';
 
-    // Validar Periodo (String)
     if (esVacio(this.periodoForm.pla01periodocod)) {
       errorMsg = 'El código de Periodo es obligatorio.';
     }
-    // Validar Descripción (String) - Agregado para robustez
+
     else if (esVacio(this.periodoForm.pla01descripcion)) {
       errorMsg = 'La Descripción es obligatoria.';
     }
-    // Validar Fechas (Inicio, Fin, Pago)
+
     else if (!esFechaValida(this.periodoForm.pla01fechainicio)) {
       errorMsg = 'La Fecha de Inicio es obligatoria.';
     }

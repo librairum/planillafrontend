@@ -58,10 +58,8 @@ import { Calcular, DetalleProceso, Ajuste, ConceptoAjustable, ImpIngDesc } from 
 })
 export class CalcularComponent implements OnInit {
 
-    // --- Referencia a la tabla de Ajustes en el HTML ---
     @ViewChild('ajustesTable') ajustesTable!: Table;
 
-    // --- Variables de Datos y Estado de la Tabla Principal ---
     procesar: Calcular[] = [
         { pla01empleadocod: '000001', pla01docuidentidadnro: '08980693', apellidosynombres: aMayusculas('Martinez Garcia Joel Alberto'), pla01fechaingreso: new Date('2005-09-18'), pla57descripcion: 'por defecto', pla51descripcion: 'por defecto', calculoestado: 'SIN CALCULAR' },
         { pla01empleadocod: '000002', pla01docuidentidadnro: '07271641', apellidosynombres: aMayusculas('Calderon Perez Jaime'), pla01fechaingreso: new Date('2008-01-01'), pla57descripcion: 'por defecto', pla51descripcion: 'por defecto', calculoestado: 'SIN CALCULAR' },
@@ -83,7 +81,6 @@ export class CalcularComponent implements OnInit {
     detalleProcesoData: DetalleProceso[] = [];
     selectedEmpleadoDetalle: Calcular | null = null;
 
-    // --- Variables de Datos y Estado del Diálogo de Ajustes ---
     displayAjusteDialog: boolean = false;
     selectedEmpleadoAjuste: Calcular | null = null;
     ajustesData: Ajuste[] = []; // Datos mostrados en la tabla de ajustes
@@ -206,13 +203,13 @@ export class CalcularComponent implements OnInit {
         this.nextTempId = -1; // Resetear el contador de ID temporal
         this.displayAjusteDialog = true;
         this.isEditing = false;
-        this.ajusteDialogClosable = true; // Aseguramos que se puede cerrar al abrir
+        this.ajusteDialogClosable = true; 
         verMensajeInformativo(this.messageService, 'warn', 'Ajuste', `Abriendo ajustes para: ${empleado.apellidosynombres}`);
     }
 
     onAjusteDialogHide(): void {
         if (this.isEditing) {
-            // Si está editando, re-abre el diálogo y muestra una advertencia
+
             this.displayAjusteDialog = true;
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe guardar o cancelar la edición actual antes de cerrar la ventana de ajustes.');
         } else {
@@ -243,7 +240,7 @@ export class CalcularComponent implements OnInit {
             if (this.ajustesTable) {
                 this.ajustesTable.initRowEdit(newAjuste);
                 this.isEditing = true;
-                this.ajusteDialogClosable = false; // Bloquea el cierre del diálogo mientras se edita la fila
+                this.ajusteDialogClosable = false; 
             }
         }, 0);
     }
@@ -293,23 +290,20 @@ export class CalcularComponent implements OnInit {
 
     onRowEditSave(ajuste: Ajuste, index: number) {
 
-        // 1. VALIDACIÓN OBLIGATORIA: El código de concepto DEBE estar seleccionado (no nulo).
         if (!ajuste.pla10conceptocod) {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Código Concepto para guardar el registro.');
             return;
         }
 
-        // 2. Validación Combinada: Importe (debe ser válido, se permite cero o negativo)
         if (ajuste.importe === null || typeof ajuste.importe !== 'number' || isNaN(ajuste.importe)) {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe ingresar un importe válido.');
             return;
         }
 
-        // 3. Guardado Exitoso (Solo si pasó todas las validaciones)
         delete this.clonedAjustes[ajuste.id];
         this.ajusteEnEdicion = null;
         this.isEditing = false;
-        this.ajusteDialogClosable = true; // Permite el cierre del diálogo
+        this.ajusteDialogClosable = true; 
 
         this.onConceptoSelect(ajuste, ajuste.pla10conceptocod);
 
@@ -332,8 +326,9 @@ export class CalcularComponent implements OnInit {
         this.ajusteDialogClosable = true; 
     }
 
-    // --- MÉTODOS DE ACCIÓN RESTANTES ---
 
+    /* Método de acciones restantes */
+    
     procesarDatos(): void { verMensajeInformativo(this.messageService, 'success', 'Procesando', 'Iniciando procesamiento de datos...'); }
     importarArchivos(): void { verMensajeInformativo(this.messageService, 'info', 'Importar', 'Abriendo diálogo para importar archivos...'); }
     imprimir(): void { verMensajeInformativo(this.messageService, 'info', 'Imprimir', 'Generando reporte de impresión...'); }
