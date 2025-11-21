@@ -207,6 +207,51 @@ const trabajador1: Trabajador = {
       pla01ctactsmoneda: 'D',
       desctsmoneda: 'DOLARES',
 
+      //
+      // Laborales
+      //
+
+      // Tipo de trabajador
+      Pla01TRDatosLabTipoTrabajador: '21',
+      LabTipoTrabajadorDes: 'EMPLEADO',
+      //Fechas de inicio y fin, pero no son mostradas cuando se arranca el programa
+      //dtpFechaIni
+      //dtpFechaFin
+      // Nivel educativo
+      Pla01TRDatosLabNivelEducativo: '13',
+      LabNivelEducativoDes: 'EDUCACIÓN UNIVERSITARIA COMPLETA',
+      // Categoria Ocupacional
+      Pla01TRDatosLabCategoriaOcupacional: '03',
+      LabCategoriaOcupacionalDes: 'EMPLEADO',
+      // Tipo de contrato
+      Pla01TRDatosLabContratoTrabajoTipo: '01',
+      LabContratoTrabajoTipoDes: 'A PLAZO INDETERMINADO',
+      // Ocupacion
+      Pla01TRDatosLabOcupacion: '21',
+      LabOcupacionDes: 'GEOLOGO MINAS',
+      // Tipo de pago
+      Pla01TRDatosLabTipoPago: '2',
+      LabTipoPagoDes: 'DEPÓSITO EN CUENTA',
+      // Perioridad de ingreso
+      Pla01TRDatosLabPeriodoIngreso: '1',
+      LabPeriodoIngresoDes: 'MENSUAL',
+      // Establecimiento laboral
+      Pla01TRDatosLabEstablecimientoLaboral: '0000',
+      LabEstablecimientoDes: 'DOMICILIO FISCAL',
+      // Jornada laboral I
+      Pla01TRDatosLabJornadaLaboralTrabajoMax: 'S', // 'S' O 'N'
+      Pla01TRDatosLabJornadaLaboralJornadaAtipica: 'S', // 'S' O 'N'
+      Pla01TRDatosLabJornadaLaboralHorarioNocturno: 'S', // 'S' O 'N'
+      // Situacion especial
+      Pla01TRDatosLabSituacionEspecial: '2', // '1' , '2' O '3'
+      // Discapacitado
+      Pla01TRDatosLabFlagDiscapacitado: 'N', // 'S' O 'N'
+      // Sindicalizado
+      Pla01TRDatosLabFlagSindicalizado: 'N', // 'S' O 'N'
+      // Situacion
+      Pla01TRDatosLabSituacion: '11',
+      LabSituacionDes: 'ACTIVO O SUBSIDIADO',
+
       // Seguro Social
 
       pla01trdatossegsocialregsaludcod: '00',

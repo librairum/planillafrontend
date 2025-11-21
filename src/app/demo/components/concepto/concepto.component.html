@@ -136,6 +136,16 @@
 
           <div class="form-group flex-1">
             <label>Tipo cálculo :</label>
+            <p-dropdown
+              [options]="tiposCalculo"
+              formControlName="pla10tipocalculocod"
+              placeholder="Seleccione"
+              optionLabel="descripcion"
+              optionValue="codigo"
+              [style]="{width: '100%'}"
+              (onChange)="actualizarTipoCalculo($event)"
+            ></p-dropdown>
+            <!--
             <div class="flex gap-2 align-items-center">
               <input type="text" pInputText formControlName="pla10tipocalculocod"
               readonly maxlength="2" style="width: 60px" />
@@ -144,10 +154,21 @@
               <button pButton type="button" icon="pi pi-search" class="p-button-sm"
               [disabled]="esModoVisualizacion" (click)="abrirBusquedaTipoCalculo()"></button>
             </div>
+          -->
           </div>
 
           <div class="form-group flex-1">
             <label>Tipo :</label>
+            <p-dropdown
+              [options]="conceptosTipo"
+              formControlName="pla10tipoconceptocod"
+              placeholder="Seleccione"
+              optionLabel="descripcion"
+              optionValue="codigo"
+              [style]="{width: '100%'}"
+              (onChange)="actualizarConceptoTipo($event)"
+            ></p-dropdown>
+            <!--
             <div class="flex gap-2 align-items-center">
               <input type="text" pInputText formControlName="pla10tipoconceptocod"
               readonly maxlength="2" style="width: 60px" />
@@ -155,11 +176,22 @@
               readonly class="w-full"/>
               <button pButton type="button" icon="pi pi-search" class="p-button-sm"
               [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoTipo()"></button>
-              </div>
+            </div>
+            -->
           </div>
 
           <div class="form-group flex-1">
             <label>Sub Tipo :</label>
+            <p-dropdown
+              [options]="subTiposConcepto"
+              formControlName="pla10subtipoconceptocod"
+              placeholder="Seleccione"
+              optionLabel="descripcion"
+              optionValue="codigo"
+              [style]="{width: '100%'}"
+              (onChange)="actualizarSubTipoConcepto($event)"
+            ></p-dropdown>
+            <!--
             <div class="flex gap-2 align-items-center">
               <input type="text" pInputText formControlName="pla10subtipoconceptocod"
               readonly maxlength="2" style="width: 60px" />
@@ -168,6 +200,7 @@
               <button pButton type="button" icon="pi pi-search" class="p-button-sm"
               [disabled]="esModoVisualizacion" (click)="abrirBusquedaSubTipo()"></button>
             </div>
+          -->
           </div>
 
         </div>
@@ -207,7 +240,17 @@
       <!-- Concepto Sunat y Observacion -->
       <div class="flex gap-4 mb-3">
         <div class="flex-1">
-          <label>Concepto Sunat :</label>
+          <label>Concepto Sunat</label>
+          <p-dropdown
+            [options]="conceptosSunat"
+            formControlName="pla10conceptosunatcod"
+            placeholder="Seleccione"
+            optionLabel="descripcion"
+            optionValue="codigoSunat"
+            [style]="{width: '100%'}"
+            (onChange)="actualizarConceptoSunat($event)"
+          ></p-dropdown>
+          <!--
           <div class="flex gap-2 align-items-center">
             <input type="text" pInputText formControlName="pla10conceptosunatcod"
               readonly style="width: 100px" />
@@ -216,6 +259,7 @@
             <button pButton type="button" icon="pi pi-search" class="p-button-sm"
             [disabled]="esModoVisualizacion" (click)="abrirBusquedaConceptoSunat()"></button>
           </div>
+        -->
         </div>
 
         <div class="flex-1">

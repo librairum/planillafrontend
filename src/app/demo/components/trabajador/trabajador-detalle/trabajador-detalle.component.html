@@ -28,14 +28,19 @@
         </div>
 
         <!-- Doc.Tipo -->
-        <div class="col-span-2">
+        <div class="col-span-2 mt-4">
+          <!-- Doc tipo debe estar encima del dropdown -->
           <label>Doc.Tipo :</label>
-          <div class="flex align-items-center gap-2">
-            <input type="text" pInputText formControlName="pla01docuidentidadtipo" readonly maxlength="2" style="width: 60px;" />
-            <input type="text" pInputText formControlName="tipdocdesc" readonly class="w-full" />
-            <button pButton type="button" icon="pi pi-search"
-            class="p-button-sm" (click)="abrirBusquedaTipoDocumento()" [disabled]="esModoVisualizacion"></button>
-          </div>
+          <p-dropdown
+            [options]="tiposDocumentos"
+            formControlName="pla01docuidentidadtipo"
+            placeholder="Seleccione"
+            optionLabel="descripcion"
+            optionValue="codigo"
+            [style]="{width: '250px'}"
+            class="ml-3"
+            (onChange)="actualizarTipoDocumento($event)"
+          ></p-dropdown>
         </div>
 
         <!-- Doc.Nro -->
@@ -67,7 +72,7 @@
         <!-- Fecha Nacimiento -->
         <div class="col-span-1 mt-4">
           <label>Fec.Nac :</label>
-          <p-calendar formControlName="pla01fechanacimiento" dateFormat="dd/mm/yy" class="w-full"></p-calendar>
+          <p-calendar formControlName="pla01fechanacimiento" dateFormat="dd/mm/yy" class="w-full ml-3"></p-calendar>
         </div>
 
         <!-- Sexo -->
@@ -81,12 +86,18 @@
 
         <!-- Régimen Laboral -->
         <div class="col-span-2">
+          <!-- Reg laboral debe estar encima del dropdown -->
           <label>Reg.Laboral :</label>
-          <div class="flex align-items-center gap-2">
-            <input type="text" pInputText formControlName="pla01trdatoslabregimenlaboral" readonly maxlength="2" style="width: 60px;" />
-            <input type="text" pInputText formControlName="labregimenlaboraldes" readonly class="w-full" />
-            <button pButton type="button" icon="pi pi-search" class="p-button-sm" [disabled]="esModoVisualizacion" (click)="abrirBusquedaRegLaboral()"></button>
-          </div>
+          <p-dropdown
+            [options]="regimenesLaborales"
+            formControlName="pla01trdatoslabregimenlaboral"
+            placeholder="Seleccione"
+            optionLabel="descripcion"
+            optionValue="codigo"
+            [style]="{width: '500px'}"
+            class="ml-3"
+            (onChange)="actualizarRegimenLaboral($event)"
+          ></p-dropdown>
         </div>
       </div>
 
@@ -135,215 +146,115 @@
 
         <!-- Empresa -->
         <p-tabPanel header="Empresa">
-          <div class="grid gap-3">
+          <div class="grid gap-4 p-4" style="grid-template-columns: repeat(2, 1fr); max-width: 1000px;">
             <!-- Centro de Costos -->
-            <div class="col-12">
+            <div>
               <label>Centro de Costos:</label>
-              <div class="flex align-items-center gap-2">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla01centrocostocod"
-                  placeholder="Código"
-                  style="width: 120px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalCentroCostos()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla57descripcion"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
-              </div>
+              <p-dropdown
+                [options]="centroCostos"
+                formControlName="pla01centrocostocod"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                [style]="{width: '100%'}"
+                (onChange)="actualizarCentroCostos($event)"
+              ></p-dropdown>
             </div>
 
             <!-- Puesto / Cargo -->
-            <div class="col-12">
-              <label>Puesto / Cargo:</label>
-              <div class="flex align-items-center gap-2">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla01puestocod"
-                  placeholder="Código"
-                  style="width: 120px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalCargos()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla51descripcion"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
-              </div>
+            <div>
+              <label>Cargo Puesto:</label>
+              <p-dropdown
+                [options]="cargos"
+                formControlName="pla01puestocod"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                [style]="{width: '100%'}"
+                (onChange)="actualizarCargo($event)"
+              ></p-dropdown>
             </div>
 
             <!-- Banco Remuneración -->
-            <div class="col-12">
+            <div>
               <label>Banco Remuneración:</label>
-              <div class="flex align-items-center gap-2">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla01ctaremubancocod"
-                  placeholder="Código"
-                  style="width: 120px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalBancosRemuneracion()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="desbancorem"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
-              </div>
+              <p-dropdown
+                [options]="bancosRemuneracion"
+                formControlName="pla01ctaremubancocod"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                [style]="{width: '100%'}"
+                (onChange)="actualizarBancoRemuneracion($event)"
+              ></p-dropdown>
+            </div>
+
+            <!-- Moneda Remuneración -->
+            <div>
+              <label>Moneda Remuneración:</label>
+              <p-dropdown
+                [options]="monedasRemuneracion"
+                formControlName="pla01ctaremumoneda"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                [style]="{width: '100%'}"
+                (onChange)="actualizarMonedaRemuneracion($event)"
+              ></p-dropdown>
             </div>
 
             <!-- Número de Cuenta Remuneración -->
-            <div class="col-12">
+            <div>
               <label>Número de Cuenta Remuneración:</label>
               <input
                 type="text"
                 pInputText
                 formControlName="pla01ctaremunumero"
                 placeholder="Número de Cuenta"
-                class="w-full"
+                [style]="{width: '100%'}"
               />
             </div>
 
-            <!-- Moneda Remuneración -->
-            <div class="col-12">
-              <label>Moneda Remuneración:</label>
-              <div class="flex align-items-center gap-2">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla01ctaremumoneda"
-                  placeholder="Código"
-                  style="width: 120px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalMonedasRemuneracion()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="desremumoneda"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
-              </div>
+            <!-- Banco Depósito CTS -->
+            <div>
+              <label>Banco Depósito CTS:</label>
+              <p-dropdown
+                [options]="bancosCTS"
+                formControlName="pla01ctactsbancocod"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                [style]="{width: '100%'}"
+                (onChange)="actualizarBancoCTS($event)"
+              ></p-dropdown>
             </div>
 
-            <!-- Banco Depósito CTS -->
-            <div class="col-12">
-              <label>Banco Depósito CTS:</label>
+            <!-- Moneda Depósito CTS -->
+            <div>
+              <label>Moneda Depósito CTS:</label>
               <div class="flex align-items-center gap-2">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla01ctactsbancocod"
-                  placeholder="Código"
-                  style="width: 120px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalBancosCTS()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="desbancocts"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
+                <p-dropdown
+                  [options]="monedasCTS"
+                  formControlName="pla01ctactsmoneda"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '100%'}"
+                  (onChange)="actualizarMonedaCTS($event)"
+                ></p-dropdown>
               </div>
             </div>
 
             <!-- Número de Cuenta CTS -->
-            <div class="col-12">
+            <div>
               <label>Número de Cuenta CTS:</label>
               <input
                 type="text"
                 pInputText
                 formControlName="pla01ctactsnumero"
                 placeholder="Número de Cuenta"
-                class="w-full"
+                [style]="{width: '100%'}"
               />
-            </div>
-
-            <!-- Moneda Depósito CTS -->
-            <div class="col-12">
-              <label>Moneda Depósito CTS:</label>
-              <div class="flex align-items-center gap-2">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="pla01ctactsmoneda"
-                  placeholder="Código"
-                  style="width: 120px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalMonedasCTS()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="desctsmoneda"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
-              </div>
             </div>
           </div>
 
@@ -366,7 +277,23 @@
         <!-- Laborales -->
         <p-tabPanel header="Laborales">
 
+          <div class="grid gap-3">
 
+            <!-- Primera fila: Tipo de trabajador y Fechas -->
+            <div class="col-12">
+              <label>Tipo de trabajador</label>
+              <p-dropdown
+                [options]="tipoTrabajador"
+                formControlName="Pla01TRDatosLabTipoTrabajador"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                class="w-full"
+                (onChange)="actualizarTipoTrabajador($event)"
+              ></p-dropdown>
+            </div>
+
+          </div>
 
         </p-tabPanel>
 
@@ -378,39 +305,22 @@
             <!-- Primera fila: Código y Fecha de Inicio -->
             <div class="col-12">
               <label>Código:</label>
-              <div class="flex align-items-center gap-2">
-                <!-- En la aplicacion de escritorio, esto no es editable -->
-                <input
-                  type="text"
-                  pInputText
+              <p-dropdown
+                  [options]="regimenesSalud"
                   formControlName="pla01trdatossegsocialregsaludcod"
-                  placeholder="Código"
-                  style="width: 60px;"
-                  readonly
-                />
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-search"
-                  class="p-button-sm"
-                  (click)="abrirModalRegimenSalud()"
-                  [disabled]="esModoVisualizacion"
-                ></button>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="segsocialregsaluddes"
-                  placeholder="Descripción"
-                  class="w-full"
-                  readonly
-                />
-                <p-calendar
-                  formControlName="pla01trdatossegsocialregsaludfechainicio"
-                  dateFormat="dd/mm/yy"
-                  placeholder="Fecha de inicio"
-                  class="w-full"
-                ></p-calendar>
-              </div>
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '300px'}"
+                  class="mx-3"
+                  (onChange)="actualizarRegimenSalud($event)"
+                ></p-dropdown>
+              <p-calendar
+                formControlName="pla01trdatossegsocialregsaludfechainicio"
+                dateFormat="dd/mm/yy"
+                placeholder="Fecha de inicio"
+                class="w-full"
+              ></p-calendar>
             </div>
 
             <!-- Segunda fila: Cobertura de Salud y Fecha de Inicio -->
@@ -431,7 +341,7 @@
                   formControlName="pla01trdatossegsocialcoberturasaludfechainicio"
                   dateFormat="dd/mm/yy"
                   placeholder="Fecha de inicio"
-                  class="w-full"
+                  class="w-full ml-3"
                 ></p-calendar>
               </div>
             </div>

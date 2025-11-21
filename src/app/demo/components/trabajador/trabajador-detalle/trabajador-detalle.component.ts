@@ -114,7 +114,51 @@ export class TrabajadorDetalleComponent implements OnInit{
     pla01ctactsmoneda: [''],
     desctsmoneda: [''],
 
+    //
+    //Laborales
+    //
+
+    // Tipo de trabajador
+    Pla01TRDatosLabTipoTrabajador: [''],
+    LabTipoTrabajadorDes: [''],
+    // Nivel educativo
+    Pla01TRDatosLabNivelEducativo: [''],
+    LabNivelEducativoDes: [''],
+    // Categoria Ocupacional
+    Pla01TRDatosLabCategoriaOcupacional: [''],
+    LabCategoriaOcupacionalDes: [''],
+    // Tipo de contrato
+    Pla01TRDatosLabContratoTrabajoTipo: [''],
+    LabContratoTrabajoTipoDes: [''],
+    // Ocupacion
+    Pla01TRDatosLabOcupacion: [''],
+    LabOcupacionDes: [''],
+    // Tipo de pago
+    Pla01TRDatosLabTipoPago: [''],
+    LabTipoPagoDes: [''],
+    // Perioridad de ingreso
+    Pla01TRDatosLabPeriodoIngreso: [''],
+    LabPeriodoIngresoDes: [''],
+    // Establecimiento laboral
+    Pla01TRDatosLabEstablecimientoLaboral: [''],
+    LabEstablecimientoDes: [''],
+    // Jornada laboral I
+    Pla01TRDatosLabJornadaLaboralTrabajoMax: [''], // 'S' O 'N'
+    Pla01TRDatosLabJornadaLaboralJornadaAtipica: [''], // 'S' O 'N'
+    Pla01TRDatosLabJornadaLaboralHorarioNocturno: [''], // 'S' O 'N'
+    // Situacion especial
+    Pla01TRDatosLabSituacionEspecial: [''], // '1' , '2' O '3'
+    // Discapacitado
+    Pla01TRDatosLabFlagDiscapacitado: [''], // 'S' O 'N'
+    // Sindicalizado
+    Pla01TRDatosLabFlagSindicalizado: [''], // 'S' O 'N'
+    // Situacion
+    Pla01TRDatosLabSituacion: [''],
+    LabSituacionDes: [''],
+
+    //
     //Seguro Social
+    //
 
     pla01trdatossegsocialregsaludcod: [''],
     segsocialregsaluddes: [''],
@@ -181,20 +225,6 @@ export class TrabajadorDetalleComponent implements OnInit{
 
           tipdocdesc: [''],
 
-          // Seguro Social
-
-          pla01trdatossegsocialregsaludcod: [''],
-          segsocialregsaluddes: [''],
-
-          pla01trdatossegsocialregsaludfechainicio: null,
-
-          pla01trdatossegsocialcoberturasalud: [''],
-          pla01trdatossegsocialcoberturasaludfechainicio: null,
-
-          pla01trdatossegsocialflagaportascrt: [''],
-          pla01trdatossegsocialcoberturapension: [''],
-          pla01trdatossegsocialflagaseguratupension: [''],
-          pla01trdatossegsocialflagessaludmasvida: [''],
 
           //
           //Empresa
@@ -222,6 +252,62 @@ export class TrabajadorDetalleComponent implements OnInit{
           //-- Moneda deposito CTS
           pla01ctactsmoneda: [''],
           desctsmoneda: [''],
+
+          // Tipo de trabajador
+          Pla01TRDatosLabTipoTrabajador: [''],
+          LabTipoTrabajadorDes: [''],
+          // Nivel educativo
+          Pla01TRDatosLabNivelEducativo: [''],
+          LabNivelEducativoDes: [''],
+          // Categoria Ocupacional
+          Pla01TRDatosLabCategoriaOcupacional: [''],
+          LabCategoriaOcupacionalDes: [''],
+          // Tipo de contrato
+          Pla01TRDatosLabContratoTrabajoTipo: [''],
+          LabContratoTrabajoTipoDes: [''],
+          // Ocupacion
+          Pla01TRDatosLabOcupacion: [''],
+          LabOcupacionDes: [''],
+          // Tipo de pago
+          Pla01TRDatosLabTipoPago: [''],
+          LabTipoPagoDes: [''],
+          // Perioridad de ingreso
+          Pla01TRDatosLabPeriodoIngreso: [''],
+          LabPeriodoIngresoDes: [''],
+          // Establecimiento laboral
+          Pla01TRDatosLabEstablecimientoLaboral: [''],
+          LabEstablecimientoDes: [''],
+          // Jornada laboral I
+          Pla01TRDatosLabJornadaLaboralTrabajoMax: [''], // 'S' O 'N'
+          Pla01TRDatosLabJornadaLaboralJornadaAtipica: [''], // 'S' O 'N'
+          Pla01TRDatosLabJornadaLaboralHorarioNocturno: [''], // 'S' O 'N'
+          // Situacion especial
+          Pla01TRDatosLabSituacionEspecial: [''], // '1' , '2' O '3'
+          // Discapacitado
+          Pla01TRDatosLabFlagDiscapacitado: [''], // 'S' O 'N'
+          // Sindicalizado
+          Pla01TRDatosLabFlagSindicalizado: [''], // 'S' O 'N'
+          // Situacion
+          Pla01TRDatosLabSituacion: [''],
+          LabSituacionDes: [''],
+
+          //
+          // Seguro Social
+          //
+
+          pla01trdatossegsocialregsaludcod: [''],
+          segsocialregsaluddes: [''],
+
+          pla01trdatossegsocialregsaludfechainicio: null,
+
+          pla01trdatossegsocialcoberturasalud: [''],
+          pla01trdatossegsocialcoberturasaludfechainicio: null,
+
+          pla01trdatossegsocialflagaportascrt: [''],
+          pla01trdatossegsocialcoberturapension: [''],
+          pla01trdatossegsocialflagaseguratupension: [''],
+          pla01trdatossegsocialflagessaludmasvida: [''],
+
 
           // Tributarios
           pla01trdatostribflagquintaotrosingresos: [''],
@@ -310,6 +396,19 @@ export class TrabajadorDetalleComponent implements OnInit{
             pla01sexo: trabajador.pla01sexo === 'M' ? 'M' : 'F', // Mapear sexo
             pla01estado: trabajador.pla01estado === 'A' ? 'Activo' : 'Inactivo', // Mapear estado
 
+            //
+            //Laborales
+            //
+            // Jornada laboral I
+            Pla01TRDatosLabJornadaLaboralTrabajoMax: trabajador.Pla01TRDatosLabJornadaLaboralTrabajoMax === 'S' ? 'S' : 'N', // 'S' O 'N'
+            Pla01TRDatosLabJornadaLaboralJornadaAtipica: trabajador.Pla01TRDatosLabJornadaLaboralJornadaAtipica === 'S' ? 'S' : 'N', // 'S' O 'N'
+            Pla01TRDatosLabJornadaLaboralHorarioNocturno: trabajador.Pla01TRDatosLabJornadaLaboralHorarioNocturno === 'S' ? 'S' : 'N', // 'S' O 'N'
+            // Situacion especial
+            Pla01TRDatosLabSituacionEspecial: trabajador.Pla01TRDatosLabSituacionEspecial || '', // '1' , '2' O '3'
+            // Discapacitado
+            Pla01TRDatosLabFlagDiscapacitado: trabajador.Pla01TRDatosLabFlagDiscapacitado === 'S' ? 'S' : 'N', // 'S' O 'N'
+            // Sindicalizado
+            Pla01TRDatosLabFlagSindicalizado: trabajador.Pla01TRDatosLabFlagSindicalizado === 'S' ? 'S' : 'N', // 'S' O 'N'
 
             // Seguro Social
             pla01trdatossegsocialregsaludfechainicio: trabajador.pla01trdatossegsocialcoberturasaludfechainicio || null,
@@ -522,6 +621,17 @@ export class TrabajadorDetalleComponent implements OnInit{
       { codigo: '04', descripcion: 'MAGISTERIO - LEY N°. 29062  ' },
     ];
 
+    actualizarRegimenLaboral(event: any): void {
+      const codigoSeleccionado = event.value;
+      const regimenSeleccionado = this.regimenesLaborales.find((regimen) => regimen.codigo === codigoSeleccionado);
+
+      if (regimenSeleccionado) {
+        this.trabajadorForm.patchValue({
+          labregimenlaboraldes: regimenSeleccionado.descripcion,
+        });
+      }
+    }
+
     abrirBusquedaRegLaboral() {
       if (!this.esModoVisualizacion) {
         this.displayBusquedaRegLaboralDialog = true; // Muestra el modal
@@ -544,6 +654,17 @@ export class TrabajadorDetalleComponent implements OnInit{
       { codigo: '07', descripcion: 'PASAPORTE' },
     ];
 
+    actualizarTipoDocumento(event: any): void {
+      const codigoSeleccionado = event.value;
+      const documentoSeleccionado = this.tiposDocumentos.find((tipo) => tipo.codigo === codigoSeleccionado);
+
+      if (documentoSeleccionado) {
+        this.trabajadorForm.patchValue({
+          tipdocdesc: documentoSeleccionado.descripcion,
+        });
+      }
+    }
+
     abrirBusquedaTipoDocumento() {
       if (!this.esModoVisualizacion) {
         this.displayBusquedaTipoDocumentoDialog = true; // Muestra el modal
@@ -558,14 +679,30 @@ export class TrabajadorDetalleComponent implements OnInit{
       this.displayBusquedaTipoDocumentoDialog = false; // Cierra el modal
     }
 
-
+  //
   // Empresa modals
+  //
 
   // Centro de costos
 
-  mostrarModalCentroCostos: boolean = false;
-  centroCostos: Array<{ codigo: string; descripcion: string }> = [];
+  centroCostos: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '001', descripcion: 'Por defecto' },
+    { codigo: '002', descripcion: 'Administración' },
+    { codigo: '003', descripcion: 'Producción' },
+  ];
 
+  actualizarCentroCostos(event: any): void {
+    const codigoSeleccionado = event.value;
+    const centroSeleccionado = this.centroCostos.find((centro) => centro.codigo === codigoSeleccionado);
+
+    if (centroSeleccionado) {
+      this.trabajadorForm.patchValue({
+        pla57descripcion: centroSeleccionado.descripcion, // Actualiza la descripción
+      });
+    }
+  }
+
+  mostrarModalCentroCostos: boolean = false;
   abrirModalCentroCostos(): void{
     this.mostrarModalCentroCostos = true;
 
@@ -587,10 +724,28 @@ export class TrabajadorDetalleComponent implements OnInit{
 
   }
 
+
+
   // Cargos
 
+  cargos: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '002', descripcion: 'Por defecto' },
+    { codigo: '003', descripcion: 'Administración' },
+    { codigo: '004', descripcion: 'Producción' },
+  ];
+
+  actualizarCargo(event: any): void {
+    const codigoSeleccionado = event.value;
+    const cargoSeleccionado = this.cargos.find((cargo) => cargo.codigo === codigoSeleccionado);
+
+    if (cargoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        pla51descripcion: cargoSeleccionado.descripcion, // Actualiza la descripción
+      });
+    }
+  }
+
   mostrarModalCargos: boolean = false;
-  cargos: Array<{ codigo: string; descripcion: string }> = [];
 
   abrirModalCargos(): void{
     this.mostrarModalCargos = true;
@@ -615,9 +770,24 @@ export class TrabajadorDetalleComponent implements OnInit{
 
   // Bancos Remuneracion
 
-  mostrarBancosRemuneracion: boolean = false;
-  bancosRemuneracion: Array<{ codigo: string; descripcion: string }> = [];
+  bancosRemuneracion: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '01', descripcion: 'BANCO CENTRAL DE RESERVA' },
+    { codigo: '02', descripcion: 'BANCO DE CREDITO BCP' },
+    { codigo: '03', descripcion: 'BANCO CONTINENTAL' },
+  ];
 
+  actualizarBancoRemuneracion(event: any): void {
+    const codigoSeleccionado = event.value;
+    const bancoSeleccionado = this.bancosRemuneracion.find((banco) => banco.codigo === codigoSeleccionado);
+
+    if (bancoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        desbancorem: bancoSeleccionado.descripcion,
+      });
+    }
+  }
+
+  mostrarBancosRemuneracion: boolean = false;
   abrirModalBancosRemuneracion(): void{
     this.mostrarBancosRemuneracion = true;
 
@@ -643,8 +813,24 @@ export class TrabajadorDetalleComponent implements OnInit{
 
   // Monedas Remuneracion
 
+  monedasRemuneracion: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: 'D', descripcion: 'DOLARES' },
+    { codigo: 'E', descripcion: 'EUROS' },
+    { codigo: 'S', descripcion: 'NUEVOS SOLES' },
+  ];
+
+  actualizarMonedaRemuneracion(event: any): void {
+    const codigoSeleccionado = event.value;
+    const monedaSeleccionada = this.monedasRemuneracion.find((moneda) => moneda.codigo === codigoSeleccionado);
+
+    if (monedaSeleccionada) {
+      this.trabajadorForm.patchValue({
+        desremumoneda: monedaSeleccionada.descripcion,
+      });
+    }
+  }
+
   mostrarMonedasRemuneracion: boolean = false;
-  monedasRemuneracion: Array<{ codigo: string; descripcion: string }> = [];
 
   abrirModalMonedasRemuneracion(): void{
     this.mostrarMonedasRemuneracion = true;
@@ -672,8 +858,24 @@ export class TrabajadorDetalleComponent implements OnInit{
 
   // Bancos CTS
 
+  bancosCTS: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '01', descripcion: 'BANCO CENTRAL DE RESERVA' },
+    { codigo: '02', descripcion: 'BANCO DE CREDITO BCP' },
+    { codigo: '03', descripcion: 'BANCO CONTINENTAL' },
+  ];
+
+  actualizarBancoCTS(event: any): void {
+    const codigoSeleccionado = event.value;
+    const bancoSeleccionado = this.bancosCTS.find((banco) => banco.codigo === codigoSeleccionado);
+
+    if (bancoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        desbancocts: bancoSeleccionado.descripcion,
+      });
+    }
+  }
+
   mostrarBancosCTS: boolean = false;
-  bancosCTS: Array<{ codigo: string; descripcion: string }> = [];
 
   abrirModalBancosCTS(): void{
     this.mostrarBancosCTS = true;
@@ -700,8 +902,24 @@ export class TrabajadorDetalleComponent implements OnInit{
 
   // Monedas CTS
 
+  monedasCTS: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: 'D', descripcion: 'DOLARES' },
+    { codigo: 'E', descripcion: 'EUROS' },
+    { codigo: 'S', descripcion: 'NUEVOS SOLES' },
+  ];
+
+  actualizarMonedaCTS(event: any): void {
+    const codigoSeleccionado = event.value;
+    const monedaSeleccionada = this.monedasCTS.find((moneda) => moneda.codigo === codigoSeleccionado);
+
+    if (monedaSeleccionada) {
+      this.trabajadorForm.patchValue({
+        desctsmoneda: monedaSeleccionada.descripcion,
+      });
+    }
+  }
+
   mostrarMonedasCTS: boolean = false;
-  monedasCTS: Array<{ codigo: string; descripcion: string }> = [];
 
   abrirModalMonedasCTS(): void{
     this.mostrarMonedasCTS = true;
@@ -729,8 +947,23 @@ export class TrabajadorDetalleComponent implements OnInit{
 
   // Seguro Social modal
 
+  regimenesSalud: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '00', descripcion: 'ESSALUD REGULAR (Exclusivamente)' },
+    { codigo: '01', descripcion: 'ESSALUD REGULAR Y EPS/SERV. PROP.' },
+  ];
+
+  actualizarRegimenSalud(event: any): void {
+    const codigoSeleccionado = event.value;
+    const regimenSeleccionado = this.regimenesSalud.find((regimen) => regimen.codigo === codigoSeleccionado);
+
+    if (regimenSeleccionado) {
+      this.trabajadorForm.patchValue({
+        segsocialregsaluddes: regimenSeleccionado.descripcion,
+      });
+    }
+  }
+
   mostrarModalRegimenSalud: boolean = false;
-  regimenesSalud: Array<{ codigo: string; descripcion: string }> = [];
 
   abrirModalRegimenSalud(): void {
     this.mostrarModalRegimenSalud = true;
@@ -753,6 +986,32 @@ export class TrabajadorDetalleComponent implements OnInit{
     this.mostrarModalRegimenSalud = false;
 
     console.log('Régimen de salud seleccionado:', regimen);
+  }
+
+
+
+
+  //
+  //Laborales
+  //
+
+  //Tipo trabajador
+
+  tipoTrabajador: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '19', descripcion: 'EJECUTIVO' },
+    { codigo: '20', descripcion: 'OBRERO' },
+    { codigo: '21', descripcion: 'EMPLEADO' },
+  ];
+
+  actualizarTipoTrabajador(event: any): void {
+    const codigoSeleccionado = event.value;
+    const tipoSeleccionado = this.tipoTrabajador.find((tipo) => tipo.codigo === codigoSeleccionado);
+
+    if (tipoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        LabTipoTrabajadorDes: tipoSeleccionado.descripcion,
+      });
+    }
   }
 
 }
