@@ -404,7 +404,7 @@ export class TrabajadorDetalleComponent implements OnInit{
             Pla01TRDatosLabJornadaLaboralJornadaAtipica: trabajador.Pla01TRDatosLabJornadaLaboralJornadaAtipica === 'S' ? 'S' : 'N', // 'S' O 'N'
             Pla01TRDatosLabJornadaLaboralHorarioNocturno: trabajador.Pla01TRDatosLabJornadaLaboralHorarioNocturno === 'S' ? 'S' : 'N', // 'S' O 'N'
             // Situacion especial
-            Pla01TRDatosLabSituacionEspecial: trabajador.Pla01TRDatosLabSituacionEspecial || '', // '1' , '2' O '3'
+            Pla01TRDatosLabSituacionEspecial: trabajador.Pla01TRDatosLabSituacionEspecial || '3', // '1' , '2' O '3' // NINGUNA POR DEFECTO
             // Discapacitado
             Pla01TRDatosLabFlagDiscapacitado: trabajador.Pla01TRDatosLabFlagDiscapacitado === 'S' ? 'S' : 'N', // 'S' O 'N'
             // Sindicalizado
@@ -489,6 +489,32 @@ export class TrabajadorDetalleComponent implements OnInit{
         verMensajeInformativo(
           this.messageService, 'error', 'Error', `No se pudo cargar la información del trabajador: ${error.message}`
         );
+      }
+    });
+  }
+
+  confirmGuardarEdicion(): void {
+    this.confirmationService.confirm({
+      message: '¿Está seguro de que desea guardar los cambios?',
+      header: 'Confirmación',
+      icon: 'pi pi-question-circle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button',
+      rejectButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        // Si el usuario confirma, se llama al método guardarEdicion
+        this.guardarEdicion();
+      },
+      reject: () => {
+        // Si el usuario rechaza, puedes manejarlo aquí si es necesario
+        verMensajeInformativo(
+          this.messageService,
+          'info',
+          'Cancelado',
+          'Los cambios no fueron guardados'
+        );
+        console.log('Edición cancelada por el usuario.');
       }
     });
   }
@@ -1013,5 +1039,165 @@ export class TrabajadorDetalleComponent implements OnInit{
       });
     }
   }
+
+  //Nivel educativo
+
+  nivelesEducativos: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '13', descripcion: 'EDUCACIÓN UNIVERSITARIA COMPLETA' },
+    { codigo: '14', descripcion: 'GRADO DE BACHILLER' },
+    { codigo: '15', descripcion: 'TITULADO' },
+  ];
+
+  actualizarNivelEducativo(event: any): void {
+    const codigoSeleccionado = event.value;
+    const nivelSeleccionado = this.nivelesEducativos.find((nivel) => nivel.codigo === codigoSeleccionado);
+
+    if (nivelSeleccionado) {
+      this.trabajadorForm.patchValue({
+        LabNivelEducativoDes: nivelSeleccionado.descripcion,
+      });
+    }
+  }
+
+  //Categoria ocupacional
+
+  categoriasOcupacionales: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '1', descripcion: 'EJECUTIVO' },
+    { codigo: '2', descripcion: 'OBRERO' },
+    { codigo: '3', descripcion: 'EMPLEADO' },
+  ];
+
+  actualizarCategoriaOcupacional(event: any): void {
+    const codigoSeleccionado = event.value;
+    const categoriaSeleccionada = this.categoriasOcupacionales.find((categoria) => categoria.codigo === codigoSeleccionado);
+
+    if (categoriaSeleccionada) {
+      this.trabajadorForm.patchValue({
+        LabCategoriaOcupacionalDes: categoriaSeleccionada.descripcion,
+      });
+    }
+  }
+
+  //Tipo de contrato
+
+  tiposContrato: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '01', descripcion: 'A PLAZO INDETERMINADO' },
+    { codigo: '02', descripcion: 'A TIEMPO PARCIAL' },
+    { codigo: '03', descripcion: 'POR INICIO O INCREMENTO DE ACTIVIDAD' },
+  ];
+
+  actualizarTipoContrato(event: any): void {
+    const codigoSeleccionado = event.value;
+    const contratoSeleccionado = this.tiposContrato.find((contrato) => contrato.codigo === codigoSeleccionado);
+    if (contratoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        LabContratoTrabajoTipoDes: contratoSeleccionado.descripcion,
+      });
+    }
+  }
+
+  //Ocupacion
+
+  ocupaciones: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '21', descripcion: 'GEOLOGO MINAS' },
+    { codigo: '22', descripcion: 'ESTADISTICO' },
+    { codigo: '23', descripcion: 'PROGRAMADOR' },
+  ];
+
+  actualizarOcupacion(event: any): void {
+    const codigoSeleccionado = event.value;
+    const ocupacionSeleccionada = this.ocupaciones.find((ocupacion) => ocupacion.codigo === codigoSeleccionado);
+
+    if (ocupacionSeleccionada) {
+      this.trabajadorForm.patchValue({
+        LabOcupacionDes: ocupacionSeleccionada.descripcion,
+      });
+    }
+  }
+
+  //Tipo de pago
+
+  tiposPago: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '1', descripcion: 'EFECTIVO' },
+    { codigo: '2', descripcion: 'DEPÓSITO EN CUENTA' },
+    { codigo: '3', descripcion: 'OTROS' },
+  ];
+
+  actualizarTipoPago(event: any): void {
+    const codigoSeleccionado = event.value;
+    const tipoPagoSeleccionado = this.tiposPago.find((tipo) => tipo.codigo === codigoSeleccionado);
+
+    if (tipoPagoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        LabTipoPagoDes: tipoPagoSeleccionado.descripcion,
+      });
+    }
+  }
+
+  //Periodo de ingreso
+
+  periodosIngreso: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '1', descripcion: 'MENSUAL' },
+    { codigo: '2', descripcion: 'QUINCENAL' },
+    { codigo: '3', descripcion: 'SEMANAL' },
+  ];
+
+  actualizarPeriodoIngreso(event: any): void {
+    const codigoSeleccionado = event.value;
+    const periodoSeleccionado = this.periodosIngreso.find((periodo) => periodo.codigo === codigoSeleccionado);
+
+    if (periodoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        LabPeriodoIngresoDes: periodoSeleccionado.descripcion,
+      });
+    }
+  }
+
+  //Situaciones Laborales
+
+  situacionesLaborales: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '10', descripcion: 'BAJA' },
+    { codigo: '11', descripcion: 'ACTIVO O SUBSIDIADO' },
+    { codigo: '12', descripcion: 'SIN VINC. LAB. CON CONC PEND POR LIQUIDAR' },
+    { codigo: '13', descripcion: 'SUSPENSIÓN PERFECTA DE LABORES' },
+  ];
+
+  actualizarSituacionLaboral(event: any): void {
+    const codigoSeleccionado = event.value;
+    const situacionSeleccionada = this.situacionesLaborales.find((situacion) => situacion.codigo === codigoSeleccionado);
+
+    if (situacionSeleccionada) {
+      this.trabajadorForm.patchValue({
+        LabSituacionDes: situacionSeleccionada.descripcion,
+      });
+    }
+  }
+
+  //Establecimiento laboral
+
+  establecimientosLaborales: Array<{ codigo: string; descripcion: string }> = [
+    { codigo: '0000', descripcion: 'DOMICILIO FISCAL' },
+    { codigo: '0001', descripcion: 'CASA MATRIZ' },
+  ];
+
+  actualizarEstablecimientoLaboral(event: any): void {
+    const codigoSeleccionado = event.value;
+    const establecimientoSeleccionado = this.establecimientosLaborales.find((establecimiento) => establecimiento.codigo === codigoSeleccionado);
+
+    if (establecimientoSeleccionado) {
+      this.trabajadorForm.patchValue({
+        LabEstablecimientoLaboralDes: establecimientoSeleccionado.descripcion,
+      });
+    }
+  }
+
+
+
+
+
+
+
+
+
 
 }

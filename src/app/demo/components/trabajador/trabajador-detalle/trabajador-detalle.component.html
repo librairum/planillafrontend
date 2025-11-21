@@ -5,12 +5,13 @@
 <p-panel header="Trabajador Detalle " styleClass="shadow-xl rounded-xl mb-3">
 
 
-  <div class="button-group">
+  <div class="button-group mx-1" style="display: flex; gap: 10px;">
+
     <button pButton type="button" label="Regresar" icon="pi pi-arrow-left" (click)="regresar()" class="p-button-secondary"></button>
 
     <!-- Botón Guardar -->
     <button *ngIf="!esModoVisualizacion && !isNewRecord" pButton type="button" label="Guardar Edición" icon="pi pi-save"
-      (click)="guardarEdicion()" class="p-button-success"></button>
+      (click)="confirmGuardarEdicion()" class="p-button-success"></button>
 
     <button *ngIf="!esModoVisualizacion && isNewRecord" pButton type="button" label="Guardar Nuevo" icon="pi pi-save"
       (click)="guardarNuevoRegistro()" class="p-button-success"></button>
@@ -20,7 +21,7 @@
   <form [formGroup]="trabajadorForm">
       <!-- Detalles superiores -->
 
-      <div class="grid gap-3 mb-3 mt-3" style="grid-template-columns: repeat(5, 1fr); align-items: center;">
+      <div class="grid gap-3 mb-3 mt-3 mx-1" style="grid-template-columns: repeat(5, 1fr); align-items: center;">
         <!-- Código -->
         <div class="col-span-1">
           <label>Código :</label>
@@ -146,116 +147,124 @@
 
         <!-- Empresa -->
         <p-tabPanel header="Empresa">
-          <div class="grid gap-4 p-4" style="grid-template-columns: repeat(2, 1fr); max-width: 1000px;">
+          <div class="grid gap-4 p-4" style="max-width: 800px;">
             <!-- Centro de Costos -->
             <div>
-              <label>Centro de Costos:</label>
+              <label style="display: block;">Centro de Costos:</label>
               <p-dropdown
                 [options]="centroCostos"
                 formControlName="pla01centrocostocod"
                 placeholder="Seleccione"
                 optionLabel="descripcion"
                 optionValue="codigo"
-                [style]="{width: '100%'}"
+                [style]="{width: '200px'}"
                 (onChange)="actualizarCentroCostos($event)"
               ></p-dropdown>
             </div>
 
             <!-- Puesto / Cargo -->
             <div>
-              <label>Cargo Puesto:</label>
+              <label style="display: block;">Cargo Puesto:</label>
               <p-dropdown
                 [options]="cargos"
                 formControlName="pla01puestocod"
                 placeholder="Seleccione"
                 optionLabel="descripcion"
                 optionValue="codigo"
-                [style]="{width: '100%'}"
+                [style]="{width: '200px'}"
                 (onChange)="actualizarCargo($event)"
               ></p-dropdown>
             </div>
 
-            <!-- Banco Remuneración -->
-            <div>
-              <label>Banco Remuneración:</label>
-              <p-dropdown
-                [options]="bancosRemuneracion"
-                formControlName="pla01ctaremubancocod"
-                placeholder="Seleccione"
-                optionLabel="descripcion"
-                optionValue="codigo"
-                [style]="{width: '100%'}"
-                (onChange)="actualizarBancoRemuneracion($event)"
-              ></p-dropdown>
-            </div>
+            <div class="grid gap-4 p-2 border-1 border-round surface-border surface-50" style="grid-template-columns: repeat(2, 1fr); max-width: 545px;">
 
-            <!-- Moneda Remuneración -->
-            <div>
-              <label>Moneda Remuneración:</label>
-              <p-dropdown
-                [options]="monedasRemuneracion"
-                formControlName="pla01ctaremumoneda"
-                placeholder="Seleccione"
-                optionLabel="descripcion"
-                optionValue="codigo"
-                [style]="{width: '100%'}"
-                (onChange)="actualizarMonedaRemuneracion($event)"
-              ></p-dropdown>
-            </div>
-
-            <!-- Número de Cuenta Remuneración -->
-            <div>
-              <label>Número de Cuenta Remuneración:</label>
-              <input
-                type="text"
-                pInputText
-                formControlName="pla01ctaremunumero"
-                placeholder="Número de Cuenta"
-                [style]="{width: '100%'}"
-              />
-            </div>
-
-            <!-- Banco Depósito CTS -->
-            <div>
-              <label>Banco Depósito CTS:</label>
-              <p-dropdown
-                [options]="bancosCTS"
-                formControlName="pla01ctactsbancocod"
-                placeholder="Seleccione"
-                optionLabel="descripcion"
-                optionValue="codigo"
-                [style]="{width: '100%'}"
-                (onChange)="actualizarBancoCTS($event)"
-              ></p-dropdown>
-            </div>
-
-            <!-- Moneda Depósito CTS -->
-            <div>
-              <label>Moneda Depósito CTS:</label>
-              <div class="flex align-items-center gap-2">
+              <!-- Banco Remuneración -->
+              <div>
+                <label style="display: block;">Banco Remuneración:</label>
                 <p-dropdown
-                  [options]="monedasCTS"
-                  formControlName="pla01ctactsmoneda"
+                  [options]="bancosRemuneracion"
+                  formControlName="pla01ctaremubancocod"
                   placeholder="Seleccione"
                   optionLabel="descripcion"
                   optionValue="codigo"
-                  [style]="{width: '100%'}"
-                  (onChange)="actualizarMonedaCTS($event)"
+                  [style]="{width: '300px'}"
+                  (onChange)="actualizarBancoRemuneracion($event)"
                 ></p-dropdown>
+              </div>
+
+              <!-- Moneda Remuneración -->
+              <div>
+                <label style="display: block;">Moneda Remuneración:</label>
+                <p-dropdown
+                  [options]="monedasRemuneracion"
+                  formControlName="pla01ctaremumoneda"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '200px'}"
+                  (onChange)="actualizarMonedaRemuneracion($event)"
+                ></p-dropdown>
+              </div>
+
+              <!-- Número de Cuenta Remuneración -->
+              <div>
+                <label style="display: block;">Número de Cuenta Remuneración:</label>
+                <input
+                  type="text"
+                  pInputText
+                  formControlName="pla01ctaremunumero"
+                  placeholder="Ingrese Número de Cuenta"
+                  [style]="{width: '400px'}"
+                />
               </div>
             </div>
 
-            <!-- Número de Cuenta CTS -->
-            <div>
-              <label>Número de Cuenta CTS:</label>
-              <input
-                type="text"
-                pInputText
-                formControlName="pla01ctactsnumero"
-                placeholder="Número de Cuenta"
-                [style]="{width: '100%'}"
-              />
+            <div class="grid gap-4 p-2 border-1 border-round  surface-border surface-50" style="grid-template-columns: repeat(2, 1fr); max-width: 545px;">
+
+              <!-- Banco Depósito CTS -->
+              <div>
+                <label style="display: block;">Banco Depósito CTS:</label>
+                <p-dropdown
+                  [options]="bancosCTS"
+                  formControlName="pla01ctactsbancocod"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '300px'}"
+                  (onChange)="actualizarBancoCTS($event)"
+                ></p-dropdown>
+              </div>
+
+              <!-- Moneda Depósito CTS -->
+              <div>
+                <label style="display: block;">Moneda Depósito CTS:</label>
+                <div>
+                  <p-dropdown
+                    [options]="monedasCTS"
+                    formControlName="pla01ctactsmoneda"
+                    placeholder="Seleccione"
+                    optionLabel="descripcion"
+                    optionValue="codigo"
+                    [style]="{width: '200px'}"
+                    (onChange)="actualizarMonedaCTS($event)"
+                  ></p-dropdown>
+                </div>
+              </div>
+
+              <!-- Número de Cuenta CTS -->
+              <div>
+                <label style="display: block;">Número de Cuenta CTS:</label>
+                <input
+                  type="text"
+                  pInputText
+                  formControlName="pla01ctactsnumero"
+                  placeholder="Ingrese Número de Cuenta"
+                  [style]="{width: '400px'}"
+                />
+              </div>
+
             </div>
+
           </div>
 
         </p-tabPanel>
@@ -277,19 +286,213 @@
         <!-- Laborales -->
         <p-tabPanel header="Laborales">
 
-          <div class="grid gap-3">
+          <div class="grid gap-4 p-4">
 
-            <!-- Primera fila: Tipo de trabajador y Fechas -->
+            <!-- Primera fila: Tipo de trabajador -->
             <div class="col-12">
-              <label>Tipo de trabajador</label>
+              <!-- Display block para que aparezca encima-->
+              <label>Tipo de trabajador :</label>
               <p-dropdown
                 [options]="tipoTrabajador"
                 formControlName="Pla01TRDatosLabTipoTrabajador"
                 placeholder="Seleccione"
                 optionLabel="descripcion"
                 optionValue="codigo"
-                class="w-full"
+                class="mx-3"
+                [style]="{width: '300px'}"
                 (onChange)="actualizarTipoTrabajador($event)"
+              ></p-dropdown>
+            </div>
+
+            <!-- Grid para segunda fila -->
+            <div class="grid gap-4 p-3" style="grid-template-columns: repeat(2, 1fr); max-width: 1000px;">
+
+              <div>
+                <label style="display: block;">Nivel educativo :</label>
+                <p-dropdown
+                  [options]="nivelesEducativos"
+                  formControlName="Pla01TRDatosLabNivelEducativo"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '400px'}"
+                  (onChange)="actualizarNivelEducativo($event)"
+                ></p-dropdown>
+              </div>
+
+              <div>
+                <label style="display: block;">Categoría Ocupacional :</label>
+                <p-dropdown
+                  [options]="categoriasOcupacionales"
+                  formControlName="Pla01TRDatosLabCategoriaOcupacional"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '400px'}"
+                  (onChange)="actualizarCategoriaOcupacional($event)"
+                ></p-dropdown>
+              </div>
+
+              <div>
+                <label style="display: block;">Tipo de Contrato :</label>
+                <p-dropdown
+                  [options]="tiposContrato"
+                  formControlName="Pla01TRDatosLabContratoTrabajoTipo"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '400px'}"
+                  (onChange)="actualizarTipoContrato($event)"
+                ></p-dropdown>
+              </div>
+
+              <div>
+                <label style="display: block;">Ocupación :</label>
+                <p-dropdown
+                  [options]="ocupaciones"
+                  formControlName="Pla01TRDatosLabOcupacion"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '400px'}"
+                  (onChange)="actualizarOcupacion($event)"
+                ></p-dropdown>
+              </div>
+
+              <div>
+                <label style="display: block;">Tipo de pago y perioridad de ingreso :</label>
+                <p-dropdown
+                  [options]="tiposPago"
+                  formControlName="Pla01TRDatosLabTipoPago"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '400px'}"
+                  (onChange)="actualizarTipoPago($event)"
+                ></p-dropdown>
+              </div>
+
+              <div class="mt-4">
+                <p-dropdown
+                  [options]="periodosIngreso"
+                  formControlName="Pla01TRDatosLabPeriodoIngreso"
+                  placeholder="Seleccione"
+                  optionLabel="descripcion"
+                  optionValue="codigo"
+                  [style]="{width: '200px'}"
+                  (onChange)="actualizarPeriodoIngreso($event)"
+                ></p-dropdown>
+              </div>
+
+            </div>
+
+            <div class="col-12">
+              <label>Establecimiento donde labora :</label>
+              <p-dropdown
+                [options]="establecimientosLaborales"
+                formControlName="Pla01TRDatosLabEstablecimientoLaboral"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                class="mx-3"
+                [style]="{width: '300px'}"
+                (onChange)="actualizarEstablecimientoLaboral($event)"
+              ></p-dropdown>
+            </div>
+
+            <div class="col-12">
+              <label>Jornada Laboral I :</label>
+              <p-checkbox
+                formControlName="Pla01TRDatosLabJornadaLaboralTrabajoMax"
+                [binary]="true"
+                [trueValue]="'S'"
+                [falseValue]="'N'"
+                label="Jornada de trabajo normal"
+                class="mx-3"
+              ></p-checkbox>
+              <p-checkbox
+                formControlName="Pla01TRDatosLabJornadaLaboralJornadaAtipica"
+                [binary]="true"
+                [trueValue]="'S'"
+                [falseValue]="'N'"
+                label="Jornada atípica"
+                class="mx-3"
+              ></p-checkbox>
+              <p-checkbox
+                formControlName="Pla01TRDatosLabJornadaLaboralHorarioNocturno"
+                [binary]="true"
+                [trueValue]="'S'"
+                [falseValue]="'N'"
+                label="Jornada horario nocturno"
+                class="mx-3"
+              ></p-checkbox>
+            </div>
+
+            <div class="col-12">
+              <label>Situación Especial :</label>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabSituacionEspecial"
+                [value]="'1'"
+                label="Trabajador de dirección"
+                class="mx-3"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabSituacionEspecial"
+                [value]="'2'"
+                label="Trabajador de confianza"
+                class="mx-3"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabSituacionEspecial"
+                [value]="'3'"
+                label="Ninguna"
+                class="mx-3"
+              ></p-radioButton>
+            </div>
+
+            <div class="col-12">
+              <label>Discapacitado :</label>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabFlagDiscapacitado"
+                [value]="'S'"
+                label="Sí"
+                class="mx-3"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabFlagDiscapacitado"
+                [value]="'N'"
+                label="No"
+                class="mx-3"
+              ></p-radioButton>
+            </div>
+
+            <div class="col-12">
+              <label>Sindicalizado :</label>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabFlagSindicalizado"
+                [value]="'S'"
+                label="Sí"
+                class="mx-3"
+              ></p-radioButton>
+              <p-radioButton
+                formControlName="Pla01TRDatosLabFlagSindicalizado"
+                [value]="'N'"
+                label="No"
+                class="mx-3"
+              ></p-radioButton>
+            </div>
+
+            <div class="col-12">
+              <label>Situación :</label>
+              <p-dropdown
+                [options]="situacionesLaborales"
+                formControlName="Pla01TRDatosLabSituacion"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="codigo"
+                class="mx-3"
+                [style]="{width: '400px'}"
+                (onChange)="actualizarSituacionLaboral($event)"
               ></p-dropdown>
             </div>
 
@@ -311,7 +514,7 @@
                   placeholder="Seleccione"
                   optionLabel="descripcion"
                   optionValue="codigo"
-                  [style]="{width: '300px'}"
+                  [style]="{width: '350px'}"
                   class="mx-3"
                   (onChange)="actualizarRegimenSalud($event)"
                 ></p-dropdown>
@@ -349,7 +552,7 @@
             <!-- Tercera fila: Aporta SCRT -->
             <div class="col-12">
               <label>¿Aporta SCRT?</label>
-              <div class="flex gap-3">
+              <div class="flex gap-3 mt-3">
                 <p-radioButton
                   formControlName="pla01trdatossegsocialflagaportascrt"
                   [value]="'S'"
@@ -366,7 +569,7 @@
             <!-- Cuarta fila: Cobertura de Pensión -->
             <div class="col-12">
               <label>Cobertura de Pensión:</label>
-              <div class="flex gap-3">
+              <div class="flex gap-3 mt-3">
                 <p-radioButton
                   formControlName="pla01trdatossegsocialcoberturapension"
                   [value]="'1'"
@@ -383,7 +586,7 @@
             <!-- Quinta fila: Asegura tu Pensión -->
             <div class="col-12">
               <label>¿Asegura tu Pensión?</label>
-              <div class="flex gap-3">
+              <div class="flex gap-3 mt-3">
                 <p-radioButton
                   formControlName="pla01trdatossegsocialflagaseguratupension"
                   [value]="'S'"
@@ -400,7 +603,7 @@
             <!-- Sexta fila: EsSalud Más Vida -->
             <div class="col-12">
               <label>¿EsSalud Más Vida?</label>
-              <div class="flex gap-3">
+              <div class="flex gap-3 mt-3">
                 <p-radioButton
                   formControlName="pla01trdatossegsocialflagessaludmasvida"
                   [value]="'S'"
@@ -424,7 +627,7 @@
             <!-- Radio Button: Otros Ingresos -->
             <div class="col-12">
               <label>¿Percibe rentas de 5ta exoneradas?</label>
-              <div class="flex gap-3">
+              <div class="flex gap-3 mt-3">
                 <p-radioButton
                   formControlName="pla01trdatostribflagquintaotrosingresos"
                   [value]="'S'"
@@ -441,7 +644,7 @@
             <!-- Radio Button: Exonerada -->
             <div class="col-12">
               <label>¿Aplica convenio para aplicar doble imposición?</label>
-              <div class="flex gap-3">
+              <div class="flex gap-3 mt-3">
                 <p-radioButton
                   formControlName="pla01trdatostribflagquintaexonerada"
                   [value]="'S'"

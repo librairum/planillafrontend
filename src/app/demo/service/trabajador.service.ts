@@ -221,7 +221,7 @@ const trabajador1: Trabajador = {
       Pla01TRDatosLabNivelEducativo: '13',
       LabNivelEducativoDes: 'EDUCACIÓN UNIVERSITARIA COMPLETA',
       // Categoria Ocupacional
-      Pla01TRDatosLabCategoriaOcupacional: '03',
+      Pla01TRDatosLabCategoriaOcupacional: '3',
       LabCategoriaOcupacionalDes: 'EMPLEADO',
       // Tipo de contrato
       Pla01TRDatosLabContratoTrabajoTipo: '01',

@@ -3,7 +3,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { TableModule, EditableRow } from 'primeng/table';
@@ -188,7 +194,8 @@ export class RegimenPensionarioComponent implements OnInit {
   showAddRow() {
     this.isEditing = true;
     this.isNew = true;
-    const nuevoCodigo = this.regimenPensionarioService.GenerarNuevoCodigoRegimen();
+    const nuevoCodigo =
+      this.regimenPensionarioService.GenerarNuevoCodigoRegimen();
     this.regimenPensionarioForm.reset({
       pla61codigo: nuevoCodigo,
       pla61flagsectorprivado: false,
@@ -202,26 +209,26 @@ export class RegimenPensionarioComponent implements OnInit {
   }
 
   onSave() {
-      if (this.regimenPensionarioForm.valid) {
-        this.confirmationService.confirm({
-          message: '¿Está seguro que desea guardar este nuevo régimen?',
-          header: 'Confirmar Régimen',
-          icon: 'pi pi-question-circle',
-          acceptLabel: 'Sí',
-          rejectLabel: 'No',
-          acceptButtonStyleClass: 'p-button',
-          rejectButtonStyleClass: 'p-button-danger',
-          accept: () => {
-            const raw = this.regimenPensionarioForm.value;
-            //mapear booleanos a S/N
-            const newRegimenPensionario: RegimenPensionario = {
-              ...raw,
-              pla61flagsectorprivado: raw.pla61flagsectorprivado ? 'S' : 'N',
-              pla61flagsectorpublico: raw.pla61flagsectorpublico ? 'S' : 'N',
-              pla61flagactivo: raw.pla61flagactivo ? 'S' : 'N',
-            };
+    if (this.regimenPensionarioForm.valid) {
+      this.confirmationService.confirm({
+        message: '¿Está seguro que desea guardar este nuevo régimen?',
+        header: 'Confirmar Régimen',
+        icon: 'pi pi-question-circle',
+        acceptLabel: 'Sí',
+        rejectLabel: 'No',
+        acceptButtonStyleClass: 'p-button',
+        rejectButtonStyleClass: 'p-button-danger',
+        accept: () => {
+          const raw = this.regimenPensionarioForm.value;
+          //mapear booleanos a S/N
+          const newRegimenPensionario: RegimenPensionario = {
+            ...raw,
+            pla61flagsectorprivado: raw.pla61flagsectorprivado ? 'S' : 'N',
+            pla61flagsectorpublico: raw.pla61flagsectorpublico ? 'S' : 'N',
+            pla61flagactivo: raw.pla61flagactivo ? 'S' : 'N',
+          };
 
-            this.regimenPensionarioService
+          this.regimenPensionarioService
             .CrearRegimenPensionario(newRegimenPensionario)
             .subscribe({
               next: () => {
@@ -246,18 +253,17 @@ export class RegimenPensionarioComponent implements OnInit {
                 );
               },
             });
-          },
-        });
-      } else {
-        verMensajeInformativo(
-          this.messageService,
-          'warn',
-          'Advertencia',
-          'Complete todos los campos requeridos'
-        );
-      }
+        },
+      });
+    } else {
+      verMensajeInformativo(
+        this.messageService,
+        'warn',
+        'Advertencia',
+        'Complete todos los campos requeridos'
+      );
     }
-
+  }
 
   onCancel() {
     this.isEditing = false;
@@ -298,9 +304,9 @@ export class RegimenPensionarioComponent implements OnInit {
               });
             },
           });
-          },
-        });
-          /*
+      },
+    });
+    /*
                     this.bancoService.EliminarBanco(banco.ban01Empresa, banco.ban01IdBanco).subscribe({
                         next: () => {
                             this.bancoList.splice(index, 1);
