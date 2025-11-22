@@ -17,13 +17,14 @@
                     pTooltip="Cancelar" tooltipPosition="bottom">
                 </button>
 
+                <!-- Botón Vista Previa -->
                 <button pButton pRipple icon="pi pi-search" class="p-button-sm" (click)="vistaPreviaGeneral()"
                     pTooltip="Vista Previa" tooltipPosition="bottom">
                 </button>
             </div>
             <div class="p-toolbar-group-start flex flex-wrap gap-3 ">
             </div>
-            
+
             <div class="p-toolbar-group-end flex flex-wrap items-center space-x-2">
                 <span class="text-sm font-semibold whitespace-nowrap px-2">Período Pago:</span>
                 <p-dropdown [options]="periodoPagoOptions" [(ngModel)]="selectedPeriodoPago" optionLabel="label"
@@ -33,19 +34,9 @@
             </div>
         </p-toolbar>
 
-        <div class="table-controls-header flex justify-content-end align-items-center align-to-table"
-            style="padding: 0.8rem 1rem;">
-            <div class="flex align-items-center">
-                <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas
-                    por página:</label>
-                <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
-                    placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center "></p-dropdown>
-            </div>
-        </div>
-
-        <p-table #dt [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [first]="first"
-            [totalRecords]="totalRecords" (onPage)="onPageChange($event)" responsiveLayout="stack"
-            dataKey="pla01empleadocod"
+        <p-table #dt [value]="empleados" [paginator]="true" [rows]="rowsPerPage" [totalRecords]="totalDias"
+            (onPage)="onPageChange($event)" dataKey="pla01empleadocod" [rowsPerPageOptions]="[5, 10, 20, 50]"
+            [paginatorDropdownAppendTo]="'body'"
             styleClass="asistencia-table p-datatable-sm p-datatable-striped p-datatable-gridlines">
 
             <ng-template pTemplate="header">
@@ -218,8 +209,8 @@
                             <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-text p-button-sm"
                                 pTooltip="Cancelar" (click)="cancelEditInasistencia(inasistencia, rowIndex)"></button>
                         </div>
-
-                        <div *ngIf="selectedInasistencia !== inasistencia && !isEditingInasistencia"
+                        
+                        <div *ngIf="selectedInasistencia !== inasistencia && !isEditingInasistencia" 
                             class="flex justify-center gap-1" (click)="$event.stopPropagation()">
                             <button pButton pRipple icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm"
                                 pTooltip="Editar" (click)="editInasistencia(inasistencia)"></button>
@@ -229,7 +220,7 @@
                     </td>
                 </tr>
             </ng-template>
-
+            
             <ng-template pTemplate="emptyMessage">
                 <tr>
                     <td colspan="6" class="text-center text-gray-500">No hay inasistencias registradas para este
@@ -240,4 +231,53 @@
         </p-table>
 
     </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayReporteDialog" [modal]="true" [style]="{width: '1000px', 'max-height': '90vh'}"
+    [maximizable]="true" [draggable]="false" [resizable]="false" header="Vista Previa">
+
+    <div class="p-4 bg-white text-900 print-section">
+        <!-- Cabecera del Reporte -->
+        <div class="flex justify-content-between align-items-start mb-5">
+            <div class="text-sm font-bold line-height-3">
+                <div><span class="inline-block w-6rem">EMPRESA</span>: {{reporteData.empresa}}</div>
+                <div><span class="inline-block w-6rem">AÑO</span>: {{reporteData.anio}}</div>
+            </div>
+            <div class="text-center flex-grow-1">
+                <h2 class="text-xl font-bold m-0">{{reporteData.titulo}}</h2>
+                <div class="text-lg font-bold mt-1">{{reporteData.subtitulo}}</div>
+            </div>
+            <!-- Espaciador para equilibrar el flex -->
+            <div class="w-12rem"></div>
+        </div>
+
+        <!-- Tabla del Reporte (Estilo similar a la imagen) -->
+        <div class="border-1 border-900 surface-0">
+            <!-- Encabezado Tabla -->
+            <div class="grid grid-nogutter font-bold border-bottom-1 border-900 bg-gray-100 text-sm">
+                <div class="col-2 p-2 border-right-1 border-900">Codigo</div>
+                <div class="col-2 p-2 border-right-1 border-900">DNI</div>
+                <div class="col-6 p-2 border-right-1 border-900">Apellidos y Nombres</div>
+                <div class="col-2 p-2 text-center">{{reporteData.columnaDinamica}}</div>
+            </div>
+
+            <!-- Cuerpo Tabla -->
+            <div *ngFor="let row of reporteData.rows"
+                class="grid grid-nogutter text-sm border-bottom-1 border-900 last:border-none hover:surface-50">
+                <div class="col-2 p-2 border-right-1 border-900">{{row.codigo}}</div>
+                <div class="col-2 p-2 border-right-1 border-900">{{row.dni}}</div>
+                <div class="col-6 p-2 border-right-1 border-900">{{row.nombres}}</div>
+                <div class="col-2 p-2 text-center">{{row.valorDinamico}}</div>
+            </div>
+
+            <!-- Mensaje si no hay datos -->
+            <div *ngIf="reporteData.rows.length === 0" class="p-3 text-center text-500 italic">
+                No hay datos para mostrar en este reporte.
+            </div>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Imprimir" icon="pi pi-print" class="p-button-info" (click)="imprimir()"></button>
+    </ng-template>
 </p-dialog>

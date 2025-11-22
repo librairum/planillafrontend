@@ -63,7 +63,7 @@ export class AsistenciaComponent implements OnInit {
     rowsPerPage: number = 10;
     selectedEmpleado: AsistenciaView | null = null; 
 
-    totalRecords: number = 0;
+    totalDias: number = 0;
     first: number = 0;
     isMenuOpen: boolean = true;
 
@@ -74,6 +74,17 @@ export class AsistenciaComponent implements OnInit {
     inasistencias: Inasistencia[] = []; 
     selectedInasistencia: Inasistencia | null = null; 
     isEditingInasistencia: boolean = false; 
+
+    // Variables para el Reporte de Vista Previa
+    displayReporteDialog: boolean = false;
+    reporteData: any = {
+        empresa: 'ADMINISTRAR Y CONFIGURAR', // Simulación del nombre de empresa
+        anio: '2025',
+        titulo: 'Reporte de asistencia',
+        subtitulo: '',
+        columnaDinamica: '',
+        rows: []
+    };
 
     periodoPagoOptions: PeriodoPago[] = [
         { label: 'Planilla Utilidades - 20251', value: 'UTILIDADES' },
@@ -109,14 +120,14 @@ export class AsistenciaComponent implements OnInit {
             { pla01empleadocod: '000009', idIdentidad: '10890765', apellidosynombres: 'SNP SNP RegGeneralRP ', pla01fechaingreso: new Date(2020, 8, 1), pla01estado: 'A', pla02utilidad: 90, pla02gratificacion: 45 }
         ];
 
-        this.totalRecords = fullData.length;
+        this.totalDias = fullData.length;
         this.empleados = fullData;
     }
 
     limpiarDias() {
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar los días de ${this.getDynamicColumnLabel()} para todos los empleados?`,
-            header: 'Confirmar Limpieza',
+            header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
@@ -137,7 +148,7 @@ export class AsistenciaComponent implements OnInit {
     guardarTodosLosCambios() {
         this.confirmationService.confirm({
             message: '¿Está seguro que desea guardar los cambios de asistencia de todos los empleados?',
-            header: 'Confirmar Guardado Global',
+            header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
@@ -145,20 +156,45 @@ export class AsistenciaComponent implements OnInit {
             rejectButtonStyleClass: 'p-button',
             accept: () => {
                 this.selectedEmpleado = null;
+                // Aquí iría la llamada al servicio para persistir los cambios en BD
                 verMensajeInformativo(this.messageService, 'success', 'Guardado Global', `Se guardaron los datos de ${this.empleados.length} empleados correctamente.`);
             }
         });
     }
 
+    // --- LOGICA DE REPORTE (VISTA PREVIA) ---
     vistaPreviaGeneral() {
-        verMensajeInformativo(this.messageService, 'info', 'Vista Previa', `Generando reporte de asistencia para ${this.empleados.length} empleados para impresión.`);
+        verMensajeInformativo(this.messageService, 'info', 'Generando', `Generando vista previa del reporte...`);
+
+        // 1. Configurar cabeceras del reporte basándose en la selección actual
+        const periodoCodigo = this.selectedPeriodoPago === 'UTILIDADES' ? '2025115' : '2025215'; // Simulado
+        this.reporteData.subtitulo = periodoCodigo;
+        this.reporteData.columnaDinamica = this.getDynamicColumnLabel(); // "Días Utilidad" o "Días Gratificación"
+
+        // 2. Mapear los datos ACTUALES de la tabla
+        this.reporteData.rows = this.empleados.map(emp => {
+            return {
+                codigo: emp.pla01empleadocod,
+                dni: emp.idIdentidad,
+                nombres: emp.apellidosynombres, 
+                valorDinamico: this.selectedPeriodoPago === 'UTILIDADES' ? emp.pla02utilidad : emp.pla02gratificacion
+            };
+        });
+
+        // 3. Mostrar el diálogo del reporte
+        this.displayReporteDialog = true;
+    }
+
+    // --- NUEVA FUNCIÓN PARA IMPRIMIR ---
+    imprimir() {
+        window.print();
     }
 
     cerrarVista() {
         this.confirmationService.confirm({
             message: '¿Está seguro que desea cancelar? Se cerrará la vista y se descartarán los cambios no guardados.',
-            header: 'Confirmar Cancelación',
-            icon: 'pi pi-times',
+            header: 'Confirmar',
+            icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
             acceptButtonStyleClass: 'p-button-danger',
@@ -227,7 +263,6 @@ export class AsistenciaComponent implements OnInit {
             verMensajeInformativo(this.messageService, 'error', 'Error', 'Debe seleccionar un Tipo de Suspensión.');
             return;
         }
-        // Lógica de guardado de inasistencia (API call aquí)
         this.isEditingInasistencia = false;
         this.selectedInasistencia = null;
         verMensajeInformativo(this.messageService, 'success', 'Guardado', 'Registro de inasistencia guardado correctamente.');
@@ -237,11 +272,9 @@ export class AsistenciaComponent implements OnInit {
         this.isEditingInasistencia = false;
         this.selectedInasistencia = null;
 
-        // Si es una fila nueva, la eliminamos de la lista
         if (!inasistencia.pla03tiposuspension) {
             this.inasistencias.splice(index, 1);
         } else {
-            // Lógica para recargar/deshacer cambios si no es nueva
             this.loadInasistencias(this.selectedInasistenciaEmpleado!.pla01empleadocod); 
         }
     }
@@ -249,7 +282,7 @@ export class AsistenciaComponent implements OnInit {
     deleteInasistencia(inasistencia: Inasistencia) {
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar la inasistencia por ${inasistencia.glo02descripcion}?`,
-            header: 'Confirmar Eliminación',
+            header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
@@ -268,7 +301,6 @@ export class AsistenciaComponent implements OnInit {
             const endDate = inasistencia.pla03fechafin.getTime();
 
             if (endDate >= startDate) {
-                // Cálculo de días, incluyendo el día de inicio y fin (días naturales)
                 const diffTime = Math.abs(endDate - startDate);
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
                 inasistencia.pla03diasnotrabajados = diffDays;
@@ -280,7 +312,6 @@ export class AsistenciaComponent implements OnInit {
         }
     }
 
-    // El evento de cambio de Dropdown en el diálogo (Para actualizar la descripción)
     onTipoSuspensionChange(event: any, inasistencia: Inasistencia) {
         const selectedType = this.tipoSuspensionOptions.find(t => t.code === event.value);
         if (selectedType) {
@@ -298,10 +329,9 @@ export class AsistenciaComponent implements OnInit {
     }
 
     eliminarEmpleado(empleado: AsistenciaView) {
-        // Función de eliminación por fila (si se usara en la tabla)
         this.confirmationService.confirm({
             message: `¿Está seguro que desea eliminar a ${empleado.apellidosynombres} del listado de asistencia?`, 
-            header: 'Confirmar Eliminación',
+            header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Sí',
             rejectLabel: 'No',
@@ -309,7 +339,7 @@ export class AsistenciaComponent implements OnInit {
             rejectButtonStyleClass: 'p-button',
             accept: () => {
                 this.empleados = this.empleados.filter(e => e.pla01empleadocod !== empleado.pla01empleadocod); 
-                this.totalRecords = this.empleados.length;
+                this.totalDias = this.empleados.length;
                 if (this.selectedEmpleado && this.selectedEmpleado.pla01empleadocod === empleado.pla01empleadocod) {
                     this.selectedEmpleado = null;
                 }

@@ -13,7 +13,7 @@
                                 pTooltip="Nuevo centro de costo" tooltipPosition="bottom"></button>
                         </div>
 
-                        <div class="table-controls-header flex justify-content-end align-items-center pr-1">
+                        <!--<div class="table-controls-header flex justify-content-end align-items-center pr-1">
                             <div class="flex align-items-center">
                                 <label style="margin-right: 0.4rem; font-size: 15px;" for="rowsPerPageTable">Filas por
                                     página:</label>
@@ -21,12 +21,13 @@
                                     placeholder="10" styleClass="p-button-sm w-16 text-center">
                                 </p-dropdown>
                             </div>
-                        </div>
+                        </div>-->
                     </p-toolbar>
                 </div>
 
                 <div class="px-4">
                     <p-table [value]="centrosCosto" [rows]="rowsPerPage" [paginator]="true" responsiveLayout="scroll"
+                        [rowsPerPageOptions]="[5, 10, 20, 50]"
                         styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines centrocosto-table">
                         <ng-template pTemplate="header">
                             <tr>

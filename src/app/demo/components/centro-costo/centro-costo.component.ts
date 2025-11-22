@@ -219,7 +219,7 @@ export class CentroCostoComponent implements OnInit {
   eliminarCentroCosto(centroCosto: CentroCosto): void {
 
     this.confirmationService.confirm({
-      message: `¿Está seguro de eliminar el centro de costo con código (${centroCosto.pla57codigo})?`,
+      message: `¿Está seguro de eliminar el centro de costo con código ${centroCosto.pla57codigo}?`,
       header: 'Confirmar Eliminación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',

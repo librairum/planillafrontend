@@ -15,9 +15,8 @@
             <ng-template pTemplate="right">
                 <div class="toolbar-group flex align-items-center gap-3">
 
-                    <button pButton type="button" icon="pi pi-refresh" label="Refrescar"
-                        class="p-button-info toolbar-button" (click)="refrescar()" pTooltip="Refrescar lista"
-                        tooltipPosition="bottom"></button>
+                    <button pButton type="button" icon="pi pi-refresh" class="p-button-info toolbar-button"
+                        (click)="refrescar()" pTooltip="Refrescar lista" tooltipPosition="bottom"></button>
 
                     <button pButton type="button"
                         [icon]="selectedPeriodo?.pla01flagperiodocerrado === true ? 'pi pi-lock-open' : 'pi pi-lock'"
@@ -30,19 +29,19 @@
             </ng-template>
         </p-toolbar>
 
-        <div class="table-controls-header flex justify-content-end align-items-center" style="padding: 0.8rem 1rem;">
+        <!--<div class="table-controls-header flex justify-content-end align-items-center" style="padding: 0.8rem 1rem;">
             <div class="flex align-items-center px-2">
                 <label for="rowsPerPageTable" style="margin-right: 0.5rem; font-weight: 600; font-size: 0.9rem;">Filas
                     por página:</label>
                 <p-dropdown id="rowsPerPageTable" [options]="[10, 20, 40, 50]" [(ngModel)]="rowsPerPage" appendTo="body"
                     placeholder="Seleccionar" styleClass="p-button-sm w-12 text-center"></p-dropdown>
             </div>
-        </div>
+        </div>-->
 
         <div class="py-2">
             <p-table #dt [value]="periodos" [(selection)]="selectedPeriodo" selectionMode="single" [paginator]="true"
-                [rows]="rowsPerPage" responsiveLayout="scroll" [showCurrentPageReport]="false"
-                [globalFilterFields]="['pla01periodocod', 'pla01descripcion', 'Pla55Descripcion']"
+                [rows]="rowsPerPage" responsiveLayout="scroll" [showCurrentPageReport]="false" 
+                [rowsPerPageOptions]="[5, 10, 20, 50]"  [paginatorDropdownAppendTo]="'body'"
                 [tableStyle]="{ 'min-width': '100%' }"
                 styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
 
@@ -116,7 +115,7 @@
 
                         <td class="text-center action-buttons">
                             <button pButton type="button" icon="pi pi-pencil"
-                                class="p-button-rounded p-button-warning p-button-text p-button-sm mr-1"
+                                class="p-button-rounded p-button-info p-button-text p-button-sm mr-1"
                                 (click)="onEdit(periodo)" pTooltip="Modificar periodo"
                                 tooltipPosition="bottom"></button>
 
